@@ -15,11 +15,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            // $table->foreign('user_info_id')->references('id')->on('user_infos'); // to create table first
+            $table->string('name'); // to delete since it is already included in user_infos table
+            $table->string('username', 20)->unique();
+            $table->string('email', 255)->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password', 60);
+            $table->char('role', 20);
             $table->rememberToken();
+            // $table->foreign('charitable_organization_id')->references('id')->on('charitable_organizations')->nullable(); // to create table first
+            $table->char('status', 20);
             $table->timestamps();
         });
     }
