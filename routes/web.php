@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Charity\CharityController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+Route::controller(CharityController::class)->group(function () {
+    Route::prefix('/charity')->middleware('auth')->group(function () {
+        Route::get('/dashboard', 'ShowDashboard')->name('charity.dashboard');
+    });
+});
+
+require __DIR__ . '/auth.php';
