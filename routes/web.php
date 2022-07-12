@@ -18,13 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
+Route::get('/charity/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::controller(CharityController::class)->group(function () {
     Route::prefix('/charity')->middleware('auth')->group(function () {
-        Route::get('/dashboard', 'ShowDashboard')->name('charity.dashboard');
+        // Route::get('/dashboard', 'ShowDashboard')->name('charity.dashboard');
     });
 });
 
