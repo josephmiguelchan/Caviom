@@ -159,7 +159,7 @@
                     <a class="dropdown-item d-block" href="#">
                         <i class="ri-lock-password-line align-middle me-1"></i> Change Password</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-danger" href="#"><i
+                    <a class="dropdown-item text-danger" href="{{ route('user.logout') }}"><i
                             class="ri-shut-down-line align-middle me-1 text-danger"></i> Logout</a>
                 </div>
             </div>
