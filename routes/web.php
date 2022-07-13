@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 Route::get('/charity/dashboard', function () {
-    return view('dashboard');
+    return view('charity.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::controller(CharityController::class)->group(function () {
