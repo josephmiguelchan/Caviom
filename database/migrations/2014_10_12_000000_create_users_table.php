@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             // $table->foreign('user_info_id')->references('id')->on('user_infos'); // to create table first
-            $table->string('name'); // to delete since it is already included in user_infos table
+            // $table->string('name'); // to delete since it is already included in user_infos table
             $table->string('username', 20)->unique();
             $table->string('email', 255)->unique();
             $table->timestamp('email_verified_at')->nullable();

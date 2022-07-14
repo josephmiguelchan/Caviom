@@ -42,7 +42,6 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
-        'status',
     ];
 
     /**
@@ -53,4 +52,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function userInfo()
+    {
+        return $this->hasOne(UserInfo::class);
+    }
 }
