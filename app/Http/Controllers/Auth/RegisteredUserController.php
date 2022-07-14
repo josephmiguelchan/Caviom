@@ -34,30 +34,55 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        # Validate Form First
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:20', 'unique:users'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', 'max:20', Rules\Password::defaults()],
-        ]);
+        // Validate Form First
+        $request->validate(
+            [
+                # Personal Details
+                'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ]*$/'],
+                'middle_name' => ['nullable', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ]*$/'],
+                'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ]*$/'],
+                'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'],
+                'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'],
+                'work_position' => ['required', 'string', 'min:4', 'max:64'],
+                'organizational_id_no' => ['nullable', 'integer', 'numeric', 'min:100', 'max:9999999999'], // To modify: 'unique:user_infos'
 
-        # Eloquent ORM User Creation (Does not support assigment of Guarded fields)
-        /*
-        $user = User::create([
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'Charity Admin',
-        ]);
-        */
+                # Current address
+                'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
+                'address_line_two' => ['nullable', 'string', 'min:5', 'max:128'],
+                'province' => ['required', 'string', 'min:3', 'max:64'],
+                'city' => ['required', 'string', 'min:3', 'max:64'],
+                'barangay' => ['required', 'string', 'min:3', 'max:64'],
+                'postal_code' => ['required', 'string', 'min:4', 'max:10'],
+
+                # Login Details
+                'name' => ['required', 'string', 'min:3', 'max:128'], // To add: 'unique:charitable_organizations'
+                'profile_image' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
+                'username' => ['required', 'alpha_dash', 'string', 'max:20', 'unique:users'],
+                'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
+                'password' => ['required', 'confirmed', 'max:20', Rules\Password::defaults()],
+                'is_agreed' => ['required'],
+            ],
+            [
+                'first_name.regex' => 'The first name field must not include number/s.',
+                'middle_name.regex' => 'The middle name field must not include number/s.',
+                'last_name.regex' => 'The last name field must not include number/s.',
+                'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
+                'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+                'is_agreed.required' => 'You must first agree before submitting',
+            ]
+        );
 
         # Create New Charitable Organization Record
 
+
+
+        # Create New Address Record
+
+
+
         # Create a New User Record
         $user = new User;
-        $user->name = $request->name;
+        // $user->name = $request->name;
         $user->username = $request->username;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
