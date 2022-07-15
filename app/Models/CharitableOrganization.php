@@ -12,7 +12,8 @@ class CharitableOrganization extends Model
         'code',
         'star_tokens',
         'featured_project_credits',
-        'subscription'
+        'subscription',
+        'view_count'
     ];
     protected $fillable = [
         'name',

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->timestamp('subscribed_at')->nullable();
             $table->char('visibility_status', 20)->default('Hidden');
             $table->char('verification_status', 20)->default('Unverified');
+            $table->unsignedInteger('view_count')->default(0);
 
             // These should be on the child tables
             /*

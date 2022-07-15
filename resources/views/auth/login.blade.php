@@ -1,58 +1,112 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+@extends('auth_master')
+@section('title', 'Login')
+@section('auth')
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6 text-center">
+            <img src="{{ asset('backend/assets/images/auth/login-1.svg') }}" class="mt-5">
+            <h6 class="mt-3">
+                <ul class="list-inline text-center">
+                    <li class="list-inline-item">Hope for the Better</li>
+                    <li class="list-inline-item">|</li>
+                    <li class="list-inline-item">Take action</li>
+                    <li class="list-inline-item">|</li>
+                    <li class="list-inline-item">Make a difference</li>
+                </ul>
+            </h6>
+            <h1 style="color: #62896d"><strong>START WITH US!</strong></h1>
+            <a style="background-color: #92713e; color: #ffffff;" href="{{ route('register') }}"
+                class="btn w-50 waves-effect waves-light">REGISTER AS CHARITY ADMIN
             </a>
-        </x-slot>
+            <p class="my-4 px-5 lead">
+                CAVIOM is a platform for Charitable Organizations to collaborate with their
+                fellow volunteers or co-worker at the comfort of their own space.
+            </p>
+        </div>
+        <div class="col-sm-6">
+            <div class="card" style="height: 600px">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 p-5">
 
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
+                            <div class="p-3">
+                                <h1 style="color: #62896d"><strong>LOG IN</strong></h1>
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+                                <form method="POST" action="{{ route('login') }}" class="form-horizontal custom-validation mt-4">
+                                    @csrf
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
+                                    <div class="form-group mb-2 row">
+                                        <div class="col-12">
+                                            <label for="username" class="form-label">Username</label>
+                                            <input class="form-control parsley-success" id="username" type="text" required
+                                                name="username" placeholder="Enter your username">
+                                        </div>
+                                    </div>
 
-            <!-- Login with Username -->
-            <div>
-                <x-label for="username" :value="__('Username')" />
+                                    <div class="form-group mb-3 row">
+                                        <div class="col-12">
+                                            <label for="password" class="form-label">Password</label>
+                                            <input class="form-control" id="password" type="password" required
+                                                name="password" placeholder="Enter your password">
+                                        </div>
+                                    </div>
 
-                <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required
-                    autofocus />
+                                    <div class="form-group row">
+                                        <div class="col-12">
+                                            <div class="custom-control custom-checkbox">
+                                                <input name="remember" type="checkbox" class="custom-control-input"
+                                                    id="remember_me">
+                                                <label class="form-label ms-1" for="remember_me">Remember me</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Login failed message -->
+                                    <div class="@unless($errors->has('username'))mt-5 @endunless">
+                                        @if ($errors->has('username'))
+                                            <div class="text-danger text-center my-2">
+                                                    {{$errors->first()}}
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="form-group mb-3 text-center row mt-3 pt-1">
+                                        <div class="col-12">
+                                            <button class="btn btn-dark btn-rounded w-100 waves-effect waves-light" type="submit" style="background-color: #62896d">
+                                                Log In
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-0 row">
+                                        <ul class="list-inline">
+                                            @if (Route::has('password.request'))
+                                                <div class="text-center">
+                                                    <a href="{{ route('password.request') }}" class="text-link">
+                                                        Forgot Password?
+                                                    </a>
+                                                </div>
+                                            @endif
+                                            {{-- <div class="float-end list-inline-item">
+                                                <a href="{{ route('register') }}" class="text-muted">
+                                                    <i class="mdi mdi-account-circle"></i>
+                                                    Register New Charity
+                                                </a>
+                                            </div> --}}
+                                        </ul>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- end -->
+
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+    </div>
+    <!-- end card -->
+</div>
 
-            <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                    autocomplete="current-password" />
-            </div>
-
-            <!-- Remember Me -->
-            <div class="block mt-4">
-                <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox"
-                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                        name="remember">
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900"
-                        href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-button class="ml-3">
-                    {{ __('Log in') }}
-                </x-button>
-            </div>
-        </form>
-    </x-auth-card>
-</x-guest-layout>
+@endsection

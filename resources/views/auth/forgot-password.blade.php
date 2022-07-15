@@ -1,36 +1,66 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+@extends('auth_master')
+@section('title', 'Login')
+@section('auth')
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+<div class="container-fluid p-0" style="max-width: 490px">
+    <div class="card">
+        <div class="card-body">
+
+            <h1 style="color: #62896d" class="text-center py-3"><strong>PASSWORD RESET</strong></h1>
+
+            <div class="p-3">
+                <form method="POST" action="{{ route('password.email') }}" class="form-horizontal">
+                    @csrf
+
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        <strong><i class="mdi mdi-alert-circle-outline me-2"></i> Forgot your password?</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <hr />
+                        <span>Enter your registered email address and the password reset link will be sent there.</span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <div class="col-xs-12">
+                            <label for="email" class="form-label">Registered Email Address</label>
+                            <input class="form-control" type="email" required="" id="email" name="email"
+                                value="{{ old('email') }}" placeholder="Enter email address" autofocus>
+                        </div>
+                    </div>
+
+                    <div class="form-group pb-2 text-center row mt-3">
+                        <div class="col-12">
+                            <button class="btn btn-dark w-100 waves-effect waves-light" type="submit">
+                                Send Password Reset Link
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="@unless($errors->has('email') || Session::has('status'))mt-5 @endunless">
+                        @if ($errors->any())
+                            <!-- Password Reset Link Failed message -->
+                            <div class="text-danger text-center mb-4">
+                                {{$errors->first()}}
+                            </div>
+                        @endif
+                        @if(Session::has('status'))
+                            <div class="text-info text-center mb-4">
+                                {{ Session::get('status') }}
+                            </div>
+                        @endif
+                    </div>
+                </form>
+            </div>
         </div>
+        <!-- end cardbody -->
+    </div>
+    <!-- end card -->
+    <div class="row">
+        <div class="col-md-12 mb-5">
+            <a href="{{route('login')}}" class="text-link float-end">
+                <i class="ri-arrow-left-line"></i> Go Back
+            </a>
+        </div>
+    </div>
+</div>
 
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
-        <form method="POST" action="{{ route('password.email') }}">
-            @csrf
-
-            <!-- Email Address -->
-            <div>
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <x-button>
-                    {{ __('Email Password Reset Link') }}
-                </x-button>
-            </div>
-        </form>
-    </x-auth-card>
-</x-guest-layout>
+@endsection

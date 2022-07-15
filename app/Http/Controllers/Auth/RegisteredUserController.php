@@ -90,7 +90,7 @@ class RegisteredUserController extends Controller
         $user->status = 'Pending';
         $user->save();
 
-        # Create a New Event (registration)
+        # Create a New Event (registration) where an email verification will be sent.
         event(new Registered($user));
 
         # Automatically Logs in the user
