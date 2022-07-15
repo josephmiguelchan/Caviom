@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-6 text-center">
-            <img src="{{ asset('backend/assets/images/auth/login-1.svg') }}" style="max-width: 100%; height: auto; width: auto\9;" class="mt-5">
+            <img src="{{ asset('backend/assets/images/auth/login-1.svg') }}" class="mt-5">
             <h6 class="mt-3">
                 <ul class="list-inline text-center">
                     <li class="list-inline-item">Hope for the Better</li>
@@ -20,7 +20,7 @@
                 class="btn w-50 waves-effect waves-light">REGISTER AS CHARITY ADMIN
             </a>
             <p class="my-4 px-5 lead">
-                CAVIOM is a platform for Charitable Organizations to collaboratge with their
+                CAVIOM is a platform for Charitable Organizations to collaborate with their
                 fellow volunteers or co-worker at the comfort of their own space.
             </p>
         </div>

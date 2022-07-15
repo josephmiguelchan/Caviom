@@ -21,7 +21,7 @@
                     Charity Admin has the <b>highest level of access on CAVIOM</b> compared to the latter. Hence,
                     <b>capable of using all the features</b> available in the platform.
                 </p>
-                <a href="#" class="text-link float-end">READ MORE HERE <i class=" ri-arrow-right-line"></i></a>
+                <a href="#" class="text-link float-end">READ MORE HERE <i class="mb-5 ri-arrow-right-line"></i></a>
             </div>
         </div>
         <div class="col-sm-7">
@@ -389,9 +389,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="password_confirmation" class="form-label">*Confirm Password</label>
-                                                <input class="form-control" name="password_confirmation"
-                                                    id="password_confirmation" type="password"
-                                                    placeholder="Retype password" required>
+                                                <input class="form-control" name="password_confirmation" data-parsley-equalto="#password"
+                                                    id="password_confirmation" type="password" placeholder="Retype password" required>
                                                 @error('password_confirmation')
                                                     <div class="invalid-tooltip">
                                                         {{ $message }}
@@ -421,8 +420,9 @@
 
                                     <div class="form-group text-center row mt-3 pt-1">
                                         <div class="col-12">
-                                            <button class="btn btn-dark w-100 waves-effect waves-light"
-                                                type="submit">Create Account</button>
+                                            <button class="btn btn-dark btn-rounded w-100 waves-effect waves-light" type="submit" style="background-color: #62896d">
+                                                Create Account
+                                            </button>
                                         </div>
                                     </div>
 
@@ -444,5 +444,9 @@
     </div>
     <!-- end card -->
 </div>
+
+<!-- Form Validation JS -->
+{{-- <script src="{{ asset('backend/assets/libs/parsleyjs/parsley.min.js') }}"></script> --}}
+{{-- <script src="{{ asset('backend/assets/js/pages/form-validation.init.js') }}"></script> --}}
 
 @endsection
