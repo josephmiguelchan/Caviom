@@ -12,7 +12,7 @@
                     @csrf
 
                     <h1 style="color: #62896d" class="text-center mt-3"><strong>EMAIL VERIFICATION</strong></h1>
-                    <p class="py-3">
+                    <p class="p-3">
                         Before getting started, please verify your email address by clicking on the link we just emailed to you.
                     </p>
 
