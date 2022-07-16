@@ -1,39 +1,50 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+@extends('auth_master')
+@section('title', 'Verify your email address')
+@section('auth')
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-        </div>
+<div class="container-fluid p-0" style="max-width: 490px">
+    <div class="card">
+        <div class="card-body">
 
-        @if (session('status') == 'verification-link-sent')
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+
+            <div class="p-3">
+                <form method="POST" action="{{ route('verification.send') }}" class="form-horizontal">
+                    @csrf
+
+                    <h1 style="color: #62896d" class="text-center mt-3"><strong>EMAIL VERIFICATION</strong></h1>
+                    <p class="py-3">
+                        Before getting started, a verification link has been sent to your registered email address.
+                        Please verify your email address by clicking on the link we just emailed to you.
+                    </p>
+
+                    <div class="@unless($errors->any() || Session::has('status'))mt-5 @endunless">
+                        @if ($errors->any())
+                            <!-- Send Verification Link Failed message -->
+                            <div class="text-danger text-center mb-3">
+                                {{$errors->first()}}
+                            </div>
+                        @endif
+                        @if(Session::has('status'))
+                            <div class="text-info text-center mb-3">
+                                {{ Session::get('status') }}
+                            </div>
+                        @endif
+                    </div>
+
+                    <hr />
+                    <ul class="list-inline mt-3">
+                        <li>
+                            <input type="submit" class="btn btn-dark waves-effect list-inline-item float-start" value="Resend Verification Link"></li>
+                        <li>
+                            <a class="btn btn-link list-inline-item float-end" href="{{ route('user.logout') }}">Logout</a>
+                        </li>
+                    </ul>
+                </form>
             </div>
-        @endif
-
-        <div class="mt-4 flex items-center justify-between">
-            <form method="POST" action="{{ route('verification.send') }}">
-                @csrf
-
-                <div>
-                    <x-button>
-                        {{ __('Resend Verification Email') }}
-                    </x-button>
-                </div>
-            </form>
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-
-                <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    {{ __('Log Out') }}
-                </button>
-            </form>
         </div>
-    </x-auth-card>
-</x-guest-layout>
+        <!-- end cardbody -->
+    </div>
+    <!-- end card -->
+</div>
+
+@endsection
