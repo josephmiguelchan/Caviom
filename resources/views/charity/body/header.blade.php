@@ -149,8 +149,8 @@
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img class="rounded-circle header-profile-user" src="{{ asset('backend/assets/images/users/avatar-1.jpg') }}"
                         alt="Header Avatar">
-                    <span class="d-none d-xl-inline-block ms-1">Julia</span>
-                    {{-- <span class="d-none d-xl-inline-block ms-1">{{ Auth::user()->userInfo->first_name }}</span> --}}
+                    {{-- <span class="d-none d-xl-inline-block ms-1">Julia</span> --}}
+                    <span class="d-none d-xl-inline-block ms-1">{{ Auth::user()->userInfo->first_name }}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
@@ -158,13 +158,12 @@
                     <a class="dropdown-item" href="#"><i class="ri-user-line align-middle me-1"></i>
                         Profile</a>
                     <a class="dropdown-item d-block" href="#">
-                        <i class="ri-lock-password-line align-middle me-1"></i> Change Password</a>
+                        <i class="ri-lock-unlock-line align-middle me-1"></i> Change Password</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="{{ route('user.logout') }}"><i
                             class="ri-shut-down-line align-middle me-1 text-danger"></i> Logout</a>
                 </div>
             </div>
-
         </div>
     </div>
 </header>
