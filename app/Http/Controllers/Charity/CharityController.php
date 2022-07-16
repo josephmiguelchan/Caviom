@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Charity;
 
 use App\Http\Controllers\Controller;
+use App\Models\CharitableOrganization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,7 +12,8 @@ class CharityController extends Controller
     // Redirect to Dashboard
     public function showDashboard()
     {
-        return view('charity.index');
+        $my_charity = CharitableOrganization::findOrFail(Auth::user()->charitable_organization_id);
+        return view('charity.index', compact('my_charity'));
     }
 
     // Logout User

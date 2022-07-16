@@ -8,13 +8,13 @@
         <!-- start page title -->
         <div class="row">
             <div class="col-12">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Dashboard</h4>
-
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">My Charitable
-                                    Organization Inc.</a></li>
+                <div class="">
+                    <div class="p-2">
+                        <h1 class="mb-0" style="color: #62896d"><strong>{{ Str::of($my_charity->name)->upper() }}</strong></h1>
+                        <ol class="breadcrumb m-0 p-0 mb-3">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">
+                                <a href="javascript: void(0);">My Charitable Organization</a>
+                            </li>
                             <li class="breadcrumb-item active">Dashboard</li>
                         </ol>
                     </div>
@@ -170,7 +170,7 @@
                                 <p class="text-truncate font-size-14 mb-2"><strong>Projects</strong></p>
                                 <h4 class="mb-2 text-success">15</h4>
                                 <p class="text-muted mb-0">
-                                    Total no. of current Projects
+                                    Total no. of current Charity Projects
                                 </p>
                             </div>
                             <div class="avatar-sm">
