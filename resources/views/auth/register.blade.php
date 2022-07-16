@@ -144,8 +144,8 @@
                                                     <i class="mdi mdi-information-outline"></i>
                                                 </span>
                                             </label>
-                                            <input class="form-control" name="organizational_id_no" id="organizational_id_no" type="text" placeholder="(Leave blank if you wish to auto-generate ID no.)"
-                                                value="{{ old('organizational_id_no') }}" required>
+                                            <input class="form-control" name="organizational_id_no" id="organizational_id_no" type="text" placeholder="(Leave blank if you wish to auto-generate your ID no.)"
+                                                value="@if(!$errors->has('organizational_id_no')){{ old('organizational_id_no') }}@endif" required>
                                             @error('organizational_id_no')
                                                 <div class="invalid-tooltip">
                                                     {{ $message }}

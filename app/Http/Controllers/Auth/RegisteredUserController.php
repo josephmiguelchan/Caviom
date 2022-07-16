@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
+use App\Models\CharitableOrganization;
 use App\Models\User;
+use App\Models\UserInfo;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Str;
 
 class RegisteredUserController extends Controller
 {
@@ -34,17 +39,31 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate Form First
+        // VALIDATE FORM BEFORE CREATING RECORDS
+
         $request->validate(
             [
-                # Personal Details
-                'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ]*$/'],
-                'middle_name' => ['nullable', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ]*$/'],
-                'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ]*$/'],
-                'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'],
-                'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'],
+                /*
+                |--------------------------------------------------------------------------
+                | Full Name
+                |--------------------------------------------------------------------------
+                |
+                | First, Middle, and Last name must be alphabets only.
+                | Only these non-special characters are allowed:
+                | Space, enye(ñ), comma, dash, period, and single quote.
+                |
+                */
+
+                # Full Name
+                'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
+                'middle_name' => ['nullable', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
+                'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
+
+                # Contact and Occupation
+                'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9)
+                'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'], // 8 + (Any 7-digit number from 1-9)
                 'work_position' => ['required', 'string', 'min:4', 'max:64'],
-                'organizational_id_no' => ['nullable', 'integer', 'numeric', 'min:100', 'max:9999999999'], // To modify: 'unique:user_infos'
+                'organizational_id_no' => ['nullable', 'integer', 'numeric', 'min:100', 'max:9999999999', 'unique:user_infos'], // !! Must be unique only to their charitable organization only.
 
                 # Current address
                 'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
@@ -55,7 +74,7 @@ class RegisteredUserController extends Controller
                 'postal_code' => ['required', 'string', 'min:4', 'max:10'],
 
                 # Login Details
-                'name' => ['required', 'string', 'min:3', 'max:128'], // To add: 'unique:charitable_organizations'
+                'name' => ['required', 'string', 'min:3', 'max:128', 'unique:charitable_organizations'], // Name of their Charitable Organization.
                 'profile_image' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
                 'username' => ['required', 'alpha_dash', 'string', 'max:20', 'unique:users'],
                 'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
@@ -63,39 +82,98 @@ class RegisteredUserController extends Controller
                 'is_agreed' => ['required'],
             ],
             [
+                # Custom Error Messages
+                'name.unique' => 'The charitable organization\'s name has already been registered.',
                 'first_name.regex' => 'The first name field must not include number/s.',
                 'middle_name.regex' => 'The middle name field must not include number/s.',
                 'last_name.regex' => 'The last name field must not include number/s.',
                 'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
                 'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
-                'is_agreed.required' => 'You must first agree before submitting',
+                'is_agreed.required' => 'You must first agree before submitting.',
             ]
         );
 
-        # Create New Charitable Organization Record
 
+        // BEGIN CREATING RECORDS TO THE DATABASE
+
+
+        # Create New Charitable Organization Record
+        $charity = new CharitableOrganization;
+        $charity->code = Str::uuid()->toString();
+        $charity->name = $request->name;
+        $charity->status_updated_at = null;
+        $charity->save();
 
 
         # Create New Address Record
-
+        $address = new Address;
+        $address->type = 'Present';
+        $address->address_line_one = $request->address_line_one;
+        $address->address_line_two = $request->address_line_two;
+        $address->province = $request->province;
+        $address->postal_code = $request->postal_code;
+        $address->barangay = $request->barangay;
+        $address->save();
 
 
         # Create a New User Record
         $user = new User;
-        // $user->name = $request->name;
         $user->username = $request->username;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role = 'Charity Admin';
+        $user->charitable_organization_id = $charity->id;
         $user->status = 'Pending';
         $user->save();
+
+
+        # Create a New User Info Record
+        $user_info = new UserInfo;
+        $user_info->user_id = $user->id;
+        $user_info->first_name = $request->first_name;
+        $user_info->middle_name = $request->middle_name;
+        $user_info->last_name = $request->last_name;
+        $user_info->cel_no = $request->cel_no;
+        $user_info->tel_no = $request->tel_no;
+        $user_info->work_position = $request->work_position;
+
+
+        # Auto-generate an organizational_id_no if it was not provided in the form
+        if (!$request->organizational_id_no) {
+            $user_info->organizational_id_no = $this->generateIdNo();
+        } else {
+            $user_info->organizational_id_no = $request->organizational_id_no;
+        }
+
+
+        # Create User Info Record (Continued)
+        $user_info->address_id = $address->id;
+        $user_info->updated_at = Carbon::now();
+        $user_info->save();
+
 
         # Create a New Event (registration) where an email verification will be sent.
         event(new Registered($user));
 
+
         # Automatically Logs in the user
         Auth::login($user);
 
+
+        # Redirect to Home (Charity Dashboard Page)
         return redirect(RouteServiceProvider::HOME);
+    }
+    private function generateIdNo()
+    {
+        $id_no_exist = true;
+        $id_no = null;
+        while ($id_no_exist) {
+            $id_no = Carbon::now()->format('Y') . substr(hexdec(uniqid()), 0, 6);   // ID No. = Current year (YYYY) + Random 6 numbers
+            $user_found = UserInfo::where('organizational_id_no', $id_no)->first(); // Generated ID No. must not yet exist in the DB
+            if (!$user_found) {
+                return $id_no;
+                $id_no_exist = false; // Ends the loop if the Generated ID No. is already unique.
+            }
+        }
     }
 }

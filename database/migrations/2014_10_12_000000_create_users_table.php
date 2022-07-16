@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('password', 60);
             $table->char('role', 20);
             $table->rememberToken();
-            // $table->foreign('charitable_organization_id')->references('id')->on('charitable_organizations')->nullable(); // to create table first
+            $table->foreignId('charitable_organization_id')->nullable()->constrained();
             $table->char('status', 20);
             $table->timestamps();
         });
