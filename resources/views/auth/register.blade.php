@@ -122,9 +122,9 @@
                                     <div class="form-group mb-3 row">
                                         <div class="col-12">
                                             <label for="work_position" class="form-label">*Position in the Organization</label>
-                                            <input class="form-control" name="work_position" id="work_position" type="text" required
+                                            <input class="form-control" name="work_position" id="work_position" type="text"
                                                 placeholder="Ex. Head / President / Founder / Director"  required
-                                                value="@if(!$errors->has('work_position')){{ old('work_position') }}@endif">
+                                                value="{{ (empty($errors->has('work_position')))?old('work_position'):''}}">
                                             @error('work_position')
                                                 <div class="invalid-tooltip">
                                                     {{ $message }}

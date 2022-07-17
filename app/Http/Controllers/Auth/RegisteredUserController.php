@@ -39,13 +39,12 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        // VALIDATE FORM BEFORE CREATING RECORDS
-
+        # Validate Form Before Creating Records
         $request->validate(
             [
                 /*
                 |--------------------------------------------------------------------------
-                | Full Name
+                | First Name, Middle Name, Last Name, Work Position
                 |--------------------------------------------------------------------------
                 |
                 | First, Middle, and Last name must be alphabets only.
@@ -56,13 +55,13 @@ class RegisteredUserController extends Controller
 
                 # Full Name
                 'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
-                'middle_name' => ['nullable', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
+                'middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
 
                 # Contact and Occupation
                 'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9)
                 'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'], // 8 + (Any 7-digit number from 1-9)
-                'work_position' => ['required', 'string', 'min:4', 'max:64'],
+                'work_position' => ['required', 'string', 'min:4', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'organizational_id_no' => ['nullable', 'integer', 'numeric', 'min:100', 'max:9999999999', 'unique:user_infos'], // !! Must be unique only to their charitable organization only.
 
                 # Current address
@@ -86,6 +85,7 @@ class RegisteredUserController extends Controller
                 'name.unique' => 'The charitable organization\'s name has already been registered.',
                 'first_name.regex' => 'The first name field must not include number/s.',
                 'middle_name.regex' => 'The middle name field must not include number/s.',
+                'work_position.regex' => 'Work position must not include number(s) or must be a valid format.',
                 'last_name.regex' => 'The last name field must not include number/s.',
                 'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
                 'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
@@ -111,6 +111,7 @@ class RegisteredUserController extends Controller
         $address->address_line_one = $request->address_line_one;
         $address->address_line_two = $request->address_line_two;
         $address->province = $request->province;
+        $address->city = $request->city;
         $address->postal_code = $request->postal_code;
         $address->barangay = $request->barangay;
         $address->save();
@@ -150,6 +151,10 @@ class RegisteredUserController extends Controller
         $user_info->address_id = $address->id;
         $user_info->updated_at = Carbon::now();
         $user_info->save();
+
+
+        # Create New Audit Logs for Creation of Charity and User.
+
 
 
         # Create a New Event (registration) where an email verification will be sent.
