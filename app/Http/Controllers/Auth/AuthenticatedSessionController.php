@@ -32,6 +32,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        # Create Audit Logs record for User Login
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
