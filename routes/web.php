@@ -27,6 +27,11 @@ Route::controller(CharityController::class)->group(function () {
     Route::prefix('/charity')->middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard', 'showDashboard')->name('dashboard');
     });
+    Route::prefix('/profile')->middleware(['auth', 'verified'])->group(function () {
+        Route::get('/', 'showProfile')->name('user.profile');
+        Route::get('/edit', 'editProfile')->name('user.profile.edit');
+        Route::post('/store', 'storeProfile')->name('user.profile.store');
+    });
     Route::get('/user/logout', 'destroy')->name('user.logout');
 });
 
