@@ -7,6 +7,7 @@ use App\Models\Address;
 use App\Models\CharitableOrganization;
 use App\Models\User;
 use App\Models\UserInfo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -99,11 +100,11 @@ class CharityController extends Controller
 
             # Delete old Profile Image if exists
             $oldImg = $thisUser->profile_image;
-            if ($oldImg) unlink($oldImg);
+            if ($oldImg) unlink(public_path('upload/avatar_img/') . $oldImg);
 
             # Replace with Uploaded New Profile Image
             $file = $request->file('profile_image');
-            $filename = date('YmdHi') . '_' . $file->getClientOriginalExtension();
+            $filename = date('YmdHi') . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('upload/avatar_img/'), $filename);
             $thisUser->profile_image = $filename;
             $thisUser->save();
@@ -118,6 +119,7 @@ class CharityController extends Controller
             'cel_no' => $request->cel_no,
             'tel_no' => $request->tel_no,
             'work_position' => $request->work_position,
+            'updated_at' => Carbon::now(),
         ]);
 
 

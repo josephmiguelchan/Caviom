@@ -1,3 +1,8 @@
+@php
+    $avatar = 'upload/avatar_img/'.Auth::user()->profile_image;
+    $defaultAvatar = 'upload/avatar_img/no_avatar.png';
+@endphp
+
 <header id="page-topbar" style="background-color: #62896d;">
     <div class="navbar-header">
         <div class="d-flex">
@@ -137,7 +142,7 @@
                     <div class="p-2 border-top">
                         <div class="d-grid">
                             <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
-                                <i class="mdi mdi-arrow-right-circle me-1"></i> View More..
+                                <i class="mdi mdi-arrow-right-circle me-1"></i> View all..
                             </a>
                         </div>
                     </div>
@@ -147,10 +152,10 @@
             <div class="dropdown d-inline-block user-dropdown">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle header-profile-user" src="{{ asset('backend/assets/images/users/avatar-1.jpg') }}"
-                        alt="Header Avatar">
+                    <img class="rounded-circle header-profile-user" src="{{ (!empty(Auth::user()->profile_image))? url($avatar):url($defaultAvatar) }}"
+                        alt="Profile Picture">
                     {{-- <span class="d-none d-xl-inline-block ms-1">Julia</span> --}}
-                    <span class="d-none d-xl-inline-block ms-1">{{ Auth::user()->userInfo->first_name }}</span>
+                    <span class="d-none d-xl-inline-block ms-1">Hi {{ Auth::user()->userInfo->first_name }}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
