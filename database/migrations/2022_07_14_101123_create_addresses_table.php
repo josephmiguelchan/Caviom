@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('address_line_one', 255);
             $table->string('address_line_two', 255)->nullable();
             $table->string('province', 255);
+            $table->string('city', 255);
             $table->char('postal_code', 20);
             $table->string('barangay', 255);
             $table->timestamps();

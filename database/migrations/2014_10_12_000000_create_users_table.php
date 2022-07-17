@@ -22,9 +22,11 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 60);
             $table->char('role', 20);
+            $table->varchar('profile_image', 255)->nullable();
             $table->rememberToken();
             $table->foreignId('charitable_organization_id')->nullable()->constrained();
             $table->char('status', 20);
+            $table->string('remarks', 128)->nullable();
             $table->timestamps();
         });
     }
