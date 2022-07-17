@@ -1,6 +1,12 @@
 @extends('charity.charity_master')
 @section('title', 'My Profile')
 @section('charity')
+
+@php
+    $avatar = 'upload/avatar_img/'.Auth::user()->profile_image;
+    $defaultAvatar = 'upload/avatar_img/no_avatar.png';
+@endphp
+
 <div class="page-content">
     <div class="container-fluid">
 
@@ -30,7 +36,8 @@
                         <div class="text-center">
                             <div class="user-profile text-center mt-3">
                                 <div class="">
-                                    <img src="{{ asset('backend/assets/images/users/avatar-1.jpg') }}" alt="" class="avatar-xl rounded-circle">
+                                    <img src="{{ (!empty(Auth::user()->profile_image))? url($avatar):url($defaultAvatar) }}"
+                                        alt="Profile Picture" class="avatar-xl rounded-circle">
                                 </div>
                                 <div class="mt-3">
                                     <p class="text-muted mb-1">ID No. {{ $userData->organizational_id_no }}</p>
@@ -63,7 +70,7 @@
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated:</strong></h4></dt>
                                 <dt class="col-md-6">{{ Carbon\Carbon::parse($userData->updated_at)->diffForHumans() }}</dt>
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
-                                <dt class="col-md-6">---</dt>
+                                <dt class="col-md-6">{{ Auth::user()->remarks }}</dt>
                             </dl>
                             <hr class="my-3">
                             <dl class="row mb-0 col-lg-6">

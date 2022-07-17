@@ -1,3 +1,8 @@
+@php
+    $avatar = 'upload/avatar_img/'.Auth::user()->profile_image;
+    $defaultAvatar = 'upload/avatar_img/no_avatar.png';
+@endphp
+
 <div class="vertical-menu" style="background-color: #f7f3ea;">
 
     <div data-simplebar class="h-100">
@@ -5,10 +10,11 @@
         <!-- User details -->
         <div class="user-profile text-center mt-3">
             <div class="">
-                <img src="{{ asset('backend/assets/images/users/avatar-1.jpg') }}" alt="" class="avatar-lg rounded-circle">
+                <img src="{{ (!empty(Auth::user()->profile_image))? url($avatar):url($defaultAvatar) }}"
+                    alt="Profile Picture" class="avatar-lg rounded-circle">
             </div>
             <div class="mt-3">
-                {{-- <h4 class="font-size-16 mb-1">Julia Hudda</h4> --}}
+                <!-- <h4 class="font-size-16 mb-1">Julia Hudda</h4> -->
             </div>
         </div>
 
