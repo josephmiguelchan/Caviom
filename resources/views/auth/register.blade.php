@@ -330,10 +330,10 @@
                                     </div>
 
                                     <!-- Profile Photo -->
-                                    <div class="form-group mb-3 row">
+                                    {{-- <div class="form-group mb-3 row">
                                         <div class="col-12">
                                             <label for="profile_photo" class="form-label">Profile Photo (Optional)</label>
-                                            <input class="form-control" name="profile_image" id="profile_image" type="file">
+                                            <input class="form-control" name="profile_photo" id="profile_photo" type="file">
                                             @error('profile_photo')
                                                 <div class="text-danger">
                                                     <small>
@@ -342,7 +342,7 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <!-- Email Address -->
                                     <div class="form-group mb-3 row">

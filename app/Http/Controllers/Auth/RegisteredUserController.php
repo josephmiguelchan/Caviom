@@ -74,7 +74,7 @@ class RegisteredUserController extends Controller
 
                 # Login Details
                 'name' => ['required', 'string', 'min:3', 'max:128', 'unique:charitable_organizations'], // Name of their Charitable Organization.
-                'profile_image' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
+                // 'profile_photo' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
                 'username' => ['required', 'alpha_dash', 'string', 'max:20', 'unique:users'],
                 'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
                 'password' => ['required', 'confirmed', 'max:20', Rules\Password::defaults()],
@@ -119,6 +119,7 @@ class RegisteredUserController extends Controller
 
         # Create a New User Record
         $user = new User;
+        $user->code = Str::uuid()->toString();
         $user->username = $request->username;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
