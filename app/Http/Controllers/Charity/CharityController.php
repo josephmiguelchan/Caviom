@@ -10,6 +10,8 @@ use App\Models\UserInfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 class CharityController extends Controller
 {
@@ -141,5 +143,59 @@ class CharityController extends Controller
         );
 
         return to_route('user.profile')->with($notification);
+    }
+
+    // Change User Password
+    public function editPassword()
+    {
+        $userData = Auth::user()->userInfo;
+        return view('charity.user.password', compact('userData'));
+    }
+
+    // Update User Password
+    public function storePassword(Request $request)
+    {
+        # Validate Form before updating password
+        $request->validate(
+            [
+                'old_password' => ['required'],
+                'new_password' => ['required', 'max:20', Rules\Password::defaults(), 'different:old_password'],
+                'confirm_password' => ['required', 'same:new_password'],
+            ],
+            [
+                'new_password.different' => 'Your new password cannot be the same with your current password.',
+            ]
+        );
+
+        # Check if the entered current password matches in the Database
+        $hashedPW = Auth::user()->password;
+        if (Hash::check($request->old_password, $hashedPW)) {
+
+            # Update User password
+            $user = User::find(Auth::id());
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+
+
+            # Create a Notification in-app
+
+
+
+            # Success toastr message
+            $notification = array(
+                'message' => 'Password has been updated successfully!',
+                'alert-type' => 'success',
+            );
+        } else {
+
+            # Throws an error message if current password did not match
+            $notification = array(
+                'message' => 'Your current password did not match. Please try again.',
+                'alert-type' => 'error',
+            );
+            session()->flash('error_msg', 'Current password is incorrect.');
+        }
+
+        return redirect()->back()->with($notification);
     }
 }

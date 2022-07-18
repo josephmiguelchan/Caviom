@@ -163,7 +163,7 @@
                     <a class="dropdown-item" href="{{ route('user.profile') }}">
                         <i class="ri-user-line align-middle me-1"></i> Profile
                     </a>
-                    <a class="dropdown-item d-block" href="#">
+                    <a class="dropdown-item d-block" href="{{ route('user.password.change') }}">
                         <i class="ri-lock-unlock-line align-middle me-1"></i> Change Password</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="{{ route('user.logout') }}"><i
