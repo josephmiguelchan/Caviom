@@ -16,6 +16,17 @@
                     <!-- Password Reset Token -->
                     <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        <p class="font-size-15 mb-1"><strong>Your password must contain at least:</strong></p>
+                        <ul class="mb-0">
+                            <li>8-20 characters</li>
+                            <li>one uppercase and one lowercase letter</li>
+                            <li>one symbol</li>
+                            <li>one number</li>
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
                     <!-- Email Address -->
                     <div class="mb-4">
                         <label for="email" class="form-label">Email</label>

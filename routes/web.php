@@ -32,6 +32,10 @@ Route::controller(CharityController::class)->group(function () {
         Route::get('/edit', 'editProfile')->name('user.profile.edit');
         Route::post('/store', 'storeProfile')->name('user.profile.store');
     });
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/change-password', 'editPassword')->name('user.password.change');
+        Route::post('/store-password', 'storePassword')->name('user.password.store');
+    });
     Route::get('/user/logout', 'destroy')->name('user.logout');
 });
 
