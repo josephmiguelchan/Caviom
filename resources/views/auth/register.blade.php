@@ -44,7 +44,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="first_name" class="form-label">*First Name</label>
-                                                <input type="text" class="form-control" name="first_name" id="first_name" placeholder="Ex. Juan"
+                                                <input type="text" class="form-control" name="first_name" id="first_name" placeholder="@unless($errors->any())Ex. Juan @endunless"
                                                     value="{{ old('first_name') }}" required>
                                                 @error('first_name')
                                                     <div class="text-danger">
@@ -60,8 +60,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="middle_name" class="form-label">Middle Name</label>
-                                                <input type="text" class="form-control" name="middle_name" id="middle_name" placeholder="Ex. De La"
-                                                    value="{{ old('middle_name') }}" required>
+                                                <input type="text" class="form-control" name="middle_name" id="middle_name"
+                                                    placeholder="@unless($errors->any())Ex. De La @endif" value="{{ old('middle_name') }}">
                                                 @error('middle_name')
                                                     <div class="text-danger">
                                                         <small>
@@ -77,7 +77,7 @@
                                     <div class="row form-group mb-3">
                                         <div class="col-md-12">
                                             <label for="last_name" class="form-label">*Last Name</label>
-                                            <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Ex. Cruz"
+                                            <input type="text" class="form-control" name="last_name" id="last_name" placeholder="@unless($errors->any())Ex. Cruz @endunless"
                                             value="{{ old('last_name') }}" required>
                                             @error('last_name')
                                                 <div class="text-danger">
@@ -96,7 +96,7 @@
                                                 <div class="col-12">
                                                     <label for="cel_no" class="form-label">*Cellphone No.</label>
                                                     <input class="form-control" name="cel_no" id="cel_no" type="tel"
-                                                        placeholder="Ex. 09981234567" required
+                                                        placeholder="@unless($errors->any())Ex. 09981234567 @endunless" required
                                                         value="{{ old('cel_no') }}">
                                                     @error('cel_no')
                                                         <div class="text-danger">
@@ -115,7 +115,7 @@
                                                 <div class="col-12">
                                                     <label for="tel_no" class="form-label">Telephone No.</label>
                                                     <input class="form-control" name="tel_no" id="tel_no" type="tel" required
-                                                        placeholder="@unless($errors->any())Ex. 82531234 @endif" value="{{ old('tel_no') }}">
+                                                        placeholder="@unless($errors->any())Ex. 82531234 @endunless" value="{{ old('tel_no') }}">
                                                     @error('tel_no')
                                                         <div class="text-danger">
                                                             <small>
@@ -133,7 +133,7 @@
                                         <div class="col-12">
                                             <label for="work_position" class="form-label">*Position in the Organization</label>
                                             <input class="form-control" name="work_position" id="work_position" type="text"
-                                                placeholder="Ex. Head / President / Founder / Director"  required
+                                                placeholder="@unless($errors->any())Ex. Head / President / Founder / Director @endunless" required
                                                 value="{{ old('work_position') }}">
                                             @error('work_position')
                                                 <div class="text-danger">
@@ -157,7 +157,7 @@
                                                 </span>
                                             </label>
                                             <input class="form-control" name="organizational_id_no" id="organizational_id_no" type="text"
-                                                placeholder="@unless($errors->any())(Leave blank if you wish to auto-generate your ID no.) @endif"
+                                                placeholder="@unless($errors->any())(Leave blank if you wish to auto-generate your ID no.) @endunless"
                                                 value="{{ old('organizational_id_no') }}">
                                             @error('organizational_id_no')
                                                 <div class="text-danger">
@@ -176,7 +176,7 @@
                                         <div class="col-12">
                                             <label for="address_line_one" class="form-label">*Address Line 1</label>
                                             <input class="form-control" name="address_line_one" id="address_line_one" type="text" required
-                                                placeholder="Ex. 1123 Kahoy St."
+                                                placeholder="@unless($errors->any())Ex. 1123 Kahoy St. @endunless"
                                                 value="{{ old('address_line_one') }}">
                                             @error('address_line_one')
                                                 <div class="text-danger">
@@ -193,7 +193,7 @@
                                         <div class="col-12">
                                             <label for="address_line_two" class="form-label">Address Line 2 (Optional)</label>
                                             <input class="form-control" name="address_line_two" id="address_line_two" type="text"
-                                                placeholder="@unless($errors->any())Ex. Unit 34B 4th Floor @endif"
+                                                placeholder="@unless($errors->any())Ex. Unit 34B 4th Floor @endunless"
                                                 value="{{ old('address_line_two') }}">
                                             @error('address_line_two')
                                                 <div class="text-danger">
@@ -211,7 +211,7 @@
                                             <div class="form-group">
                                                 <label for="province" class="form-label">*Province</label>
                                                 <input class="form-control" name="province" id="province" type="text" required
-                                                    placeholder="Ex. Metro Manila"
+                                                    placeholder="@unless($errors->any())Ex. Metro Manila @endunless"
                                                     value="{{ old('province') }}">
                                                 @error('province')
                                                     <div class="text-danger">
@@ -228,7 +228,7 @@
                                             <div class="form-group">
                                                 <label for="city" class="form-label">*City / Municipality</label>
                                                 <input class="form-control" name="city" id="city" type="text" required
-                                                    placeholder="Ex. Manila City"
+                                                    placeholder="@unless($errors->any())Ex. Manila City @endunless"
                                                     value="{{ old('city') }}">
                                                 @error('city')
                                                     <div class="text-danger">
@@ -247,7 +247,7 @@
                                             <div class="form-group">
                                                 <label for="barangay" class="form-label">*Barangay</label>
                                                 <input class="form-control" name="barangay" id="barangay" type="text" required
-                                                    placeholder="Ex. Brgy. 204"
+                                                    placeholder="@unless($errors->any())Ex. Brgy. 204 @endunless"
                                                     value="{{ old('barangay') }}">
                                                 @error('barangay')
                                                     <div class="text-danger">
@@ -264,7 +264,7 @@
                                             <div class="form-group">
                                                 <label for="postal_code" class="form-label">*Postal Code</label>
                                                 <input class="form-control" name="postal_code" id="postal_code" type="text" required
-                                                    placeholder="Ex. 1013"
+                                                    placeholder="@unless($errors->any())Ex. 1013 @endunless"
                                                     value="{{ old('postal_code') }}">
                                                 @error('postal_code')
                                                     <div class="text-danger">
@@ -287,7 +287,7 @@
                                                 <i class="mdi mdi-information-outline"></i>
                                             </span>
                                             <input class="form-control" name="name" id="name" type="text" required
-                                                placeholder="Ex. My Charitable Organization, Inc."
+                                                placeholder="@unless($errors->any())Ex. My Charitable Organization, Inc. @endunless"
                                                 value="{{ old('name') }}">
                                             @error('name')
                                                 <div class="text-danger">
@@ -315,7 +315,7 @@
                                                     <span class="input-group-text" id="username">@</span>
                                                 </div>
                                                 <input type="text" class="form-control" name="username" id="username"
-                                                    placeholder="Ex. juan.delacruz"
+                                                    placeholder="@unless($errors->any())Ex. juan.delacruz @endunless"
                                                     aria-describedby="validationTooltipUsernamePrepend"
                                                     value="{{ old('username') }}" required>
                                             </div>
@@ -349,7 +349,7 @@
                                         <div class="col-12">
                                             <label for="email" class="form-label">*Email Adress</label>
                                             <input class="form-control" name="email" id="email" type="email"
-                                                placeholder="Ex. juan.delacruz@mycharity.org"
+                                                placeholder="@unless($errors->any())Ex. juan.delacruz@mycharity.org @endunless"
                                                 value="{{ old('email') }}" required>
                                             @error('email')
                                                 <div class="text-danger">
