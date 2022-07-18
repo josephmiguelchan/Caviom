@@ -363,13 +363,26 @@
 
 
                                     <div class="form-group mb-3 row">
+                                        <div class="p3">
+                                            <div class="alert alert-primary alert-dismissible fade show p-4" role="alert">
+                                                <p class="font-size-15 mb-1"><strong>Your password must contain at least:</strong></p>
+                                                <ul class="mb-0">
+                                                    <li>8-20 characters</li>
+                                                    <li>one uppercase and one lowercase letter</li>
+                                                    <li>one symbol</li>
+                                                    <li>one number</li>
+                                                </ul>
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            </div>
+                                        </div>
+
                                         <!-- Password -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="password" class="form-label">
                                                     *Password
                                                     <span data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                        title="Password must be 8-20 characters with a letter and a number."
+                                                        title="Password must have at least 8-20 characters with a symbol, a number, an uppercase and a lowercase letter."
                                                         data-bs-original-title="yes">
                                                         <i class="mdi mdi-information-outline"></i>
                                                     </span>
