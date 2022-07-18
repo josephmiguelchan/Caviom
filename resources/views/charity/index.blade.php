@@ -187,10 +187,10 @@
                     <div class="card-body">
                         <div class="d-flex">
                             <div class="flex-grow-1">
-                                <p class="font-size-14 mb-2"><strong>Daily Visits</strong></p>
+                                <p class="font-size-14 mb-2"><strong>Total Visits</strong></p>
                                 <h4 class="mb-2 text-success">100</h4>
                                 <p class="text-muted mb-0">
-                                    No. of views in the last 24 hours
+                                    Total no. of views since Registration
                                 </p>
                             </div>
                             <div class="avatar-sm">
