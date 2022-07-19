@@ -40,14 +40,14 @@
                                         alt="Profile Picture" class="avatar-xl rounded-circle">
                                 </div>
                                 <div class="mt-3">
-                                    <p class="text-muted mb-1">ID No. {{ $userData->organizational_id_no }}</p>
+                                    <p class="text-muted mb-1">ID No. {{ Auth::user()->info->organizational_id_no }}</p>
                                     <h4 class="font-size-12">{{ Str::of(Auth::user()->role)->upper() }}</h4>
                                     <h1 class="py-3" style="color: #62896d">
                                         <strong>
-                                            {{ $userData->last_name . ', ' . $userData->first_name }}
-                                            @if ($userData->middle_name)
+                                            {{ Auth::user()->info->last_name . ', ' . Auth::user()->info->first_name }}
+                                            @if (Auth::user()->info->middle_name)
                                             {{
-                                                ' ' . Str::substr($userData->middle_name, 0, 1) . '.'
+                                                ' ' . Str::substr(Auth::user()->info->middle_name, 0, 1) . '.'
                                             }}
                                             @endif
                                         </strong>
@@ -68,7 +68,7 @@
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Date Registered:</strong></h4></dt>
                                 <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->created_at)->toFormattedDateString() }}</dt>
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Carbon\Carbon::parse($userData->updated_at)->diffForHumans() }}</dt>
+                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->info->updated_at)->diffForHumans() }}</dt>
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
                                 <dt class="col-md-6">{{ Auth::user()->remarks }}</dt>
                             </dl>

@@ -26,8 +26,8 @@ class CharitableOrganization extends Model
         'subscribed_at' => 'datetime',
         'status_updated_at' => 'datetime',
     ];
-    // public function users()
-    // {
-    //     return $this->hasMany(User::class);
-    // }
+    public function users()
+    {
+        return $this->hasMany(User::class, 'charitable_organization_id', 'id');
+    }
 }

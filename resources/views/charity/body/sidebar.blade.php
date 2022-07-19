@@ -37,7 +37,7 @@
                         <span>Donors and Donations</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="email-inbox.html">Leads</a></li>
+                        <li><a href="{{ route('leads.all') }}">Leads</a></li>
                         <li><a href="email-read.html">Prospects</a></li>
                     </ul>
                 </li>

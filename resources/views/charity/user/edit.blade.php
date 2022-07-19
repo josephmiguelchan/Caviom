@@ -44,14 +44,14 @@
                                         alt="Profile Picture" class="avatar-xl rounded-circle" id="showImage">
                                 </div>
                                 <div class="mt-3">
-                                    <p class="text-muted mb-1">ID No. {{ $userData->organizational_id_no }}</p>
+                                    <p class="text-muted mb-1">ID No. {{ Auth::user()->info->organizational_id_no }}</p>
                                     <h4 class="font-size-12">{{ Str::of(Auth::user()->role)->upper() }}</h4>
                                     <h1 class="py-3" style="color: #62896d">
                                         <strong>
-                                            {{ $userData->last_name . ', ' . $userData->first_name }}
-                                            @if ($userData->middle_name)
+                                            {{ Auth::user()->info->last_name . ', ' . Auth::user()->info->first_name }}
+                                            @if (Auth::user()->info->middle_name)
                                             {{
-                                                ' ' . Str::substr($userData->middle_name, 0, 1) . '.'
+                                                ' ' . Str::substr(Auth::user()->info->middle_name, 0, 1) . '.'
                                             }}
                                             @endif
                                         </strong>
@@ -72,7 +72,7 @@
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Date Registered:</strong></h4></dt>
                                 <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->created_at)->toFormattedDateString() }}</dt>
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Carbon\Carbon::parse($userData->updated_at)->diffForHumans() }}</dt>
+                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->info->updated_at)->diffForHumans() }}</dt>
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
                                 <dt class="col-md-6">{{ Auth::user()->remarks }}</dt>
                             </dl>
@@ -113,7 +113,7 @@
                                         <div class="form-group">
                                             <label for="first_name" class="form-label">*First Name</label>
                                             <input type="text" class="form-control" name="first_name" id="first_name"
-                                                value="{{ (empty($errors->has('first_name')))?old('first_name',$userData->first_name):$userData->first_name}}" required>
+                                                value="{{ (empty($errors->has('first_name')))?old('first_name',Auth::user()->info->first_name):Auth::user()->info->first_name}}" required>
                                             @error('first_name')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -127,7 +127,7 @@
                                         <div class="form-group">
                                             <label for="middle_name" class="form-label">Middle Name</label>
                                             <input type="text" class="form-control" name="middle_name" id="middle_name"
-                                                value="{{ (empty($errors->has('middle_name')))?old('middle_name',$userData->middle_name):$userData->middle_name}}" required>
+                                                value="{{ (empty($errors->has('middle_name')))?old('middle_name',Auth::user()->info->middle_name):Auth::user()->info->middle_name}}" required>
                                             @error('middle_name')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -142,7 +142,7 @@
                                     <div class="col-md-12">
                                         <label for="last_name" class="form-label">*Last Name</label>
                                         <input type="text" class="form-control" name="last_name" id="last_name"
-                                        value="{{ (empty($errors->has('last_name')))?old('last_name',$userData->last_name):$userData->last_name}}" required>
+                                        value="{{ (empty($errors->has('last_name')))?old('last_name',Auth::user()->info->last_name):Auth::user()->info->last_name}}" required>
                                         @error('last_name')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -158,7 +158,7 @@
                                             <div class="col-12">
                                                 <label for="cel_no" class="form-label">*Cellphone No.</label>
                                                 <input class="form-control" name="cel_no" id="cel_no" type="tel" required
-                                                    value="{{ (empty($errors->has('cel_no')))?old('cel_no',$userData->cel_no):$userData->cel_no}}">
+                                                    value="{{ (empty($errors->has('cel_no')))?old('cel_no',Auth::user()->info->cel_no):Auth::user()->info->cel_no}}">
                                                 @error('cel_no')
                                                     <div class="text-danger">
                                                         {{ $message }}
@@ -174,7 +174,7 @@
                                             <div class="col-12">
                                                 <label for="tel_no" class="form-label">Telephone No.</label>
                                                 <input class="form-control" name="tel_no" id="tel_no" type="tel" required
-                                                    value="{{ (empty($errors->has('tel_no')))?old('tel_no',$userData->tel_no):$userData->tel_no}}">
+                                                    value="{{ (empty($errors->has('tel_no')))?old('tel_no',Auth::user()->info->tel_no):Auth::user()->info->tel_no}}">
                                                 @error('tel_no')
                                                     <div class="text-danger">
                                                         {{ $message }}
@@ -190,7 +190,7 @@
                                     <div class="col-12">
                                         <label for="work_position" class="form-label">*Position in the Organization</label>
                                         <input class="form-control" name="work_position" id="work_position" type="text" required
-                                            value="{{ (empty($errors->has('work_position')))?old('work_position',$userData->work_position):$userData->work_position}}">
+                                            value="{{ (empty($errors->has('work_position')))?old('work_position',Auth::user()->info->work_position):Auth::user()->info->work_position}}">
                                         @error('work_position')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -206,7 +206,7 @@
                                     <div class="col-12">
                                         <label for="address_line_one" class="form-label">*Address Line 1</label>
                                         <input class="form-control" name="address_line_one" id="address_line_one" type="text" required
-                                            value="{{ (empty($errors->has('address_line_one')))?old('address_line_one',$userAddress->address_line_one):$userAddress->address_line_one}}">
+                                            value="{{ (empty($errors->has('address_line_one')))?old('address_line_one',Auth::user()->info->address->address_line_one):Auth::user()->info->address->address_line_one}}">
                                         @error('address_line_one')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -220,7 +220,7 @@
                                     <div class="col-12">
                                         <label for="address_line_two" class="form-label">Address Line 2 (Optional)</label>
                                         <input class="form-control" name="address_line_two" id="address_line_two" type="text"
-                                            value="{{ (empty($errors->has('address_line_two')))?old('address_line_two',$userAddress->address_line_two):$userAddress->address_line_two}}">
+                                            value="{{ (empty($errors->has('address_line_two')))?old('address_line_two',Auth::user()->info->address->address_line_two):Auth::user()->info->address->address_line_two}}">
                                         @error('address_line_two')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -235,7 +235,7 @@
                                         <div class="form-group">
                                             <label for="province" class="form-label">*Province</label>
                                             <input class="form-control" name="province" id="province" type="text" required
-                                                value="{{ (empty($errors->has('province')))?old('province',$userAddress->province):$userAddress->province}}">
+                                                value="{{ (empty($errors->has('province')))?old('province',Auth::user()->info->address->province):Auth::user()->info->address->province}}">
                                             @error('province')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -249,7 +249,7 @@
                                         <div class="form-group">
                                             <label for="city" class="form-label">*City / Municipality</label>
                                             <input class="form-control" name="city" id="city" type="text" required
-                                                value="{{ (empty($errors->has('city')))?old('city',$userAddress->city):$userAddress->city}}">
+                                                value="{{ (empty($errors->has('city')))?old('city',Auth::user()->info->address->city):Auth::user()->info->address->city}}">
                                             @error('city')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -265,7 +265,7 @@
                                         <div class="form-group">
                                             <label for="barangay" class="form-label">*Barangay</label>
                                             <input class="form-control" name="barangay" id="barangay" type="text" required
-                                                value="{{ (empty($errors->has('barangay')))?old('barangay',$userAddress->barangay):$userAddress->barangay}}">
+                                                value="{{ (empty($errors->has('barangay')))?old('barangay',Auth::user()->info->address->barangay):Auth::user()->info->address->barangay}}">
                                             @error('barangay')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -279,7 +279,7 @@
                                         <div class="form-group">
                                             <label for="postal_code" class="form-label">*Postal Code</label>
                                             <input class="form-control" name="postal_code" id="postal_code" type="text" required
-                                                value="{{ (empty($errors->has('postal_code')))?old('postal_code',$userAddress->postal_code):$userAddress->postal_code}}">
+                                                value="{{ (empty($errors->has('postal_code')))?old('postal_code',Auth::user()->info->address->postal_code):Auth::user()->info->address->postal_code}}">
                                             @error('postal_code')
                                                 <div class="text-danger">
                                                     {{ $message }}

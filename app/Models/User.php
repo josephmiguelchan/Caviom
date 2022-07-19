@@ -54,16 +54,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function userInfo()
+    public function info()
     {
-        return $this->hasOne(UserInfo::class);
+        return $this->hasOne(UserInfo::class, 'user_id', 'id');
     }
-    // public function userCharity()
+    public function charity()
+    {
+        return $this->belongsTo(CharitableOrganization::class, 'charitable_organization_id', 'id');
+    }
+    // public function address()
     // {
-    //     return $this->belongsTo(CharitableOrganization::class);
-    // }
-    // public function userAddress()
-    // {
-    //     return $this->belongsTo(Address::class);
+    //     return $this->hasOneThrough(Address::class, UserInfo::class, 'user_id', 'address_id', 'id', 'id');
     // }
 }
