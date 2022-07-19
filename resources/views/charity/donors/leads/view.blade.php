@@ -20,6 +20,7 @@
                         </small>
                     </button>
 
+                    <!-- Learn More Modal -->
                     <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -41,7 +42,6 @@
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
-
                 </div>
             </div>
         </div>
@@ -106,14 +106,53 @@
                         </div>
                         <div class="col-lg-4">
                             <ul class="list-inline mb-0 text-center">
-                                <button type="button" class="btn btn-outline-danger waves-effect waves-light w-xl mb-2">
+                                <button type="button" class="btn btn-outline-danger waves-effect waves-light w-xl mb-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                     <i class="ri-delete-bin-line"></i> Delete
                                 </button>
-                                <button type="button" class="btn btn-success waves-effect waves-light w-xl mb-2">
+                                <button type="button" class="btn btn-success waves-effect waves-light w-xl mb-2" data-bs-toggle="modal" data-bs-target="#addModal">
                                     <i class="ri-user-add-line"></i> Add to Prospects
                                 </button>
                             </ul>
                         </div>
+                    </div>
+
+                    <!-- Delete Modal -->
+                    <div id="deleteModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Deleting the selected lead [<strong> Salumbides, Eveline M. </strong>] is permanent. This action cannot be undone. Continue?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                                    <button type="button" class="btn btn-danger waves-effect waves-light w-sm">Yes</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div>
+
+
+                    <!-- Add to Prospects Modal -->
+                    <div id="addModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-information-outline me-2"></i> Are you sure?</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>You are about to add the selected lead [<strong> Salumbides, Eveline M. </strong>] to your prospects. Continue?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                                    <button type="button" class="btn btn-success waves-effect waves-light w-sm">Yes</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
                     </div>
 
                 </div>
