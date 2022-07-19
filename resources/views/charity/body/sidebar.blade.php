@@ -31,13 +31,13 @@
                     </a>
                 </li>
 
-                <li>
+                <li class="{{ Request::routeIs('leads*')?'mm-active':'' }}">
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="ri-hand-coin-line"></i>
                         <span>Donors and Donations</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('leads.all') }}">Leads</a></li>
+                        <li><a href="{{ route('leads.all') }}" class="{{ Request::routeIs('leads*')?'active':'' }}">Leads</a></li>
                         <li><a href="email-read.html">Prospects</a></li>
                     </ul>
                 </li>
