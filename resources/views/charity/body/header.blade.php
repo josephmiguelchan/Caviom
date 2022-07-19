@@ -155,7 +155,7 @@
                     <img class="rounded-circle header-profile-user" src="{{ (!empty(Auth::user()->profile_image))? url($avatar):url($defaultAvatar) }}"
                         alt="Profile Picture">
                     {{-- <span class="d-none d-xl-inline-block ms-1">Julia</span> --}}
-                    <span class="d-none d-xl-inline-block ms-1">Hi {{ Auth::user()->userInfo->first_name }}</span>
+                    <span class="d-none d-xl-inline-block ms-1">Hi {{ Auth::user()->info->first_name }}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">

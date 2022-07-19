@@ -36,17 +36,13 @@ class CharityController extends Controller
     // Show User Profile
     public function showProfile()
     {
-        $userData = Auth::user()->userInfo;
-        $userAddress = Address::find($userData->address_id);
-        return view('charity.user.profile', compact(['userData', 'userAddress']));
+        return view('charity.user.profile');
     }
 
     // Redirect to Edit Profile Page
     public function editProfile()
     {
-        $userData = Auth::user()->userInfo;
-        $userAddress = Address::find($userData->address_id);
-        return view('charity.user.edit', compact(['userData', 'userAddress']));
+        return view('charity.user.edit');
     }
 
     // Update User Profile

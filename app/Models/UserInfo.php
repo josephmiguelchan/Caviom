@@ -10,4 +10,9 @@ class UserInfo extends Model
     use HasFactory;
     protected $guarded = [];
     public $timestamps = false;
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class, 'address_id', 'id');
+    }
 }

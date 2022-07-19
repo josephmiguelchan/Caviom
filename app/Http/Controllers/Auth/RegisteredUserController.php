@@ -154,7 +154,7 @@ class RegisteredUserController extends Controller
         $user_info->save();
 
 
-        # Create New Audit Logs for Creation of Charity and User.
+        # Create New Audit Logs for Creation of Charity and User, and for Login.
 
 
 
