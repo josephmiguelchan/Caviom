@@ -24,19 +24,35 @@ Route::get('/', function () {
 
 # Charity Group Controller
 Route::controller(CharityController::class)->group(function () {
+
+    # Dashboard
     Route::prefix('/charity')->middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard', 'showDashboard')->name('dashboard');
     });
+    # User Profile
     Route::prefix('/profile')->middleware(['auth', 'verified'])->group(function () {
         Route::get('/', 'showProfile')->name('user.profile');
         Route::get('/edit', 'editProfile')->name('user.profile.edit');
         Route::post('/store', 'storeProfile')->name('user.profile.store');
     });
+    # Change Password
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/change-password', 'editPassword')->name('user.password.change');
         Route::post('/store-password', 'storePassword')->name('user.password.store');
     });
+    # Logout
     Route::get('/user/logout', 'destroy')->name('user.logout');
 });
+
+# Donors and Donations Group Controller
+// Route::controller(DonorController::class)->group(function() {
+Route::prefix('/donors')->middleware(['auth', 'verified'])->group(function () {
+
+    # Leads
+    Route::get('/leads', function () {
+        return view('charity.donors.leads.all');
+    })->name('leads.all');
+});
+// });
 
 require __DIR__ . '/auth.php';
