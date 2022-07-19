@@ -52,6 +52,9 @@ Route::prefix('/donors')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/leads', function () {
         return view('charity.donors.leads.all');
     })->name('leads.all');
+    Route::get('/leads/view/1', function () {
+        return view('charity.donors.leads.view');
+    })->name('leads.view');
 });
 // });
 
