@@ -64,7 +64,21 @@ Route::prefix('/donors')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/prospects/93e5c76a-2316-46e4-b24f-b33131100457', function () {
         return view('charity.donors.prospects.view');
     })->name('prospects.view');
-    // Route::get('/prospects/delete/1', deleteLead)->name('leads.delete');
+    // Route::get('/prospects/move/1', moveLead)->name('prospects.move');
+});
+// });
+
+# Our Charitable Organization Controller
+// Route::controller(DonorController::class)->group(function() {
+Route::prefix('/our-charity')->middleware(['auth', 'verified'])->group(function () {
+
+    # Public Profile
+    Route::get('/profile', function () {
+        return view('charity.main.profile.index');
+    })->name('charity.profile');
+    Route::get('/profile/setup', function () {
+        return view('charity.main.profile.setup');
+    })->name('charity.profile.setup');
 });
 // });
 

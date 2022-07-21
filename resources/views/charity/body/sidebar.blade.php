@@ -42,13 +42,15 @@
                     </ul>
                 </li>
 
-                <li>
+                <li class="{{ Request::routeIs('charity*')?'mm-active':''  }}">
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="ri-bank-line"></i>
                         <span>Our Charitable Org</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="email-inbox.html">Public Profile</a></li>
+                        <li>
+                            <a class="{{ Request::routeIs('charity.profile*')?'active':'' }}" href="{{ route('charity.profile') }}">Public Profile</a>
+                        </li>
                         <li><a href="email-read.html">Projects</a></li>
                         <li><a href="email-read.html">Users</a></li>
                         <li><a href="email-read.html">Beneficiaries</a></li>

@@ -181,7 +181,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="myLargeModalLabel">Congratulations!</h5>
-                                    {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body text-center">
                                     <p class="text-dark">You are about to create a new opportunity for your nonprofit.</p>
@@ -193,7 +193,7 @@
                                         <a type="button" href="#" class="btn btn-outline-dark w-xl waves-effect waves-light">
                                             Create New Volunteer Record
                                         </a>
-                                        <a type="button" href="#"class="btn btn-outline-dark w-xl waves-effect waves-light">
+                                        <a type="button" href="#" class="btn btn-outline-dark w-xl waves-effect waves-light">
                                             Create New Benefactor Record
                                         </a>
                                     </div>
