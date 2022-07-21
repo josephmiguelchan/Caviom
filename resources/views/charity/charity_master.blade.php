@@ -52,6 +52,9 @@
     <!-- Dropzone Css -->
     <link href="{{ asset('backend/assets/libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
 
+    <!-- twitter-bootstrap-wizard css -->
+    <link rel="stylesheet" href="{{ asset('backend/assets/libs/twitter-bootstrap-wizard/prettify.css') }}">
+
     <!-- App Css-->
     <link href="{{ asset('backend/assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
 
@@ -178,6 +181,14 @@
 
     <!-- Dropzone js-->
     <script src="{{ asset('backend/assets/libs/dropzone/min/dropzone.min.js') }}"></script>
+
+    <!-- twitter-bootstrap-wizard js -->
+    <script src="{{ asset('backend/assets/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js') }}"></script>
+
+    <script src="{{ asset('backend/assets/libs/twitter-bootstrap-wizard/prettify.js') }}"></script>
+
+    <!-- form wizard init -->
+    <script src="{{ asset('backend/assets/js/pages/form-wizard.init.js') }}"></script>
 
     <!-- Advanced Forms -->
     <script src="{{ asset('backend/assets/libs/select2/js/select2.min.js') }}"></script>
