@@ -31,30 +31,39 @@
                     </a>
                 </li>
 
-                <li>
+                <li class="{{ (Request::routeIs('leads*') or Request::routeIs('prospects*'))?'mm-active':''  }}">
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="ri-hand-coin-line"></i>
                         <span>Donors and Donations</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('leads.all') }}">Leads</a></li>
-                        <li><a href="email-read.html">Prospects</a></li>
+                        <li><a href="{{ route('leads.all') }}" class="{{ Request::routeIs('leads*')?'active':'' }}">Leads</a></li>
+                        <li><a href="{{ route('prospects.all') }}" class="{{ Request::routeIs('prospects*')?'active':'' }}">Prospects</a></li>
                     </ul>
                 </li>
 
-                <li>
+                <li class="{{ Request::routeIs('charity*')?'mm-active':''  }}">
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="ri-bank-line"></i>
                         <span>Our Charitable Org</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="email-inbox.html">Public Profile</a></li>
+                        <li>
+                            <a class="{{ Request::routeIs('charity.profile*')?'active':'' }}" href="{{ route('charity.profile') }}">Public Profile</a>
+                        </li>
                         <li><a href="email-read.html">Projects</a></li>
                         <li><a href="email-read.html">Users</a></li>
                         <li><a href="email-read.html">Beneficiaries</a></li>
                         <li><a href="email-read.html">Benefactors</a></li>
                         <li><a href="email-read.html">Volunteers</a></li>
                     </ul>
+                </li>
+
+                <li>
+                    <a href="index.html" class="waves-effect">
+                        <i class="ri-gift-line"></i>
+                        <span>Gift Giving</span>
+                    </a>
                 </li>
 
                 <li>

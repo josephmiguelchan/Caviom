@@ -52,9 +52,33 @@ Route::prefix('/donors')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/leads', function () {
         return view('charity.donors.leads.all');
     })->name('leads.all');
-    Route::get('/leads/view/1', function () {
+    Route::get('/leads/9a7445e2-07eb-11ed-861d-0242ac120002', function () {
         return view('charity.donors.leads.view');
     })->name('leads.view');
+    // Route::get('/leads/delete/1', deleteLead)->name('leads.delete');
+
+    # Prospects
+    Route::get('/prospects', function () {
+        return view('charity.donors.prospects.all');
+    })->name('prospects.all');
+    Route::get('/prospects/93e5c76a-2316-46e4-b24f-b33131100457', function () {
+        return view('charity.donors.prospects.view');
+    })->name('prospects.view');
+    // Route::get('/prospects/move/1', moveLead)->name('prospects.move');
+});
+// });
+
+# Our Charitable Organization Controller
+// Route::controller(DonorController::class)->group(function() {
+Route::prefix('/our-charity')->middleware(['auth', 'verified'])->group(function () {
+
+    # Public Profile
+    Route::get('/profile', function () {
+        return view('charity.main.profile.index');
+    })->name('charity.profile');
+    Route::get('/profile/setup', function () {
+        return view('charity.main.profile.setup');
+    })->name('charity.profile.setup');
 });
 // });
 
