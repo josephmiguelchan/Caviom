@@ -288,15 +288,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row p-5">
+                                <div class="row p-5">
                                     <ul class="list-inline mb-0 mt-4 float-end">
                                         <input type="submit" class="btn btn-dark btn-rounded w-lg waves-effect waves-light float-end" style="background-color: #62896d;" value="Save">
                                         <a class="btn list-inline-item float-end mx-4" href="{{ route('user.profile') }}">Cancel</a>
                                     </ul>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div><!-- end cardbody -->
                 </div><!-- end card -->
             </div><!-- end col -->
