@@ -31,14 +31,14 @@
                     </a>
                 </li>
 
-                <li class="{{ Request::routeIs('leads*')?'mm-active':'' }}">
+                <li class="{{ (Request::routeIs('leads*') or Request::routeIs('prospects*'))?'mm-active':''  }}">
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="ri-hand-coin-line"></i>
                         <span>Donors and Donations</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('leads.all') }}" class="{{ Request::routeIs('leads*')?'active':'' }}">Leads</a></li>
-                        <li><a href="email-read.html">Prospects</a></li>
+                        <li><a href="{{ route('prospects.all') }}" class="{{ Request::routeIs('prospects*')?'active':'' }}">Prospects</a></li>
                     </ul>
                 </li>
 
@@ -55,6 +55,13 @@
                         <li><a href="email-read.html">Benefactors</a></li>
                         <li><a href="email-read.html">Volunteers</a></li>
                     </ul>
+                </li>
+
+                <li>
+                    <a href="index.html" class="waves-effect">
+                        <i class="ri-gift-line"></i>
+                        <span>Gift Giving</span>
+                    </a>
                 </li>
 
                 <li>
