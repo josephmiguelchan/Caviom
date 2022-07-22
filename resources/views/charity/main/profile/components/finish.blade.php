@@ -1,7 +1,7 @@
 <form method="POST" action="" enctype="multipart/form-data">
     @csrf
     <div class="row justify-content-center mb-5">
-        <div class="col-lg-8">
+        <div class="col-lg-6">
             <div class="text-center">
                 <div class="mb-4">
                     <i class="mdi mdi-information-outline text-primary display-4"></i>
@@ -37,7 +37,8 @@
         <div class="px-3 text-center">
             <ul class="list-inline mb-0 mt-4">
                 <button type="submit" class="btn btn-dark btn-rounded w-xl waves-effect waves-light"
-                    style="background-color: #62896d;"><i class="mdi mdi-pencil"></i> Publish</button>
+                    style="background-color: #62896d;"><i class="mdi mdi-pencil"></i> Publish
+                </button>
             </ul>
         </div>
     </div>
