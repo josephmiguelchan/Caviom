@@ -84,6 +84,12 @@
                                     <span class="step-title">Modes of Donation</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="#progress-finish-detail" class="nav-link" data-toggle="tab">
+                                    <span class="step-number">05</span>
+                                    <span class="step-title">Review & Confirm</span>
+                                </a>
+                            </li>
                         </ul>
 
                         <div id="bar" class="progress mt-4">
@@ -105,31 +111,25 @@
 
                         <div class="tab-pane" id="progress-programs-detail">
                             <div>
-                                <!-- Programs -->
+                                <!-- Programs and Activities -->
                                 @include('charity.main.profile.components.programs')
                             </div>
                         </div>
 
                         <div class="tab-pane" id="progress-donations-detail">
-                            <div class="row justify-content-center">
-                                <div class="col-lg-6">
-                                    <div class="text-center">
-                                        <div class="mb-4">
-                                            <i class="mdi mdi-check-circle-outline text-success display-4"></i>
-                                        </div>
-                                        <div>
-                                            <h5>Confirm Detail</h5>
-                                            <p class="text-muted">If several languages coalesce, the grammar of the resulting</p>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div>
+                                <!-- Modes of Donation -->
+                                @include('charity.main.profile.components.donation')
                             </div>
                         </div>
-                        <p class="text-muted text-center font-size-12 mt-2">
-                            <em>
-                                Please click on <strong>Save</strong> first before proceeding to the next.
-                            </em>
-                        </p>
+
+                        <div class="tab-pane" id="progress-finish-detail">
+                            <div>
+                                <!-- Modes of Donation -->
+                                @include('charity.main.profile.components.finish')
+                            </div>
+                        </div>
+
                         <ul class="pager wizard twitter-bs-wizard-pager-link">
                             <li class="previous"><a href="javascript: void(0);">Previous</a></li>
                             <li class="next"><a href="javascript: void(0);">Next</a></li>

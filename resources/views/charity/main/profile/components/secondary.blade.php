@@ -3,9 +3,9 @@
 
     <div id="accordion" class="custom-accordion">
         <div class="card mb-1 shadow-none">
-            <a href="#collapseOne" class="text-dark" data-bs-toggle="collapse"
+            <a href="#collapseThree" class="text-dark" data-bs-toggle="collapse"
                             aria-expanded="true"
-                            aria-controls="collapseOne">
+                            aria-controls="collapseThree">
                 <div class="card-header" id="headingOne">
                     <h6 class="m-0">
                         Story
@@ -14,7 +14,7 @@
                 </div>
             </a>
 
-            <div id="collapseOne" class="collapse show"
+            <div id="collapseThree" class="collapse show"
                     aria-labelledby="headingOne" data-bs-parent="#accordion">
                 <div class="card-body">
                     <div class="row">
@@ -35,7 +35,7 @@
                             <div class="mb-2">
                                 <label class="form-label" for="our_story_photo">Story Photo</label>
                                 <input class="form-control" name="our_story_photo" id="our_story_photo" type="file">
-                                @error('our_story')
+                                @error('our_story_photo')
                                     <div class="text-danger">
                                         <small>
                                             {{ $message }}
@@ -52,9 +52,9 @@
             </div>
         </div>
         <div class="card mb-1 shadow-none">
-            <a href="#collapseTwo" class="text-dark collapsed" data-bs-toggle="collapse"
+            <a href="#collapseFour" class="text-dark collapsed" data-bs-toggle="collapse"
                             aria-expanded="false"
-                            aria-controls="collapseTwo">
+                            aria-controls="collapseFour">
                 <div class="card-header" id="headingTwo">
                     <h6 class="m-0">
                         Goal
@@ -62,16 +62,14 @@
                     </h6>
                 </div>
             </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+            <div id="collapseFour" class="collapse" aria-labelledby="headingTwo"
                     data-bs-parent="#accordion">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="mb-3">
                                 <label class="form-label" for="our_goal">*Our Goal</label>
-                                <textarea id="elm2" name="our_goal">
-                                    {{ old('our_goal') }}
-                                </textarea>
+                                <textarea id="elm2" name="our_goal">{{ old('our_goal') }}</textarea>
                                 @error('our_goal')
                                     <div class="text-danger">
                                         <small>
@@ -102,9 +100,9 @@
             </div>
         </div>
         <div class="card mb-0 shadow-none">
-            <a href="#collapseThree" class="text-dark collapsed" data-bs-toggle="collapse"
+            <a href="#collapseFive" class="text-dark collapsed" data-bs-toggle="collapse"
                             aria-expanded="false"
-                            aria-controls="collapseThree">
+                            aria-controls="collapseFive">
                 <div class="card-header" id="headingThree">
                     <h6 class="m-0">
                         Awards
@@ -112,7 +110,7 @@
                     </h6>
                 </div>
             </a>
-            <div id="collapseThree" class="collapse"
+            <div id="collapseFive" class="collapse"
                     aria-labelledby="headingThree" data-bs-parent="#accordion">
                 <div class="card-body">
                     <div class="row">
@@ -134,7 +132,7 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label" for="file_link">
-                                    File Link of the Award (Optional)
+                                    File Link (Optional)
                                     <span data-bs-toggle="tooltip" data-bs-placement="bottom"
                                         title="Upload the file on your drive cloud and put the link to the file here."
                                         data-bs-original-title="yes">
@@ -145,17 +143,22 @@
                                     placeholder="Enter file link of the certificate or award" value="{{ old('file_link') }}" required>
                             </div>
                             @error('file_link')
-                                    <div class="text-danger">
-                                        <small>
-                                            {{ $message }}
-                                        </small>
-                                    </div>
-                                @enderror
+                                <div class="text-danger">
+                                    <small>
+                                        {{ $message }}
+                                    </small>
+                                </div>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="float-end">
+                            <span class="text-muted font-size-12 mt-2">
+                                <em>
+                                    Max of 5 awards only.
+                                </em>
+                            </span>
                             <button type="button" class="btn btn-light btn-rounded waves-effect waves-light w-xl float-end mt-2">
                                 <i class="mdi mdi-plus"></i> Add more
                             </button>
@@ -172,4 +175,10 @@
                 style="background-color: #62896d;" value="Save Secondary Information">
         </ul>
     </div>
+
+    <p class="text-muted text-center font-size-12 mt-2">
+        <em>
+            Please click on <strong>Save</strong> first before proceeding to the next.
+        </em>
+    </p>
 </form>

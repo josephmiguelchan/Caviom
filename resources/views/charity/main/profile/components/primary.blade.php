@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <h4 class="card-title">Upload Cover Photos of your Charitable Organization</h4>
-                <p class="card-title-desc">At least one photo is required up to a maximum of 5 cover photos.</p>
+                <p class="card-title-desc">At least one photo is required, up to a maximum of 5 cover photos.</p>
 
                 <form action="#" method="POST" class="dropzone" enctype="multipart/form-data">
                     @csrf
@@ -204,6 +204,11 @@
                                         <input class="form-control" name="cel_no" id="cel_no" type="tel"
                                             placeholder="@unless($errors->any())Ex. 09981234567 @endunless" required
                                             value="{{ old('cel_no') }}">
+                                        <!-- Dev note: Might delete this checkbox below -->
+                                        <div class="form-check form-switch mt-1" dir="ltr">
+                                            <input type="checkbox" class="form-check-input" id="customSwitch1">
+                                            <label class="form-check-label" for="customSwitch1">Use my own Cellphone no.</label>
+                                        </div>
                                         @error('cel_no')
                                             <div class="text-danger">
                                                 <small>
@@ -222,6 +227,11 @@
                                         <label for="tel_no" class="form-label">Telephone No.</label>
                                         <input class="form-control" name="tel_no" id="tel_no" type="tel" required
                                             placeholder="@unless($errors->any())Ex. 82531234 @endunless" value="{{ old('tel_no') }}">
+                                        <!-- Dev note: Might delete this checkbox below -->
+                                        <div class="form-check form-switch mt-1" dir="ltr">
+                                            <input type="checkbox" class="form-check-input" id="customSwitch1">
+                                            <label class="form-check-label" for="customSwitch1">Use my own Telephone no.</label>
+                                        </div>
                                         @error('tel_no')
                                             <div class="text-danger">
                                                 <small>
@@ -359,6 +369,12 @@
                 style="background-color: #62896d;" value="Save Primary Information">
         </ul>
     </div>
+
+    <p class="text-muted text-center font-size-12 mt-2">
+        <em>
+            Please click on <strong>Save</strong> first before proceeding to the next.
+        </em>
+    </p>
 </form>
 
 
