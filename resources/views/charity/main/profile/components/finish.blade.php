@@ -4,7 +4,7 @@
         <div class="col-lg-6">
             <div class="text-center">
                 <div class="mb-4">
-                    <i class="mdi mdi-information-outline text-primary display-4"></i>
+                    <i class="ri-check-line text-dark display-4"></i>
                 </div>
                 <div>
                     <h5>Confirm Details</h5>
