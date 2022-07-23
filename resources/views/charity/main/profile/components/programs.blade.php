@@ -7,7 +7,7 @@
                             aria-controls="collapseSix">
                 <div class="card-header" id="headingOne">
                     <h6 class="m-0">
-                        Programs & Activities
+                        Programs & Activities <small>(Click to Expand)</small>
                         <i class="mdi mdi-minus float-end accor-plus-icon"></i>
                     </h6>
                 </div>

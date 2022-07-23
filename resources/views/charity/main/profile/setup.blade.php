@@ -53,7 +53,7 @@
                     <h2 class="mb-1 text-center" style="color: #62896d"><strong>SAN ROQUE UNITED, INC.</strong></h2>
                     <p class="text-muted text-center font-size-12 mb-3">
                         <em>
-                            Setup your Charitable Organization's public profile and have it verified by us first so it can be featured publicly.
+                            Setup your Charitable Organization's public profile so it can be published and featured publicly.
                         </em>
                     </p>
 

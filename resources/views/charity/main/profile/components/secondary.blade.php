@@ -8,7 +8,7 @@
                             aria-controls="collapseThree">
                 <div class="card-header" id="headingOne">
                     <h6 class="m-0">
-                        Story
+                        Story <small>(Click to Expand)</small>
                         <i class="mdi mdi-minus float-end accor-plus-icon"></i>
                     </h6>
                 </div>
@@ -57,7 +57,7 @@
                             aria-controls="collapseFour">
                 <div class="card-header" id="headingTwo">
                     <h6 class="m-0">
-                        Goal
+                        Goal <small>(Click to Expand)</small>
                         <i class="mdi mdi-minus float-end accor-plus-icon"></i>
                     </h6>
                 </div>
@@ -105,7 +105,7 @@
                             aria-controls="collapseFive">
                 <div class="card-header" id="headingThree">
                     <h6 class="m-0">
-                        Awards
+                        Awards <small>(Click to Expand)</small>
                         <i class="mdi mdi-minus float-end accor-plus-icon"></i>
                     </h6>
                 </div>

@@ -7,7 +7,7 @@
                             aria-controls="collapseSeven">
                 <div class="card-header" id="headingOne">
                     <h6 class="m-0">
-                        Donation Modes
+                        Donation Modes <small>(Click to Expand)</small>
                         <i class="mdi mdi-minus float-end accor-plus-icon"></i>
                     </h6>
                 </div>
