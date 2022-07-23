@@ -79,6 +79,9 @@ Route::prefix('/our-charity')->middleware(['auth', 'verified'])->group(function 
     Route::get('/profile/setup', function () {
         return view('charity.main.profile.setup');
     })->name('charity.profile.setup');
+    Route::get('/profile/apply-for-verification', function () {
+        return view('charity.main.profile.verify');
+    })->name('charity.profile.verify');
 });
 // });
 
