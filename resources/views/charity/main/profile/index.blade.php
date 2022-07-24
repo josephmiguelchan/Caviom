@@ -90,7 +90,7 @@
                             <div class="col-lg-3">
                                 <div class="mb-3">
                                     <a type="button" style="background-color: #62896d" href="{{ route('charity.profile.setup') }}"
-                                        class="btn btn-dark w-100 waves-effect waves-dark">
+                                        class="btn btn-dark w-100 waves-effect waves-light">
                                         <i class="mdi mdi-circle-edit-outline"></i> Make Changes
                                     </a>
                                 </div>
@@ -98,7 +98,8 @@
 
                             <div class="col-lg-3">
                                 <div class="mb-3">
-                                    <div class="dropdown mb-2">
+                                    <div class="dropdown mb-1">
+                                        <!-- if(status == locked) : add disabled on button -->
                                         <button class="btn btn-outline-secondary w-100 waves-effect waves-light dropdown-toggle" type="button" id="dropdownMenuButton"
                                             data-bs-toggle="dropdown" aria-expanded="false" disabled>
                                             Set Visibility <i class="mdi mdi-chevron-down"></i>
@@ -108,16 +109,19 @@
                                             <a class="dropdown-item" href="#">Visible</a>
                                         </div>
                                     </div>
+                                    <!-- if(status == locked) -->
                                     <p class="text-muted text-center font-size-12">
                                         <em>
-                                            <span data-bs-toggle="tooltip" data-bs-placement="left"
-                                                title="If you would like to appeal, please send as an email at support@caviom.org"
-                                                data-bs-original-title="yes">
-                                                <i class="mdi mdi-information-outline"></i>
-                                            </span>
-                                            Public Profile is locked by Caviom.
+                                            <small>
+                                                <span data-bs-toggle="tooltip" data-bs-placement="left"
+                                                    title="If you would like to appeal, please send us an email at support@caviom.org"
+                                                    data-bs-original-title="yes">
+                                                    <i class="mdi mdi-information-outline"></i>
+                                                </span>Public Profile locked due to violation/s.
+                                            </small>
                                         </em>
                                     </p>
+                                    <!-- end if -->
                                 </div>
                             </div>
                         </div>
