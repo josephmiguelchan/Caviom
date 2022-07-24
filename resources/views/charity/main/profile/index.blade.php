@@ -1,5 +1,5 @@
 @extends('charity.charity_master')
-@section('title', 'Setup Public Profile')
+@section('title', 'Public Profile')
 @section('charity')
 
 <div class="page-content">
@@ -100,7 +100,7 @@
                                 <div class="mb-3">
                                     <div class="dropdown mb-1">
                                         <!-- if(status == locked) : add disabled on button -->
-                                        <button class="btn btn-outline-secondary w-100 waves-effect waves-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                                        <button class="btn btn-outline-dark w-100 waves-effect waves-light dropdown-toggle" type="button" id="dropdownMenuButton"
                                             data-bs-toggle="dropdown" aria-expanded="false" disabled>
                                             Set Visibility <i class="mdi mdi-chevron-down"></i>
                                         </button>
@@ -114,7 +114,7 @@
                                         <em>
                                             <small>
                                                 <span data-bs-toggle="tooltip" data-bs-placement="left"
-                                                    title="If you would like to appeal, please send us an email at support@caviom.org"
+                                                    title="If you wish to appeal, send email to support@caviom.org"
                                                     data-bs-original-title="yes">
                                                     <i class="mdi mdi-information-outline"></i>
                                                 </span>Public Profile locked due to violation/s.

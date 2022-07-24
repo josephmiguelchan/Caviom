@@ -1,5 +1,5 @@
 @extends('charity.charity_master')
-@section('title', 'Setup Public Profile')
+@section('title', 'Apply for Verification')
 @section('charity')
 
 <div class="page-content">
