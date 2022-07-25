@@ -5,7 +5,7 @@
             <a href="#collapseSix" class="text-dark" data-bs-toggle="collapse"
                             aria-expanded="true"
                             aria-controls="collapseSix">
-                <div class="card-header" id="headingOne">
+                <div class="card-header" id="headingSix">
                     <h6 class="m-0">
                         Programs & Activities <small>(Click to Expand)</small>
                         <i class="mdi mdi-minus float-end accor-plus-icon"></i>
@@ -14,7 +14,7 @@
             </a>
 
             <div id="collapseSix" class="collapse show"
-                    aria-labelledby="headingOne" data-bs-parent="#accordion">
+                    aria-labelledby="headingSix" data-bs-parent="#accordion">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-6">

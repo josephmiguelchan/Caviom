@@ -1,5 +1,5 @@
 @extends('charity.charity_master')
-@section('title', 'Setup Public Profile')
+@section('title', 'Public Profile')
 @section('charity')
 
 <div class="page-content">
@@ -53,7 +53,7 @@
                         <h1 style="color: #62896d"><strong>PUBLIC PROFILE</strong></h1>
 
                         <!-- if (Auth::user->charity->profile_status == 'Unset') -->
-                        <div class="col-lg-12">
+                        {{-- <div class="col-lg-12">
                             <div class="text-center">
                                 <p class="mb-5">Introduce your nonprofit to the community by creating your Charitable Organization a public profile.</p>
                                 <a type="button" style="background-color: #62896d" href="{{ route('charity.profile.setup') }}" class="btn btn-rounded btn-dark w-xl waves-effect waves-light">
@@ -65,14 +65,14 @@
                                     </em>
                                 </p>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <!-- else () -->
-                        {{-- <p class="mb-5">Kindly select from these:</p>
+                        <p class="mb-5">Kindly select from these:</p>
                         <div class="row">
                             <div class="col-lg-3">
                                 <div class="mb-3">
-                                    <a type="button" href="" class="btn btn-outline-dark w-100 waves-effect waves-light">
+                                    <a type="button" href="{{ route('charity.profile.verify') }}" class="btn btn-outline-dark w-100 waves-effect waves-light">
                                         <i class="mdi mdi-check-decagram"></i> Apply for Verification
                                     </a>
                                 </div>
@@ -80,8 +80,8 @@
 
                             <div class="col-lg-3">
                                 <div class="mb-3">
-                                    <a type="button" style="background-color: #62896d" href=""
-                                        class="btn btn-dark w-100 waves-effect waves-dark">
+                                    <a type="button" href="" target="_blank"
+                                        class="btn btn-secondary w-100 waves-effect waves-light">
                                         <i class="mdi mdi-eye-outline"></i> View Public Profile
                                     </a>
                                 </div>
@@ -89,8 +89,8 @@
 
                             <div class="col-lg-3">
                                 <div class="mb-3">
-                                    <a type="button" href="{{ route('charity.profile.setup') }}"
-                                        class="btn btn-secondary w-100 waves-effect waves-light">
+                                    <a type="button" style="background-color: #62896d" href="{{ route('charity.profile.setup') }}"
+                                        class="btn btn-dark w-100 waves-effect waves-light">
                                         <i class="mdi mdi-circle-edit-outline"></i> Make Changes
                                     </a>
                                 </div>
@@ -98,8 +98,10 @@
 
                             <div class="col-lg-3">
                                 <div class="mb-3">
-                                    <div class="dropdown">
-                                        <button class="btn btn-outline-secondary w-100 waves-effect waves-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="dropdown mb-1">
+                                        <!-- if(status == locked) : add disabled on button -->
+                                        <button class="btn btn-outline-dark w-100 waves-effect waves-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                                            data-bs-toggle="dropdown" aria-expanded="false" disabled>
                                             Set Visibility <i class="mdi mdi-chevron-down"></i>
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
@@ -107,9 +109,22 @@
                                             <a class="dropdown-item" href="#">Visible</a>
                                         </div>
                                     </div>
+                                    <!-- if(status == locked) -->
+                                    <p class="text-muted text-center font-size-12">
+                                        <em>
+                                            <small>
+                                                <span data-bs-toggle="tooltip" data-bs-placement="left"
+                                                    title="If you wish to appeal, send email to support@caviom.org"
+                                                    data-bs-original-title="yes">
+                                                    <i class="mdi mdi-information-outline"></i>
+                                                </span>Public Profile locked due to violation/s.
+                                            </small>
+                                        </em>
+                                    </p>
+                                    <!-- end if -->
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
 
                     </div>
                 </div>

@@ -20,6 +20,9 @@
                         </small>
                     </button>
 
+                    <a href="{{ route('charity.profile') }}" class="text-link float-end">
+                        <i class="ri-arrow-left-line"></i> Go Back
+                    </a>
                     <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
