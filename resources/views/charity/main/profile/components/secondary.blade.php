@@ -6,7 +6,7 @@
             <a href="#collapseThree" class="text-dark" data-bs-toggle="collapse"
                             aria-expanded="true"
                             aria-controls="collapseThree">
-                <div class="card-header" id="headingOne">
+                <div class="card-header" id="headingThree">
                     <h6 class="m-0">
                         Story <small>(Click to Expand)</small>
                         <i class="mdi mdi-minus float-end accor-plus-icon"></i>
@@ -15,7 +15,7 @@
             </a>
 
             <div id="collapseThree" class="collapse show"
-                    aria-labelledby="headingOne" data-bs-parent="#accordion">
+                    aria-labelledby="headingThree" data-bs-parent="#accordion">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-8">
@@ -55,14 +55,14 @@
             <a href="#collapseFour" class="text-dark collapsed" data-bs-toggle="collapse"
                             aria-expanded="false"
                             aria-controls="collapseFour">
-                <div class="card-header" id="headingTwo">
+                <div class="card-header" id="headingFour">
                     <h6 class="m-0">
                         Goal <small>(Click to Expand)</small>
                         <i class="mdi mdi-minus float-end accor-plus-icon"></i>
                     </h6>
                 </div>
             </a>
-            <div id="collapseFour" class="collapse" aria-labelledby="headingTwo"
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
                     data-bs-parent="#accordion">
                 <div class="card-body">
                     <div class="row">
@@ -103,7 +103,7 @@
             <a href="#collapseFive" class="text-dark collapsed" data-bs-toggle="collapse"
                             aria-expanded="false"
                             aria-controls="collapseFive">
-                <div class="card-header" id="headingThree">
+                <div class="card-header" id="headingFive">
                     <h6 class="m-0">
                         Awards <small>(Click to Expand)</small>
                         <i class="mdi mdi-minus float-end accor-plus-icon"></i>
@@ -111,7 +111,7 @@
                 </div>
             </a>
             <div id="collapseFive" class="collapse"
-                    aria-labelledby="headingThree" data-bs-parent="#accordion">
+                    aria-labelledby="headingFive" data-bs-parent="#accordion">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-6">
