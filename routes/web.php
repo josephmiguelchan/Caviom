@@ -82,6 +82,30 @@ Route::prefix('/our-charity')->middleware(['auth', 'verified'])->group(function 
     Route::get('/profile/apply-for-verification', function () {
         return view('charity.main.profile.verify');
     })->name('charity.profile.verify');
+
+    # Projects
+
+
+
+    # Users
+
+
+
+    # Beneficiaries
+    Route::get('/beneficiaries', function () {
+        return view('charity.main.beneficiaries.all');
+    })->name('charity.beneficiaries');
+    Route::get('/beneficiaries/69a60048-d093-41d7-bf58-d620ec99c979', function () {
+        return view('charity.main.beneficiaries.view');
+    })->name('charity.beneficiaries.view');
+
+
+    # Benefactors
+
+
+
+    # Volunteers
+
 });
 // });
 
