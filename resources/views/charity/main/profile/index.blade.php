@@ -72,9 +72,14 @@
                         <div class="row">
                             <div class="col-lg-3">
                                 <div class="mb-3">
+                                    <!-- if (status == 'Denied') -->
                                     <a type="button" href="{{ route('charity.profile.verify') }}" class="btn btn-outline-dark w-100 waves-effect waves-light">
-                                        <i class="mdi mdi-check-decagram"></i> Apply for Verification
+                                        <i class="mdi mdi-check-decagram"></i> Re-Apply for Verification
                                     </a>
+                                    <!-- else -->
+                                    {{-- <a type="button" href="{{ route('charity.profile.verify') }}" class="btn btn-outline-dark w-100 waves-effect waves-light">
+                                        <i class="mdi mdi-check-decagram"></i> Apply for Verification
+                                    </a> --}}
                                 </div>
                             </div>
 

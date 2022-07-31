@@ -68,7 +68,7 @@
 
                 <li>
                     <a href="index.html" class="waves-effect">
-                        <i class="ri-list-settings-line"></i>
+                        <i class="ri-file-search-line"></i>
                         <span>Audit Logs</span>
                     </a>
                 </li>

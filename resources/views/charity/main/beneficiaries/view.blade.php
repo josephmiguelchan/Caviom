@@ -66,7 +66,7 @@
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <!-- More Action items -->
                                     <a data-bs-toggle="modal" data-bs-target="#exportPdfModal" href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-download"></i> Export to PDF</a>
-                                    <a  data-bs-toggle="modal" data-bs-target="#exportBlankModal" href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-file-download-outline"></i> Export Blank Copy to PDF</a>
+                                    <a  data-bs-toggle="modal" data-bs-target="#exportBlankModal" href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-file-download-outline"></i> Export to PDF with Blank Copy</a>
                                 </div>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>You are about to attempt to back up the data of the selected beneficiary [<strong> Olarte, Clark Louise </strong>].
-                                            This action will notify all other users in your Charitable Organization. Continue?</p>
+                                            This action will not notify all other users in your Charitable Organization. Continue?</p>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
@@ -108,7 +108,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>You are about to attempt to export a blank copy of the selected beneficiary [<strong> Olarte, Clark Louise </strong>] for
-                                            manual assessment. This action will notify all other users in your Charitable Organization. Continue?</p>
+                                            manual assessment. This action will not notify users in your Charitable Organization. Continue?</p>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
@@ -179,17 +179,11 @@
                             <dl class="row my-4">
                                 <dt class="col-md-3"><h4 class="font-size-15"><strong>Present Address:</strong></h4></dt>
                                 <dt class="col-md-9 px-1">
-                                    {{
-                                        Auth::user()->info->address->address_line_two . ' ' . Auth::user()->info->address->address_line_one . ', ' .
-                                        Auth::user()->info->address->barangay . ', ' . Auth::user()->info->address->city . ', ' . Auth::user()->info->address->province
-                                    }}
+                                    147 Cuyegkeng St. Cor. P. Santos., Brgy. 133 Pasay City, Metro Manila
                                 </dt>
                                 <dt class="col-md-3"><h4 class="font-size-15"><strong>Permanent Address:</strong></h4></dt>
                                 <dt class="col-md-9 px-1">
-                                    {{
-                                        Auth::user()->info->address->address_line_two . ' ' . Auth::user()->info->address->address_line_one . ', ' .
-                                        Auth::user()->info->address->barangay . ', ' . Auth::user()->info->address->city . ', ' . Auth::user()->info->address->province
-                                    }}
+                                    147 Cuyegkeng St. Cor. P. Santos., Brgy. 133 Pasay City, Metro Manila
                                 </dt>
                                 <dt class="col-md-3"><h4 class="font-size-15"><strong>Provincial Address:</strong></h4></dt>
                                 <dt class="col-md-9 px-1">
@@ -197,7 +191,7 @@
                                         Auth::user()->info->address->address_line_two . ' ' . Auth::user()->info->address->address_line_one . ', ' .
                                         Auth::user()->info->address->barangay . ', ' . Auth::user()->info->address->city . ', ' . Auth::user()->info->address->province
                                     }} --}}
-                                    None
+                                    n/a
                                 </dt>
                             </dl>
                             <!--End Address -->
@@ -319,7 +313,7 @@
 
                         <div class="row p-3">
                             <div class="">
-                                <a href="{{ route('user.profile.edit') }}" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
+                                <a href="{{ route('charity.beneficiaries.edit') }}" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
                                     <i class="ri-edit-line"></i> Edit
                                 </a>
                                 <button type="button" class="btn btn-outline-danger btn-rounded w-md waves-effect waves-light float-end mx-2"
@@ -339,7 +333,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>You are about to delete the selected beneficiary [<strong> Olarte, Clark Louise </strong>] permanently . This action
+                                        <p>You are about to delete the selected beneficiary [<strong> Olarte, Clark Louise </strong>] permanently. This action
                                             cannot be undone and will notify all other users in your Charitable Organization. Continue?</p>
                                     </div>
                                     <div class="modal-footer">
