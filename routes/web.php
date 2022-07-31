@@ -98,6 +98,11 @@ Route::prefix('/our-charity')->middleware(['auth', 'verified'])->group(function 
     Route::get('/beneficiaries/69a60048-d093-41d7-bf58-d620ec99c979', function () {
         return view('charity.main.beneficiaries.view');
     })->name('charity.beneficiaries.view');
+    Route::get('/beneficiaries/edit/69a60048-d093-41d7-bf58-d620ec99c979', function () {
+        return view('charity.main.beneficiaries.edit');
+    })->name('charity.beneficiaries.edit');
+    Route::post('/beneficiaries/save/69a60048-d093-41d7-bf58-d620ec99c979', function () {
+    })->name('charity.beneficiaries.update');
 
 
     # Benefactors

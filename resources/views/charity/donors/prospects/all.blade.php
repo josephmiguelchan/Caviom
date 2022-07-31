@@ -111,7 +111,7 @@
                                 <td>GCASH</td>
                                 <td>2022/04/18</td>
                                 <td>
-                                    <a href="{{ route('prospects.view') }}" class="btn btn-outline-primary waves-effect waves-light">
+                                    <a href="{{ route('prospects.view') }}" class="btn btn-outline-primary waves-effect waves-light btn-sm">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>

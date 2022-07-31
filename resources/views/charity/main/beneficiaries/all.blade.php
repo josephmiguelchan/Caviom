@@ -64,7 +64,10 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <h2><strong>Beneficiaries</strong></h2>
-                            <p>List of All Beneficiaries</p>
+                            <p class="mb-2">List of All Beneficiaries</p>
+                            <a href="{{ route('charity.beneficiaries.view') }}" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light">
+                                <i class="mdi mdi-plus-circle-outline"></i> Add New
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -103,7 +106,7 @@
                                 <td>ADB Scholar</td>
                                 <td>Unrenewed Sponsor</td>
                                 <td>
-                                    <a href="{{ route('charity.beneficiaries.view') }}" class="btn btn-outline-primary waves-effect waves-light">
+                                    <a href="{{ route('charity.beneficiaries.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>

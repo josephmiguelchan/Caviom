@@ -188,8 +188,8 @@
                                     value="{{ old('email') }}" required>
                                 <!-- Dev note: Might delete this checkbox below -->
                                 <div class="form-check form-switch mt-1" dir="ltr">
-                                    <input type="checkbox" class="form-check-input" id="customSwitch1">
-                                    <label class="form-check-label" for="customSwitch1">Use my own email address</label>
+                                    <input type="checkbox" name="use_own_email" class="form-check-input" id="use_own_email">
+                                    <label class="form-check-label" for="use_own_email">Use my own email address</label>
                                 </div>
                                 @error('email')
                                     <div class="text-danger">
@@ -212,8 +212,8 @@
                                             value="{{ old('cel_no') }}">
                                         <!-- Dev note: Might delete this checkbox below -->
                                         <div class="form-check form-switch mt-1" dir="ltr">
-                                            <input type="checkbox" class="form-check-input" id="customSwitch1">
-                                            <label class="form-check-label" for="customSwitch1">Use my own Cellphone no.</label>
+                                            <input type="checkbox" name="use_own_cel" class="form-check-input" id="use_own_cel">
+                                            <label class="form-check-label" for="use_own_cel">Use my own Cellphone no.</label>
                                         </div>
                                         @error('cel_no')
                                             <div class="text-danger">
@@ -235,8 +235,8 @@
                                             placeholder="@unless($errors->any())Ex. 82531234 @endunless" value="{{ old('tel_no') }}">
                                         <!-- Dev note: Might delete this checkbox below -->
                                         <div class="form-check form-switch mt-1" dir="ltr">
-                                            <input type="checkbox" class="form-check-input" id="customSwitch1">
-                                            <label class="form-check-label" for="customSwitch1">Use my own Telephone no.</label>
+                                            <input type="checkbox" name="use_own_tel" class="form-check-input" id="use_own_tel">
+                                            <label class="form-check-label" for="use_own_tel">Use my own Telephone no.</label>
                                         </div>
                                         @error('tel_no')
                                             <div class="text-danger">
@@ -254,8 +254,8 @@
 
                         <!-- Dev note: Might delete this checkbox below -->
                         <div class="form-check form-switch mb-4" dir="ltr">
-                            <input type="checkbox" class="form-check-input" id="customSwitch1">
-                            <label class="form-check-label" for="customSwitch1">Use my own current address</label>
+                            <input type="checkbox" name="use_own_address" class="form-check-input" id="use_own_address">
+                            <label class="form-check-label" for="use_own_address">Use my own current address</label>
                         </div>
 
                         <!-- Address Line 1 -->
