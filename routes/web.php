@@ -95,6 +95,9 @@ Route::prefix('/our-charity')->middleware(['auth', 'verified'])->group(function 
     Route::get('/beneficiaries', function () {
         return view('charity.main.beneficiaries.all');
     })->name('charity.beneficiaries');
+    Route::get('/beneficiaries/add', function () {
+        return view('charity.main.beneficiaries.add');
+    })->name('charity.beneficiaries.add');
     Route::get('/beneficiaries/69a60048-d093-41d7-bf58-d620ec99c979', function () {
         return view('charity.main.beneficiaries.view');
     })->name('charity.beneficiaries.view');
