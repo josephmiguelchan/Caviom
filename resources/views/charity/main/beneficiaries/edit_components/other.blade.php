@@ -38,7 +38,7 @@
             <div class="form-group">
                 <label for="contact_no" class="form-label">Contact No.</label>
                 <input class="form-control" name="contact_no" id="contact_no" type="text" required
-                    value="Pre-school">
+                    value="None">
                 @error('contact_no')
                     <div class="text-danger"><small>
                         {{ $message }}
