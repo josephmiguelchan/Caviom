@@ -109,7 +109,9 @@ Route::prefix('/our-charity')->middleware(['auth', 'verified'])->group(function 
 
 
     # Benefactors
-
+    Route::get('/benefactors', function () {
+        return view('charity.main.benefactors.all');
+    })->name('charity.benefactors');
 
 
     # Volunteers

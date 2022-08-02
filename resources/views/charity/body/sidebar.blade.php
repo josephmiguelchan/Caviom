@@ -54,7 +54,7 @@
                         <li><a href="email-read.html">Projects</a></li>
                         <li><a href="email-read.html">Users</a></li>
                         <li><a class="{{ Request::routeIs('charity.beneficiaries*')?'active':'' }}" href="{{ route('charity.beneficiaries') }}">Beneficiaries</a></li>
-                        <li><a href="email-read.html">Benefactors</a></li>
+                        <li><a class="{{ Request::routeIs('charity.benefactors*')?'active':'' }}" href="{{ route('charity.benefactors') }}">Benefactors</a></li>
                         <li><a href="email-read.html">Volunteers</a></li>
                     </ul>
                 </li>
