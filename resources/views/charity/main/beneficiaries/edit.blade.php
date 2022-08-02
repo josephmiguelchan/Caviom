@@ -1,5 +1,5 @@
 @extends('charity.charity_master')
-@section('title', 'View Beneficiary')
+@section('title', 'Edit Beneficiary')
 @section('charity')
 
 @php
@@ -108,19 +108,19 @@
                             @csrf
 
                             <!--Basic Info -->
-                            @include('charity.main.beneficiaries.components.basic')
+                            @include('charity.main.beneficiaries.edit_components.basic')
 
                             <!-- Addresses -->
-                            @include('charity.main.beneficiaries.components.address')
+                            @include('charity.main.beneficiaries.edit_components.address')
 
                             <!--Education, Contact, and Interview -->
-                            @include('charity.main.beneficiaries.components.other')
+                            @include('charity.main.beneficiaries.edit_components.other')
 
                             <!-- Family Info -->
-                            @include('charity.main.beneficiaries.components.family')
+                            @include('charity.main.beneficiaries.edit_components.family')
 
                             <!-- Background Info -->
-                            @include('charity.main.beneficiaries.components.bg')
+                            @include('charity.main.beneficiaries.edit_components.bg')
 
                             <!--Prepared and Noted by -->
                             <div class="form-group mt-5 my-3 row">
@@ -159,6 +159,7 @@
                                     <a href="{{ route('charity.beneficiaries.update') }}" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
                                         <i class="ri-edit-line"></i> Save
                                     </a>
+                                    <a class="btn list-inline-item float-end mx-4" href="{{route('charity.beneficiaries.view')}}">Cancel</a>
                                 </div>
                             </div>
 
