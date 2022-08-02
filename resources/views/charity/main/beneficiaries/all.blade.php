@@ -65,7 +65,7 @@
                         <div class="col-lg-4">
                             <h2><strong>Beneficiaries</strong></h2>
                             <p class="mb-2">List of All Beneficiaries</p>
-                            <a href="{{ route('charity.beneficiaries.view') }}" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light">
+                            <a href="{{ route('charity.beneficiaries.add') }}" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light">
                                 <i class="mdi mdi-plus-circle-outline"></i> Add New
                             </a>
                         </div>

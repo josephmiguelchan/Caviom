@@ -88,7 +88,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>You are about to attempt to back up the data of the selected beneficiary [<strong> Olarte, Clark Louise </strong>].
-                                            This action will not notify all other users in your Charitable Organization. Continue?</p>
+                                            This action will notify all other users in your Charitable Organization. Continue?</p>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
@@ -108,7 +108,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>You are about to attempt to export a blank copy of the selected beneficiary [<strong> Olarte, Clark Louise </strong>] for
-                                            manual assessment. This action will not notify users in your Charitable Organization. Continue?</p>
+                                            manual assessment. Continue?</p>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>

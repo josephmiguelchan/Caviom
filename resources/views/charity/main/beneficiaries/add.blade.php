@@ -1,11 +1,6 @@
 @extends('charity.charity_master')
-@section('title', 'Edit Beneficiary')
+@section('title', 'View Beneficiary')
 @section('charity')
-
-@php
-    $avatar = 'upload/avatar_img/'.Auth::user()->profile_image;
-    $defaultAvatar = 'upload/avatar_img/no_avatar.png';
-@endphp
 
 <div class="page-content">
     <div class="container-fluid">
@@ -59,47 +54,14 @@
                 <div class="card p-4">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12 px-4">
-                                <a href="{{route('charity.beneficiaries.view')}}" class="text-link">
-                                    <i class="mdi mdi-arrow-left"></i> Go Back
+                            <div class="col-lg-8">
+                                <h1><strong>ADD NEW BENEFICIARY</strong></h1>
+                            </div>
+                            <div class="col-lg-4 mt-4">
+                                <a href="{{route('charity.beneficiaries')}}" class="text-link float-end">
+                                    <i class="ri-arrow-left-line"></i> Go Back
                                 </a>
                             </div>
-                        </div>
-                        <div class="text-center">
-                            <div class="user-profile text-center mt-3">
-                                <div>
-                                    <img src="{{ url('upload/avatar_img/no_avatar.png') }}"
-                                        alt="Profile Picture" class="avatar-xl rounded-circle">
-                                </div>
-                                <div class="mt-3">
-                                    <p class="text-muted mb-1">ID No. 1</p>
-                                    <h1 class="py-3" style="color: #62896d">
-                                        <strong>
-                                            {{-- {{ Auth::user()->info->last_name . ', ' . Auth::user()->info->first_name }}
-                                            @if (Auth::user()->info->middle_name)
-                                            {{
-                                                ' ' . Auth::user()->info->middle_name
-                                            }}
-                                            @endif --}}
-                                            Olarte, Clark Louse Sinko
-                                        </strong>
-                                    </h1>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row px-4">
-                            <!-- Dates -->
-                            <dl class="row mb-0 col-lg-6">
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Date Added:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->created_at)->toFormattedDateString() }}</dt>
-                            </dl>
-                            <dl class="row mb-0 col-lg-6">
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated at:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->info->updated_at)->diffForHumans() }}</dt>
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Modified by:</strong></h4></dt>
-                                <dt class="col-md-6">Martin Agpalza</dt>
-                            </dl>
-                            <!--End Dates -->
                         </div>
 
                         <hr class="my-3">
@@ -108,19 +70,19 @@
                             @csrf
 
                             <!--Basic Info -->
-                            @include('charity.main.beneficiaries.edit_components.basic')
+                            @include('charity.main.beneficiaries.add_components.basic')
 
                             <!-- Addresses -->
-                            @include('charity.main.beneficiaries.edit_components.address')
+                            @include('charity.main.beneficiaries.add_components.address')
 
                             <!--Education, Contact, and Interview -->
-                            @include('charity.main.beneficiaries.edit_components.other')
+                            @include('charity.main.beneficiaries.add_components.other')
 
                             <!-- Family Info -->
-                            @include('charity.main.beneficiaries.edit_components.family')
+                            @include('charity.main.beneficiaries.add_components.family')
 
                             <!-- Background Info -->
-                            @include('charity.main.beneficiaries.edit_components.bg')
+                            @include('charity.main.beneficiaries.add_components.bg')
 
                             <!--Prepared and Noted by -->
                             <div class="form-group mt-5 my-3 row">
@@ -129,7 +91,7 @@
                                     <div class="form-group">
                                         <label for="noted_by" class="form-label">Prepared by</label>
                                         <input class="form-control" name="noted_by" id="noted_by" type="text"
-                                            value="Shiela Kay">
+                                            value="">
                                         @error('noted_by')
                                             <div class="text-danger"><small>
                                                 {{ $message }}
@@ -143,7 +105,7 @@
                                     <div class="form-group">
                                         <label for="noted_by" class="form-label">Noted by</label>
                                         <input class="form-control" name="noted_by" id="noted_by" type="text"
-                                            value="Justin Coa">
+                                            value="">
                                         @error('noted_by')
                                             <div class="text-danger"><small>
                                                 {{ $message }}
