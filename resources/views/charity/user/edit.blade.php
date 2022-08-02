@@ -18,9 +18,7 @@
                     <div class="p-2">
                         <h1 class="mb-0" style="color: #62896d"><strong>EDIT PROFILE</strong></h1>
                         <ol class="breadcrumb m-0 p-0 mb-3">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">
-                                <a href="javascript: void(0);">My Account</a>
-                            </li>
+                            <li class="breadcrumb-item">My Account</li>
                             <li class="breadcrumb-item">
                                 <a href="{{route('user.profile')}}">Profile</a>
                             </li>
