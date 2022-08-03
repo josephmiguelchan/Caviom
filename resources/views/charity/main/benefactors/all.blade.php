@@ -101,7 +101,7 @@
                                 <td>ADB Partner</td>
                                 <td>Pro #1 Sponsor</td>
                                 <td>
-                                    <a href="{{ route('charity.beneficiaries.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                    <a href="{{ route('charity.benefactors.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>

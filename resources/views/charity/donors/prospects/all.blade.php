@@ -1,5 +1,5 @@
 @extends('charity.charity_master')
-@section('title', 'Leads')
+@section('title', 'Prospects')
 @section('charity')
 
 <div class="page-content">
