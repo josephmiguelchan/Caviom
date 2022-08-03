@@ -15,7 +15,7 @@
                         <li class="breadcrumb-item">
                             <a href="{{ route('charity.beneficiaries') }}">Beneficiaries</a>
                         </li>
-                        <li class="breadcrumb-item active">Edit</li>
+                        <li class="breadcrumb-item active">Add</li>
                     </ol>
                     <button type="button" data-bs-target=".bs-example-modal-center" title="Learn more" class="btn btn-link waves-effect p-0 mb-3" data-bs-toggle="modal">
                         <small>
