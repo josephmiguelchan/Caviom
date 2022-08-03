@@ -57,7 +57,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="p-4">
-                            <a href="{{route('prospects.all')}}" class="text-link">
+                            <a href="{{ route('charity.benefactors') }}" class="text-link">
                                 <i class="ri-arrow-left-line"></i> Go Back
                             </a>
                         </div>
