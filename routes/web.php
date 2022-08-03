@@ -109,7 +109,16 @@ Route::prefix('/our-charity')->middleware(['auth', 'verified'])->group(function 
 
 
     # Benefactors
+    Route::get('/benefactors', function () {
+        return view('charity.main.benefactors.all');
+    })->name('charity.benefactors');
 
+    Route::get('/benefactors/6e4a560c-1252-11ed-861d-0242ac120002', function () {
+        return view('charity.main.benefactors.view');
+    })->name('charity.benefactors.view');
+    Route::get('/benefactors/edit/6e4a560c-1252-11ed-861d-0242ac120002', function () {
+        return view('charity.main.benefactors.edit');
+    })->name('charity.benefactors.edit');
 
 
     # Volunteers

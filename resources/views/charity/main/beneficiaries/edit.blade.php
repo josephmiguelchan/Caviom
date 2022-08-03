@@ -60,7 +60,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 px-4">
-                                <a href="{{route('charity.beneficiaries.view')}}" class="text-link">
+                                <a href="{{ url()->previous() )}}" class="text-link">
                                     <i class="mdi mdi-arrow-left"></i> Go Back
                                 </a>
                             </div>
@@ -122,8 +122,39 @@
                             <!-- Background Info -->
                             @include('charity.main.beneficiaries.edit_components.bg')
 
-                            <!--Prepared and Noted by -->
+                            <!-- Label and Category-->
                             <div class="form-group mt-5 my-3 row">
+                                <!-- Category -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="category" class="form-label">Category</label>
+                                        <input class="form-control" name="category" id="category" type="text"
+                                            value="ADB Scholar">
+                                        @error('category')
+                                            <div class="text-danger"><small>
+                                                {{ $message }}
+                                            </small></div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Label -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="label" class="form-label">Label</label>
+                                        <input class="form-control" name="label" id="label" type="text"
+                                            value="Unrenewed Sponsor">
+                                        @error('label')
+                                            <div class="text-danger"><small>
+                                                {{ $message }}
+                                            </small></div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Prepared and Noted by -->
+                            <div class="form-group mb-3 row">
                                 <!-- Prepared by -->
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -154,12 +185,14 @@
                             </div>
 
 
+
+
                             <div class="row p-3">
                                 <div class="">
                                     <a href="{{ route('charity.beneficiaries.update') }}" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
                                         <i class="ri-edit-line"></i> Save
                                     </a>
-                                    <a class="btn list-inline-item float-end mx-4" href="{{route('charity.beneficiaries.view')}}">Cancel</a>
+                                    <a class="btn list-inline-item float-end mx-4" href="{{ url()->previous() }}">Cancel</a>
                                 </div>
                             </div>
 

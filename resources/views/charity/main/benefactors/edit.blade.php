@@ -1,5 +1,5 @@
 @extends('charity.charity_master')
-@section('title', 'Edit Profile')
+@section('title', 'Edit Benefactor')
 @section('charity')
 
 @php
@@ -14,18 +14,40 @@
         <!-- start page title -->
         <div class="row">
             <div class="col-12">
-                <div class="">
-                    <div class="p-2">
-                        <h1 class="mb-0" style="color: #62896d"><strong>EDIT PROFILE</strong></h1>
-                        <ol class="breadcrumb m-0 p-0 mb-3">
-                            <li class="breadcrumb-item">My Account</li>
-                            <li class="breadcrumb-item">
-                                <a href="{{route('user.profile')}}">Profile</a>
-                            </li>
-                            <li class="breadcrumb-item active">Edit</li>
-                        </ol>
-                    </div>
+                <div class="p-2">
+                    <h1 class="mb-0" style="color: #62896d"><strong>EDIT BENEFACTOR</strong></h1>
+                    <ol class="breadcrumb m-0 p-0">
+                        <li class="breadcrumb-item">Our Charitable Organization</li>
+                        <li class="breadcrumb-item"><a href="{{ route('charity.benefactors') }}">Benefactors</a></li>
+                        <li class="breadcrumb-item active">Edit</li>
+                    </ol>
+                    <button type="button" data-bs-target=".bs-example-modal-center" title="Learn more" class="btn btn-link waves-effect p-0 mb-3" data-bs-toggle="modal">
+                        <small>
+                            <i class="mdi mdi-information"></i> Learn more about Benefactors
+                        </small>
+                    </button>
 
+                    <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">What are Benefactors?</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Benefactors are eme eme</p>
+                                    <p>Praesent commodo cursus magna, vel scelerisque
+                                        nisl consectetur et. Vivamus sagittis lacus vel
+                                        augue laoreet rutrum faucibus dolor auctor.</p>
+                                    <p class="mb-0">Aenean lacinia bibendum nulla sed consectetur.
+                                        Praesent commodo cursus magna, vel scelerisque
+                                        nisl consectetur et. Donec sed odio dui. Donec
+                                        ullamcorper nulla non metus auctor
+                                        fringilla.</p>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
                 </div>
             </div>
         </div>
@@ -35,6 +57,11 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
+                        <div class="p-4">
+                            <a href="{{ url()->previous() }}" class="text-link">
+                                <i class="ri-arrow-left-line"></i> Go Back
+                            </a>
+                        </div>
                         <div class="text-center">
                             <div class="user-profile text-center mt-3">
                                 <div class="">
@@ -42,51 +69,40 @@
                                         alt="Profile Picture" class="avatar-xl rounded-circle" id="showImage">
                                 </div>
                                 <div class="mt-3">
-                                    <p class="text-muted mb-1">ID No. {{ Auth::user()->info->organizational_id_no }}</p>
-                                    <h4 class="font-size-12">{{ Str::of(Auth::user()->role)->upper() }}</h4>
+                                    <p class="text-muted mb-1">ID No. 2</p>
                                     <h1 class="py-3" style="color: #62896d">
                                         <strong>
-                                            {{ Auth::user()->info->last_name . ', ' . Auth::user()->info->first_name }}
+                                            {{-- {{ Auth::user()->info->last_name . ', ' . Auth::user()->info->first_name }}
                                             @if (Auth::user()->info->middle_name)
                                             {{
                                                 ' ' . Str::substr(Auth::user()->info->middle_name, 0, 1) . '.'
                                             }}
-                                            @endif
+                                            @endif --}}
+                                            Manalac, Leonard Abas
                                         </strong>
                                     </h1>
                                 </div>
                             </div>
                         </div>
                         <div class="row px-5">
-                            <dl class="row mb-0 col-lg-6">
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Username:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Auth::user()->username }}</dt>
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Email Address:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Auth::user()->email }}</dt>
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Account Status:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Auth::user()->status }}</dt>
-                            </dl>
-                            <dl class="row mb-0 col-lg-6">
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Date Registered:</strong></h4></dt>
+                            <dl class="row col-lg-6">
+                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Date Added:</strong></h4></dt>
                                 <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->created_at)->toFormattedDateString() }}</dt>
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->info->updated_at)->diffForHumans() }}</dt>
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Auth::user()->remarks }}</dt>
+                            </dl>
+                            <dl class="row col-lg-6">
+                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated at:</strong></h4></dt>
+                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->updated_at)->diffForHumans() }}</dt>
+                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated by:</strong></h4></dt>
+                                <dt class="col-md-6">N/a</dt>
                             </dl>
                             <hr class="my-3">
-
-                            <form method="POST" action="{{ route('user.profile.store') }}" enctype="multipart/form-data"
-                                class="form-horizontal">
+                            <form method="POST" action="" enctype="multipart/form-data" class="form-horizontal">
                                 @csrf
-
                                 <h4 class="mt-4" style="color: #62896d">Personal Information</h4>
 
-                                <!-- Profile Photo -->
                                 <div class="form-group mb-3 row">
-
-                                    <!-- Profile Photo Input -->
-                                    <div class="col-md-12">
+                                    <!-- Profile Photo -->
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="profile_image" class="form-label">
                                                 Profile Photo (Optional)
@@ -103,15 +119,27 @@
                                             @enderror
                                         </div>
                                     </div>
+
+                                    <!-- Email Address -->
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label">*Email Address</label>
+                                        <input type="email" class="form-control" name="email" id="email"
+                                        value="manalac.leonard@ust.edu.ph" required>
+                                        @error('email')
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
                                 </div>
 
                                 <div class="form-group mb-3 row">
                                     <!-- First Name -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="first_name" class="form-label">*First Name</label>
                                             <input type="text" class="form-control" name="first_name" id="first_name"
-                                                value="{{ (empty($errors->has('first_name')))?old('first_name',Auth::user()->info->first_name):Auth::user()->info->first_name}}" required>
+                                                value="Leonard" required>
                                             @error('first_name')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -121,11 +149,11 @@
                                     </div>
 
                                     <!-- Middle Name -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="middle_name" class="form-label">Middle Name</label>
                                             <input type="text" class="form-control" name="middle_name" id="middle_name"
-                                                value="{{ (empty($errors->has('middle_name')))?old('middle_name',Auth::user()->info->middle_name):Auth::user()->info->middle_name}}" required>
+                                                value="Abas" required>
                                             @error('middle_name')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -133,14 +161,12 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- Last Name -->
-                                <div class="row form-group mb-3">
-                                    <div class="col-md-12">
+                                    <!-- Last Name -->
+                                    <div class="col-md-4">
                                         <label for="last_name" class="form-label">*Last Name</label>
                                         <input type="text" class="form-control" name="last_name" id="last_name"
-                                        value="{{ (empty($errors->has('last_name')))?old('last_name',Auth::user()->info->last_name):Auth::user()->info->last_name}}" required>
+                                        value="Manalac" required>
                                         @error('last_name')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -149,62 +175,74 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <div class="form-group mb-3 row">
                                     <!-- Cellphone -->
                                     <div class="col-md-6">
-                                        <div class="form-group mb-3 row">
-                                            <div class="col-12">
-                                                <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                                <input class="form-control" name="cel_no" id="cel_no" type="tel" required
-                                                    value="{{ (empty($errors->has('cel_no')))?old('cel_no',Auth::user()->info->cel_no):Auth::user()->info->cel_no}}">
-                                                @error('cel_no')
-                                                    <div class="text-danger">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="cel_no" class="form-label">*Cellphone No.</label>
+                                            <input class="form-control" name="cel_no" id="cel_no" type="tel" required
+                                                value="09981235678">
+                                            @error('cel_no')
+                                                <div class="text-danger">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                         </div>
                                     </div>
 
                                     <!-- Telephone -->
                                     <div class="col-md-6">
-                                        <div class="form-group mb-3 row">
-                                            <div class="col-12">
-                                                <label for="tel_no" class="form-label">Telephone No.</label>
-                                                <input class="form-control" name="tel_no" id="tel_no" type="tel" required
-                                                    value="{{ (empty($errors->has('tel_no')))?old('tel_no',Auth::user()->info->tel_no):Auth::user()->info->tel_no}}">
-                                                @error('tel_no')
-                                                    <div class="text-danger">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="tel_no" class="form-label">Telephone No.</label>
+                                            <input class="form-control" name="tel_no" id="tel_no" type="tel" required
+                                                value="82571234">
+                                            @error('tel_no')
+                                                <div class="text-danger">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Work Position -->
                                 <div class="form-group mb-3 row">
-                                    <div class="col-12">
-                                        <label for="work_position" class="form-label">*Position in the Organization</label>
-                                        <input class="form-control" name="work_position" id="work_position" type="text" required
-                                            value="{{ (empty($errors->has('work_position')))?old('work_position',Auth::user()->info->work_position):Auth::user()->info->work_position}}">
-                                        @error('work_position')
-                                            <div class="text-danger">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
+                                    <!-- Category -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="category" class="form-label">Category</label>
+                                            <input class="form-control" name="category" id="category" type="text"
+                                                value="ADB Scholar">
+                                            @error('category')
+                                                <div class="text-danger"><small>
+                                                    {{ $message }}
+                                                </small></div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <!-- Label -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="label" class="form-label">Label</label>
+                                            <input class="form-control" name="label" id="label" type="text"
+                                                value="Unrenewed Sponsor">
+                                            @error('label')
+                                                <div class="text-danger"><small>
+                                                    {{ $message }}
+                                                </small></div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
 
-                                <h4 class="mt-4" style="color: #62896d">Current Address</h4>
+                                <h4 class="mt-5" style="color: #62896d">Current Address</h4>
 
                                 <!-- Address Line 1 -->
                                 <div class="form-group mb-3 row">
                                     <div class="col-12">
                                         <label for="address_line_one" class="form-label">*Address Line 1</label>
                                         <input class="form-control" name="address_line_one" id="address_line_one" type="text" required
-                                            value="{{ (empty($errors->has('address_line_one')))?old('address_line_one',Auth::user()->info->address->address_line_one):Auth::user()->info->address->address_line_one}}">
+                                            value="13 Epifanio Santos Ave.">
                                         @error('address_line_one')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -218,7 +256,7 @@
                                     <div class="col-12">
                                         <label for="address_line_two" class="form-label">Address Line 2 (Optional)</label>
                                         <input class="form-control" name="address_line_two" id="address_line_two" type="text"
-                                            value="{{ (empty($errors->has('address_line_two')))?old('address_line_two',Auth::user()->info->address->address_line_two):Auth::user()->info->address->address_line_two}}">
+                                            value="">
                                         @error('address_line_two')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -233,7 +271,7 @@
                                         <div class="form-group">
                                             <label for="province" class="form-label">*Province</label>
                                             <input class="form-control" name="province" id="province" type="text" required
-                                                value="{{ (empty($errors->has('province')))?old('province',Auth::user()->info->address->province):Auth::user()->info->address->province}}">
+                                                value="Metro Manila">
                                             @error('province')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -247,7 +285,7 @@
                                         <div class="form-group">
                                             <label for="city" class="form-label">*City / Municipality</label>
                                             <input class="form-control" name="city" id="city" type="text" required
-                                                value="{{ (empty($errors->has('city')))?old('city',Auth::user()->info->address->city):Auth::user()->info->address->city}}">
+                                                value="Pasay City">
                                             @error('city')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -263,7 +301,7 @@
                                         <div class="form-group">
                                             <label for="barangay" class="form-label">*Barangay</label>
                                             <input class="form-control" name="barangay" id="barangay" type="text" required
-                                                value="{{ (empty($errors->has('barangay')))?old('barangay',Auth::user()->info->address->barangay):Auth::user()->info->address->barangay}}">
+                                                value="Brgy. Santolan">
                                             @error('barangay')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -277,7 +315,7 @@
                                         <div class="form-group">
                                             <label for="postal_code" class="form-label">*Postal Code</label>
                                             <input class="form-control" name="postal_code" id="postal_code" type="text" required
-                                                value="{{ (empty($errors->has('postal_code')))?old('postal_code',Auth::user()->info->address->postal_code):Auth::user()->info->address->postal_code}}">
+                                                value="1021">
                                             @error('postal_code')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -286,10 +324,11 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row p-5">
                                     <ul class="list-inline mb-0 mt-4 float-end">
                                         <input type="submit" class="btn btn-dark btn-rounded w-lg waves-effect waves-light float-end" style="background-color: #62896d;" value="Save">
-                                        <a class="btn list-inline-item float-end mx-4" href="{{ route('user.profile') }}">Cancel</a>
+                                        <a class="btn list-inline-item float-end mx-4" href="{{ url()->previous() }}">Cancel</a>
                                     </ul>
                                 </div>
                             </form>

@@ -12,7 +12,10 @@
                     <h1 class="mb-0" style="color: #62896d"><strong>PROSPECTS</strong></h1>
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">Donors and Donations</li>
-                        <li class="breadcrumb-item active">Prospects</li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('prospects.all') }}">Prospects</a>
+                        </li>
+                        <li class="breadcrumb-item active">View</li>
                     </ol>
                     <button type="button" data-bs-target=".bs-example-modal-center" title="Learn more" class="btn btn-link waves-effect p-0 mb-3" data-bs-toggle="modal">
                         <small>
