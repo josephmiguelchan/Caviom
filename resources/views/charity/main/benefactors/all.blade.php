@@ -57,15 +57,35 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-download"></i> Export to Excel</a>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exportModal">
+                                    <i class="mdi mdi-download"></i> Export to Excel</button>
                             </div>
                         </div>
+                    </div>
+                    <!-- Export to Excel Modal -->
+                    <div id="exportModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>You are about to attempt to backup all your benefactors. This action
+                                        will notify all other users in your Charitable Organization. Continue?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                                    <button type="button" class="btn btn-danger waves-effect waves-light w-sm">Yes</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <h2><strong>Benefactors</strong></h2>
                             <p class="mb-2">List of All Benefactors</p>
-                            <a href="{{ route('charity.beneficiaries.add') }}" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light">
+                            <a href="{{ route('charity.benefactors.add') }}" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light">
                                 <i class="mdi mdi-plus-circle-outline"></i> Add New
                             </a>
                         </div>
