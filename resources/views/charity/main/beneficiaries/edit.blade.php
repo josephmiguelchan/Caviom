@@ -60,7 +60,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 px-4">
-                                <a href="{{route('charity.beneficiaries.view')}}" class="text-link">
+                                <a href="{{ url()->previous() )}}" class="text-link">
                                     <i class="mdi mdi-arrow-left"></i> Go Back
                                 </a>
                             </div>
