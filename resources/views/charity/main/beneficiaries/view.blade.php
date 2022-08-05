@@ -127,7 +127,7 @@
                                         alt="Profile Picture" class="avatar-xl rounded-circle">
                                 </div>
                                 <div class="mt-3">
-                                    <p class="text-muted mb-1">ID No. 1</p>
+                                    <p class="text-muted mb-1"><span class="badge bg-light">ID No. 1</span></p>
                                     <h1 class="py-3" style="color: #62896d">
                                         <strong>
                                             {{-- {{ Auth::user()->info->last_name . ', ' . Auth::user()->info->first_name }}
