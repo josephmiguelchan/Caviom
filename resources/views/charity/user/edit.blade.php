@@ -42,7 +42,7 @@
                                         alt="Profile Picture" class="avatar-xl rounded-circle" id="showImage">
                                 </div>
                                 <div class="mt-3">
-                                    <p class="text-muted mb-1">ID No. {{ Auth::user()->info->organizational_id_no }}</p>
+                                    <p class="text-muted mb-1"><span class="badge bg-light">ID No. {{ Auth::user()->info->organizational_id_no }}</span></p>
                                     <h4 class="font-size-12">{{ Str::of(Auth::user()->role)->upper() }}</h4>
                                     <h1 class="py-3" style="color: #62896d">
                                         <strong>

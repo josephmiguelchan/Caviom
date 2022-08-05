@@ -88,7 +88,15 @@ Route::prefix('/our-charity')->middleware(['auth', 'verified'])->group(function 
 
 
     # Users
-
+    Route::get('/users', function () {
+        return view('charity.main.users.all');
+    })->name('charity.users');
+    Route::get('/users/add', function () {
+        return view('charity.main.users.add');
+    })->name('charity.users.add');
+    Route::get('/users/6a9ae42b-f01e-4b69-a074-7ec7933557fd', function () {
+        return view('charity.main.users.view');
+    })->name('charity.users.view');
 
 
     # Beneficiaries
