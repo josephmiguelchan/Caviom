@@ -17,37 +17,8 @@
                         </li>
                         <li class="breadcrumb-item active">Apply for Verification</li>
                     </ol>
-                    <button type="button" data-bs-target=".bs-example-modal-center" title="Learn more" class="btn btn-link waves-effect p-0 mb-3" data-bs-toggle="modal">
-                        <small>
-                            <i class="mdi mdi-information"></i> Learn more about the Verification Process
-                        </small>
-                    </button>
 
-                    <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">What is a Verified Public Profile?</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>
-                                        Caviom administrators carefully reviews requirements submitted by
-                                        Charitable Organizations before they get verified.
-                                    </p>
-                                    <p>
-                                        Public Profiles can only be verified after any of the members have
-                                        done setting up their Non-profit's profile. Once verified, their mode/s
-                                        of Donation will be allowed to get displayed on their public profile.
-                                    </p>
-                                    <p class="mb-0">
-                                        Processing of requirements usually takes 2-3 business days. We will notify
-                                        you updates about your verification process via in-app notifications.
-                                    </p>
-                                </div>
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
+                    @include('charity.modals.profile')
                 </div>
             </div>
         </div>
