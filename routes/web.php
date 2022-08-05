@@ -124,7 +124,18 @@ Route::prefix('/our-charity')->middleware(['auth', 'verified'])->group(function 
 
 
     # Volunteers
-
+    Route::get('/volunteers', function () {
+        return view('charity.main.volunteers.all');
+    })->name('charity.volunteers');
+    Route::get('/volunteers/add', function () {
+        return view('charity.main.volunteers.add');
+    })->name('charity.volunteers.add');
+    Route::get('/volunteers/7ba0c587-d347-4bcf-9e0e-28ec06066fb0', function () {
+        return view('charity.main.volunteers.view');
+    })->name('charity.volunteers.view');
+    Route::get('/volunteers/edit/7ba0c587-d347-4bcf-9e0e-28ec06066fb0', function () {
+        return view('charity.main.volunteers.edit');
+    })->name('charity.volunteers.edit');
 });
 // });
 
