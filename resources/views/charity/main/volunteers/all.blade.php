@@ -1,5 +1,5 @@
 @extends('charity.charity_master')
-@section('title', 'Benefactors')
+@section('title', 'Volunteers')
 @section('charity')
 
 <div class="page-content">
@@ -9,12 +9,13 @@
         <div class="row">
             <div class="col-12">
                 <div class="p-2">
-                    <h1 class="mb-0" style="color: #62896d"><strong>BENEFACTORS</strong></h1>
+                    <h1 class="mb-0" style="color: #62896d"><strong>VOLUNTEERS</strong></h1>
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">Our Charitable Organization</li>
-                        <li class="breadcrumb-item active">Benefactors</li>
+                        <li class="breadcrumb-item active">Volunteers</li>
                     </ol>
-                    @include('charity.modals.benefactors')
+
+                    @include('charity.modals.volunteers')
                 </div>
             </div>
         </div>
@@ -45,7 +46,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>You are about to attempt to backup all your benefactors. This action
+                                    <p>You are about to attempt to backup all your volunteers. This action
                                         will notify all other users in your Charitable Organization. Continue?</p>
                                 </div>
                                 <div class="modal-footer">
@@ -57,9 +58,9 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
-                            <h2><strong>Benefactors</strong></h2>
-                            <p class="mb-2">List of All Benefactors</p>
-                            <a href="{{ route('charity.benefactors.add') }}" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light">
+                            <h2><strong>Volunteers</strong></h2>
+                            <p class="mb-2">List of All Volunteers</p>
+                            <a href="{{ route('charity.volunteers.add') }}" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light">
                                 <i class="mdi mdi-plus-circle-outline"></i> Add New
                             </a>
                         </div>
@@ -86,16 +87,16 @@
                         <tbody>
                             <tr>
                                 <td>1</td>
-                                <td>Manalac</td>
-                                <td>Leonard</td>
+                                <td>Laurel</td>
+                                <td>Louis Kyle</td>
                                 <td>
-                                    <a href="mailto: manalac.leonard@ust.edu.ph">manalac.leonard@ust.edu.ph</a>
+                                    <a href="mailto: louis_kyle@gmail.com">louis_kyle@gmail.com</a>
                                 </td>
                                 <td>09981235678</td>
-                                <td>ADB Partner</td>
-                                <td>Pro #1 Sponsor</td>
+                                <td>Parent Volunteers</td>
+                                <td>Head Volunteer</td>
                                 <td>
-                                    <a href="{{ route('charity.benefactors.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                    <a href="{{ route('charity.volunteers.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>

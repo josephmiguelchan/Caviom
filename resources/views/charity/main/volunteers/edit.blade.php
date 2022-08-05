@@ -1,5 +1,5 @@
 @extends('charity.charity_master')
-@section('title', 'Edit Benefactor')
+@section('title', 'Edit Volunteer')
 @section('charity')
 
 @php
@@ -15,14 +15,14 @@
         <div class="row">
             <div class="col-12">
                 <div class="p-2">
-                    <h1 class="mb-0" style="color: #62896d"><strong>EDIT BENEFACTOR</strong></h1>
+                    <h1 class="mb-0" style="color: #62896d"><strong>EDIT VOLUNTEER</strong></h1>
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">Our Charitable Organization</li>
-                        <li class="breadcrumb-item"><a href="{{ route('charity.benefactors') }}">Benefactors</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('charity.volunteers') }}">Volunteers</a></li>
                         <li class="breadcrumb-item active">Edit</li>
                     </ol>
 
-                    @include('charity.modals.benefactors')
+                    @include('charity.modals.volunteers')
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                                         alt="Profile Picture" class="avatar-xl rounded-circle" id="showImage">
                                 </div>
                                 <div class="mt-3">
-                                    <p class="text-muted mb-1">ID No. 2</p>
+                                    <p class="text-muted mb-1">ID No. 1</p>
                                     <h1 class="py-3" style="color: #62896d">
                                         <strong>
                                             {{-- {{ Auth::user()->info->last_name . ', ' . Auth::user()->info->first_name }}
@@ -53,7 +53,7 @@
                                                 ' ' . Str::substr(Auth::user()->info->middle_name, 0, 1) . '.'
                                             }}
                                             @endif --}}
-                                            Manalac, Leonard Abas
+                                            Laurel, Loius Kyle Ilagan
                                         </strong>
                                     </h1>
                                 </div>
@@ -99,7 +99,7 @@
                                     <div class="col-md-6">
                                         <label for="email" class="form-label">*Email Address</label>
                                         <input type="email" class="form-control" name="email" id="email"
-                                        value="manalac.leonard@ust.edu.ph" required>
+                                        value="louis_kyle@gmail.com" required>
                                         @error('email')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -114,7 +114,7 @@
                                         <div class="form-group">
                                             <label for="first_name" class="form-label">*First Name</label>
                                             <input type="text" class="form-control" name="first_name" id="first_name"
-                                                value="Leonard" required>
+                                                value="Loius Kyle" required>
                                             @error('first_name')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -128,7 +128,7 @@
                                         <div class="form-group">
                                             <label for="middle_name" class="form-label">Middle Name</label>
                                             <input type="text" class="form-control" name="middle_name" id="middle_name"
-                                                value="Abas" required>
+                                                value="Ilagan" required>
                                             @error('middle_name')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -141,7 +141,7 @@
                                     <div class="col-md-4">
                                         <label for="last_name" class="form-label">*Last Name</label>
                                         <input type="text" class="form-control" name="last_name" id="last_name"
-                                        value="Manalac" required>
+                                        value="Laurel" required>
                                         @error('last_name')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -186,7 +186,7 @@
                                         <div class="form-group">
                                             <label for="category" class="form-label">Category</label>
                                             <input class="form-control" name="category" id="category" type="text"
-                                                value="ADB Scholar">
+                                                value="Parent Volunteers">
                                             @error('category')
                                                 <div class="text-danger"><small>
                                                     {{ $message }}
@@ -200,7 +200,7 @@
                                         <div class="form-group">
                                             <label for="label" class="form-label">Label</label>
                                             <input class="form-control" name="label" id="label" type="text"
-                                                value="Unrenewed Sponsor">
+                                                value="Head Volunteer">
                                             @error('label')
                                                 <div class="text-danger"><small>
                                                     {{ $message }}
@@ -217,7 +217,7 @@
                                     <div class="col-12">
                                         <label for="address_line_one" class="form-label">*Address Line 1</label>
                                         <input class="form-control" name="address_line_one" id="address_line_one" type="text" required
-                                            value="13 Epifanio Santos Ave.">
+                                            value="113 Epifanio Santos Ave.">
                                         @error('address_line_one')
                                             <div class="text-danger">
                                                 {{ $message }}

@@ -1,5 +1,5 @@
 @extends('charity.charity_master')
-@section('title', 'Add Benefactor')
+@section('title', 'Add Volunteer')
 @section('charity')
 
 @php
@@ -15,14 +15,14 @@
         <div class="row">
             <div class="col-12">
                 <div class="p-2">
-                    <h1 class="mb-0" style="color: #62896d"><strong>ADD BENEFACTOR</strong></h1>
+                    <h1 class="mb-0" style="color: #62896d"><strong>ADD VOLUNTEER</strong></h1>
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">Our Charitable Organization</li>
-                        <li class="breadcrumb-item"><a href="{{ route('charity.benefactors') }}">Benefactors</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('charity.volunteers') }}">Volunteers</a></li>
                         <li class="breadcrumb-item active">Add</li>
                     </ol>
 
-                    @include('charity.modals.benefactors')
+                    @include('charity.modals.volunteers')
                 </div>
             </div>
         </div>
@@ -34,10 +34,10 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-8">
-                                <h1><strong>ADD NEW BENEFACTOR</strong></h1>
+                                <h1><strong>ADD NEW VOLUNTEER</strong></h1>
                             </div>
                             <div class="col-lg-4 mt-4">
-                                <a href="{{route('charity.benefactors')}}" class="text-link float-end">
+                                <a href="{{route('charity.volunteers')}}" class="text-link float-end">
                                     <i class="ri-arrow-left-line"></i> Go Back
                                 </a>
                             </div>

@@ -1,5 +1,5 @@
 @extends('charity.charity_master')
-@section('title', 'View Benefactor')
+@section('title', 'View Volunteer')
 @section('charity')
 
 @php
@@ -14,14 +14,14 @@
         <div class="row">
             <div class="col-12">
                 <div class="p-2">
-                    <h1 class="mb-0" style="color: #62896d"><strong>BENEFACTOR</strong></h1>
+                    <h1 class="mb-0" style="color: #62896d"><strong>VOLUNTEER</strong></h1>
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">Our Charitable Organization</li>
-                        <li class="breadcrumb-item"><a href="{{ route('charity.benefactors') }}">Benefactors</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('charity.volunteers') }}">Volunteers</a></li>
                         <li class="breadcrumb-item active">View</li>
                     </ol>
 
-                    @include('charity.modals.benefactors')
+                    @include('charity.modals.volunteers')
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="p-4">
-                            <a href="{{ route('charity.benefactors') }}" class="text-link">
+                            <a href="{{ route('charity.volunteers') }}" class="text-link">
                                 <i class="ri-arrow-left-line"></i> Go Back
                             </a>
                         </div>
@@ -43,7 +43,7 @@
                                         alt="Profile Picture" class="avatar-xl rounded-circle">
                                 </div>
                                 <div class="mt-3">
-                                    <p class="text-muted">ID No. 2</p>
+                                    <p class="text-muted">ID No. 1</p>
                                     <h1 class="mb-5" style="color: #62896d">
                                         <strong>
                                             {{-- {{ Auth::user()->info->last_name . ', ' . Auth::user()->info->first_name }}
@@ -52,7 +52,7 @@
                                                 ' ' . Str::substr(Auth::user()->info->middle_name, 0, 1) . '.'
                                             }}
                                             @endif --}}
-                                            Manalac, Leonard Abas
+                                            Laurel, Loius Kyle Ilagan
                                         </strong>
                                     </h1>
                                 </div>
@@ -73,7 +73,7 @@
                             <dl class="row col-lg-6 mb-0">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Email Address:</strong></h4></dt>
                                 <dt class="col-md-6">
-                                    <a href="mailto: manalac.leonard@ust.edu.ph">manalac.leonard@ust.edu.ph</a>
+                                    <a href="mailto: louis_kyle@gmail.com">louis_kyle@gmail.com</a>
                                 </dt>
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Cel No:</strong></h4></dt>
                                 <dt class="col-md-6">09981235678</dt>
@@ -82,9 +82,9 @@
                             </dl>
                             <dl class="row col-lg-6 mb-0">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Category:</strong></h4></dt>
-                                <dt class="col-md-6">ADB Partner</dt>
+                                <dt class="col-md-6">Parent Volunteers</dt>
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Label:</strong></h4></dt>
-                                <dt class="col-md-6">Pro #1 Sponsor</dt>
+                                <dt class="col-md-6">Head Volunteer</dt>
                             </dl>
                             <dl class="row col-lg-12">
                                 <dt class="col-md-3"><h4 class="font-size-15"><strong>Address:</strong></h4></dt>
@@ -93,13 +93,13 @@
                                         Auth::user()->info->address->address_line_two . ' ' . Auth::user()->info->address->address_line_one . ', ' .
                                         Auth::user()->info->address->barangay . ', ' . Auth::user()->info->address->city . ' ' . Auth::user()->info->address->postal_code
                                     }} --}}
-                                    13 Epifanio Santos Ave., Pasay City, Metro Manila
+                                    113 Epifanio Santos Ave., Pasay City, Metro Manila
                                 </dt>
                             </dl>
                         </div>
                         <div class="row p-3">
                             <div class="">
-                                <a href="{{ route('charity.benefactors.edit') }}" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
+                                <a href="{{ route('charity.volunteers.edit') }}" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
                                     <i class="ri-edit-line"></i> Edit
                                 </a>
                                 <button type="button" class="btn btn-outline-danger btn-rounded w-md waves-effect waves-light float-end mx-2"
@@ -118,7 +118,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>You are about to delete the selected benefactor [<strong> Manalac, Leonard Abas </strong>] permanently. This action
+                                        <p>You are about to delete the selected volunteer [<strong> Laurel, Louis Kyle Ilagan </strong>] permanently. This action
                                             cannot be undone and will notify all other users in your Charitable Organization. Continue?</p>
                                     </div>
                                     <div class="modal-footer">
