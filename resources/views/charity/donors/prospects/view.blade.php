@@ -167,10 +167,10 @@
                                         Kindly select one from these:
                                     </p>
                                     <div class="text-center mb-3">
-                                        <a type="button" href="#" class="btn btn-outline-dark w-xl waves-effect waves-light">
+                                        <a type="button" href="{{ route('charity.volunteers.add') }}" class="btn btn-outline-dark w-xl waves-effect waves-light">
                                             Create New Volunteer Record
                                         </a>
-                                        <a type="button" href="#" class="btn btn-outline-dark w-xl waves-effect waves-light">
+                                        <a type="button" href="{{ route('charity.benefactors.add') }}" class="btn btn-outline-dark w-xl waves-effect waves-light">
                                             Create New Benefactor Record
                                         </a>
                                     </div>
