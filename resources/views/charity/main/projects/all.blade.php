@@ -149,7 +149,7 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="card">
-                                    <img class="card-img-top img-fluid" src="{{ asset('backend/assets/images/small/img-5.jpg') }}" alt="Project #5">
+                                    <img class="card-img-top img-fluid" src="{{ asset('backend/assets/images/small/img-4.jpg') }}" alt="Project #5">
                                     <div class="card-body">
                                         <h4 class="card-title">Project Title</h4>
                                         <p class="card-text">Long project description cut short into 1-2 sentence(s)...</p>
