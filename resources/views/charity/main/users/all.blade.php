@@ -60,9 +60,11 @@
                         <div class="col-lg-4">
                             <h2><strong>Users</strong></h2>
                             <p>List of All Caviom Users in your Charitable Organization</p>
-                            <a href="{{ route('charity.users.add') }}" class="btn btn-rounded btn-sm w-50 btn-outline-dark waves-effect waves-light">
-                                <i class="ri-user-add-line"></i> Register New Account
-                            </a>
+                            @if(Auth::user()->role == "Charity Admin")
+                                <a href="{{ route('charity.users.add') }}" class="btn btn-rounded btn-sm w-50 btn-outline-dark waves-effect waves-light">
+                                    <i class="ri-user-add-line"></i> Register New Account
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -117,6 +119,9 @@
                                 <td>
                                     <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger waves-effect waves-light">
+                                        <i class="mdi mdi-trash-can-outline"></i> Edit Email / Delete Account
                                     </a>
                                 </td>
                             </tr>
