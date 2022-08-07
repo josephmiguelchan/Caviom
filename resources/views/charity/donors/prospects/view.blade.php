@@ -106,7 +106,7 @@
                                 <button type="button" class="btn btn-outline-danger waves-effect waves-light w-xl mb-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                     <i class="ri-arrow-go-back-line"></i> Move to Leads
                                 </button>
-                                <button type="button" class="btn btn-success waves-effect waves-light w-xl mb-2" data-bs-toggle="modal" data-bs-target="#addModal">
+                                <button type="button" class="btn btn-success waves-effect waves-light w-xl mb-2" data-bs-toggle="modal" data-bs-target="#addOpportunityModal">
                                     <i class="ri-user-star-line"></i> Add as Opportunity
                                 </button>
                             </ul>
@@ -132,25 +132,6 @@
                         </div><!-- /.modal-dialog -->
                     </div>
 
-
-                    <!-- Add to Prospects Modal -->
-                    <div id="addModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-information-outline me-2"></i> Warning</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Are you sure you want to make this prospect [<strong> Salumbides, Eveline M. </strong>] as your new opportunity?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                                    <button type="button" class="btn btn-success waves-effect waves-light w-sm" data-bs-toggle="modal" data-bs-target="#addOpportunityModal">Yes</button>
-                                </div>
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div>
 
                     <!--  Modal content for Add as New Opportunity -->
                     <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="addOpportunityModal">
