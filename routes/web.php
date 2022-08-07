@@ -84,7 +84,12 @@ Route::prefix('/our-charity')->middleware(['auth', 'verified'])->group(function 
     })->name('charity.profile.verify');
 
     # Projects
-
+    Route::get('/projects', function () {
+        return view('charity.main.projects.all');
+    })->name('charity.projects');
+    Route::get('/projects/add', function () {
+        return view('charity.main.projects.add');
+    })->name('charity.projects.add');
 
 
     # Users

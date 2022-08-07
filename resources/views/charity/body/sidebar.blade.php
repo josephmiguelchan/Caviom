@@ -51,7 +51,7 @@
                         <li>
                             <a class="{{ Request::routeIs('charity.profile*')?'active':'' }}" href="{{ route('charity.profile') }}">Public Profile</a>
                         </li>
-                        <li><a href="email-read.html">Projects</a></li>
+                        <li><a class="{{ Request::routeIs('charity.projects*')?'active':'' }}" href="{{ route('charity.projects') }}">Projects</a></li>
                         <li><a class="{{ Request::routeIs('charity.users*')?'active':'' }}" href="{{ route('charity.users') }}">Users</a></li>
                         <li><a class="{{ Request::routeIs('charity.beneficiaries*')?'active':'' }}" href="{{ route('charity.beneficiaries') }}">Beneficiaries</a></li>
                         <li><a class="{{ Request::routeIs('charity.benefactors*')?'active':'' }}" href="{{ route('charity.benefactors') }}">Benefactors</a></li>
