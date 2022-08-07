@@ -49,7 +49,9 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li>
-                            <a class="{{ Request::routeIs('charity.profile*')?'active':'' }}" href="{{ route('charity.profile') }}">Public Profile</a>
+                            @if(Auth::user()->role == "Charity Admin")
+                                <a class="{{ Request::routeIs('charity.profile*')?'active':'' }}" href="{{ route('charity.profile') }}">Public Profile</a>
+                            @endif
                         </li>
                         <li><a class="{{ Request::routeIs('charity.projects*')?'active':'' }}" href="{{ route('charity.projects') }}">Projects</a></li>
                         <li><a class="{{ Request::routeIs('charity.users*')?'active':'' }}" href="{{ route('charity.users') }}">Users</a></li>

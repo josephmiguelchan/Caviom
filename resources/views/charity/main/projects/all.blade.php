@@ -25,9 +25,11 @@
             <div class="card p-3">
                 <div class="card-body">
                     <div class="float-end mt-4 mb-2">
-                        <a href="{{ route('charity.projects.add') }}" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light">
-                            <i class="mdi mdi-plus-circle-outline"></i> Add New
-                        </a>
+                        @if(Auth::user()->role == "Charity Admin")
+                            <a href="{{ route('charity.projects.add') }}" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light">
+                                <i class="mdi mdi-plus-circle-outline"></i> Add New
+                            </a>
+                        @endif
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
@@ -40,7 +42,7 @@
                 <div class="row px-4">
                     <div class="col-sm-12">
                         <div class="row" data-masonry='{"percentPosition": true }'>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 px-4">
                                 <div class="card">
                                     <img class="card-img-top img-fluid" src="{{ asset('upload/test_files/lugaw-for-a-cause.webp') }}" alt="Project #1">
                                     <div class="card-body">
@@ -61,13 +63,13 @@
                                             <p class="card-text">
                                                 <small class="text-muted">Last updated 3 mins ago</small>
                                             </p>
-                                            <a href="#" class="btn btn-dark waves-effect waves-light w-100">
+                                            <a href="{{ route('charity.projects.view') }}" class="btn btn-dark waves-effect waves-light w-100">
                                                 <i class="mdi mdi-open-in-new"></i> View Project
                                         </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 px-4">
                                 <div class="card">
                                     <img class="card-img-top img-fluid" src="{{ asset('upload/test_files/values-formation.jpg') }}" alt="Project #2">
                                     <div class="card-body">
@@ -94,7 +96,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 px-4">
                                 <div class="card">
                                     <img class="card-img-top img-fluid" src="{{ asset('upload/test_files/feeding-program.jpg') }}" alt="Project #3">
                                     <div class="card-body">
@@ -121,7 +123,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 px-4">
                                 <div class="card">
                                     <img class="card-img-top img-fluid" src="{{ asset('backend/assets/images/small/img-5.jpg') }}" alt="Project #4">
                                     <div class="card-body">
@@ -147,9 +149,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 px-4">
                                 <div class="card">
-                                    <img class="card-img-top img-fluid" src="{{ asset('backend/assets/images/small/img-5.jpg') }}" alt="Project #5">
+                                    <img class="card-img-top img-fluid" src="{{ asset('backend/assets/images/small/img-4.jpg') }}" alt="Project #5">
                                     <div class="card-body">
                                         <h4 class="card-title">Project Title</h4>
                                         <p class="card-text">Long project description cut short into 1-2 sentence(s)...</p>
