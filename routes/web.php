@@ -24,22 +24,22 @@ Route::get('/', function () {
 
 
 # Charity Group Controller
-Route::controller(CharityController::class)->group(function () {
+Route::controller(CharityController::class)->middleware(['auth', 'verified', 'prevent-back-history'])->group(function () {
 
     # Dashboard
-    Route::prefix('/charity')->middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('/charity')->group(function () {
         Route::get('/dashboard', 'showDashboard')->name('dashboard');
     });
     # User Profile
-    Route::prefix('/profile')->middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('/profile')->group(function () {
         Route::get('/', 'showProfile')->name('user.profile');
         Route::get('/edit', 'editProfile')->name('user.profile.edit');
         Route::post('/store', 'storeProfile')->name('user.profile.store');
     });
     # Change Password
-    Route::middleware(['auth', 'verified'])->group(function () {
-        Route::get('/change-password', 'editPassword')->name('user.password.change');
-        Route::post('/store-password', 'storePassword')->name('user.password.store');
+    Route::prefix('/password')->group(function () {
+        Route::get('/change', 'editPassword')->name('user.password.change');
+        Route::post('/store', 'storePassword')->name('user.password.store');
     });
     # Logout
     Route::get('/user/logout', 'destroy')->name('user.logout');
@@ -47,10 +47,10 @@ Route::controller(CharityController::class)->group(function () {
 
 
 # Charity Users Group
-Route::prefix('/charity')->group(function () {
+Route::prefix('/charity')->middleware(['auth', 'verified', 'prevent-back-history'])->group(function () {
     # Donors and Donations Group Controller
     // Route::controller(DonorController::class)->group(function() {
-    Route::prefix('/donors-and-donations')->middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('/donors-and-donations')->group(function () {
 
         # Leads
         Route::get('/leads', function () {
@@ -74,7 +74,7 @@ Route::prefix('/charity')->group(function () {
 
     # Our Charitable Organization Controller
     // Route::controller(OurCharityOrgController::class)->group(function() {
-    Route::name('charity.')->prefix('/our-charitable-org')->middleware(['auth', 'verified'])->group(function () {
+    Route::name('charity.')->prefix('/our-charitable-org')->group(function () {
 
         # Public Profile - Only Charity Admins can access the ff:
         Route::name('profile')->prefix('/profile')->middleware(['charity.admin'])->group(function () {
