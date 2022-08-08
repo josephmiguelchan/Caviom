@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-sm-5">
             <div class="text-center">
-                <img src="{{ asset('backend/assets/images/auth/register-1.svg') }}" style="max-width: 100%; height: auto; width: auto\9;" class="mt-5">
+                <img src="{{ asset('backend/assets/images/auth/register-1.svg') }}" style="height: 30vh;" class="mt-4">
                 <h6 class="mt-3">
                     <h1 style="color: #62896d"><strong>WELCOME</strong></h1>
                     <ul class="list-inline px-5">

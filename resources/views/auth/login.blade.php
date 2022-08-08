@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-6 text-center">
-            <img src="{{ asset('backend/assets/images/auth/login-1.svg') }}" class="mt-5">
+            <img src="{{ asset('backend/assets/images/auth/login-1.svg') }}" style="height: 30vh" class="mt-5">
             <h6 class="mt-3">
                 <ul class="list-inline text-center">
                     <li class="list-inline-item">Hope for the Better</li>
@@ -25,12 +25,12 @@
             </p>
         </div>
         <div class="col-sm-6">
-            <div class="card" style="height: 600px">
+            <div class="card" style="height: 80vh">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-12 p-5">
+                        <div class="col-md-12">
 
-                            <div class="p-3">
+                            <div class="p-4 py-5">
                                 <h1 style="color: #62896d"><strong>LOG IN</strong></h1>
 
                                 <form method="POST" action="{{ route('login') }}" class="form-horizontal custom-validation mt-4">

@@ -79,7 +79,7 @@
                             <div class="text-center">
                                 <h4 class="font-size-15"><strong>Proof of Payment</strong></h4>
                                 <a class="image-popup-no-margins" title="Gcash Receipt of Eveline" href="{{ asset('upload/gcash-sample-receipt.png') }}">
-                                    <img class="img-fluid rounded" alt="Donation Proof" src="{{ asset('upload/gcash-sample-receipt.png') }}" style="max-height: 500px">
+                                    <img class="img-fluid rounded" alt="Donation Proof" src="{{ asset('upload/gcash-sample-receipt.png') }}" style="max-height: 60vh">
                                 </a>
                             </div>
                         </div>
