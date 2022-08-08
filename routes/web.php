@@ -50,7 +50,7 @@ Route::controller(CharityController::class)->group(function () {
 Route::prefix('/charity')->group(function () {
     # Donors and Donations Group Controller
     // Route::controller(DonorController::class)->group(function() {
-    Route::prefix('/donors')->middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('/donors-and-donations')->middleware(['auth', 'verified'])->group(function () {
 
         # Leads
         Route::get('/leads', function () {
@@ -74,7 +74,7 @@ Route::prefix('/charity')->group(function () {
 
     # Our Charitable Organization Controller
     // Route::controller(OurCharityOrgController::class)->group(function() {
-    Route::name('charity.')->prefix('/our-charity')->middleware(['auth', 'verified'])->group(function () {
+    Route::name('charity.')->prefix('/our-charitable-org')->middleware(['auth', 'verified'])->group(function () {
 
         # Public Profile - Only Charity Admins can access the ff:
         Route::name('profile')->prefix('/profile')->middleware(['charity.admin'])->group(function () {
