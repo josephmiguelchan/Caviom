@@ -100,6 +100,9 @@ Route::prefix('/charity')->middleware(['auth', 'verified', 'prevent-back-history
             Route::get('/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () {
                 return view('charity.main.projects.view');
             })->name('.view');
+            Route::get('/edit/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () {
+                return view('charity.main.projects.edit');
+            })->name('.edit');
         });
 
 
