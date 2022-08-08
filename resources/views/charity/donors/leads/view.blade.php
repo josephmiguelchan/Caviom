@@ -28,7 +28,7 @@
                 <div class="card-body p-5">
                     <div class="row">
                         <div class="col-lg-8">
-                            <h1><strong>SALUMBIDES, EVELINE M.</strong></h1>
+                            <h2><strong>Salumbides, Eveline M.</strong></h2>
                         </div>
                         <div class="col-lg-4 mt-4">
                             <a href="{{route('leads.all')}}" class="text-link float-end">
@@ -66,7 +66,7 @@
                             <div class="text-center">
                                 <h4 class="font-size-15"><strong>Proof of Payment</strong></h4>
                                 <a class="image-popup-no-margins" title="Gcash Receipt of Eveline" href="{{ asset('upload/gcash-sample-receipt.png') }}">
-                                    <img class="img-fluid rounded" alt="Donation Proof" src="{{ asset('upload/gcash-sample-receipt.png') }}" style="max-height: 500px">
+                                    <img class="img-fluid rounded" alt="Donation Proof" src="{{ asset('upload/gcash-sample-receipt.png') }}" style="max-height: 60vh">
                                 </a>
                             </div>
                         </div>
@@ -96,11 +96,12 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
+                                    <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Are you sure?</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Deleting the selected lead [<strong> Salumbides, Eveline M. </strong>] is permanent. This action cannot be undone. Continue?</p>
+                                    <p>Delete the selected lead [<strong> Salumbides, Eveline M. </strong>]?
+                                    </p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
@@ -116,7 +117,7 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-information-outline me-2"></i> Are you sure?</h5>
+                                    <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-information-outline me-2"></i> Warning</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">

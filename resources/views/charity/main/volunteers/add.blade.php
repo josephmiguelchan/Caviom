@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="p-2">
-                    <h1 class="mb-0" style="color: #62896d"><strong>ADD VOLUNTEER</strong></h1>
+                    <h1 class="mb-0" style="color: #62896d"><strong>VOLUNTEERS</strong></h1>
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">Our Charitable Organization</li>
                         <li class="breadcrumb-item"><a href="{{ route('charity.volunteers') }}">Volunteers</a></li>
@@ -34,7 +34,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-8">
-                                <h1><strong>ADD NEW VOLUNTEER</strong></h1>
+                                <h2><strong>Add New Volunteer</strong></h2>
                             </div>
                             <div class="col-lg-4 mt-4">
                                 <a href="{{route('charity.volunteers')}}" class="text-link float-end">

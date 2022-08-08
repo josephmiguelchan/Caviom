@@ -77,8 +77,8 @@
 
                 <li class="menu-title">Balance</li>
 
-                <li>
-                    <a href="index.html" class="waves-effect">
+                <li class="text-center">
+                    <a href="index.html">
                         <i class="ri-coin-line"></i>
                         <span>4,500 Star Tokens</span>
                     </a>

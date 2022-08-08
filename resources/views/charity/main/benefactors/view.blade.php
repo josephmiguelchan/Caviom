@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="p-2">
-                    <h1 class="mb-0" style="color: #62896d"><strong>BENEFACTOR</strong></h1>
+                    <h1 class="mb-0" style="color: #62896d"><strong>BENEFACTORS</strong></h1>
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">Our Charitable Organization</li>
                         <li class="breadcrumb-item"><a href="{{ route('charity.benefactors') }}">Benefactors</a></li>

@@ -55,7 +55,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-8">
-                                <h1><strong>ADD NEW BENEFICIARY</strong></h1>
+                                <h1><strong>Add New Beneficiary</strong></h1>
                             </div>
                             <div class="col-lg-4 mt-4">
                                 <a href="{{route('charity.beneficiaries')}}" class="text-link float-end">

@@ -56,17 +56,13 @@
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <h2><strong>Users</strong></h2>
-                            <p>List of All Caviom Users in your Charitable Organization</p>
-                            @if(Auth::user()->role == "Charity Admin")
-                                <a href="{{ route('charity.users.add') }}" class="btn btn-rounded btn-sm w-50 btn-outline-dark waves-effect waves-light">
-                                    <i class="ri-user-add-line"></i> Register New Account
-                                </a>
-                            @endif
-                        </div>
-                    </div>
+                        <h2><strong>Users</strong></h2>
+                        <p>List of All Caviom Users in your Charitable Organization</p>
+                        @if(Auth::user()->role == "Charity Admin")
+                            <a href="{{ route('charity.users.add') }}" class="btn btn-sm w-md btn-outline-dark waves-effect waves-light">
+                                <i class="ri-user-add-line"></i> Register New Account
+                            </a>
+                        @endif
                 </div>
 
                 <div class="card-body">
@@ -106,7 +102,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>1</td>
+                                <td>2</td>
                                 <td><span class="badge bg-light">2022052132</span></td>
                                 <td>Zamora</td>
                                 <td>Luigi</td>
