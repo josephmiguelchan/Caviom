@@ -18,7 +18,7 @@
                         </li>
                         <li class="breadcrumb-item active">Add to Featured Projects</li>
                     </ol>
-                    @include('charity.modals.projects')
+                    @include('charity.modals.featured-projects')
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
 
                         <hr class="my-3">
 
-                        <form action="" method="POST" enctype="multipart/form-data">
+                        <form action="" id="add_form" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group mb-3 row">
@@ -257,11 +257,22 @@
                             </div>
 
 
-                            <div class="row p-5">
+                            <div class="row px-5">
                                 <ul class="list-inline mb-0 mt-4 float-end">
-                                    <button type="submit" class="btn btn-dark btn-rounded w-lg waves-effect waves-light float-end"><i class="ri-edit-2-line"></i> Save</button>
+                                    <button type="button" class="btn btn-dark btn-rounded w-lg waves-effect waves-light float-end" data-bs-target="#bs-add-modal-center"  data-bs-toggle="modal">
+                                        <i class="ri-edit-2-line"></i> Add to Featured Projects
+                                    </button>
                                     <a class="btn list-inline-item float-end mx-4" href="{{ url()->previous() }}">Cancel</a>
                                 </ul>
+                            </div>
+                            <div class="float-end row p-3">
+                                <p class="text-muted font-size-12 mt-2">
+                                    <em>
+                                        <strong>*Featured projects are subject for approval by Caviom </strong>
+                                        before it can be displayed on your Charitable Organization's public profile.
+                                        The processing times for approval may usually take from 2 to 3 working days.
+                                    </em>
+                                </p>
                             </div>
 
                         </form>
@@ -273,25 +284,5 @@
 
     </div>
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function(){
-        var counter = 0;
-        if (counter == 5) {
-
-        } else {
-            $(document).on("click",".addeventmore",function(){
-                var whole_extra_item_add = $('#whole_extra_item_add').html();
-                $(this).closest(".add_item").append(whole_extra_item_add);
-                counter++;
-            });
-            $(document).on("click",'.removeeventmore',function(event){
-                $(this).closest(".delete_whole_extra_item_add").remove();
-                counter -= 1
-            });
-
-        }
-    });
-</script>
 
 @endsection
