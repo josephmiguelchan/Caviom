@@ -45,7 +45,7 @@
                                                     style="width: 100%; height: 30vh; object-fit: cover; opacity:.4;"
                                                     alt="Cover Photo of Project: Lugaw for a Cause">
                                                 <div class="carousel-caption d-none d-md-block text-white-50 my-4">
-                                                    <h2 class="text-white"><strong>LUGAW FOR A CAUSE</strong></h2>
+                                                    <h1 class="text-white"><strong>LUGAW FOR A CAUSE</strong></h1>
                                                     <p>May 20, 2022</p>
                                                 </div>
                                             </div>
@@ -84,12 +84,12 @@
                         <div class="col-lg-4">
                             @if(Auth::user()->role == "Charity Admin")
                                 <ul class="list-inline mb-0 float-end">
-                                    <button type="button" class="btn btn-primary waves-effect w-xl waves-light mb-2">
+                                    <a href="{{ route('charity.projects.feature') }}" class="btn btn-primary waves-effect w-xl waves-light mb-2">
                                         <i class="mdi mdi-star-outline"></i> Feature Project
-                                    </button>
-                                    <button type="button" class="btn btn-dark waves-effect w-xl waves-light mb-2">
+                                    </a>
+                                    <a href="{{ route('charity.projects.edit')}}" class="btn btn-dark waves-effect w-xl waves-light mb-2">
                                         <i class="mdi mdi-square-edit-outline"></i> Modify Details
-                                    </button>
+                                    </a>
                                     <button type="button" class="btn btn-outline-danger waves-effect w-xl waves-light mb-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                         <i class="mdi mdi-trash-can-outline"></i> Delete Project
                                     </button>
@@ -122,49 +122,8 @@
                     </div>
 
                     <!-- Tasks Table -->
-                    <div class="card-body p-0 mt-5">
-                        <h1><strong>Tasks</strong></h1>
-                        <a href="" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light mb-3">
-                            <i class="mdi mdi-plus-circle-outline"></i> Add New
-                        </a>
-                        <table id="datatable" class="table table-bordered dt-responsive nowrap"
-                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Task</th>
-                                    <th>Note</th>
-                                    <th>Assigned By</th>
-                                    <th>Assigned To</th>
-                                    <th>Status</th>
-                                    <th>Deadline</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
+                    @include('charity.main.projects.tasks.all')
 
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        Prepare the program flow for the opening of Dress Making Training 2022.
-                                    </td>
-                                    <td>Prioritize</td>
-                                    <td>Pangilinan, J.</td>
-                                    <td>Galleno, J.</td>
-                                    <td>
-                                        <span class="text-warning">Pending</span>
-                                    </td>
-                                    <td>Thu, Dec 25, 2022 2:15 PM</td>
-                                    <td>
-                                        <a href="" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                            <i class="mdi mdi-open-in-new"></i> Edit
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
                 </div>
             </div>
         </div> <!-- end col -->

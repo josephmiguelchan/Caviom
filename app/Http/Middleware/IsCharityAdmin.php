@@ -22,7 +22,7 @@ class IsCharityAdmin
         }
 
         $notification = array(
-            'message' => 'Sorry, only Charity Administrators can access the page.',
+            'message' => 'Sorry, you have no permission to access this page.',
             'alert-type' => 'error',
         );
 
