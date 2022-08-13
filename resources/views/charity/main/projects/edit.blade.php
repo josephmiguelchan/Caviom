@@ -32,7 +32,7 @@
                                 <h2><strong>Edit Project Details</strong></h2>
                             </div>
                             <div class="col-lg-4 mt-4">
-                                <a href="{{route('charity.projects')}}" class="text-link float-end">
+                                <a href="{{ url()->previous() }}" class="text-link float-end">
                                     <i class="ri-arrow-left-line"></i> Go Back
                                 </a>
                             </div>
@@ -78,7 +78,8 @@
                                 <div class="col-md-9">
                                     <!-- Project Objective / Description -->
                                     <label for="objective" class="form-label">*Objective</label>
-                                    <textarea id="elm1" rows="15" name="objective" placeholder="Enter your project's objective/s...">
+                                    <textarea id="elm1" rows="15" name="objective" placeholder="Enter your project's objective/s..."
+                                        maxlength="500">
                                         <p class="mt-4">
                                             Bottom-up, volunteer-led movement feeding program with a cause. The organization had
                                             the opportunity to make a partnership with Public Employment Service Office of the
@@ -116,7 +117,7 @@
                             <div class="row p-5">
                                 <ul class="list-inline mb-0 float-end">
                                     <button type="submit" class="btn btn-dark btn-rounded w-lg waves-effect waves-light float-end"><i class="ri-edit-2-line"></i> Save</button>
-                                    <a class="btn list-inline-item float-end mx-4" href="{{ route('charity.projects') }}">Cancel</a>
+                                    <a class="btn list-inline-item float-end mx-4" href="{{ url()->previous() }}">Cancel</a>
                                 </ul>
                             </div>
 

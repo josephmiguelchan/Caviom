@@ -79,7 +79,8 @@
                                 <div class="col-md-9">
                                     <!-- Project Objective / Description -->
                                     <label for="objective" class="form-label">*Objective</label>
-                                    <textarea id="elm1" rows="7" name="objective" placeholder="Enter your project's objective/s...">
+                                    <textarea id="elm1" rows="7" name="objective" placeholder="Enter your project's objective/s..."
+                                        maxlength="500">
                                         {{ old('objective') }}
                                     </textarea>
                                     @error('name')

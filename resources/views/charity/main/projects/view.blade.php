@@ -45,7 +45,7 @@
                                                     style="width: 100%; height: 30vh; object-fit: cover; opacity:.4;"
                                                     alt="Cover Photo of Project: Lugaw for a Cause">
                                                 <div class="carousel-caption d-none d-md-block text-white-50 my-4">
-                                                    <h2 class="text-white"><strong>LUGAW FOR A CAUSE</strong></h2>
+                                                    <h1 class="text-white"><strong>LUGAW FOR A CAUSE</strong></h1>
                                                     <p>May 20, 2022</p>
                                                 </div>
                                             </div>
