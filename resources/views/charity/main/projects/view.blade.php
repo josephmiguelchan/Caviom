@@ -84,9 +84,9 @@
                         <div class="col-lg-4">
                             @if(Auth::user()->role == "Charity Admin")
                                 <ul class="list-inline mb-0 float-end">
-                                    <button type="button" class="btn btn-primary waves-effect w-xl waves-light mb-2">
+                                    <a href="{{ route('charity.projects.feature') }}" class="btn btn-primary waves-effect w-xl waves-light mb-2">
                                         <i class="mdi mdi-star-outline"></i> Feature Project
-                                    </button>
+                                    </a>
                                     <a href="{{ route('charity.projects.edit')}}" class="btn btn-dark waves-effect w-xl waves-light mb-2">
                                         <i class="mdi mdi-square-edit-outline"></i> Modify Details
                                     </a>
