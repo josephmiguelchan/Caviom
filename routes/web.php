@@ -94,15 +94,22 @@ Route::prefix('/charity')->middleware(['auth', 'verified', 'prevent-back-history
             Route::get('', function () {
                 return view('charity.main.projects.all');
             });
-            Route::get('/add', function () {
-                return view('charity.main.projects.add');
-            })->name('.add');
             Route::get('/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () {
                 return view('charity.main.projects.view');
             })->name('.view');
-            Route::get('/edit/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () {
-                return view('charity.main.projects.edit');
-            })->name('.edit');
+
+            #
+            Route::middleware('charity.admin')->group(function () {
+                Route::get('/add', function () {
+                    return view('charity.main.projects.add');
+                })->name('.add');
+                Route::get('/edit/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () {
+                    return view('charity.main.projects.edit');
+                })->name('.edit');
+                Route::get('/featured/new/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () { // Add middleware that star tokens must be sufficient
+                    return view('charity.main.projects.featured.new');
+                })->name('.feature');
+            });
         });
 
 
