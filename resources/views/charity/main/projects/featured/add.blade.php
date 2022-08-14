@@ -143,7 +143,24 @@
                                     <label for="objective" class="form-label">*Objective:</label>
                                     <textarea id="elm1" rows="7" name="objective" placeholder="Enter your project's objective/s..."
                                         maxlength="500">
-
+                                        <p class="mt-4">
+                                            Bottom-up, volunteer-led movement feeding program with a cause. The organization had
+                                            the opportunity to make a partnership with Public Employment Service Office of the
+                                            local government of Pasay. Hence this partnership allowed the organization to train 30
+                                            single partents. The aim is to teach the beneficiaries how to do dressmaking and other
+                                            marketable sewing crafts.
+                                        </p>
+                                        <p>
+                                            <strong>Ace company and J&K Co.</strong> are both garments company that reached out to
+                                            the organization. They need 15 workers for their factory and they see the trainees as good
+                                            fit for the vacancies. Thus, the organization want to take this opportunity to provice
+                                            employment for their beneficiaries.
+                                        </p>
+                                        <p>
+                                            The unchosen trainees for the factory vacancies will have to undergo paid weekly seminar
+                                            for 1 month entitle <strong>Kumit at Home</strong> by Tytan Student Entrepreneurs group of
+                                            Manila Tytana Colleges.
+                                        </p>
                                     </textarea>
                                     @error('name')
                                         <div class="text-danger">

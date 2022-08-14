@@ -107,7 +107,7 @@ Route::prefix('/charity')->middleware(['auth', 'verified', 'prevent-back-history
                     return view('charity.main.projects.edit');
                 })->name('.edit');
                 Route::get('/featured/new/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () { // Add middleware that star tokens must be sufficient
-                    return view('charity.main.projects.featured.new');
+                    return view('charity.main.projects.featured.add');
                 })->name('.feature');
             });
         });
