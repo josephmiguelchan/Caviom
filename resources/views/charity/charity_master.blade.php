@@ -190,6 +190,9 @@
     <!-- form wizard init -->
     <script src="{{ asset('backend/assets/js/pages/form-wizard.init.js') }}"></script>
 
+    <!-- masonry pkgd -->
+    <script src="{{ asset('backend/assets/libs/masonry-layout/masonry.pkgd.min.js') }}"></script>
+
     <!-- Advanced Forms -->
     <script src="{{ asset('backend/assets/libs/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
