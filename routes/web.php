@@ -98,7 +98,7 @@ Route::prefix('/charity')->middleware(['auth', 'verified', 'prevent-back-history
                 return view('charity.main.projects.view');
             })->name('.view');
 
-            #
+            # Charity Admin only
             Route::middleware('charity.admin')->group(function () {
                 Route::get('/add', function () {
                     return view('charity.main.projects.add');
@@ -107,8 +107,15 @@ Route::prefix('/charity')->middleware(['auth', 'verified', 'prevent-back-history
                     return view('charity.main.projects.edit');
                 })->name('.edit');
                 Route::get('/featured/new/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () { // Add middleware that star tokens must be sufficient
-                    return view('charity.main.projects.featured.new');
+                    return view('charity.main.projects.featured.add');
                 })->name('.feature');
+            });
+
+            # Tasks
+            Route::name('.tasks')->prefix('/tasks')->group(function () {
+                Route::get('/c6e9df80-22c6-4829-a2f1-bad342699e7b', function () {
+                    return view('charity.main.projects.tasks.view');
+                })->name('.view');
             });
         });
 

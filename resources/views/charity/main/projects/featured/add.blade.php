@@ -18,7 +18,7 @@
                         </li>
                         <li class="breadcrumb-item active">Add to Featured Projects</li>
                     </ol>
-                    @include('charity.modals.projects')
+                    @include('charity.modals.featured-projects')
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
 
                         <hr class="my-3">
 
-                        <form action="" method="POST" enctype="multipart/form-data">
+                        <form action="" id="add_form" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group mb-3 row">
@@ -143,7 +143,24 @@
                                     <label for="objective" class="form-label">*Objective:</label>
                                     <textarea id="elm1" rows="7" name="objective" placeholder="Enter your project's objective/s..."
                                         maxlength="500">
-
+                                        <p class="mt-4">
+                                            Bottom-up, volunteer-led movement feeding program with a cause. The organization had
+                                            the opportunity to make a partnership with Public Employment Service Office of the
+                                            local government of Pasay. Hence this partnership allowed the organization to train 30
+                                            single partents. The aim is to teach the beneficiaries how to do dressmaking and other
+                                            marketable sewing crafts.
+                                        </p>
+                                        <p>
+                                            <strong>Ace company and J&K Co.</strong> are both garments company that reached out to
+                                            the organization. They need 15 workers for their factory and they see the trainees as good
+                                            fit for the vacancies. Thus, the organization want to take this opportunity to provice
+                                            employment for their beneficiaries.
+                                        </p>
+                                        <p>
+                                            The unchosen trainees for the factory vacancies will have to undergo paid weekly seminar
+                                            for 1 month entitle <strong>Kumit at Home</strong> by Tytan Student Entrepreneurs group of
+                                            Manila Tytana Colleges.
+                                        </p>
                                     </textarea>
                                     @error('name')
                                         <div class="text-danger">
@@ -257,11 +274,22 @@
                             </div>
 
 
-                            <div class="row p-5">
+                            <div class="row px-5">
                                 <ul class="list-inline mb-0 mt-4 float-end">
-                                    <button type="submit" class="btn btn-dark btn-rounded w-lg waves-effect waves-light float-end"><i class="ri-edit-2-line"></i> Save</button>
+                                    <button type="button" class="btn btn-dark btn-rounded w-lg waves-effect waves-light float-end" data-bs-target="#bs-add-modal-center"  data-bs-toggle="modal">
+                                        <i class="ri-edit-2-line"></i> Add to Featured Projects
+                                    </button>
                                     <a class="btn list-inline-item float-end mx-4" href="{{ url()->previous() }}">Cancel</a>
                                 </ul>
+                            </div>
+                            <div class="float-end row p-3">
+                                <p class="text-muted font-size-12 mt-2">
+                                    <em>
+                                        <strong>*Featured projects are subject for approval by Caviom </strong>
+                                        before it can be displayed on your Charitable Organization's public profile.
+                                        The processing times for approval may usually take from 2 to 3 working days.
+                                    </em>
+                                </p>
                             </div>
 
                         </form>
@@ -273,25 +301,5 @@
 
     </div>
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function(){
-        var counter = 0;
-        if (counter == 5) {
-
-        } else {
-            $(document).on("click",".addeventmore",function(){
-                var whole_extra_item_add = $('#whole_extra_item_add').html();
-                $(this).closest(".add_item").append(whole_extra_item_add);
-                counter++;
-            });
-            $(document).on("click",'.removeeventmore',function(event){
-                $(this).closest(".delete_whole_extra_item_add").remove();
-                counter -= 1
-            });
-
-        }
-    });
-</script>
 
 @endsection
