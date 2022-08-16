@@ -31,7 +31,7 @@
                 <td>Thu, Dec 25, 2022 2:15 PM</td>
                 <td>2 days</td>
                 <td>
-                    <a href="" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                    <a href="{{ route('charity.projects.tasks.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                         <i class="mdi mdi-open-in-new"></i>
                     </a>
                 </td>
