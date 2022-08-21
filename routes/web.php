@@ -199,9 +199,19 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
         # Gift Givings
         Route::name('gifts.')->prefix('/gift-givings')->group(function () {
-            Route::get('/leads', function () {
-                return view('charity.donors.leads.all');
+            Route::get('', function () {
+                return view('charity.gifts.all');
             })->name('all');
+
+            # Charity Admin only
+            Route::middleware('charity.admin')->group(function () {
+                Route::get('/add', function () { // To add: Middleware must have sufficient star tokens
+                    return view('charity.gifts.add');
+                })->name('add');
+                Route::get('/featured/new/4d4666bb-554d-40b0-9b23-48f653c21e1e', function () { // Add middleware that star tokens must be sufficient
+                    return view('charity.main.projects.featured.add');
+                })->name('.feature');
+            });
         });
     });
 });

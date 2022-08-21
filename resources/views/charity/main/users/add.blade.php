@@ -356,8 +356,8 @@
 
                             <!-- Term & Conditions -->
                             <div class="row">
-                                <div class="col-12">
-                                    <label class="form-label m-0 fw-normal" for="is_agreed">By creating an account, I agree to Caviom's
+                                <div class="col-12 mt-4 text-center">
+                                    <label class="form-label m-0 fw-normal" for="is_agreed">By creating an account, I have read and agree to Caviom's
                                         <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#terms_of_service" class="text-link"><strong>Terms of Service</strong></a> and
                                         <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#privacy_policy" class="btn-link"><strong>Privacy Policy</strong></a>.
                                     </label>
@@ -365,7 +365,7 @@
                             </div>
 
                             <div class="row p-5">
-                                <ul class="list-inline mb-0 mt-4 float-end">
+                                <ul class="list-inline mb-0 float-end">
                                     <button type="button" class="btn btn-dark btn-rounded w-xl waves-effect waves-light float-end" data-bs-target="#bs-register-modal-center"  data-bs-toggle="modal">
                                         <i class="ri-user-add-line"></i> Create Account
                                     </button>
