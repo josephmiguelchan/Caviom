@@ -22,18 +22,20 @@
 
 
         <div class="col-12">
-            <div class="p-3">
-                <div class="float-end mt-4 mb-2">
-                    @if(Auth::user()->role == "Charity Admin")
-                        <a href="{{ route('charity.projects.add') }}" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light">
-                            <i class="mdi mdi-plus-circle-outline"></i> Add New
-                        </a>
-                    @endif
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <h2><strong>Projects</strong></h2>
-                        <p class="mb-2">List of All Projects</p>
+            <div class="card p-2">
+                <div class="card-body">
+                    <div class="float-end mt-4 mb-2">
+                        @if(Auth::user()->role == "Charity Admin")
+                            <a href="{{ route('charity.projects.add') }}" class="btn btn-sm w-lg btn-success waves-effect waves-light">
+                                <i class="mdi mdi-plus-circle-outline"></i> Add New
+                            </a>
+                        @endif
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h2><strong>Projects</strong></h2>
+                            <p class="mb-2">List of All Projects</p>
+                        </div>
                     </div>
                 </div>
             </div>

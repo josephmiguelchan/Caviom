@@ -108,7 +108,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <p>
-                                        The selected project [<strong> Lugaw for a Cause </strong>] and all of its tasks
+                                        The selected project and <strong>ALL OF ITS TASKS</strong>
                                         will be permanently removed. This action cannot be undone and will notify
                                         every users in your Charitable Organization. Continue?
                                     </p>
