@@ -61,8 +61,8 @@
                     </ul>
                 </li>
 
-                <li>
-                    <a href="index.html" class="waves-effect">
+                <li class="{{ Request::routeIs('gifts*')?'mm-active':''  }}">
+                    <a href="{{ route('gifts.all') }}" class="waves-effect">
                         <i class="ri-gift-line"></i>
                         <span>Gift Giving</span>
                     </a>

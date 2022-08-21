@@ -30,6 +30,9 @@
                     <div class="row">
                         <div class="col-md-12 p-5">
 
+                            @include('charity.modals.toc.terms-of-service')
+                            @include('charity.modals.toc.privacy-policy')
+
                             <div class="p-2">
                                 <form class="form-horizontal"
                                     action="{{ route('register') }}" method="POST" novalidate enctype='multipart/form-data'>
@@ -423,8 +426,8 @@
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" name="is_agreed" class="form-check-input" id="is_agreed" required>
                                                 <label class="form-label ms-1 fw-normal" for="is_agreed">I agree to Caviom's
-                                                    <a href="#" target="_blank" class="text-link"><strong>Terms of Service</strong></a> and
-                                                    <a href="#" target="_blank" class="text-link"><strong>Privacy Policy</strong></a>.
+                                                    <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#terms_of_service" class="text-link"><strong>Terms of Service</strong></a> and
+                                                    <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#privacy_policy" class="btn-link"><strong>Privacy Policy</strong></a>.
                                                 </label>
                                                 @error('is_agreed')
                                                     <div class="text-danger">

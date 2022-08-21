@@ -23,6 +23,10 @@
                     </ol>
 
                     @include('charity.modals.users')
+
+                    @include('charity.modals.toc.terms-of-service')
+                    @include('charity.modals.toc.privacy-policy')
+
                 </div>
             </div>
         </div>
@@ -351,27 +355,17 @@
                             </div>
 
                             <!-- Term & Conditions -->
-                            <div class="form-check row">
-                                <div class="col-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" name="is_agreed" class="form-check-input" id="is_agreed">
-                                        <label class="form-label ms-1 fw-normal" for="is_agreed">I agree to Caviom's
-                                            <a href="#" target="_blank" class="text-link"><strong>Terms of Service</strong></a> and
-                                            <a href="#" target="_blank" class="text-link"><strong>Privacy Policy</strong></a>.
-                                        </label>
-                                        @error('is_agreed')
-                                            <div class="text-danger">
-                                                <small>
-                                                    {{ $message }}
-                                                </small>
-                                            </div>
-                                        @enderror
-                                    </div>
+                            <div class="row">
+                                <div class="col-12 mt-4 text-center">
+                                    <label class="form-label m-0 fw-normal" for="is_agreed">By creating an account, I have read and agree to Caviom's
+                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#terms_of_service" class="text-link"><strong>Terms of Service</strong></a> and
+                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#privacy_policy" class="btn-link"><strong>Privacy Policy</strong></a>.
+                                    </label>
                                 </div>
                             </div>
 
                             <div class="row p-5">
-                                <ul class="list-inline mb-0 mt-4 float-end">
+                                <ul class="list-inline mb-0 float-end">
                                     <button type="button" class="btn btn-dark btn-rounded w-xl waves-effect waves-light float-end" data-bs-target="#bs-register-modal-center"  data-bs-toggle="modal">
                                         <i class="ri-user-add-line"></i> Create Account
                                     </button>
