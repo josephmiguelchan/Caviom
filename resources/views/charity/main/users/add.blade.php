@@ -23,6 +23,10 @@
                     </ol>
 
                     @include('charity.modals.users')
+
+                    @include('charity.modals.toc.terms-of-service')
+                    @include('charity.modals.toc.privacy-policy')
+
                 </div>
             </div>
         </div>
@@ -351,22 +355,12 @@
                             </div>
 
                             <!-- Term & Conditions -->
-                            <div class="form-check row">
+                            <div class="row">
                                 <div class="col-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" name="is_agreed" class="form-check-input" id="is_agreed">
-                                        <label class="form-label ms-1 fw-normal" for="is_agreed">I agree to Caviom's
-                                            <a href="#" target="_blank" class="text-link"><strong>Terms of Service</strong></a> and
-                                            <a href="#" target="_blank" class="text-link"><strong>Privacy Policy</strong></a>.
-                                        </label>
-                                        @error('is_agreed')
-                                            <div class="text-danger">
-                                                <small>
-                                                    {{ $message }}
-                                                </small>
-                                            </div>
-                                        @enderror
-                                    </div>
+                                    <label class="form-label m-0 fw-normal" for="is_agreed">By creating an account, I agree to Caviom's
+                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#terms_of_service" class="text-link"><strong>Terms of Service</strong></a> and
+                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#privacy_policy" class="btn-link"><strong>Privacy Policy</strong></a>.
+                                    </label>
                                 </div>
                             </div>
 
