@@ -155,9 +155,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::get('/edit/69a60048-d093-41d7-bf58-d620ec99c979', function () {
                     return view('charity.main.beneficiaries.edit');
                 })->name('.edit');
-                Route::post('/save/69a60048-d093-41d7-bf58-d620ec99c979', function () {
+                Route::post('/save', function () {
                 })->name('.update');
                 // To add - Route::get() for deleting individual beneficiary records.
+                // To add - Route::post() for storing newly created beneficiary records.
             });
 
 
