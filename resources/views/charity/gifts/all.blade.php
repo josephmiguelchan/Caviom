@@ -76,8 +76,8 @@
                                             </div>
                                             <div class="modal-body">
                                                 <p>
-                                                    Generating the tickets for this Gift Giving [ <strong>Changing the World One Child at a Time</strong> ]
-                                                    will notify every users in your Charitable Organization. Continue?
+                                                    You are about to attempt to generate tickets for the selected Gift Giving [ <strong>Changing the World One Child at a Time</strong> ].
+                                                    This action will notify every users in your Charitable Organization. Continue?
                                                 </p>
                                             </div>
                                             <div class="modal-footer">
