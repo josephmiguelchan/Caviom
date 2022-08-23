@@ -43,46 +43,47 @@
                         <div class="row mt-5">
                             <div class="col-lg-12">
                                 <div class="row">
-                                    <form action="" method="POST" id="edit_form"></form>
-                                    <dl class="row col-md-12">
-                                        <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Task:</strong></h4></dt>
-                                        <dt class="col-md-10 py-2">
-                                            Prepare the program flow for the opening of Dress Making Training 2022.
-                                        </dt>
+                                    <form action="" method="POST" id="edit_form">
+                                        <dl class="row col-md-12">
+                                            <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Task:</strong></h4></dt>
+                                            <dt class="col-md-10 py-2">
+                                                Prepare the program flow for the opening of Dress Making Training 2022.
+                                            </dt>
 
-                                        <!-- Edit note textarea should only be visible to whom the task is assigned to; otherwise, read only. -->
-                                        <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Note:</strong></h4></dt>
-                                        <dt class="col-md-10 py-2">
-                                            <textarea class="form-control" placeholder="Enter notes for this task (optional)..."
-                                                maxlength="280" name="note" id="textarea" rows="5" readonly>Prioritize this task as this will be urgent.</textarea>
-                                        </dt>
+                                            <!-- Edit note textarea should only be visible to whom the task is assigned to; otherwise, read only. -->
+                                            <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Note:</strong></h4></dt>
+                                            <dt class="col-md-10 py-2">
+                                                <textarea class="form-control" placeholder="Enter notes for this task (optional)..."
+                                                    maxlength="280" name="note" id="textarea" rows="5" readonly>Prioritize this task as this will be urgent.</textarea>
+                                            </dt>
 
-                                        <!-- Edit status dropdown should only be visible to whom the task is assigned to; otherwise, read only. -->
-                                        <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Status:</strong></h4></dt>
-                                        <dt class="col-md-10 py-2">
-                                            {{-- <span class="badge bg-warning">Pending</span> --}}
-                                            <select class="form-control select2-search-disable" name="status" disabled required>
-                                                <option disabled>Select status...</option>
-                                                <option value="Pending" selected>Pending</option>
-                                                <option value="In-Progress">In-Progress</option>
-                                                <option value="Completed">Completed</option>
-                                            </select>
-                                        </dt>
+                                            <!-- Edit status dropdown should only be visible to whom the task is assigned to; otherwise, read only. -->
+                                            <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Status:</strong></h4></dt>
+                                            <dt class="col-md-10 py-2">
+                                                {{-- <span class="badge bg-warning">Pending</span> --}}
+                                                <select class="form-control select2-search-disable" name="status" disabled required>
+                                                    <option disabled>Select status...</option>
+                                                    <option value="Pending" selected>Pending</option>
+                                                    <option value="In-Progress">In-Progress</option>
+                                                    <option value="Completed">Completed</option>
+                                                </select>
+                                            </dt>
 
-                                        <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Assigned by:</strong></h4></dt>
-                                        <dt class="col-md-10 py-2">
-                                            <a href="{{ route('charity.users.view') }}">Pangilinan, J.</a>
-                                        </dt>
-                                        <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Assigned To:</strong></h4></dt>
-                                        <dt class="col-md-10 py-2">
-                                            <a href="{{ route('charity.users.view') }}">Galleno, J.</a>
-                                        </dt>
-                                        <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Deadline Set:</strong></h4></dt>
-                                        <dt class="col-md-10 py-2">
-                                            <span class="badge rounded-pill bg-danger">LATE</span> Thu, Dec 25, 2022 2:15 PM
-                                        </dt>
+                                            <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Assigned by:</strong></h4></dt>
+                                            <dt class="col-md-10 py-2">
+                                                <a href="{{ route('charity.users.view') }}">Pangilinan, J.</a>
+                                            </dt>
+                                            <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Assigned To:</strong></h4></dt>
+                                            <dt class="col-md-10 py-2">
+                                                <a href="{{ route('charity.users.view') }}">Galleno, J.</a>
+                                            </dt>
+                                            <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Deadline Set:</strong></h4></dt>
+                                            <dt class="col-md-10 py-2">
+                                                <span class="badge rounded-pill bg-danger">LATE</span> Thu, Dec 25, 2022 2:15 PM
+                                            </dt>
 
-                                    </dl>
+                                        </dl>
+                                    </form>
                                 </div>
                             </div>
                         </div>

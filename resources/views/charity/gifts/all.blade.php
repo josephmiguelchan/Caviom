@@ -61,7 +61,7 @@
                                     <a data-bs-toggle="modal" data-bs-target="#download_modal" class="btn btn-sm btn-outline-dark waves-effect waves-light">
                                         <i class="mdi mdi-download"></i> Download
                                     </a>
-                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                    <a href="{{ route('gifts.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>

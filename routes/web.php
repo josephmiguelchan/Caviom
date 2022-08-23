@@ -203,6 +203,13 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
             Route::get('', function () {
                 return view('charity.gifts.all');
             })->name('all');
+            Route::get('/139e93ef-7823-406c-8c4f-00294d1e3b64', function () {
+                return view('charity.gifts.view');
+            })->name('view');
+            // To Add: Add Beneficiary to Gift Giving (via Dropdown)
+            // To Add: Add Beneficiary to Gift Giving (via Input Text)
+            // To Add: Remove Beneficiary from Gift Giving
+            // To Add: Generate tickets for a Gift Giving
 
             # Charity Admin only
             Route::middleware('charity.admin')->group(function () {
