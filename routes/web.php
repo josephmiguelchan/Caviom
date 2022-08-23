@@ -155,9 +155,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::get('/edit/69a60048-d093-41d7-bf58-d620ec99c979', function () {
                     return view('charity.main.beneficiaries.edit');
                 })->name('.edit');
-                Route::post('/save/69a60048-d093-41d7-bf58-d620ec99c979', function () {
+                Route::post('/save', function () {
                 })->name('.update');
                 // To add - Route::get() for deleting individual beneficiary records.
+                // To add - Route::post() for storing newly created beneficiary records.
             });
 
 
@@ -202,6 +203,13 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
             Route::get('', function () {
                 return view('charity.gifts.all');
             })->name('all');
+            Route::get('/139e93ef-7823-406c-8c4f-00294d1e3b64', function () {
+                return view('charity.gifts.view');
+            })->name('view');
+            // To Add: Add Beneficiary to Gift Giving (via Dropdown)
+            // To Add: Add Beneficiary to Gift Giving (via Input Text)
+            // To Add: Remove Beneficiary from Gift Giving
+            // To Add: Generate tickets for a Gift Giving
 
             # Charity Admin only
             Route::middleware('charity.admin')->group(function () {
