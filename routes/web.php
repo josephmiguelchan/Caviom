@@ -221,6 +221,16 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 })->name('.feature');
             });
         });
+
+        # Gift Givings
+        Route::name('audits.')->prefix('/audit-logs')->middleware('charity.admin')->group(function () {
+            Route::get('', function () {
+                return view('charity.audits.all');
+            })->name('all');
+            Route::get('/139e93ef-7823-406c-8c4f-00294d1e3b64', function () {
+                return view('charity.audits.view');
+            })->name('view');
+        });
     });
 });
 
