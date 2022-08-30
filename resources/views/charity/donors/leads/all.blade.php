@@ -25,7 +25,8 @@
         <div class="col-12">
             <div class="card p-3">
                 <div class="card-body">
-
+                    <h2><strong>Leads</strong></h2>
+                    <p class="mb-5">List of All Leads</p>
                     <table id="datatable" class="table table-bordered dt-responsive nowrap"
                         style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead class="table-light">

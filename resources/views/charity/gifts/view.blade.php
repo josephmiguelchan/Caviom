@@ -113,10 +113,10 @@
 
                         <hr>
 
-                        <p>
+                        <p><small>
                             <span class="text-primary"><strong>Note:</strong></span>
-                            <em>Beneficiaries of this Gift Giving is limited only to the Number of Packs initially set.</em>
-                        </p>
+                            <em>The maximum total of Beneficiaries of this Gift Giving is limited to the No. of Packs initially set by your Charity Admin.</em>
+                        </small></p>
 
                         <form action="" method="POST">
                             @csrf

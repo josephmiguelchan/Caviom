@@ -222,7 +222,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
             });
         });
 
-        # Gift Givings
+        # Audit Logs
         Route::name('audits.')->prefix('/audit-logs')->middleware('charity.admin')->group(function () {
             Route::get('', function () {
                 return view('charity.audits.all');
@@ -230,6 +230,20 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
             Route::get('/139e93ef-7823-406c-8c4f-00294d1e3b64', function () {
                 return view('charity.audits.view');
             })->name('view');
+        });
+
+        # Star Tokens
+        Route::name('star.tokens.')->prefix('/star-tokens')->middleware('charity.admin')->group(function () {
+            Route::get('', function () {
+                return view('charity.star-tokens.bal');
+            })->name('balance');
+            Route::get('/history', function () {
+                return view('charity.star-tokens.all');
+            })->name('history');
+            Route::get('/84d3ad07-fe44-4ba5-9205-e3d68e872fa0', function () {
+                return view('charity.star-tokens.view');
+            })->name('view');
+            // To add: Submit Order Star Tokens
         });
     });
 });
