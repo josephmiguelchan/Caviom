@@ -34,14 +34,14 @@
                             </div>
                             <div class="col-6">
                                 <h2 class="mt-5">
-                                    <a href="{{ route('star.tokens.history') }}" class="btn w-xl btn-outline-dark waves-effect waves-light"><i class="mdi mdi-open-in-new"></i> View Pending Orders</a>
+                                    <a href="{{ route('star.tokens.history') }}" class="btn btn-outline-dark waves-effect waves-light"><i class="mdi mdi-open-in-new"></i> View (0) Pending Orders</a>
                                 </h2>
                                 <h2 class="mt-4" style="color: #62896d">NOT SUBSCRIBED</h2>
                                 <p>Your Charitable Organization can work with up to (5) Projects.</p>
                             </div>
                         </div>
                         <div class="row px-5 pb-5">
-                            <button class="btn btn-rounded btn-dark waves-effect waves-light" style="background-color: #62896d">Click here to purchase Star Tokens</button>
+                            <a href="{{ route('star.tokens.order') }}" class="btn btn-rounded btn-dark waves-effect waves-light" style="background-color: #62896d">Click here to purchase Star Tokens</a>
                         </div>
                     </div><!-- end cardbody -->
                 </div><!-- end card -->

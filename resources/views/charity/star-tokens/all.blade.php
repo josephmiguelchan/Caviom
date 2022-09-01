@@ -60,7 +60,7 @@
                                 <td class="text-danger">Failed</td>
                                 <td>Total amount is incorrect from the specifie...</td>
                                 <td>
-                                    <a href="" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>
