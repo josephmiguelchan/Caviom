@@ -80,12 +80,12 @@
                                 <h6 class="m-0"> Notifications </h6>
                             </div>
                             <div class="col-auto">
-                                <a href="#!" class="small"> View All</a>
+                                <a href="{{ route('user.notifications.all') }}" class="small"> View All</a>
                             </div>
                         </div>
                     </div>
                     <div data-simplebar style="max-height: 230px;">
-                        <a href="" class="text-reset notification-item">
+                        <a href="{{ route('user.notifications.view') }}" class="text-reset notification-item">
                             <div class="d-flex">
                                 <div class="avatar-xs me-3">
                                     <span class="avatar-title bg-success rounded-circle font-size-16">
@@ -141,7 +141,7 @@
                     </div>
                     <div class="p-2 border-top">
                         <div class="d-grid">
-                            <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
+                            <a class="btn btn-sm btn-link font-size-14 text-center" href="{{ route('user.notifications.all') }}">
                                 <i class="mdi mdi-arrow-right-circle me-1"></i> View all..
                             </a>
                         </div>

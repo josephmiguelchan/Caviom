@@ -31,8 +31,8 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="note" class="form-label">Note (Optional):</label>
-                                <textarea class="form-control" name="note" id="note" rows="4" maxlength="50"
-                                    placeholder="Max. of 50 Characters only..."></textarea>
+                                <textarea class="form-control" name="note" id="note" rows="4" maxlength="280"
+                                    placeholder="Max. of 280 Characters only..."></textarea>
                                 @error('note')
                                     <div class="text-danger">
                                         {{ $message }}

@@ -61,14 +61,14 @@
                     </ul>
                 </li>
 
-                <li class="{{ Request::routeIs('gifts*')?'mm-active':''  }}">
+                <li class="{{ Request::routeIs('gifts*')?'mm-active':'' }}">
                     <a href="{{ route('gifts.all') }}" class="waves-effect">
                         <i class="ri-gift-line"></i>
                         <span>Gift Giving</span>
                     </a>
                 </li>
 
-                <li class="{{ Request::routeIs('audits*')?'mm-active':''  }}">
+                <li class="{{ Request::routeIs('audits*')?'mm-active':'' }}">
                     <a href="{{ route('audits.all') }}" class="waves-effect">
                         <i class="ri-file-search-line"></i>
                         <span>Audit Logs</span>
@@ -77,10 +77,10 @@
 
                 <li class="menu-title">Balance</li>
 
-                <li class="text-center">
-                    <a href="index.html">
+                <li class="text-center {{ Request::routeIs('star.tokens*')?'mm-active':'' }}">
+                    <a href="{{ route('star.tokens.balance') }}">
                         <i class="ri-coin-line"></i>
-                        <span>4,500 Star Tokens</span>
+                        <span>{{ Auth::user()->charity->star_tokens }} Star Tokens</span>
                     </a>
                 </li>
 

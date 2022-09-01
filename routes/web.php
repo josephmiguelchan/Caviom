@@ -30,6 +30,11 @@ Route::controller(CharityController::class)->middleware(['auth', 'verified', 'pr
     Route::prefix('/charity')->group(function () {
         Route::get('/dashboard', 'showDashboard')->name('dashboard');
     });
+    # Notifications
+    Route::prefix('/notifications')->group(function () {
+        Route::get('/', 'showNotifications')->name('user.notifications.all');
+        Route::get('/19caf827-1ba2-4a16-836a-d3d48643ca0a', 'viewNotification')->name('user.notifications.view');
+    });
     # User Profile
     Route::prefix('/profile')->group(function () {
         Route::get('/', 'showProfile')->name('user.profile');
@@ -222,7 +227,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
             });
         });
 
-        # Gift Givings
+        # Audit Logs
         Route::name('audits.')->prefix('/audit-logs')->middleware('charity.admin')->group(function () {
             Route::get('', function () {
                 return view('charity.audits.all');
@@ -230,6 +235,22 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
             Route::get('/139e93ef-7823-406c-8c4f-00294d1e3b64', function () {
                 return view('charity.audits.view');
             })->name('view');
+        });
+
+        # Star Tokens
+        Route::name('star.tokens.')->prefix('/star-tokens')->middleware('charity.admin')->group(function () {
+            Route::get('', function () {
+                return view('charity.star-tokens.bal');
+            })->name('balance');
+            Route::get('/history', function () {
+                return view('charity.star-tokens.all');
+            })->name('history');
+            Route::get('/84d3ad07-fe44-4ba5-9205-e3d68e872fa0', function () {
+                return view('charity.star-tokens.view');
+            })->name('view');
+            Route::get('/order', function () {
+                return view('charity.star-tokens.order');
+            })->name('order');
         });
     });
 });
