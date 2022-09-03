@@ -95,8 +95,8 @@
                                 <div class="flex-1">
                                     <h6 class="mb-1">Successful Purchase</h6>
                                     <div class="font-size-12 text-muted">
-                                        <p class="mb-1">This is to confirm that your Star Token Order no.
-                                            1124123 was successful..</p>
+                                        <p class="mb-1">This is to confirm that your Caviom Order with ID:
+                                            84D3AD was successful...</p>
                                         <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 3 min ago</p>
                                     </div>
                                 </div>

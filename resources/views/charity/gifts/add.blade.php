@@ -31,7 +31,8 @@
                             <div class="col-lg-8">
                                 <h2><strong>Add Gift Giving</strong></h2>
                                 <p class="text-muted font-size-12 mt-2"><em>
-                                    Tip: Subscribe your Charitable Organization to Caviom PRO to create unlimited Gift Givings.
+                                    {{-- Tip: Subscribe your Charitable Organization to Caviom PRO to create unlimited Gift Givings. --}}
+                                    <strong>*</strong>Once created, Gift Givings cannot be edited anymore. Please review information carefully before submitting.
                                 </em></p>
                             </div>
                             <div class="col-lg-4 mt-4">
@@ -41,32 +42,33 @@
                             </div>
                         </div>
                         <hr class="my-3">
-                        <form method="POST" action="">
+                        <form method="POST" action="/sa">
                             @csrf
-                            <!-- Name -->
-                            <div class="col-md-12 my-3">
-                                <div class="form-group">
-                                    <label for="name" class="form-label">*Name of Gift Giving Event</label>
-                                    <input class="form-control" name="name" id="name" type="text" required>
-                                    @error('name')
-                                        <div class="text-danger">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                            </div>
-
                             <div class="form-group mb-3 row">
+                                <!-- Name -->
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="name" class="form-label">*Name of Gift Giving Event</label>
+                                        <input class="form-control" name="name" id="name" type="text" required>
+                                        @error('name')
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <!-- Amount per Pack -->
-                                <div class="col-md-6">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="amount_per_pack" class="form-label">*Amount per Pack</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="peso_currency">Php</span>
                                             </div>
-                                            <input type="number" class="form-control" name="amount_per_pack" id="amount_per_pack"
-                                                placeholder="" max="999999" value="" required>
+                                            <input class="form-control input-mask" data-inputmask="'alias': 'numeric', 'groupSeparator': ',',
+                                                'digits': 2, 'digitsOptional': false, 'placeholder': '0'" name="amount_per_pack"
+                                                id="amount_per_pack" value="" required>
                                         </div>
                                         @error('amount_per_pack')
                                             <div class="text-danger">
@@ -77,11 +79,18 @@
                                 </div>
 
                                 <!-- No. of Packs -->
-                                <div class="col-md-6">
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="no_of_packs" class="form-label">*No. of Packs</label>
-                                        <input type="number" class="form-control" name="demo_vertical" id="demo_vertical"
-                                            value="" required>
+                                        <label for="no_of_packs" class="form-label">
+                                            *No. of Packs
+                                            <span data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                title="This is the total number of beneficiaries for this Event."
+                                                data-bs-original-title="yes">
+                                                <i class="mdi mdi-information-outline"></i>
+                                            </span>
+                                        </label>
+                                        <input type="number" class="form-control" name="no_of_packs" id="no_of_packs"
+                                            value="1" required>
                                         @error('no_of_packs')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -96,7 +105,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="objective" class="form-label">*Objective</label>
-                                        <textarea id="elm1" rows="7" name="objective" required maxlength="500">
+                                        <textarea id="elm1" rows="10" name="objective" required maxlength="500">
                                         </textarea>
                                         @error('objective')
                                             <div class="text-danger">
