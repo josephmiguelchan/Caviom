@@ -65,7 +65,7 @@
 
                         <hr>
 
-                        <div class="row px-3">
+                        <div class="row p-3">
                             <dl class="row col-lg-9 mb-0">
                                 <dt class="col-md-3"><h4 class="font-size-15"><strong>Category:</strong></h4></dt>
                                 <dt class="col-md-9">
