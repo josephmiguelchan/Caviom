@@ -201,6 +201,10 @@
     <script src="{{ asset('backend/assets/libs/admin-resources/bootstrap-filestyle/bootstrap-filestyle.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script>
 
+    <!-- form mask -->
+    <script src="{{ asset('backend/assets/libs/inputmask/jquery.inputmask.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/pages/form-mask.init.js') }}"></script>
+
     <script src="{{ asset('backend/assets/js/pages/form-advanced.init.js') }}"></script>
 
     <script>
