@@ -17,7 +17,8 @@ class CharitableOrganization extends Model
     ];
     protected $fillable = [
         'name',
-        'visibility_status', // Tentative
+        'profile_photo', // Tentative
+        'profile_status', // Tentative
         'verification_status', // Tentative
         'remarks_subject',
         'remarks_message',
