@@ -138,11 +138,13 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::middleware(['charity.admin'])->get('/add', function () {
                     return view('charity.main.users.add');
                 })->name('.add');
-                // To add - Route::get() for editing email address of pending accounts with Charity Admin access only.
-                // To add - Route::get() for deleting pending user accounts permanently with Charity Admin access only.
                 Route::get('/6a9ae42b-f01e-4b69-a074-7ec7933557fd', function () {
                     return view('charity.main.users.view');
                 })->name('.view');
+                Route::middleware('charity.admin')->group(function () {
+                    // To add - Route::get() for editing email address of pending accounts with Charity Admin access only.
+                    // To add - Route::get() for deleting pending user accounts permanently with Charity Admin access only.D
+                });
             });
 
 

@@ -68,21 +68,23 @@
                     </a>
                 </li>
 
-                <li class="{{ Request::routeIs('audits*')?'mm-active':'' }}">
-                    <a href="{{ route('audits.all') }}" class="waves-effect">
-                        <i class="ri-file-search-line"></i>
-                        <span>Audit Logs</span>
-                    </a>
-                </li>
+                @if(Auth::user()->role == "Charity Admin")
+                    <li class="{{ Request::routeIs('audits*')?'mm-active':'' }}">
+                        <a href="{{ route('audits.all') }}" class="waves-effect">
+                            <i class="ri-file-search-line"></i>
+                            <span>Audit Logs</span>
+                        </a>
+                    </li>
 
-                <li class="menu-title">Balance</li>
+                    <li class="menu-title">Balance</li>
 
-                <li class="text-center {{ Request::routeIs('star.tokens*')?'mm-active':'' }}">
-                    <a href="{{ route('star.tokens.balance') }}">
-                        <i class="ri-coin-line"></i>
-                        <span>{{ Auth::user()->charity->star_tokens }} Star Tokens</span>
-                    </a>
-                </li>
+                    <li class="text-center {{ Request::routeIs('star.tokens*')?'mm-active':'' }}">
+                        <a href="{{ route('star.tokens.balance') }}">
+                            <i class="ri-coin-line"></i>
+                            <span>{{ Auth::user()->charity->star_tokens }} Star Tokens</span>
+                        </a>
+                    </li>
+                @endif
 
             </ul>
         </div>
