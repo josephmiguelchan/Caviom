@@ -12,11 +12,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>STAR TOKENS</p>
-                <p class="mb-0">Refers to the main currency used in the CAVIOM platform. 
-                    If the user opt out from subscribing to CAVIOM PRO or CAVIOM PREMIUM 
-                    but still wants to avail the paid features of the platform. 
-                    Then, he/she can use the FREE Star Tokens or purchase prepaid star tokens.</p>
+                <p>Star Tokens refer to the main currency used in the <strong>CAVIOM</strong> platform.</p>
+                <p class="mb-0">
+                    If the user opt out from subscribing to <strong>CAVIOM PRO</strong> or <strong>CAVIOM PREMIUM</strong>
+                    but still wants to avail the paid features of the platform, then he/she can use
+                    the <strong>FREE</strong> Star Tokens or purchase prepaid star tokens.
+                </p>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
