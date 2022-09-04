@@ -30,59 +30,6 @@
                     <div class="card-body">
                         <h2 class="mb-4"><strong>My Notifications</strong></h2>
 
-                        {{-- <table id="datatable" class="table table-borderless dt-responsive nowrap table-hover"
-                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                            <thead class="table-bordered">
-                                <tr>
-                                    <th width="4%">ID</th>
-                                    <th width="10%">Category</th>
-                                    <th width="18%">Subject</th>
-                                    <th width="48%">Message</th>
-                                    <th width="13%">Date</th>
-                                    <th width="7%">Action</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr class="fw-bold">
-                                    <td>1</td>
-                                    <td>Star Tokens</td>
-                                    <td>Successful Purchase</td>
-                                    <td><span class="badge bg-danger">NEW</span> This is to confirm that your Star Token Order no. 1124123 was successful.. </td>
-                                    <td>3 min ago</td>
-                                    <td>
-                                        <a href="{{ route('user.notifications.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                            <i class="mdi mdi-open-in-new"></i> View
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr class="text-muted">
-                                    <td>2</td>
-                                    <td>Projects</td>
-                                    <td>New Project Created</td>
-                                    <td>A new project has been created by user John Dela Cruz named "Gawad Kalinga".. </td>
-                                    <td>1 hr ago</td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                            <i class="mdi mdi-open-in-new"></i> View
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr class="text-muted">
-                                    <td>3</td>
-                                    <td>Verification Updates</td>
-                                    <td>Rejected Application</td>
-                                    <td>We are very sorry but your application has been denied for the violating our terms.. </td>
-                                    <td>3 hrs ago</td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                            <i class="mdi mdi-open-in-new"></i> View
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table> --}}
-
                         <!-- Delete Modal -->
                         <div id="deleteModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                             <div class="modal-dialog modal-dialog-centered">
@@ -139,10 +86,12 @@
                                     </td>
                                     <td>Sep 3, 2022 2:15 PM</td>
                                     <td>
-                                        <a href="{{ route('user.notifications.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                        <a href="{{ route('user.notifications.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light"
+                                            title="View">
                                             <i class="mdi mdi-open-in-new"></i>
                                         </a>
-                                        <button data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-sm btn-outline-danger waves-effect waves-light">
+                                        <button data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-sm btn-outline-danger waves-effect waves-light"
+                                            title="Delete">
                                             <i class="mdi mdi-delete"></i>
                                         </button>
                                     </td>

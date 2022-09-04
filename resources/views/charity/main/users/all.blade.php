@@ -116,9 +116,11 @@
                                     <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
-                                    <a href="#" class="btn btn-sm btn-outline-danger waves-effect waves-light">
-                                        <i class="mdi mdi-trash-can-outline"></i> Edit Email / Delete Account
-                                    </a>
+                                    @if(Auth::user()->role == "Charity Admin")
+                                        <a href="#" class="btn btn-sm btn-outline-danger waves-effect waves-light">
+                                            <i class="mdi mdi-trash-can-outline"></i> Edit Email / Delete Account
+                                        </a>
+                                    @endif
                                 </td>
                             </tr>
                         </tbody>

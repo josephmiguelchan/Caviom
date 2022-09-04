@@ -65,16 +65,8 @@
 
                         <hr>
 
-                        <div class="row px-3">
+                        <div class="row p-3">
                             <dl class="row col-lg-9 mb-0">
-                                <dt class="col-md-3"><h4 class="font-size-15"><strong>Category:</strong></h4></dt>
-                                <dt class="col-md-9">
-                                    <h6 class="fw-bold">Star Tokens</h6>
-                                </dt>
-                                <dt class="col-md-3"><h4 class="font-size-15"><strong>Subject:</strong></h4></dt>
-                                <dt class="col-md-9">
-                                    <h6 class="fw-bold">Successful Purchase</h6>
-                                </dt>
                                 <dt class="col-md-3"><h4 class="font-size-15"><strong>Message:</strong></h4></dt>
                                 <dt class="col-md-9">
                                     <p>
@@ -95,7 +87,8 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <ul class="list-inline mb-0 float-end">
-                                        <button type="button" class="btn btn-outline-danger btn-rounded waves-effect waves-light w-xl mb-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                        <button type="button" class="btn btn-outline-danger btn-rounded waves-effect waves-light w-xl mb-2"
+                                            data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete">
                                             <i class="ri-delete-bin-line"></i> Delete
                                         </button>
                                     </ul>
