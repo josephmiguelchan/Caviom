@@ -82,6 +82,8 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
             # Public Profile - Only Charity Admins can access the ff:
             Route::name('profile')->prefix('/profile')->middleware(['charity.admin'])->group(function () {
+
+                # Public Profile
                 Route::get('', function () {
                     return view('charity.main.profile.index');
                 });
@@ -91,6 +93,18 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::get('/apply-for-verification', function () {
                     return view('charity.main.profile.verify');
                 })->name('.verify');
+
+
+                # Featured Projects
+                Route::get('/featured-projects', function () {
+                    return view('charity.main.profile.featured-projects.all');
+                })->name('.feat-projects');
+                Route::get('/featured-projects/add', function () { // Add middleware that star tokens must be sufficient
+                    return view('charity.main.profile.featured-projects.add');
+                })->name('.feat-projects.add');
+                Route::get('/featured-projects/new', function () { // Add middleware that star tokens must be sufficient
+                    return view('charity.main.profile.featured-projects.new');
+                })->name('.feat-projects.new');
             });
 
             # Projects
@@ -110,9 +124,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                     Route::get('/edit/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () {
                         return view('charity.main.projects.edit');
                     })->name('.edit');
-                    Route::get('/featured/new/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () { // Add middleware that star tokens must be sufficient
-                        return view('charity.main.projects.featured.add');
-                    })->name('.feature');
                 });
 
                 # Tasks

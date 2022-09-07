@@ -35,7 +35,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to add this to Featured Projects? This action costs <strong>450 Star Tokens / 1 Free Credit.</strong></p>
+                <p>
+                    You can no longer edit this Featured Project once submitted for approval review. This action will notify
+                    and deduct your Charitable Organization <strong>450 Star Tokens / 1 Free Credit</strong>. Continue?
+                </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>

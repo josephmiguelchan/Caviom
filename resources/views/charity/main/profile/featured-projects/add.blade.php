@@ -12,11 +12,13 @@
                 <div class="p-2">
                     <h1 class="mb-0" style="color: #62896d"><strong>PROJECTS</strong></h1>
                     <ol class="breadcrumb m-0 p-0">
-                        <li class="breadcrumb-item">Our Charitable Organization</li>
                         <li class="breadcrumb-item">
-                            <a href="{{ route('charity.projects') }}">Projects</a>
+                            <a href="{{ route('charity.profile') }}">Public Profile</a>
                         </li>
-                        <li class="breadcrumb-item active">Add to Featured Projects</li>
+                        <li class="breadcrumb-item active">
+                            <a href="{{ route('charity.profile.feat-projects') }}">Featured Projects</a>
+                        </li>
+                        <li class="breadcrumb-item active">Add</li>
                     </ol>
                     @include('charity.modals.featured-projects')
                 </div>
