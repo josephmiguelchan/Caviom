@@ -11,6 +11,7 @@
                 <div class="p-2">
                     <h1 class="mb-0" style="color: #62896d"><strong>FEATURED PROJECTS</strong></h1>
                     <ol class="breadcrumb m-0 p-0">
+                        <li class="breadcrumb-item">Our Charitable Organization</li>
                         <li class="breadcrumb-item">
                             <a href="{{ route('charity.profile') }}">Public Profile</a>
                         </li>
@@ -51,11 +52,11 @@
                         <thead class="table-light">
                             <tr>
                                 <th>ID</th>
-                                <th>Project</th>
-                                <th>Venue</th>
-                                <th>Date Added</th>
+                                <th>Project Name</th>
+                                <th>Date of Event</th>
                                 <th>Visibility Status</th>
                                 <th>Remarks</th>
+                                <th>Date Added</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -65,10 +66,36 @@
                             <tr>
                                 <td>1</td>
                                 <td><span class="badge bg-warning">PENDING</span> Medical Mission 2022</a></td>
-                                <td>OLSOFI</td>
                                 <td>June 12, 2022</td>
                                 <td><i class="ri-eye-off-line"></i> Hidden</td>
                                 <td>---</td>
+                                <td>Just now</td>
+                                <td>
+                                    <a href="{{ route('charity.profile.feat-projects.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                        <i class="mdi mdi-open-in-new"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><span class="badge bg-success">APPROVED</span> Lugaw for a Cause</a></td>
+                                <td>June 2, 2022</td>
+                                <td><i class="ri-eye-line"></i> Visible</td>
+                                <td>---</td>
+                                <td>2 days ago</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                        <i class="mdi mdi-open-in-new"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><span class="badge bg-danger">REJECTED</span> Spanish Inquisition</a></td>
+                                <td>June 1, 1672</td>
+                                <td><i class="ri-eye-off-line"></i> Hidden</td>
+                                <td>Inappropriate Project / Invalid date</td>
+                                <td>1 year ago</td>
                                 <td>
                                     <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View

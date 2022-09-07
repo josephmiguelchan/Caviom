@@ -99,6 +99,9 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::get('/featured-projects', function () {
                     return view('charity.main.profile.featured-projects.all');
                 })->name('.feat-projects');
+                Route::get('/featured-projects/6e216252-0443-4326-81a0-3722050bf571', function () {
+                    return view('charity.main.profile.featured-projects.view');
+                })->name('.feat-projects.view');
                 Route::get('/featured-projects/add', function () { // Add middleware that star tokens must be sufficient
                     return view('charity.main.profile.featured-projects.add');
                 })->name('.feat-projects.add');
