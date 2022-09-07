@@ -26,7 +26,7 @@
             <div class="card p-3">
                 <div class="card-body">
                     <div class="float-end">
-                        <div class="dropdown mx-0 mt-2">
+                        {{-- <div class="dropdown mx-0 mt-2">
                             <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="mdi mdi-dots-vertical"></i>
                             </a>
@@ -35,34 +35,52 @@
                                 <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exportModal">
                                     <i class="mdi mdi-download"></i> Export to Excel</button>
                             </div>
+                        </div> --}}
+
+                        <div class="row mt-4">
+                            <div class="col-md-5">
+                                <div class="btn-group" role="group" aria-label="Actions">
+                                    <a type="button" data-bs-toggle="modal" data-bs-target="#exportModal" class="btn btn-sm w-lg btn-warning waves-effect waves-light">
+                                        <i class="mdi mdi-download"></i> Export to Excel
+                                    </a>
+                                        <!-- Export to Excel Modal -->
+                                        <div id="exportModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>You are about to attempt to backup all your users. This action
+                                                            will notify all other users in your Charitable Organization. Continue?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                                                        <button type="button" class="btn btn-dark waves-effect waves-light w-sm">Yes</button>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div>
+
+                                    @if(Auth::user()->role == "Charity Admin")
+                                        <a type="button" href="{{ route('charity.users.add') }}" class="btn btn-sm w-lg btn-success waves-effect waves-light mx-1">
+                                            <i class="ri-user-add-line"></i> Unlock Account
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
+
                     </div>
-                    <!-- Export to Excel Modal -->
-                    <div id="exportModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>You are about to attempt to backup all your users. This action
-                                        will notify all other users in your Charitable Organization. Continue?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                                    <button type="button" class="btn btn-danger waves-effect waves-light w-sm">Yes</button>
-                                </div>
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div>
-                        <h2><strong>Users</strong></h2>
-                        <p>List of All Caviom Users in your Charitable Organization</p>
-                        @if(Auth::user()->role == "Charity Admin")
-                            <a href="{{ route('charity.users.add') }}" class="btn btn-sm w-md btn-outline-dark waves-effect waves-light">
-                                <i class="ri-user-add-line"></i> Register New Account
-                            </a>
-                        @endif
+
+                    <h2><strong>Users</strong></h2>
+                    <p>List of All Caviom Users in your Charitable Organization</p>
+                    @if(Auth::user()->role == "Charity Admin")
+                        <a href="{{ route('charity.users.add') }}" class="btn btn-sm w-md btn-outline-dark waves-effect waves-light">
+                            <i class="ri-user-add-line"></i> Register New Account
+                        </a>
+                    @endif
                 </div>
 
                 <div class="card-body">

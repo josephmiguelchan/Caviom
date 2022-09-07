@@ -24,13 +24,40 @@
         <div class="col-12">
             <div class="card p-3">
                 <div class="card-body">
-                    <h2><strong>Gift Givings</strong></h2>
-                    <p>List of All Gift Giving / Ticketing Events</p>
-                    @if(Auth::user()->role == "Charity Admin")
-                        <a href="{{ route('gifts.add') }}" class="btn btn-sm btn-rounded w-xl btn-dark waves-effect waves-light">
-                            Add New (<strong> 300 <i class="mdi mdi-star-circle-outline"></i> </strong>)
-                        </a>
-                    @endif
+                    {{-- <div class="mt-4">
+                        <div class="row justify-content-end">
+                            <div class="col-md-2">
+                                <div class="btn-group" role="group" aria-label="Actions">
+                                    @if(Auth::user()->role == "Charity Admin")
+                                        <a type="button" href="{{ route('gifts.add') }}" class="btn btn-sm w-lg btn-success waves-effect waves-light mx-1">
+                                            <i class="mdi mdi-plus"></i> Add New <strong>300 <i class="mdi mdi-star-circle-outline"></i></strong>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h2><strong>Gift Givings</strong></h2>
+                        <p>List of All Gift Giving / Ticketing Events</p>
+                    </div> --}}
+
+                    <div class="row px-2">
+                        <div class="col-lg-11">
+                            <h2><strong>Gift Givings</strong></h2>
+                            <p>List of All Gift Giving / Ticketing Events</p>
+                        </div>
+                        @if(Auth::user()->role == "Charity Admin")
+                            <div class="col-lg-1 mt-4">
+                                <div class="row justify-content-end">
+                                    <a type="button" href="{{ route('gifts.add') }}" class="btn btn-sm w-lg btn-success waves-effect waves-light mx-1">
+                                        <i class="mdi mdi-plus"></i> Add New
+                                    </a>
+                                </div>
+                                <small class="text-center"><em>(300 Star Tokens)</em></small>
+                            </div>
+                        @endif
+                    </div>
                 </div>
 
                 <div class="card-body">
@@ -60,7 +87,7 @@
                                 <td>
                                     <a data-bs-toggle="modal" data-bs-target="#download_modal" class="btn btn-sm btn-outline-dark waves-effect waves-light"
                                         title="Generate Tickets">
-                                        <i class="mdi mdi-ticket-confirmation-outline"></i> Generate
+                                        <i class="mdi mdi-ticket-confirmation-outline"></i> Download..
                                     </a>
                                     <a href="{{ route('gifts.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View

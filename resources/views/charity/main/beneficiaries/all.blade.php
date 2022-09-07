@@ -26,7 +26,7 @@
             <div class="card p-3">
                 <div class="card-body">
                     <div class="float-end">
-                        <div class="dropdown mx-0 my-2">
+                        {{-- <div class="dropdown mx-0 my-2">
                             <a href="#" class="dropdown-toggle arrow-none card-drop float-end" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="mdi mdi-dots-vertical"></i>
                             </a>
@@ -35,10 +35,25 @@
                                 <button type="button"  data-bs-toggle="modal" data-bs-target="#exportModal" class="dropdown-item">
                                     <i class="mdi mdi-download"></i> Export to Excel</button>
                             </div>
-                        </div>
-                        <a href="{{ route('charity.beneficiaries.add') }}" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light mt-4">
+                        </div> --}}
+                        {{-- <a href="{{ route('charity.beneficiaries.add') }}" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light mt-4">
                             <i class="mdi mdi-plus-circle-outline"></i> Add New
-                        </a>
+                        </a> --}}
+
+                        <div class="row mt-4">
+                            <div class="col-md-5">
+                                <div class="btn-group" role="group" aria-label="Actions">
+                                    <a type="button" data-bs-toggle="modal" data-bs-target="#exportModal" class="btn btn-sm w-lg btn-warning waves-effect waves-light">
+                                        <i class="mdi mdi-download"></i> Export to Excel
+                                    </a>
+                                    <a type="button" href="{{ route('charity.beneficiaries.add') }}" class="btn btn-sm w-lg btn-success waves-effect waves-light mx-1">
+                                        <i class="mdi mdi-plus"></i> Add New
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                     <!-- Export to Excel Modal -->
                     <div id="exportModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -54,7 +69,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                                    <button type="button" class="btn btn-danger waves-effect waves-light w-sm">Yes</button>
+                                    <button type="button" class="btn btn-dark waves-effect waves-light w-sm">Yes</button>
                                 </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
