@@ -48,6 +48,7 @@
                             <div class="col-lg-3">
                                 <div class="mb-3">
                                     <!-- if (status == 'Denied') -->
+                                    <!-- if (status == 'Approved'): Add disabled on button -->
                                     <a type="button" href="{{ route('charity.profile.verify') }}" class="btn btn-outline-dark w-100 waves-effect waves-light">
                                         <i class="mdi mdi-check-decagram"></i> Re-Apply for Verification
                                     </a>

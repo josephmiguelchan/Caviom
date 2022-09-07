@@ -55,8 +55,7 @@ Route::controller(CharityController::class)->middleware(['auth', 'verified', 'pr
 Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function () {
 
     Route::prefix('/charity')->group(function () {
-        # Donors and Donations Group Controller
-        // Route::controller(DonorController::class)->group(function() {
+        # Donors and Donations Group
         Route::prefix('/donors-and-donations')->group(function () {
 
             # Leads
@@ -77,10 +76,8 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
             })->name('prospects.view');
             // Route::get('/prospects/move/1', moveLead)->name('prospects.move');
         });
-        // });
 
-        # Our Charitable Organization Controller
-        // Route::controller(OurCharityOrgController::class)->group(function() {
+        # Our Charitable Organization
         Route::name('charity.')->prefix('/our-charitable-org')->group(function () {
 
             # Public Profile - Only Charity Admins can access the ff:
@@ -203,7 +200,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 })->name('.edit');
             });
         });
-        // });
 
         # Gift Givings
         Route::name('gifts.')->prefix('/gift-givings')->group(function () {

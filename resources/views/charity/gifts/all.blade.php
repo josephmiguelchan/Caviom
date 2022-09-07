@@ -58,8 +58,9 @@
                                 <td>300</td>
                                 <td>Php 150,000</td>
                                 <td>
-                                    <a data-bs-toggle="modal" data-bs-target="#download_modal" class="btn btn-sm btn-outline-dark waves-effect waves-light">
-                                        <i class="mdi mdi-download"></i> Download
+                                    <a data-bs-toggle="modal" data-bs-target="#download_modal" class="btn btn-sm btn-outline-dark waves-effect waves-light"
+                                        title="Generate Tickets">
+                                        <i class="mdi mdi-ticket-confirmation-outline"></i> Generate
                                     </a>
                                     <a href="{{ route('gifts.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View

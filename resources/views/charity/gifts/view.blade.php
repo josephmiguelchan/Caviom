@@ -123,7 +123,7 @@
                             <div class="mb-5">
                                 <div class="row">
                                     <div class="col-md-5">
-                                        <label for="name" class="form-label">Select from Beneficiaries List</label>
+                                        <label for="name" class="form-label">Search from Beneficiaries List</label>
                                         <div class="input-group">
                                             <select class="form-control select2">
                                                 <option selected hidden disabled>Select a Beneficiary...</option>
