@@ -100,15 +100,15 @@
                         <hr class="my-3">
 
                         <div class="float-end">
-                            <div class="row mt-3">
+                            <div class="row my-3 mx-2">
                                 <div class="col-md-12">
                                     <div class="btn-group" role="group" aria-label="Actions">
 
                                         @if(Auth::user()->role == "Charity Admin") <!-- and IF this $user->status == 'Pending' -->
-                                            <a type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-sm w-lg btn-outline-danger waves-effect waves-light">
+                                            <a type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn w-lg btn-outline-danger waves-effect waves-light">
                                                 <i class="mdi mdi-trash-can-outline"></i> Delete Account
                                             </a>
-                                            <a type="button" href="#" class="btn btn-sm w-lg btn-primary waves-effect waves-light mx-1">
+                                            <a type="button" href="#" class="btn w-lg btn-primary waves-effect waves-light mx-1">
                                                 <i class="mdi mdi-email-send-outline"></i> Resend Link
                                             </a>
                                         @endif
