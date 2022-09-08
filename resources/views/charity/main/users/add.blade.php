@@ -125,7 +125,7 @@
 
                                 <!-- Email Address -->
                                 <div class="col-md-6">
-                                    <label for="email" class="form-label">*Email Address</label>
+                                    <label for="email" class="form-label">*Email Address (Permanent)</label>
                                     <input type="email" class="form-control" name="email" id="email"
                                     value="" placeholder="@unless($errors->any())Enter the email address where the link will be sent to @endunless">
                                     @error('email')

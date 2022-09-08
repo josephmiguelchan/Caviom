@@ -76,11 +76,6 @@
 
                     <h2><strong>Users</strong></h2>
                     <p>List of All Caviom Users in your Charitable Organization</p>
-                    @if(Auth::user()->role == "Charity Admin")
-                        <a href="{{ route('charity.users.add') }}" class="btn btn-sm w-md btn-outline-dark waves-effect waves-light">
-                            <i class="ri-user-add-line"></i> Register New Account
-                        </a>
-                    @endif
                 </div>
 
                 <div class="card-body">
@@ -134,11 +129,12 @@
                                     <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
-                                    @if(Auth::user()->role == "Charity Admin")
-                                        <a href="#" class="btn btn-sm btn-outline-danger waves-effect waves-light">
-                                            <i class="mdi mdi-trash-can-outline"></i> Edit Email / Delete Account
+                                    {{-- @if(Auth::user()->role == "Charity Admin")
+                                        <!-- If this account is still Pending, allow changing of email add / deletion of this account  -->
+                                        <a href="{{ route('charity.users.edit') }}" class="btn btn-sm btn-outline-danger waves-effect waves-light">
+                                            <i class="mdi mdi-account-edit-outline"></i> Manage
                                         </a>
-                                    @endif
+                                    @endif --}}
                                 </td>
                             </tr>
                         </tbody>
