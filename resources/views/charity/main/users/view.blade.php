@@ -108,7 +108,7 @@
                                             <a type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn w-lg btn-outline-danger waves-effect waves-light">
                                                 <i class="mdi mdi-trash-can-outline"></i> Delete Account
                                             </a>
-                                            <a type="button" href="#" class="btn w-lg btn-primary waves-effect waves-light mx-1">
+                                            <a type="button" href="#" class="btn w-lg btn-primary waves-effect waves-light mx-1" title="Resend Verification Link to Email">
                                                 <i class="mdi mdi-email-send-outline"></i> Resend Link
                                             </a>
                                         @endif
