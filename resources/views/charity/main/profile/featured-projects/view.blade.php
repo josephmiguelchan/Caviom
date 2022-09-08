@@ -29,7 +29,7 @@
 
 
         <div class="col-12">
-            <div class="card p-3">
+            <div class="card p-4">
                 <div class="card-body">
                     <div class="row px-2">
                         <div class="col-lg-8">
