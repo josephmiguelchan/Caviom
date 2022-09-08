@@ -65,7 +65,8 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
             Route::get('/leads/9a7445e2-07eb-11ed-861d-0242ac120002', function () {
                 return view('charity.donors.leads.view');
             })->name('leads.view');
-            // Route::get('/leads/delete/1', deleteLead)->name('leads.delete');
+            // To add - Route::get() for Deleting Leads
+            // To add - Route::post() for Storing Leads to Prospects table and deleting the current record in Leads table.
 
             # Prospects
             Route::get('/prospects', function () {
@@ -74,7 +75,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
             Route::get('/prospects/93e5c76a-2316-46e4-b24f-b33131100457', function () {
                 return view('charity.donors.prospects.view');
             })->name('prospects.view');
-            // Route::get('/prospects/move/1', moveLead)->name('prospects.move');
+            // To add - Route::post() for Moving Prospects back to Leads table and deleting the current record in Prospects table.
         });
 
         # Our Charitable Organization
@@ -102,9 +103,11 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::get('/featured-projects/6e216252-0443-4326-81a0-3722050bf571', function () {
                     return view('charity.main.profile.featured-projects.view');
                 })->name('.feat-projects.view');
+                # Add Featured Project (from Existing)
                 Route::get('/featured-projects/add', function () { // Add middleware that star tokens must be sufficient
                     return view('charity.main.profile.featured-projects.add');
                 })->name('.feat-projects.add');
+                # Create New Featured Project
                 Route::get('/featured-projects/new', function () { // Add middleware that star tokens must be sufficient
                     return view('charity.main.profile.featured-projects.new');
                 })->name('.feat-projects.new');
@@ -152,10 +155,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::get('/6a9ae42b-f01e-4b69-a074-7ec7933557fd', function () {
                     return view('charity.main.users.view');
                 })->name('.view');
-                Route::middleware('charity.admin')->group(function () {
-                    // To add - Route::get() for editing email address of pending accounts with Charity Admin access only.
-                    // To add - Route::get() for deleting pending user accounts permanently with Charity Admin access only.D
+                Route::middleware('charity.admin')->group(function () { // Add middleware: Selected account must be pending (account not yet setup)
+                    // To add - Route::get() for deleting pending user accounts permanently (non-refundable).
                 });
+                // To add - Route::get() for backing up list of Users in their Org via Excel.
             });
 
 
@@ -177,6 +180,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 })->name('.update');
                 // To add - Route::get() for deleting individual beneficiary records.
                 // To add - Route::post() for storing newly created beneficiary records.
+                // To add - Route::get() for Backup list of beneficiaries in their Org via Excel.
             });
 
 
@@ -195,6 +199,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                     return view('charity.main.benefactors.edit');
                 })->name('.edit');
                 // To add - Route::get() for deleting individual benefactor records.
+                // To add - Route::get() for Backup list of benefactors in their Org via Excel.
             });
 
 
@@ -212,6 +217,8 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::get('/edit/7ba0c587-d347-4bcf-9e0e-28ec06066fb0', function () {
                     return view('charity.main.volunteers.edit');
                 })->name('.edit');
+                // To add - Route::get() for deleting individual volunteer records.
+                // To add - Route::get() for Backup list of volunteers in their Org via Excel.
             });
         });
 

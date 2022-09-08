@@ -43,26 +43,6 @@
                                     <a type="button" data-bs-toggle="modal" data-bs-target="#exportModal" class="btn btn-sm w-lg btn-warning waves-effect waves-light">
                                         <i class="mdi mdi-download"></i> Export to Excel
                                     </a>
-                                        <!-- Export to Excel Modal -->
-                                        <div id="exportModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>You are about to attempt to backup all your users. This action
-                                                            will notify all other users in your Charitable Organization. Continue?</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                                                        <button type="button" class="btn btn-dark waves-effect waves-light w-sm">Yes</button>
-                                                    </div>
-                                                </div><!-- /.modal-content -->
-                                            </div><!-- /.modal-dialog -->
-                                        </div>
-
                                     @if(Auth::user()->role == "Charity Admin")
                                         <a type="button" href="{{ route('charity.users.add') }}" class="btn btn-sm w-lg btn-success waves-effect waves-light mx-1">
                                             <i class="ri-user-add-line"></i> Unlock Account
@@ -76,11 +56,6 @@
 
                     <h2><strong>Users</strong></h2>
                     <p>List of All Caviom Users in your Charitable Organization</p>
-                    @if(Auth::user()->role == "Charity Admin")
-                        <a href="{{ route('charity.users.add') }}" class="btn btn-sm w-md btn-outline-dark waves-effect waves-light">
-                            <i class="ri-user-add-line"></i> Register New Account
-                        </a>
-                    @endif
                 </div>
 
                 <div class="card-body">
@@ -112,7 +87,7 @@
                                     <a href="mailto: liwanag.chris@gmail.com">liwanag.chris@gmail.com</a>
                                 </td>
                                 <td>Charity Admin</td>
-                                <td><i class="ri-checkbox-blank-circle-fill font-size-10 text-success align-middle me-2"></i>Active</td>
+                                <td><i class="ri-checkbox-blank-circle-fill font-size-10 text-warning align-middle me-2"></i>Pending</td>
                                 <td>
                                     <a href="{{ route('charity.users.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
@@ -129,16 +104,11 @@
                                     <a href="mailto: zluigi23@gmail.com">zluigi23@gmail.com</a>
                                 </td>
                                 <td>Charity Associate</td>
-                                <td><i class="ri-checkbox-blank-circle-fill font-size-10 text-warning align-middle me-2"></i>Pending</td>
+                                <td><i class="ri-checkbox-blank-circle-fill font-size-10 text-success align-middle me-2"></i>Active</td>
                                 <td>
                                     <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
-                                    @if(Auth::user()->role == "Charity Admin")
-                                        <a href="#" class="btn btn-sm btn-outline-danger waves-effect waves-light">
-                                            <i class="mdi mdi-trash-can-outline"></i> Edit Email / Delete Account
-                                        </a>
-                                    @endif
                                 </td>
                             </tr>
                         </tbody>
