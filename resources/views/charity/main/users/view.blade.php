@@ -39,7 +39,7 @@
                         <div class="text-center">
                             <div class="user-profile text-center mt-3">
                                 <div class="">
-                                    <img src="{{ (!empty(Auth::user()->profile_image))?url($avatar):url($defaultAvatar) }}"
+                                    <img src="{{ url($defaultAvatar) }}"
                                         alt="Profile Picture" class="avatar-xl rounded-circle">
                                 </div>
                                 <div class="mt-3">
@@ -66,7 +66,7 @@
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Email Address:</strong></h4></dt>
                                 <dt class="col-md-6"><a href="mailto: liwanag.chris@gmail.com">liwanag.chris@gmail.com</a></dt>
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Account Status:</strong></h4></dt>
-                                <dt class="col-md-6">Active</dt>
+                                <dt class="col-md-6">Pending</dt>
                             </dl>
                             <dl class="row mb-0 col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Date Registered:</strong></h4></dt>
@@ -95,6 +95,27 @@
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Tel No:</strong></h4></dt>
                                 <dt class="col-md-6">{{Auth::user()->info->tel_no}}</dt>
                             </dl>
+                        </div>
+
+                        <hr class="my-3">
+
+                        <div class="float-end">
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <div class="btn-group" role="group" aria-label="Actions">
+
+                                        @if(Auth::user()->role == "Charity Admin") <!-- and IF this $user->status == 'Pending' -->
+                                            <a type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-sm w-lg btn-outline-danger waves-effect waves-light">
+                                                <i class="mdi mdi-trash-can-outline"></i> Delete Account
+                                            </a>
+                                            <a type="button" href="#" class="btn btn-sm w-lg btn-primary waves-effect waves-light mx-1">
+                                                <i class="mdi mdi-email-send-outline"></i> Resend Link
+                                            </a>
+                                        @endif
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div><!-- end cardbody -->
                 </div><!-- end card -->

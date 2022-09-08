@@ -75,31 +75,35 @@
 
                                 <!-- Charitable Organization -->
                                 <div class="col-md-4">
-                                    <label for="charitable_organization" class="form-label">Charitable Organization</label>
-                                    <input class="form-control" id="charitable_organization" type="text"
-                                        value="{{ Auth::user()->charity->name }}" disabled readonly>
+                                    <div class="form-group">
+                                        <label for="charitable_organization" class="form-label">Charitable Organization</label>
+                                        <input class="form-control" id="charitable_organization" type="text"
+                                            value="{{ Auth::user()->charity->name }}" disabled readonly>
+                                    </div>
                                 </div>
 
                                 <!-- Organizational ID No. -->
                                 <div class="col-md-4">
-                                    <label for="organizational_id_no" class="form-label">
-                                        Organizational ID Number (Permanent)
-                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Leave blank if you wish to autogenerate a 10-digit ID No.
-                                            It must consist of numbers only (No character / Special Symbols).
-                                            Maximum length of ID must be up to 10 digits only. Each ID no. must be unique in the Charitable Organization." data-bs-original-title="yes">
-                                            <i class="mdi mdi-information-outline"></i>
-                                        </span>
-                                    </label>
-                                    <input class="form-control" name="organizational_id_no" id="organizational_id_no" type="text"
-                                        placeholder="@unless($errors->any())(Leave blank if you wish to auto-generate your ID no.) @endunless"
-                                        value="{{ old('organizational_id_no') }}">
-                                    @error('organizational_id_no')
-                                        <div class="text-danger">
-                                            <small>
-                                                {{ $message }}
-                                            </small>
-                                        </div>
-                                    @enderror
+                                    <div class="form-group">
+                                        <label for="organizational_id_no" class="form-label">
+                                            Organizational ID Number (Permanent)
+                                            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Leave blank if you wish to autogenerate a 10-digit ID No.
+                                                It must consist of numbers only (No character / Special Symbols).
+                                                Maximum length of ID must be up to 10 digits only. Each ID no. must be unique in the Charitable Organization." data-bs-original-title="yes">
+                                                <i class="mdi mdi-information-outline"></i>
+                                            </span>
+                                        </label>
+                                        <input class="form-control" name="organizational_id_no" id="organizational_id_no" type="text"
+                                            placeholder="@unless($errors->any())(Leave blank if you wish to auto-generate your ID no.) @endunless"
+                                            value="{{ old('organizational_id_no') }}">
+                                        @error('organizational_id_no')
+                                            <div class="text-danger">
+                                                <small>
+                                                    {{ $message }}
+                                                </small>
+                                            </div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
 
