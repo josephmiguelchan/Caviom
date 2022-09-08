@@ -12,15 +12,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Star Tokens are eme eme</p>
-                <p>Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Vivamus sagittis lacus vel
-                    augue laoreet rutrum faucibus dolor auctor.</p>
-                <p class="mb-0">Aenean lacinia bibendum nulla sed consectetur.
-                    Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Donec sed odio dui. Donec
-                    ullamcorper nulla non metus auctor
-                    fringilla.</p>
+                <p>Star Tokens refer to the main currency used in the <strong>CAVIOM</strong> platform.</p>
+                <p class="mb-0">
+                    If the user opt out from subscribing to <strong>CAVIOM PRO</strong> or <strong>CAVIOM PREMIUM</strong>
+                    but still wants to avail the paid features of the platform, then he/she can use
+                    the <strong>FREE</strong> Star Tokens or purchase prepaid star tokens.
+                </p>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

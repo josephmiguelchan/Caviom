@@ -55,8 +55,7 @@ Route::controller(CharityController::class)->middleware(['auth', 'verified', 'pr
 Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function () {
 
     Route::prefix('/charity')->group(function () {
-        # Donors and Donations Group Controller
-        // Route::controller(DonorController::class)->group(function() {
+        # Donors and Donations Group
         Route::prefix('/donors-and-donations')->group(function () {
 
             # Leads
@@ -77,14 +76,14 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
             })->name('prospects.view');
             // Route::get('/prospects/move/1', moveLead)->name('prospects.move');
         });
-        // });
 
-        # Our Charitable Organization Controller
-        // Route::controller(OurCharityOrgController::class)->group(function() {
+        # Our Charitable Organization
         Route::name('charity.')->prefix('/our-charitable-org')->group(function () {
 
             # Public Profile - Only Charity Admins can access the ff:
             Route::name('profile')->prefix('/profile')->middleware(['charity.admin'])->group(function () {
+
+                # Public Profile
                 Route::get('', function () {
                     return view('charity.main.profile.index');
                 });
@@ -94,6 +93,21 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::get('/apply-for-verification', function () {
                     return view('charity.main.profile.verify');
                 })->name('.verify');
+
+
+                # Featured Projects
+                Route::get('/featured-projects', function () {
+                    return view('charity.main.profile.featured-projects.all');
+                })->name('.feat-projects');
+                Route::get('/featured-projects/6e216252-0443-4326-81a0-3722050bf571', function () {
+                    return view('charity.main.profile.featured-projects.view');
+                })->name('.feat-projects.view');
+                Route::get('/featured-projects/add', function () { // Add middleware that star tokens must be sufficient
+                    return view('charity.main.profile.featured-projects.add');
+                })->name('.feat-projects.add');
+                Route::get('/featured-projects/new', function () { // Add middleware that star tokens must be sufficient
+                    return view('charity.main.profile.featured-projects.new');
+                })->name('.feat-projects.new');
             });
 
             # Projects
@@ -113,9 +127,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                     Route::get('/edit/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () {
                         return view('charity.main.projects.edit');
                     })->name('.edit');
-                    Route::get('/featured/new/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () { // Add middleware that star tokens must be sufficient
-                        return view('charity.main.projects.featured.add');
-                    })->name('.feature');
                 });
 
                 # Tasks
@@ -203,7 +214,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 })->name('.edit');
             });
         });
-        // });
 
         # Gift Givings
         Route::name('gifts.')->prefix('/gift-givings')->group(function () {

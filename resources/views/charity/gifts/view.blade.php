@@ -103,7 +103,7 @@
                             <div class="col-lg-4">
                                 @if(Auth::user()->role == "Charity Admin")
                                     <ul class="list-inline mb-0 float-end">
-                                        <a href="{{ route('charity.projects.feature') }}" class="btn btn-primary waves-effect w-xl waves-light mb-2">
+                                        <a href="{{ route('charity.profile.feat-projects.add') }}" class="btn btn-primary waves-effect w-xl waves-light mb-2">
                                             <i class="mdi mdi-star-outline"></i> Feature Project
                                         </a>
                                     </ul>
@@ -123,7 +123,7 @@
                             <div class="mb-5">
                                 <div class="row">
                                     <div class="col-md-5">
-                                        <label for="name" class="form-label">Select from Beneficiaries List</label>
+                                        <label for="name" class="form-label">Search from Beneficiaries List</label>
                                         <div class="input-group">
                                             <select class="form-control select2">
                                                 <option selected hidden disabled>Select a Beneficiary...</option>
