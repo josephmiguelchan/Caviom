@@ -18,8 +18,13 @@ class CharityController extends Controller
     // Redirect to Dashboard
     public function showDashboard()
     {
-        $myCharity = CharitableOrganization::findOrFail(Auth::user()->charitable_organization_id);
-        return view('charity.index', compact('myCharity'));
+        if (Auth::user()->role == "Charity Admin" || Auth::user()->role == "Charity Associate") {
+            return view('charity.index');
+        }
+
+        if (Auth::user()->role == "Root Admin") {
+            return redirect('admin.dashboard');
+        }
     }
 
     // Logout User
@@ -198,14 +203,14 @@ class CharityController extends Controller
     // Retrieve all notifications of User
     public function showNotifications()
     {
-        // Get all notifications where user == ID;
+        # Get all notifications where user == ID;
         return view('charity.user.notifications.all'); // include compact('notifs')
     }
 
     // Retrieve (one) selected notification of User
     public function viewNotification()
     {
-        // Get notification where code == ID;
+        # Get notification where code == ID;
         return view('charity.user.notifications.view'); // include compact('notifs')
     }
 }

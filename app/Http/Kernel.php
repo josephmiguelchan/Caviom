@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'charity.admin' => \App\Http\Middleware\IsCharityAdmin::class,
         'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
+        'admin.only' => \App\Http\Middleware\IsRootAdmin::class,
     ];
 }
