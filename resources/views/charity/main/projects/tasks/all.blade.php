@@ -32,7 +32,7 @@
                 <td>2 days</td>
                 <td>
                     <a href="{{ route('charity.projects.tasks.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                        <i class="mdi mdi-open-in-new"></i>
+                        <i class="mdi mdi-open-in-new"></i> View
                     </a>
                 </td>
             </tr>
@@ -48,7 +48,7 @@
                 <td>14 hours ago</td>
                 <td>
                     <a href="" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                        <i class="mdi mdi-open-in-new"></i>
+                        <i class="mdi mdi-open-in-new"></i> View
                     </a>
                 </td>
             </tr>
@@ -64,7 +64,7 @@
                 <td>Just now</td>
                 <td>
                     <a href="" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                        <i class="mdi mdi-open-in-new"></i>
+                        <i class="mdi mdi-open-in-new"></i> View
                     </a>
                 </td>
             </tr>
