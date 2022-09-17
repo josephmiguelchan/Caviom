@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Charity\CharityController;
+use App\Http\Controllers\RootAdmin\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -274,6 +275,38 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
     });
 });
 
+
+# Admin Public Page
+Route::controller(AdminController::class)->group(function () {
+    # Login
+    Route::get('/admin/login', 'adminLogin')->name('admin.login');
+
+    # Logout
+    Route::get('/logout', 'destroy')->name('admin.logout');
+});
+
+
+# Root Admin Group Controller
+Route::controller(AdminController::class)->middleware(['auth', 'verified', 'prevent-back-history', 'admin.only'])->group(function () {
+
+    # Admin Panel
+    Route::prefix('/admin')->name('admin.')->group(function () {
+        Route::get('/panel', 'showAdminPanel')->name('panel');
+
+        # Admin Profile
+        Route::prefix('/profile')->group(function () {
+            Route::get('/', 'showProfile')->name('profile');
+            Route::get('/edit', 'editProfile')->name('profile.edit');
+            Route::post('/store', 'storeProfile')->name('profile.store');
+        });
+
+        # Change Password
+        Route::prefix('/password')->group(function () {
+            Route::get('/change', 'editPassword')->name('password.change');
+            Route::post('/store', 'storePassword')->name('password.store');
+        });
+    });
+});
 
 
 require __DIR__ . '/auth.php';
