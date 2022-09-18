@@ -44,6 +44,7 @@
                             <div class="col-lg-12">
                                 <div class="row">
                                     <form action="" method="POST" id="edit_form">
+                                        @csrf
                                         <dl class="row col-md-12">
                                             <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Task:</strong></h4></dt>
                                             <dt class="col-md-10 py-2">

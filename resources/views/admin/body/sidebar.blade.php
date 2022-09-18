@@ -15,6 +15,7 @@
             </div>
             <div class="mt-3">
                 <h4 class="font-size-16 mb-1">ID No. {{ Auth::user()->info->organizational_id_no }}</h4>
+                <span class="badge bg-secondary">{{ Auth::user()->role }}</span>
             </div>
         </div>
 
@@ -22,69 +23,60 @@
         <div id="sidebar-menu">
             <!-- Left Menu Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
+
+                <li class="menu-title">Home</li>
+
+                <li>
+                    <a href="{{ route('admin.panel') }}" class="waves-effect">
+                        <i class="ri-home-4-line"></i>
+                        <span>Admin Panel</span>
+                    </a>
+                </li>
+
                 <li class="menu-title">Menu</li>
 
                 <li>
-                    <a href="{{ route('dashboard') }}" class="waves-effect">
-                        <i class="ri-dashboard-line"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-
-                <li class="{{ (Request::routeIs('leads*') or Request::routeIs('prospects*'))?'mm-active':''  }}">
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="ri-hand-coin-line"></i>
-                        <span>Donors and Donations</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('leads.all') }}" class="{{ Request::routeIs('leads*')?'active':'' }}">Leads</a></li>
-                        <li><a href="{{ route('prospects.all') }}" class="{{ Request::routeIs('prospects*')?'active':'' }}">Prospects</a></li>
-                    </ul>
-                </li>
-
-                <li class="{{ Request::routeIs('charity*')?'mm-active':''  }}">
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                    <a href="#" class="waves-effect">
                         <i class="ri-bank-line"></i>
-                        <span>Our Charitable Org</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li>
-                            @if(Auth::user()->role == "Charity Admin")
-                                <a class="{{ Request::routeIs('charity.profile*')?'active':'' }}" href="{{ route('charity.profile') }}">Public Profile</a>
-                            @endif
-                        </li>
-                        <li><a class="{{ Request::routeIs('charity.projects*')?'active':'' }}" href="{{ route('charity.projects') }}">Projects</a></li>
-                        <li><a class="{{ Request::routeIs('charity.users*')?'active':'' }}" href="{{ route('charity.users') }}">Users</a></li>
-                        <li><a class="{{ Request::routeIs('charity.beneficiaries*')?'active':'' }}" href="{{ route('charity.beneficiaries') }}">Beneficiaries</a></li>
-                        <li><a class="{{ Request::routeIs('charity.benefactors*')?'active':'' }}" href="{{ route('charity.benefactors') }}">Benefactors</a></li>
-                        <li><a class="{{ Request::routeIs('charity.volunteers*')?'active':'' }}" href="{{ route('charity.volunteers') }}">Volunteers</a></li>
-                    </ul>
-                </li>
-
-                <li class="{{ Request::routeIs('gifts*')?'mm-active':'' }}">
-                    <a href="{{ route('gifts.all') }}" class="waves-effect">
-                        <i class="ri-gift-line"></i>
-                        <span>Gift Giving</span>
+                        <span>Charitable Organizations</span>
                     </a>
                 </li>
 
-                @if(Auth::user()->role == "Charity Admin")
-                    <li class="{{ Request::routeIs('audits*')?'mm-active':'' }}">
-                        <a href="{{ route('audits.all') }}" class="waves-effect">
-                            <i class="ri-file-search-line"></i>
-                            <span>Audit Logs</span>
-                        </a>
-                    </li>
+                <li>
+                    <a href="#" class="waves-effect">
+                        <i class="ri-shopping-cart-2-line"></i>
+                        <span>Star Token Orders</span>
+                    </a>
+                </li>
 
-                    <li class="menu-title">Balance</li>
+                <li>
+                    <a href="#" class="waves-effect">
+                        <i class="ri-heart-add-line"></i>
+                        <span>Featured Projects</span>
+                    </a>
+                </li>
 
-                    <li class="text-center {{ Request::routeIs('star.tokens*')?'mm-active':'' }}">
-                        <a href="{{ route('star.tokens.balance') }}">
-                            <i class="ri-coin-line"></i>
-                            <span>{{ Auth::user()->charity->star_tokens }} Star Tokens</span>
-                        </a>
-                    </li>
-                @endif
+                <li>
+                    <a href="#" class="waves-effect">
+                        <i class="ri-admin-line"></i>
+                        <span>Admin User Accounts</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" class="waves-effect">
+                        <i class="ri-file-search-line"></i>
+                        <span>Audit Logs</span>
+                    </a>
+                </li>
+
+                <li class="{{ Request::routeIs('admin.notifiers*')?'mm-active':'' }}">
+                    <a href="{{ Route('admin.notifiers') }}" class="waves-effect">
+                        <i class="ri-notification-2-line"></i>
+                        <span>Notifiers</span>
+                    </a>
+                </li>
+
 
             </ul>
         </div>

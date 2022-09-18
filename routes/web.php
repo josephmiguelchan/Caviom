@@ -77,6 +77,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 return view('charity.donors.prospects.view');
             })->name('prospects.view');
             // To add - Route::post() for Moving Prospects back to Leads table and deleting the current record in Prospects table.
+            // To add - Route::post() for editing the remarks of Prospects.
         });
 
         # Our Charitable Organization
@@ -287,10 +288,10 @@ Route::controller(AdminController::class)->group(function () {
 
 
 # Root Admin Group Controller
-Route::controller(AdminController::class)->middleware(['auth', 'verified', 'prevent-back-history', 'admin.only'])->group(function () {
+Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->middleware(['auth', 'verified', 'prevent-back-history', 'admin.only'])
+    ->group(function () {
 
-    # Admin Panel
-    Route::prefix('/admin')->name('admin.')->group(function () {
+        # Admin Panel
         Route::get('/panel', 'showAdminPanel')->name('panel');
 
         # Admin Profile
@@ -305,8 +306,24 @@ Route::controller(AdminController::class)->middleware(['auth', 'verified', 'prev
             Route::get('/change', 'editPassword')->name('password.change');
             Route::post('/store', 'storePassword')->name('password.store');
         });
+
+        # Notifiers
+        Route::get('/notifiers', function () {
+            return view('admin.main.notifiers.all');
+        })->name('notifiers');
+        Route::get('/notifiers/add', function () {
+            return view('admin.main.notifiers.add');
+        })->name('notifiers.add');
+        Route::get('/notifiers/1', function () {
+            return view('admin.main.notifiers.view');
+        })->name('notifiers.view');
+        Route::get('/notifiers/edit/1', function () {
+            return view('admin.main.notifiers.edit');
+        })->name('notifiers.edit');
+        // To Add: Store New Notifier
+        // To Add: Update Notifier using $id
+        // To Add: Delete Notifier using $id
     });
-});
 
 
 require __DIR__ . '/auth.php';
