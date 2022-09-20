@@ -73,7 +73,7 @@ class CharityController extends Controller
                 'province' => ['required', 'string', 'min:3', 'max:64'],
                 'city' => ['required', 'string', 'min:3', 'max:64'],
                 'barangay' => ['required', 'string', 'min:3', 'max:64'],
-                'postal_code' => ['required', 'string', 'min:4', 'max:10'],
+                'postal_code' => ['required', 'numeric', 'size:4'],
             ],
             [
                 # Custom Error Messages
@@ -85,6 +85,8 @@ class CharityController extends Controller
                 'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
                 'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
                 'is_agreed.required' => 'You must first agree before submitting.',
+                'postal_code.size' => 'The postal code must have 4 numbers',
+                'postal_code.numeric' => 'The postal code must be in numeric format',
             ]
         );
 
