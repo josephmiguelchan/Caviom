@@ -23,8 +23,8 @@ return new class extends Migration
             $table->char('cel_no', 20);
             $table->char('tel_no', 20)->nullable();
             $table->string('work_position', 255);
-            $table->integer('organizational_id_no')->unsigned();
             $table->foreignId('address_id')->constrained(); // This should've been on the addresses table
+            $table->integer('organizational_id_no')->unsigned();
             // $table->string('id_number', 50);
             $table->timestamp('updated_at')->nullable();
         });

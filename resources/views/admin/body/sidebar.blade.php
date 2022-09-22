@@ -63,8 +63,8 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="#" class="waves-effect">
+                <li class="{{ Request::routeIs('admin.audit-logs*')?'mm-active':'' }}">
+                    <a href="{{ route('admin.audit-logs') }}" class="waves-effect">
                         <i class="ri-file-search-line"></i>
                         <span>Audit Logs</span>
                     </a>

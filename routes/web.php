@@ -307,22 +307,31 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
             Route::post('/store', 'storePassword')->name('password.store');
         });
 
+        # Audit Logs
+        Route::name('audit-logs')->prefix('/audit-logs')->group(function () {
+            Route::get('/', function () {
+                return view('admin.main.audits.all');
+            });
+        });
+
         # Notifiers
-        Route::get('/notifiers', function () {
-            return view('admin.main.notifiers.all');
-        })->name('notifiers');
-        Route::get('/notifiers/add', function () {
-            return view('admin.main.notifiers.add');
-        })->name('notifiers.add');
-        Route::get('/notifiers/1', function () {
-            return view('admin.main.notifiers.view');
-        })->name('notifiers.view');
-        Route::get('/notifiers/edit/1', function () {
-            return view('admin.main.notifiers.edit');
-        })->name('notifiers.edit');
-        // To Add: Store New Notifier
-        // To Add: Update Notifier using $id
-        // To Add: Delete Notifier using $id
+        Route::name('notifiers')->prefix('/notifiers')->group(function () {
+            Route::get('/', function () {
+                return view('admin.main.notifiers.all');
+            });
+            Route::get('/add', function () {
+                return view('admin.main.notifiers.add');
+            })->name('.add');
+            Route::get('/1', function () {
+                return view('admin.main.notifiers.view');
+            })->name('.view');
+            Route::get('/edit/1', function () {
+                return view('admin.main.notifiers.edit');
+            })->name('.edit');
+            // To Add: Store New Notifier
+            // To Add: Update Notifier using $id
+            // To Add: Delete Notifier using $id
+        });
     });
 
 
