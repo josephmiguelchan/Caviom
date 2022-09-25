@@ -73,7 +73,7 @@ class CharityController extends Controller
                 'province' => ['required', 'string', 'min:3', 'max:64'],
                 'city' => ['required', 'string', 'min:3', 'max:64'],
                 'barangay' => ['required', 'string', 'min:3', 'max:64'],
-                'postal_code' => ['required', 'numeric', 'size:4'],
+                'postal_code' => ['required', 'integer', 'digits:4'],
             ],
             [
                 # Custom Error Messages
