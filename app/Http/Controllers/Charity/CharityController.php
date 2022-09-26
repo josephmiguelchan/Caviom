@@ -85,8 +85,6 @@ class CharityController extends Controller
                 'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
                 'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
                 'is_agreed.required' => 'You must first agree before submitting.',
-                'postal_code.size' => 'The postal code must have 4 numbers',
-                'postal_code.numeric' => 'The postal code must be in numeric format',
             ]
         );
 
