@@ -21,8 +21,16 @@
 </head>
 
 <body style="background-color: #f7f3ea">
-    {{-- <div class="bg-overlay">
-    </div> --}}
+    {{-- <div class="bg-overlay"></div> --}}
+
+    <!-- Loader -->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner">
+                <i class="ri-loader-line spin-icon"></i>
+            </div>
+        </div>
+    </div>
 
     <!-- Header -->
     <header id="page-topbar" style="background-color: #62896d;">

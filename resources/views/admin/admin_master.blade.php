@@ -4,7 +4,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Caviom — @yield('title') | Charity Management System</title>
+    <title>Caviom — @yield('title') | Admin Panel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- App favicon -->
@@ -61,7 +61,7 @@
 
 </head>
 
-<body data-topbar="dark">
+<body data-topbar="dark" data-sidebar="dark">
 
     <!-- <body data-layout="horizontal" data-topbar="dark"> -->
 
@@ -77,10 +77,10 @@
     <!-- Begin page -->
     <div id="layout-wrapper">
 
-        @include('charity.body.header')
+        @include('admin.body.header')
 
         <!-- ========== Left Sidebar Start ========== -->
-        @include('charity.body.sidebar')
+        @include('admin.body.sidebar')
         <!-- Left Sidebar End -->
 
 
@@ -93,7 +93,7 @@
             @yield('charity')
             <!-- End Page-content -->
 
-            @include('charity.body.footer')
+            @include('admin.body.footer')
 
         </div>
         <!-- end main content-->

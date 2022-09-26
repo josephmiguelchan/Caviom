@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Charity;
+namespace App\Http\Controllers\RootAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
-use App\Models\CharitableOrganization;
 use App\Models\User;
 use App\Models\UserInfo;
 use Carbon\Carbon;
@@ -13,15 +12,29 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 
-class CharityController extends Controller
+class AdminController extends Controller
 {
-    // Redirect to Dashboard
-    public function showDashboard()
+    // Returns the Login page for Admins
+    public function adminLogin()
     {
-        return view('charity.index');
+        # If user is already authenticated, no need to return to the login admin page.
+        if (Auth::user()) {
+            if (Auth::user()->role == "Root Admin") {
+                return to_route('admin.panel');
+            } else {
+                return to_route('dashboard');
+            }
+        }
+        return view('admin.auth.login');
     }
 
-    // Logout User
+    // Show the Admin Panel home page
+    public function showAdminPanel()
+    {
+        return view('admin.index');
+    }
+
+    // Logout Admin
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
@@ -38,13 +51,13 @@ class CharityController extends Controller
     // Show User Profile
     public function showProfile()
     {
-        return view('charity.user.profile');
+        return view('admin.user.profile');
     }
 
     // Redirect to Edit Profile Page
     public function editProfile()
     {
-        return view('charity.user.edit');
+        return view('admin.user.edit');
     }
 
     // Update User Profile
@@ -73,7 +86,7 @@ class CharityController extends Controller
                 'province' => ['required', 'string', 'min:3', 'max:64'],
                 'city' => ['required', 'string', 'min:3', 'max:64'],
                 'barangay' => ['required', 'string', 'min:3', 'max:64'],
-                'postal_code' => ['required', 'integer', 'digits:4'],
+                'postal_code' => ['required', 'string', 'min:4', 'max:10'],
             ],
             [
                 # Custom Error Messages
@@ -85,8 +98,6 @@ class CharityController extends Controller
                 'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
                 'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
                 'is_agreed.required' => 'You must first agree before submitting.',
-                'postal_code.size' => 'The postal code must have 4 numbers',
-                'postal_code.numeric' => 'The postal code must be in numeric format',
             ]
         );
 
@@ -145,13 +156,13 @@ class CharityController extends Controller
             'alert-type' => 'success',
         );
 
-        return to_route('user.profile')->with($notification);
+        return to_route('admin.profile')->with($notification);
     }
 
     // Change User Password
     public function editPassword()
     {
-        return view('charity.user.password');
+        return view('admin.user.password');
     }
 
     // Update User Password
@@ -203,19 +214,5 @@ class CharityController extends Controller
         }
 
         return redirect()->back()->with($notification);
-    }
-
-    // Retrieve all notifications of User
-    public function showNotifications()
-    {
-        # Get all notifications where user == ID;
-        return view('charity.user.notifications.all'); // include compact('notifs')
-    }
-
-    // Retrieve (one) selected notification of User
-    public function viewNotification()
-    {
-        # Get notification where code == ID;
-        return view('charity.user.notifications.view'); // include compact('notifs')
     }
 }

@@ -10,7 +10,7 @@
             <div class="col-12">
                 <div class="">
                     <div class="p-2">
-                        <h1 class="mb-0" style="color: #62896d"><strong>{{ Str::of($myCharity->name)->upper() }}</strong></h1>
+                        <h1 class="mb-0" style="color: #62896d"><strong>{{ Str::of(Auth::user()->charity->name)->upper() }}</strong></h1>
                         <ol class="breadcrumb m-0 p-0 mb-3">
                             <li class="breadcrumb-item active">
                                 My Charitable Organization

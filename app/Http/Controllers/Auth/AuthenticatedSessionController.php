@@ -34,6 +34,10 @@ class AuthenticatedSessionController extends Controller
 
         # Create Audit Logs record for User Login
 
+        if (Auth::user()->role == "Root Admin") {
+            return to_route('admin.panel');
+        }
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
