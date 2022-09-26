@@ -40,10 +40,13 @@
                             <dd class="col-sm-9"><a href="{{ route('charity.users.view') }}">Pangilinan, J.</a></dd>
 
                             <dt class="col-sm-3">Table</dt>
-                            <dd class="col-sm-9">gift_givings</dd>
+                            <dd class="col-sm-9">Gift Giving</dd>
 
                             <dt class="col-sm-3">Record ID</dt>
                             <dd class="col-sm-9">139e93ef-7823-406c-8c4f-00294d1e3b64</dd>
+
+                            <dt class="col-sm-3">Action</dt>
+                            <dd class="col-sm-9">Charity Admin generated gift giving tickets for [ $name ].</dd>
 
                             {{-- <dt class="col-sm-3">Fields</dt>
                             <dd class="col-sm-9">description</dd>
