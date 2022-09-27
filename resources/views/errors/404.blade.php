@@ -13,7 +13,7 @@
                             <h5>Sorry, the page you are looking for is not found.</h5>
 
                             <a class="btn btn-info mb-5 waves-effect waves-light mt-4"
-                                href="{{ url('/') }}" style="background-color: #62896d">
+                                href="{{ route('dashboard') }}" style="background-color: #62896d">
                                 Back to Home
                             </a>
                         </div>

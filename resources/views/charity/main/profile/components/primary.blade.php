@@ -146,8 +146,8 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
                     data-bs-parent="#accordion">
                 <div class="card-body">
-                    <!-- Primary Info & Address -->
-                        <h4 class="mt-4" style="color: #62896d">Primary Information</h4>
+                        <!-- Label -->
+                        <h4 class="mt-4" style="color: #62896d">Label</h4>
 
                         <div class="form-group mb-3 row">
                             <!-- Category -->
@@ -196,6 +196,15 @@
                             </div>
                         </div>
 
+                        <!-- Primary Info & Address -->
+                        <h4 class="mt-4" style="color: #62896d">Primary Information & Address</h4>
+
+                        <!-- Dev note: Might delete this checkbox below -->
+                        <div class="form-check form-switch mb-4" dir="ltr">
+                            <input type="checkbox" name="use_own_info" class="form-check-input" id="use_own_info">
+                            <label class="form-check-label" for="use_own_info">Use my own information</label>
+                        </div>
+
                         <!-- Email Address -->
                         <div class="form-group mb-3 row">
                             <div class="col-12">
@@ -209,11 +218,6 @@
                                 <input class="form-control" name="email" id="email" type="email"
                                     placeholder="@unless($errors->any())Ex. info@mycharity.org @endunless"
                                     value="{{ old('email') }}" required>
-                                <!-- Dev note: Might delete this checkbox below -->
-                                <div class="form-check form-switch mt-1" dir="ltr">
-                                    <input type="checkbox" name="use_own_email" class="form-check-input" id="use_own_email">
-                                    <label class="form-check-label" for="use_own_email">Use my own email address</label>
-                                </div>
                                 @error('email')
                                     <div class="text-danger">
                                         <small>
@@ -233,11 +237,6 @@
                                         <input class="form-control" name="cel_no" id="cel_no" type="tel"
                                             placeholder="@unless($errors->any())Ex. 09981234567 @endunless" required
                                             value="{{ old('cel_no') }}">
-                                        <!-- Dev note: Might delete this checkbox below -->
-                                        <div class="form-check form-switch mt-1" dir="ltr">
-                                            <input type="checkbox" name="use_own_cel" class="form-check-input" id="use_own_cel">
-                                            <label class="form-check-label" for="use_own_cel">Use my own Cellphone no.</label>
-                                        </div>
                                         @error('cel_no')
                                             <div class="text-danger">
                                                 <small>
@@ -256,11 +255,6 @@
                                         <label for="tel_no" class="form-label">Telephone No.</label>
                                         <input class="form-control" name="tel_no" id="tel_no" type="tel" required
                                             placeholder="@unless($errors->any())Ex. 82531234 @endunless" value="{{ old('tel_no') }}">
-                                        <!-- Dev note: Might delete this checkbox below -->
-                                        <div class="form-check form-switch mt-1" dir="ltr">
-                                            <input type="checkbox" name="use_own_tel" class="form-check-input" id="use_own_tel">
-                                            <label class="form-check-label" for="use_own_tel">Use my own Telephone no.</label>
-                                        </div>
                                         @error('tel_no')
                                             <div class="text-danger">
                                                 <small>
@@ -271,14 +265,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <h4 class="mt-4" style="color: #62896d">Physical Address</h4>
-
-                        <!-- Dev note: Might delete this checkbox below -->
-                        <div class="form-check form-switch mb-4" dir="ltr">
-                            <input type="checkbox" name="use_own_address" class="form-check-input" id="use_own_address">
-                            <label class="form-check-label" for="use_own_address">Use my own current address</label>
                         </div>
 
                         <!-- Address Line 1 -->

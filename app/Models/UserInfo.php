@@ -15,4 +15,13 @@ class UserInfo extends Model
     {
         return $this->belongsTo(Address::class, 'address_id', 'id');
     }
+
+    protected $casts = [
+        'first_name' => 'encrypted',
+        'middle_name' => 'encrypted',
+        'last_name' => 'encrypted',
+        'cel_no' => 'encrypted',
+        'tel_no' => 'encrypted',
+        'work_position' => 'encrypted',
+    ];
 }
