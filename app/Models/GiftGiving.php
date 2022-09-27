@@ -14,7 +14,7 @@ class GiftGiving extends Model
         'start_at',
     ];
 
-    public function GiftGivingBEneficiaries()
+    public function GiftGivingBeneficiaries()
     // gift_giving_beneficiaries
     {
         return $this->hasMany(Gift_Giving_Beneficiaries::class, 'gift_giving_id', 'id');
@@ -42,12 +42,4 @@ class GiftGiving extends Model
         'no_of_packs',
         'total_budget',
     ];
- 
-    public function getRouteKeyName()
-    {
-        return 'code';
-    }
-
-
- 
 }
