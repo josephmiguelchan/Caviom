@@ -17,13 +17,13 @@ return new class extends Migration
             $table->id();
             // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('first_name', 255);
-            $table->string('last_name', 255);
-            $table->string('middle_name', 255)->nullable();
-            $table->char('cel_no', 20);
-            $table->char('tel_no', 20)->nullable();
-            $table->string('work_position', 255);
-            $table->foreignId('address_id')->constrained(); // This should've been on the addresses table
+            $table->text('first_name');
+            $table->text('last_name');
+            $table->text('middle_name')->nullable();
+            $table->text('cel_no');
+            $table->text('tel_no')->nullable();
+            $table->text('work_position');
+            $table->foreignId('address_id')->constrained();
             $table->integer('organizational_id_no')->unsigned();
             // $table->string('id_number', 50);
             $table->timestamp('updated_at')->nullable();
