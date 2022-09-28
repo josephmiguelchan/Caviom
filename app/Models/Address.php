@@ -9,4 +9,9 @@ class Address extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function info()
+    {
+        return $this->hasOne(UserInfo::class, 'address_id', 'id');
+    }
 }

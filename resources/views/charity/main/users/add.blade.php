@@ -1,6 +1,7 @@
 @extends('charity.charity_master')
 @section('title', 'Add User')
 @section('charity')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 @php
     $avatar = 'upload/avatar_img/'.Auth::user()->profile_image;
@@ -47,7 +48,7 @@
                             </div>
                         </div>
                         <hr class="my-3">
-                        <form method="POST" action="" enctype="multipart/form-data" id="add_form">
+                        <form method="POST" action="{{route('charity.users.store')}}" enctype="multipart/form-data" id="add_form">
                             @csrf
 
                             <h4 class="mt-4" style="color: #62896d">Account</h4>
@@ -56,16 +57,16 @@
                                 <!-- User Role -->
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="user_role" class="form-label">*Account Type</label>
+                                        <label for="role" class="form-label">*Account Type</label>
                                         <button type="button" data-bs-target=".bs-example-modal-center" title="Learn more" class="btn btn-sm btn-link" data-bs-toggle="modal">
                                             <i class="mdi mdi-information-outline"></i> What are Account Types?
                                         </button>
-                                        <select class="form-control select2-search-disable" name="user_role" id="user_role">
+                                        <select class="form-control select2-search-disable" name="role" id="role">
                                             <option selected disabled>Select an Account Type</option>
                                             <option value="Charity Admin">Charity Admin ( 2000 Star Tokens )</option>
                                             <option value="Charity Associate">Charity Associate ( 1500 Star Tokens )</option>
                                         </select>
-                                        @error('user_role')
+                                        @error('role')
                                             <div class="text-danger">
                                                 {{ $message }}
                                             </div>
@@ -109,7 +110,7 @@
 
                             <div class="form-group mb-3 row">
                                 <!-- Profile Photo -->
-                                <div class="col-md-6">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="profile_image" class="form-label">
                                             Profile Photo (Optional)
@@ -127,12 +128,32 @@
                                     </div>
                                 </div>
 
+                                <!-- Profile Photo Preview -->
+                                <div class="col-md-2">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">  </label>
+                                   <div class="col-sm-10">
+                                       <img id="showImage" class="rounded avatar-lg" src="{{ asset('upload/avatar_img/no_avatar.png') }}" alt="Profile picture preview">
+                                   </div>
+                                </div>
+
                                 <!-- Email Address -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label for="email" class="form-label">*Email Address (Permanent)</label>
                                     <input type="email" class="form-control" name="email" id="email"
-                                    value="" placeholder="@unless($errors->any())Enter the email address where the link will be sent to @endunless">
+                                    value="{{old('email')}}" placeholder="@unless($errors->any())Enter the email address where the link will be sent to @endunless">
                                     @error('email')
+                                        <div class="text-danger">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+
+                                <!-- Work Position -->
+                                <div class="col-md-4">
+                                    <label for="work_position" class="form-label">*Position in the Organization</label>
+                                    <input type="text" class="form-control" name="work_position" id="work_position"
+                                    value="{{old('work_position')}}" placeholder="@unless($errors->any())Enter your work position @endunless">
+                                    @error('work_position')
                                         <div class="text-danger">
                                             {{ $message }}
                                         </div>
@@ -153,13 +174,11 @@
                                             </span>
                                         </label>
                                         <input class="form-control" name="password" id="password" type="password"
-                                            placeholder="Enter password" value="">
+                                            placeholder="Enter password" value="{{old('password')}}">
 
                                         @error('password')
                                             <div class="text-danger">
-                                                <small>
-                                                    {{ $message }}
-                                                </small>
+                                                {{ $message }}
                                             </div>
                                         @enderror
                                     </div>
@@ -168,14 +187,11 @@
                                 <!-- Confirm Password -->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="password_confirmation" class="form-label">*Confirm Password</label>
-                                        <input class="form-control" name="password_confirmation" data-parsley-equalto="#password"
-                                            id="password_confirmation" type="password" placeholder="Retype password">
-                                        @error('password_confirmation')
+                                        <label for="confirm_password" class="form-label">*Confirm Password</label>
+                                        <input class="form-control" name="confirm_password" id="confirm_password" type="password" placeholder="Retype password">
+                                        @error('confirm_password')
                                             <div class="text-danger">
-                                                <small>
-                                                    {{ $message }}
-                                                </small>
+                                                {{ $message }}
                                             </div>
                                         @enderror
                                     </div>
@@ -202,7 +218,7 @@
                                     <div class="form-group">
                                         <label for="first_name" class="form-label">*First Name</label>
                                         <input type="text" class="form-control" name="first_name" id="first_name"
-                                            value="" placeholder="@unless($errors->any())Enter first name @endunless">
+                                            value="{{old('first_name')}}" placeholder="@unless($errors->any())Enter first name @endunless">
                                         @error('first_name')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -216,7 +232,7 @@
                                     <div class="form-group">
                                         <label for="middle_name" class="form-label">Middle Name (Optional)</label>
                                         <input type="text" class="form-control" name="middle_name" id="middle_name"
-                                            value="" placeholder="@unless($errors->any())Enter middle name @endunless">
+                                            value="{{old('middle_name')}}" placeholder="@unless($errors->any())Enter middle name @endunless">
                                         @error('middle_name')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -229,7 +245,7 @@
                                 <div class="col-md-4">
                                     <label for="last_name" class="form-label">*Last Name</label>
                                     <input type="text" class="form-control" name="last_name" id="last_name"
-                                        value="" placeholder="@unless($errors->any())Enter last name @endunless">
+                                        value="{{old('last_name')}}" placeholder="@unless($errors->any())Enter last name @endunless">
                                     @error('last_name')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -244,7 +260,7 @@
                                     <div class="form-group">
                                         <label for="cel_no" class="form-label">*Cellphone No.</label>
                                         <input class="form-control" name="cel_no" id="cel_no" type="tel"
-                                            value="" placeholder="@unless($errors->any())Enter mobile number @endunless">
+                                            value="{{old('cel_no')}}" placeholder="@unless($errors->any())Enter mobile number @endunless">
                                         @error('cel_no')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -258,7 +274,7 @@
                                     <div class="form-group">
                                         <label for="tel_no" class="form-label">Telephone No.</label>
                                         <input class="form-control" name="tel_no" id="tel_no" type="tel"
-                                            value="" placeholder="@unless($errors->any())Enter telephone number @endunless">
+                                            value="{{old('tel_no')}}" placeholder="@unless($errors->any())Enter telephone number @endunless">
                                         @error('tel_no')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -275,7 +291,7 @@
                                 <div class="col-12">
                                     <label for="address_line_one" class="form-label">*Address Line 1</label>
                                     <input class="form-control" name="address_line_one" id="address_line_one" type="text"
-                                        value="" placeholder="@unless($errors->any())Enter street no, street address, building name, etc.  @endunless">
+                                        value="{{ old('address_line_one') }}" placeholder="@unless($errors->any())Enter street no, street address, building name, etc.  @endunless">
                                     @error('address_line_one')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -289,7 +305,7 @@
                                 <div class="col-12">
                                     <label for="address_line_two" class="form-label">Address Line 2 (Optional)</label>
                                     <input class="form-control" name="address_line_two" id="address_line_two" type="text"
-                                        value="" placeholder="@unless($errors->any())Enter apartment, unit, building, floor no, etc. @endunless">
+                                        value="{{old('address_line_two')}}" placeholder="@unless($errors->any())Enter apartment, unit, building, floor no, etc. @endunless">
                                     @error('address_line_two')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -304,7 +320,7 @@
                                     <div class="form-group">
                                         <label for="province" class="form-label">*Province</label>
                                         <input class="form-control" name="province" id="province" type="text"
-                                            value="" placeholder="@unless($errors->any())Enter province @endunless">
+                                            value="{{old('province')}}" placeholder="@unless($errors->any())Enter province @endunless">
                                         @error('province')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -318,7 +334,7 @@
                                     <div class="form-group">
                                         <label for="city" class="form-label">*City / Municipality</label>
                                         <input class="form-control" name="city" id="city" type="text"
-                                            value="" placeholder="@unless($errors->any())Enter city @endunless">
+                                            value="{{old('city')}}" placeholder="@unless($errors->any())Enter city @endunless">
                                         @error('city')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -334,13 +350,13 @@
                                     <div class="form-group">
                                         <label for="barangay" class="form-label">*Barangay</label>
                                         <input class="form-control" name="barangay" id="barangay" type="text"
-                                            value="" placeholder="@unless($errors->any())Enter barangay @endunless">
+                                            value="{{old('barangay')}}" placeholder="@unless($errors->any())Enter barangay @endunless">
                                         @error('barangay')
                                             <div class="text-danger">
                                                 {{ $message }}
                                             </div>
                                         @enderror
-                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- Postal Code -->
@@ -348,7 +364,7 @@
                                     <div class="form-group">
                                         <label for="postal_code" class="form-label">*Postal Code</label>
                                         <input class="form-control" name="postal_code" id="postal_code" type="text"
-                                            value="" placeholder="@unless($errors->any())Enter postal code @endunless">
+                                            value="{{old('postal_code')}}" placeholder="@unless($errors->any())Enter postal code @endunless">
                                         @error('postal_code')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -386,15 +402,16 @@
     </div>
 </div>
 
+
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#profile_image').change(function(e) {
+    $(document).ready(function(){
+        $('#profile_image').change(function(e){
             var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#showImage').attr('src', e.target.result);
+            reader.onload = function(e){
+                $('#showImage').attr('src',e.target.result);
             }
             reader.readAsDataURL(e.target.files['0']);
-        })
-    }),
+        });
+    });
 </script>
 @endsection

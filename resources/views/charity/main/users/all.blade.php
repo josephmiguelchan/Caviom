@@ -40,9 +40,9 @@
                         <div class="row mt-4">
                             <div class="col-md-5">
                                 <div class="btn-group" role="group" aria-label="Actions">
-                                    <a type="button" data-bs-toggle="modal" data-bs-target="#exportModal" class="btn btn-sm w-lg btn-warning waves-effect waves-light">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#exportModal" class="btn btn-sm w-lg btn-warning waves-effect waves-light">
                                         <i class="mdi mdi-download"></i> Export to Excel
-                                    </a>
+                                    </button>
                                     @if(Auth::user()->role == "Charity Admin")
                                         <a type="button" href="{{ route('charity.users.add') }}" class="btn btn-sm w-lg btn-success waves-effect waves-light mx-1">
                                             <i class="ri-user-add-line"></i> Unlock Account
@@ -77,40 +77,25 @@
 
 
                         <tbody>
+                            @foreach ($Users as $key => $item)
                             <tr>
-                                <td>1</td>
-                                <td><span class="badge bg-light">2022090831</span></td>
-                                <td>Liwanag</td>
-                                <td>Christopher</td>
-                                <td>@chris_liwanag24</td>
+                                <td>{{$key+1}}</td>
+                                <td><span class="badge bg-light">{{$item->info->organizational_id_no}}</span></td>
+                                <td>{{$item->info->last_name}}</td>
+                                <td>{{$item->info->first_name}}</td>
+                                <td>{{empty(!$item->username)?'@'.$item->username:'---' }}                                </td>
                                 <td>
-                                    <a href="mailto: liwanag.chris@gmail.com">liwanag.chris@gmail.com</a>
+                                    <a href="mailto: {{$item->email}}">{{$item->email}}</a>
                                 </td>
-                                <td>Charity Admin</td>
-                                <td><i class="ri-checkbox-blank-circle-fill font-size-10 text-warning align-middle me-2"></i>Pending</td>
+                                <td>{{$item->role}}</td>
+                                <td><i class="ri-checkbox-blank-circle-fill font-size-10 align-middle me-2 {{($item->status == 'Active')?'text-success':'text-warning'}}"></i>{{($item->status == 'Active')?'Active':'Pending'}}</td>  <!--change color based on status-->
                                 <td>
-                                    <a href="{{ route('charity.users.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                    <a href="{{ route('charity.users.view',$item->code) }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td><span class="badge bg-light">2022052132</span></td>
-                                <td>Zamora</td>
-                                <td>Luigi</td>
-                                <td>@zluigi_23</td>
-                                <td>
-                                    <a href="mailto: zluigi23@gmail.com">zluigi23@gmail.com</a>
-                                </td>
-                                <td>Charity Associate</td>
-                                <td><i class="ri-checkbox-blank-circle-fill font-size-10 text-success align-middle me-2"></i>Active</td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                        <i class="mdi mdi-open-in-new"></i> View
-                                    </a>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
 

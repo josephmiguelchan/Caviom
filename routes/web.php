@@ -4,6 +4,7 @@ use App\Http\Controllers\Charity\CharityController;
 use App\Http\Controllers\RootAdmin\AdminController;
 use App\Http\Controllers\Charity\AuditLogController;
 use App\Http\Controllers\Charity\GiftGivingController;
+use App\Http\Controllers\Charity\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -150,20 +151,51 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
             # Users
             Route::name('users')->prefix('/users')->group(function () {
-                Route::get('', function () {
-                    return view('charity.main.users.all');
+
+                # View All user
+                Route::get('/', [UserController::class, 'AllUser']);
+
+                # Add User
+                Route::middleware(['charity.admin'])->get('/add', [UserController::class, 'UnlockUser'])->name('.add');
+
+                # Backup  User
+                Route::get('/export', [UserController::class, 'BackupUser'])->name('.export');
+
+                # View User Detail
+                Route::get('/{code}', [UserController::class, 'ViewUserDetail'])->name('.view');
+
+                # Charity Admins Only
+                Route::middleware(['charity.admin'])->group(function () {
+
+                    # Store User
+                    Route::post('/store', [UserController::class, 'StoreUser'])->name('.store');
+
+                    # Delete (Pending Only) User
+                    Route::get('/delete/{code}', [UserController::class, 'DeleteUser'])->name('.delete');
                 });
-                Route::middleware(['charity.admin'])->get('/add', function () {
-                    return view('charity.main.users.add');
-                })->name('.add');
-                Route::get('/6a9ae42b-f01e-4b69-a074-7ec7933557fd', function () {
-                    return view('charity.main.users.view');
-                })->name('.view');
+
+
                 Route::middleware('charity.admin')->group(function () { // Add middleware: Selected account must be pending (account not yet setup)
                     // To add - Route::get() for deleting pending user accounts permanently (non-refundable).
                 });
                 // To add - Route::get() for backing up list of Users in their Org via Excel.
             });
+
+            // Route::name('users')->prefix('/users')->group(function () {
+            //     Route::get('', function () {
+            //         return view('charity.main.users.all');
+            //     });
+            //     Route::middleware(['charity.admin'])->get('/add', function () {
+            //         return view('charity.main.users.add');
+            //     })->name('.add');
+            //     Route::get('/6a9ae42b-f01e-4b69-a074-7ec7933557fd', function () {
+            //         return view('charity.main.users.view');
+            //     })->name('.view');
+            //     Route::middleware('charity.admin')->group(function () { // Add middleware: Selected account must be pending (account not yet setup)
+            //         // To add - Route::get() for deleting pending user accounts permanently (non-refundable).
+            //     });
+            //     // To add - Route::get() for backing up list of Users in their Org via Excel.
+            // });
 
 
             # Beneficiaries
