@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 # For Generating Excel
-// use App\Exports\UsersExport;
-// use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -305,23 +305,23 @@ class UserController extends Controller
         return to_route('charity.users')->with($notification);
     }
 
-    // public function BackupUser()
-    // {
-    //     #Send Notification
+    public function BackupUser()
+    {
+        #Send Notification
 
 
-    //     #Create Audit Logs
-    //     $log = new AuditLog;
-    //     $log->user_id = Auth::user()->id;
-    //     $log->action_type = 'GENERATE EXCEL';
-    //     $log->charitable_organization_id = Auth::user()->charitable_organization_id;
-    //     $log->table_name = 'User, UserInfo, Address';
-    //     $log->record_id = NUll;
-    //     $log->action = 'Charity Admin generated excel to backup the User ';
-    //     $log->performed_at = Carbon::now();
-    //     $log->save();
+        #Create Audit Logs
+        $log = new AuditLog;
+        $log->user_id = Auth::user()->id;
+        $log->action_type = 'GENERATE EXCEL';
+        $log->charitable_organization_id = Auth::user()->charitable_organization_id;
+        $log->table_name = 'User, UserInfo, Address';
+        $log->record_id = 'N/A';
+        $log->action = 'Charity Admin generated Excel to backup all Users in ' . Auth::user()->charity->name;
+        $log->performed_at = Carbon::now();
+        $log->save();
 
 
-    //     return Excel::download(new UsersExport, 'users.xlsx');
-    // }
+        return Excel::download(new UsersExport, Auth::user()->charity->name . ' - Users.xlsx');
+    }
 }
