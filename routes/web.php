@@ -3,6 +3,7 @@
 use App\Http\Controllers\Charity\CharityController;
 use App\Http\Controllers\RootAdmin\AdminController;
 use App\Http\Controllers\Charity\AuditLogController;
+use App\Http\Controllers\Charity\GiftGivingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -227,26 +228,63 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
         # Gift Givings
         Route::name('gifts.')->prefix('/gift-givings')->group(function () {
-            Route::get('', function () {
-                return view('charity.gifts.all');
-            })->name('all');
-            Route::get('/139e93ef-7823-406c-8c4f-00294d1e3b64', function () {
-                return view('charity.gifts.view');
-            })->name('view');
-            // To Add: Add Beneficiary to Gift Giving (via Dropdown)
-            // To Add: Add Beneficiary to Gift Giving (via Input Text)
-            // To Add: Remove Beneficiary from Gift Giving
-            // To Add: Generate tickets for a Gift Giving
+
+            # To add: Middleware must have sufficient star tokens
+            Route::get('/all', [GiftGivingController::class, 'AllGiftGiving'])->name('all');
+
+            # View Gift Giving Details
+            Route::get('/view/{code}', [GiftGivingController::class, 'ViewGiftGivingProjectDetail'])->name('view');
+
+            # Add Beneficiary to Gift Giving (via Dropdown)
+            Route::post('/store/beneficiaries/{code}', [GiftGivingController::class, 'StoreSelectedBeneficiary'])->name('store.selected.beneficiaries');
+
+            # Add Beneficiary to Gift Giving (via Input Text)
+            Route::post('/store/custom/beneficiaries/{code}', [GiftGivingController::class, 'StoreCustomBeneficiary'])->name('store.custom.selected.beneficiaries');
+
+            # Remove Beneficiary from Gift Giving
+            Route::get('/delete/beneficiaries/{code}', [GiftGivingController::class, 'DeleteGiftGivingBeneficiaries'])->name('delete.selected.beneficiaries');
+
+            # Generate tickets for a Gift Giving
+            Route::get('/generate/ticket/{code}', [GiftGivingController::class, 'GenerateTicket'])->name('generate.ticket');
 
             # Charity Admin only
             Route::middleware('charity.admin')->group(function () {
-                Route::get('/add', function () { // To add: Middleware must have sufficient star tokens
-                    return view('charity.gifts.add');
-                })->name('add');
+
+                # Create Gift Giving Forms
+                Route::get('/add', [GiftGivingController::class, 'AddGiftGiving'])->name('add');
+
+                # Store new Gift Giving Project
+                Route::post('/store', [GiftGivingController::class, 'StoreGiftGiving'])->name('store');
+
+                # (TO DO) Feature Gift Giving
                 Route::get('/featured/new/4d4666bb-554d-40b0-9b23-48f653c21e1e', function () { // Add middleware that star tokens must be sufficient
                     return view('charity.main.projects.featured.add');
                 })->name('.feature');
             });
+
+
+
+
+            // Route::get('', function () {
+            //     return view('charity.gifts.all');
+            // })->name('all');
+            // Route::get('/139e93ef-7823-406c-8c4f-00294d1e3b64', function () {
+            //     return view('charity.gifts.view');
+            // })->name('view');
+            // // To Add: Add Beneficiary to Gift Giving (via Dropdown)
+            // // To Add: Add Beneficiary to Gift Giving (via Input Text)
+            // // To Add: Remove Beneficiary from Gift Giving
+            // // To Add: Generate tickets for a Gift Giving
+
+            // # Charity Admin only
+            // Route::middleware('charity.admin')->group(function () {
+            //     Route::get('/add', function () { // To add: Middleware must have sufficient star tokens
+            //         return view('charity.gifts.add');
+            //     })->name('add');
+            //     Route::get('/featured/new/4d4666bb-554d-40b0-9b23-48f653c21e1e', function () { // Add middleware that star tokens must be sufficient
+            //         return view('charity.main.projects.featured.add');
+            //     })->name('.feature');
+            // });
         });
 
         # Audit Logs

@@ -15,7 +15,6 @@ class GiftGiving extends Model
     ];
 
     public function GiftGivingBeneficiaries()
-    // gift_giving_beneficiaries
     {
         return $this->hasMany(Gift_Giving_Beneficiaries::class, 'gift_giving_id', 'id');
     }
@@ -25,9 +24,7 @@ class GiftGiving extends Model
         return $this->belongsTo(User::class, 'last_downloaded_by', 'id');
     }
 
-  
     protected $fillable = [
-        
         'id',
         'code',
         'charitable_organization_id',
