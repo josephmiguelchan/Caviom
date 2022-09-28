@@ -79,32 +79,30 @@
                                 <th>Record ID</th> --}}
                                 <th>Description</th>
                                 <th>Action</th>
-                              
+
                             </tr>
                         </thead>
 
 
                         <tbody>
-                            @foreach ($logs as $key => $item)
-                                
-                           
+                        @foreach ($logs as $key => $item)
                             <tr>
                                 <td>{{$key + 1}}</td>
                                 <td>{{$item->getuser->username}}</td>
                                 <td>{{$item->action_type}}</td>
                                 <td>{{ Carbon\Carbon::parse($item->performed_at)->diffForHumans() }}</td>
-                                
+
                                 {{-- <td>{{$item->table_name}}</td>
                                 <td>{{$item->record_id}}</td> --}}
                                 <td>{{Str::limit($item->action, 70)}}</td>
-                         
+
                                 <td>
                                     <button class="btn btn-sm btn-outline-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_view_{{$key}}">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </button>
                                 </td>
                             </tr>
-                            @endforeach
+                        @endforeach
                         </tbody>
                     </table>
 

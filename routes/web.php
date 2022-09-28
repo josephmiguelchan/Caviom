@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Charity\CharityController;
 use App\Http\Controllers\RootAdmin\AdminController;
+use App\Http\Controllers\Charity\AuditLogController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -250,12 +251,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
         # Audit Logs
         Route::name('audits.')->prefix('/audit-logs')->middleware('charity.admin')->group(function () {
-            Route::get('', function () {
-                return view('charity.audits.all');
-            })->name('all');
-            Route::get('/139e93ef-7823-406c-8c4f-00294d1e3b64', function () {
-                return view('charity.audits.view');
-            })->name('view');
+            Route::get('/auditlogs/all', [AuditLogController::class, 'AllAuditLogs'])->name('all');
+            // Route::get('/139e93ef-7823-406c-8c4f-00294d1e3b64', function () {
+            //     return view('charity.audits.view');
+            // })->name('view');
         });
 
         # Star Tokens
