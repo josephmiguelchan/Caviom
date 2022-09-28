@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
-// use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class GiftGivingController extends Controller
 {
@@ -320,60 +320,58 @@ class GiftGivingController extends Controller
     } // End Method
 
 
-    // public function GenerateTicket($code)
-    // {
-    //     # Retrieve the records using $code
-    //     $GiftGiving = GiftGiving::where('code', $code)->firstOrFail();
-    //     $tickets = GiftGivingBeneficiaries::where('gift_giving_id', $GiftGiving->id)->get();
+    public function GenerateTicket($code)
+    {
+        # Retrieve the records using $code
+        $GiftGiving = GiftGiving::where('code', $code)->firstOrFail();
+        $tickets = GiftGivingBeneficiary::where('gift_giving_id', $GiftGiving->id)->get();
 
-    //     # Users can only access their own charity's records
-    //     if ($GiftGiving->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        # Users can only access their own charity's records
+        if ($GiftGiving->charitable_organization_id == Auth::user()->charitable_organization_id) {
 
-    //         # Must have at least one beneficiary before generating tickets
-    //         if ($tickets->count() < 1) {
+            # Must have at least one beneficiary before generating tickets
+            if ($tickets->count() < 1) {
 
-    //             $notification = array(
-    //                 'message' => 'Gift Giving must have at least one (1) beneficiary first before generating tickets',
-    //                 'alert-type' => 'error'
-    //             );
+                $notification = array(
+                    'message' => 'Gift Giving must have at least one (1) beneficiary first before generating tickets',
+                    'alert-type' => 'error'
+                );
 
-    //             return redirect()->back()->with($notification);
-    //         }
+                return redirect()->back()->with($notification);
+            }
 
-    //         # Retrieve the last batch no. from the gift giving.
-    //         $batch_no = $GiftGiving->batch_no;
+            # Retrieve the last batch no. from the gift giving.
+            $batch_no = $GiftGiving->batch_no;
 
-    //         # Increment Batch no. by +1
-    //         $GiftGiving->update([
-    //             'last_downloaded_by' => Auth::id(),
-    //             'batch_no' => $batch_no + 1,
-    //         ]);
+            # Increment Batch no. by +1
+            $GiftGiving->update([
+                'last_downloaded_by' => Auth::id(),
+                'batch_no' => $batch_no + 1,
+            ]);
 
-    //         $pdf = PDF::loadView('charity.gifts.generate_ticket', compact('tickets'));
+            $pdf = PDF::loadView('charity.gifts.generate_ticket', compact('tickets'));
 
-    //         # Audit Logs Creation
+            # Audit Logs Creation
 
-    //         $log = new AuditLog;
-    //         $log->user_id = Auth::user()->id;
-    //         $log->action_type = 'GENERATE PDF';
-    //         $log->charitable_organization_id = Auth::user()->charitable_organization_id;
-    //         $log->table_name = 'Gift Giving';
-    //         $log->record_id = $GiftGiving->code;
-    //         $log->action = 'Charity Admin generated tickets for the Gift Giving ['. $GiftGiving->name.'] with batch no. ' . $GiftGiving->batch_no. '.';
-    //         $log->performed_at = Carbon::now();
-    //         $log->save();
+            $log = new AuditLog;
+            $log->user_id = Auth::user()->id;
+            $log->action_type = 'GENERATE PDF';
+            $log->charitable_organization_id = Auth::user()->charitable_organization_id;
+            $log->table_name = 'Gift Giving';
+            $log->record_id = $GiftGiving->code;
+            $log->action = 'Charity Admin generated tickets for the Gift Giving [' . $GiftGiving->name . '] with batch no. ' . $GiftGiving->batch_no . '.';
+            $log->performed_at = Carbon::now();
+            $log->save();
 
-    //         return $pdf->download($GiftGiving->name.' - No. '.$batch_no.'.pdf');
+            return $pdf->download($GiftGiving->name . ' - No. ' . $batch_no . '.pdf');
+        } else {
 
-    //     } else {
+            $notification = array(
+                'message' => 'Users can only access their own charity records.',
+                'alert-type' => 'error'
+            );
 
-    //         $notification = array(
-    //             'message' => 'Users can only access their own charity records.',
-    //             'alert-type' => 'error'
-    //         );
-
-    //         return redirect()->back()->with($notification);
-    //     }
-
-    // }
+            return redirect()->back()->with($notification);
+        }
+    }
 }
