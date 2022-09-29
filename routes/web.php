@@ -341,6 +341,18 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
             Route::post('/store', 'storePassword')->name('password.store');
         });
 
+        # Star Token Orders
+        Route::name('orders')->prefix('/orders')->group(function () {
+            Route::get('/', function () {
+                return view('admin.main.orders.all');
+            });
+            Route::get('/4de11f39-87b4-433e-a427-b5e214dc42ce', function () {
+                return view('admin.main.orders.view');
+            })->name('.view');
+
+            // To Add: Delete COMPLETED/REJECTED orders (Optional: Processed Orders that exceeded 15 days)
+        });
+
         # Featured Projects
         Route::name('feat-projects')->prefix('/featured-projects')->group(function () {
             Route::get('/', function () {
@@ -349,6 +361,8 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
             Route::get('/6e216252-0443-4326-81a0-3722050bf571', function () {
                 return view('admin.main.featured-projects.view');
             })->name('.view');
+            // To Add: Approve
+            // To Add: Reject
         });
 
         # Admin User Accounts

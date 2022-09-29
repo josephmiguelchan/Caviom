@@ -42,8 +42,8 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="#" class="waves-effect">
+                <li class="{{ Request::routeIs('admin.orders*')?'mm-active':'' }}">
+                    <a href="{{route('admin.orders')}}" class="waves-effect">
                         <i class="ri-shopping-cart-2-line"></i>
                         <span>Star Token Orders</span>
                     </a>
