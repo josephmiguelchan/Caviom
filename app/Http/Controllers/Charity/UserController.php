@@ -324,4 +324,28 @@ class UserController extends Controller
 
         return Excel::download(new UsersExport, Auth::user()->charity->name . ' - Users.xlsx');
     }
+
+    public function resendVerificationLink(Request $request, $code)
+    {
+        $user = User::where('code', $code)->firstOrFail();
+
+        if ($user->hasVerifiedEmail()) {
+
+            $notification = array(
+                'message' => 'Selected Pending User Account has already been verified.',
+                'alert-type' => 'warning'
+            );
+
+            return back()->with($notification);
+        }
+
+        $user->sendEmailVerificationNotification();
+
+        $notification = array(
+            'message' => 'A verification link has been sent to this user\'s email address.',
+            'alert-type' => 'success'
+        );
+
+        return back()->with($notification);
+    }
 }

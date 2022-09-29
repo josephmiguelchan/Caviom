@@ -37,7 +37,7 @@
                             <dd class="col-sm-9">2022-01-13 14:15:19</dd>
 
                             <dt class="col-sm-3">User</dt>
-                            <dd class="col-sm-9"><a href="{{ route('charity.users.view') }}">Pangilinan, J.</a></dd>
+                            <dd class="col-sm-9"><a href="#">Pangilinan, J.</a></dd>
 
                             <dt class="col-sm-3">Table</dt>
                             <dd class="col-sm-9">Gift Giving</dd>

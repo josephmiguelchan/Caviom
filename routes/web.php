@@ -170,6 +170,9 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                     # Store User
                     Route::post('/store', [UserController::class, 'StoreUser'])->name('.store');
 
+                    # Resend Verification Link
+                    Route::post('/{code}/resend-link', [UserController::class, 'resendVerificationLink'])->name('.resend');
+
                     # Delete (Pending Only) User
                     Route::get('/delete/{code}', [UserController::class, 'DeleteUser'])->name('.delete');
                 });
