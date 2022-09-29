@@ -18,6 +18,10 @@ class CharityController extends Controller
     // Redirect to Dashboard
     public function showDashboard()
     {
+        if (Auth::user()->role == "Root Admin") {
+            return to_route('admin.panel');
+        }
+
         return view('charity.index');
     }
 

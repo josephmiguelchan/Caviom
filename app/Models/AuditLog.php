@@ -15,6 +15,10 @@ class AuditLog extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+    public function charity()
+    {
+        return $this->belongsTo(CharitableOrganization::class, 'charitable_organization_id', 'id');
+    }
     protected $casts = [
         'action' => 'encrypted',
     ];

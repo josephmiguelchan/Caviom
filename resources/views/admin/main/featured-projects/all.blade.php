@@ -1,4 +1,4 @@
-@extends('charity.charity_master')
+@extends('admin.admin_master')
 @section('title', 'View Featured Projects')
 @section('charity')
 
@@ -10,17 +10,10 @@
             <div class="col-12">
                 <div class="p-2">
                     <h1 class="mb-0" style="color: #62896d"><strong>FEATURED PROJECTS</strong></h1>
-                    <ol class="breadcrumb m-0 p-0">
-                        <li class="breadcrumb-item">Our Charitable Organization</li>
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('charity.profile') }}">Public Profile</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            <a href="{{ route('charity.profile.feat-projects') }}">Featured Projects</a>
-                        </li>
+                    <ol class="breadcrumb m-0 p-0 mb-3">
+                        <li class="breadcrumb-item">Menu</li>
+                        <li class="breadcrumb-item active">Featured Projects</li>
                     </ol>
-
-                    @include('charity.modals.featured-projects')
                 </div>
             </div>
         </div>
@@ -32,16 +25,8 @@
                 <div class="card-body">
                     <div class="row px-2">
                         <div class="col-lg-11">
-                            <h2><strong>Featured Projects</strong></h2>
-                            <p class="mb-2">All Featured Projects Submitted</p>
-                        </div>
-                        <div class="col-lg-1 mt-4">
-                            <div class="row justify-content-end">
-                                <a type="button" href="{{ route('charity.profile.feat-projects.new') }}" class="btn btn-sm w-lg btn-success waves-effect waves-light mx-1">
-                                    <i class="mdi mdi-plus"></i> Add New
-                                </a>
-                            </div>
-                            <small class="text-center"><em>(450 Star Tokens)</em></small>
+                            <h2><strong>Featured Project Requests</strong></h2>
+                            <p class="mb-2">All Featured Projects</p>
                         </div>
                     </div>
                 </div>
@@ -71,7 +56,7 @@
                                 <td>---</td>
                                 <td>2015-04-21 22:32:05</td>
                                 <td>
-                                    <a href="{{ route('charity.profile.feat-projects.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                    <a href="{{ route('admin.feat-projects.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>

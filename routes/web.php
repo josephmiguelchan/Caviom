@@ -5,6 +5,8 @@ use App\Http\Controllers\RootAdmin\AdminController;
 use App\Http\Controllers\Charity\AuditLogController;
 use App\Http\Controllers\Charity\GiftGivingController;
 use App\Http\Controllers\Charity\UserController;
+use App\Http\Controllers\RootAdmin\AuditLogController as RootAdminAuditLogController;
+use App\Http\Controllers\RootAdmin\UserController as RootAdminUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -155,20 +157,21 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 # View All user
                 Route::get('/', [UserController::class, 'AllUser']);
 
-                # Add User
-                Route::middleware(['charity.admin'])->get('/add', [UserController::class, 'UnlockUser'])->name('.add');
-
                 # Backup  User
                 Route::get('/export', [UserController::class, 'BackupUser'])->name('.export');
 
-                # View User Detail
-                Route::get('/{code}', [UserController::class, 'ViewUserDetail'])->name('.view');
 
                 # Charity Admins Only
                 Route::middleware(['charity.admin'])->group(function () {
 
+                    # Add User
+                    Route::get('/add', [UserController::class, 'UnlockUser'])->name('.add');
+
                     # Store User
                     Route::post('/store', [UserController::class, 'StoreUser'])->name('.store');
+
+                    # Resend Verification Link
+                    Route::post('/{code}/resend-link', [UserController::class, 'resendVerificationLink'])->name('.resend');
 
                     # Delete (Pending Only) User
                     Route::get('/delete/{code}', [UserController::class, 'DeleteUser'])->name('.delete');
@@ -178,24 +181,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::middleware('charity.admin')->group(function () { // Add middleware: Selected account must be pending (account not yet setup)
                     // To add - Route::get() for deleting pending user accounts permanently (non-refundable).
                 });
-                // To add - Route::get() for backing up list of Users in their Org via Excel.
-            });
 
-            // Route::name('users')->prefix('/users')->group(function () {
-            //     Route::get('', function () {
-            //         return view('charity.main.users.all');
-            //     });
-            //     Route::middleware(['charity.admin'])->get('/add', function () {
-            //         return view('charity.main.users.add');
-            //     })->name('.add');
-            //     Route::get('/6a9ae42b-f01e-4b69-a074-7ec7933557fd', function () {
-            //         return view('charity.main.users.view');
-            //     })->name('.view');
-            //     Route::middleware('charity.admin')->group(function () { // Add middleware: Selected account must be pending (account not yet setup)
-            //         // To add - Route::get() for deleting pending user accounts permanently (non-refundable).
-            //     });
-            //     // To add - Route::get() for backing up list of Users in their Org via Excel.
-            // });
+                # View User Detail
+                Route::get('/{code}', [UserController::class, 'ViewUserDetail'])->name('.view');
+            });
 
 
             # Beneficiaries
@@ -261,7 +250,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
         # Gift Givings
         Route::name('gifts.')->prefix('/gift-givings')->group(function () {
 
-            # To add: Middleware must have sufficient star tokens
+            # Retrieve all Gift Givings of Charitable Organization
             Route::get('/all', [GiftGivingController::class, 'AllGiftGiving'])->name('all');
 
             # View Gift Giving Details
@@ -282,7 +271,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
             # Charity Admin only
             Route::middleware('charity.admin')->group(function () {
 
-                # Create Gift Giving Forms
+                # Create Gift Giving (Form)
                 Route::get('/add', [GiftGivingController::class, 'AddGiftGiving'])->name('add');
 
                 # Store new Gift Giving Project
@@ -293,30 +282,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                     return view('charity.main.projects.featured.add');
                 })->name('.feature');
             });
-
-
-
-
-            // Route::get('', function () {
-            //     return view('charity.gifts.all');
-            // })->name('all');
-            // Route::get('/139e93ef-7823-406c-8c4f-00294d1e3b64', function () {
-            //     return view('charity.gifts.view');
-            // })->name('view');
-            // // To Add: Add Beneficiary to Gift Giving (via Dropdown)
-            // // To Add: Add Beneficiary to Gift Giving (via Input Text)
-            // // To Add: Remove Beneficiary from Gift Giving
-            // // To Add: Generate tickets for a Gift Giving
-
-            // # Charity Admin only
-            // Route::middleware('charity.admin')->group(function () {
-            //     Route::get('/add', function () { // To add: Middleware must have sufficient star tokens
-            //         return view('charity.gifts.add');
-            //     })->name('add');
-            //     Route::get('/featured/new/4d4666bb-554d-40b0-9b23-48f653c21e1e', function () { // Add middleware that star tokens must be sufficient
-            //         return view('charity.main.projects.featured.add');
-            //     })->name('.feature');
-            // });
         });
 
         # Audit Logs
@@ -376,11 +341,41 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
             Route::post('/store', 'storePassword')->name('password.store');
         });
 
+        # Star Token Orders
+        Route::name('orders')->prefix('/orders')->group(function () {
+            Route::get('/', function () {
+                return view('admin.main.orders.all');
+            });
+            Route::get('/4de11f39-87b4-433e-a427-b5e214dc42ce', function () {
+                return view('admin.main.orders.view');
+            })->name('.view');
+
+            // To Add: Delete COMPLETED/REJECTED orders (Optional: Processed Orders that exceeded 15 days)
+        });
+
+        # Featured Projects
+        Route::name('feat-projects')->prefix('/featured-projects')->group(function () {
+            Route::get('/', function () {
+                return view('admin.main.featured-projects.all');
+            });
+            Route::get('/6e216252-0443-4326-81a0-3722050bf571', function () {
+                return view('admin.main.featured-projects.view');
+            })->name('.view');
+            // To Add: Approve
+            // To Add: Reject
+        });
+
+        # Admin User Accounts
+        Route::name('users')->prefix('/users')->controller(RootAdminUserController::class)->group(function () {
+            Route::get('/', 'allAdminUsers');
+            Route::get('/add', 'addAdminUser')->name('.add');
+            Route::post('/store', 'storeAdminUser')->name('.store');
+            Route::get('/{code}', 'viewAdminUser')->name('.view');
+        });
+
         # Audit Logs
         Route::name('audit-logs')->prefix('/audit-logs')->group(function () {
-            Route::get('/', function () {
-                return view('admin.main.audits.all');
-            });
+            Route::get('/', [RootAdminAuditLogController::class, 'viewAllAudits']);
         });
 
         # Notifiers

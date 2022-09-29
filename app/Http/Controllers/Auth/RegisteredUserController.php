@@ -75,7 +75,7 @@ class RegisteredUserController extends Controller
                 # Login Details
                 'name' => ['required', 'string', 'min:3', 'max:128', 'unique:charitable_organizations'], // Name of their Charitable Organization.
                 // 'profile_photo' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
-                'username' => ['required', 'alpha_dash', 'string', 'max:20', 'unique:users'],
+                'username' => ['required', 'alpha_dash', 'string', 'min:6', 'max:20', 'unique:users'],
                 'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
                 'password' => ['required', 'confirmed', 'max:20', Rules\Password::defaults()],
                 'is_agreed' => ['required'],

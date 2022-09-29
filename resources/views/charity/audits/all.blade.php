@@ -26,7 +26,7 @@
             <div class="modal-dialog modal-dialog-centered modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="myExtraLargeModalLabel">Log Details #{{$key}}</h5>
+                        <h5 class="modal-title" id="myExtraLargeModalLabel">Log Details</h5>
                         <button type="button" class="btn-close"
                             data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -45,7 +45,7 @@
                             <dd class="col-sm-9">{{$item->table_name}}</dd>
 
                             <dt class="col-sm-3">Record ID</dt>
-                            <dd class="col-sm-9">{{$item->record_id}}</dd>
+                            <dd class="col-sm-9">{{empty(!$item->record_id)?$item->record_id:'---'}}</dd>
 
                             <dt class="col-sm-3">Description</dt>
                             <dd class="col-sm-9">
@@ -90,7 +90,7 @@
                                 <td>{{$key + 1}}</td>
                                 <td>{{$item->getuser->username}}</td>
                                 <td>{{$item->action_type}}</td>
-                                <td>{{ Carbon\Carbon::parse($item->performed_at)->diffForHumans() }}</td>
+                                <td>{{ Carbon\Carbon::parse($item->performed_at)->toDateTimeString() }}</td>
 
                                 {{-- <td>{{$item->table_name}}</td>
                                 <td>{{$item->record_id}}</td> --}}

@@ -185,6 +185,8 @@ class UserController extends Controller
         $current_bal->star_tokens = $current_bal->star_tokens - $cost;
         $current_bal->save();
 
+        # Create a New Event (registration) where an email verification will be sent.
+        event(new Registered($user));
 
         # Send Notification
 
@@ -201,8 +203,6 @@ class UserController extends Controller
         $log->performed_at = Carbon::now();
         $log->save();
 
-        # Create a New Event (registration) where an email verification will be sent.
-        event(new Registered($user));
 
         # Success Toastr Message display
         $notification = array(
@@ -242,6 +242,8 @@ class UserController extends Controller
 
             return redirect()->back()->with($notification);
         }
+
+        return view('charity.main.users.view');
     }
 
     public function DeleteUser($code)
@@ -316,12 +318,36 @@ class UserController extends Controller
         $log->action_type = 'GENERATE EXCEL';
         $log->charitable_organization_id = Auth::user()->charitable_organization_id;
         $log->table_name = 'User, UserInfo, Address';
-        $log->record_id = 'N/A';
+        $log->record_id = null;
         $log->action = 'Charity Admin generated Excel to backup all Users in ' . Auth::user()->charity->name;
         $log->performed_at = Carbon::now();
         $log->save();
 
 
         return Excel::download(new UsersExport, Auth::user()->charity->name . ' - Users.xlsx');
+    }
+
+    public function resendVerificationLink(Request $request, $code)
+    {
+        $user = User::where('code', $code)->firstOrFail();
+
+        if ($user->hasVerifiedEmail()) {
+
+            $notification = array(
+                'message' => 'Selected Pending User Account has already been verified.',
+                'alert-type' => 'warning'
+            );
+
+            return back()->with($notification);
+        }
+
+        $user->sendEmailVerificationNotification();
+
+        $notification = array(
+            'message' => 'A verification link has been sent to this user\'s email address.',
+            'alert-type' => 'success'
+        );
+
+        return back()->with($notification);
     }
 }

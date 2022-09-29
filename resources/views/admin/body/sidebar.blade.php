@@ -42,22 +42,22 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="#" class="waves-effect">
+                <li class="{{ Request::routeIs('admin.orders*')?'mm-active':'' }}">
+                    <a href="{{route('admin.orders')}}" class="waves-effect">
                         <i class="ri-shopping-cart-2-line"></i>
                         <span>Star Token Orders</span>
                     </a>
                 </li>
 
-                <li>
-                    <a href="#" class="waves-effect">
+                <li class="{{ Request::routeIs('admin.feat-projects*')?'mm-active':'' }}">
+                    <a href="{{ route('admin.feat-projects') }}" class="waves-effect">
                         <i class="ri-heart-add-line"></i>
                         <span>Featured Projects</span>
                     </a>
                 </li>
 
-                <li>
-                    <a href="#" class="waves-effect">
+                <li class="{{ Request::routeIs('admin.users*')?'mm-active':'' }}">
+                    <a href="{{ route('admin.users') }}" class="waves-effect">
                         <i class="ri-admin-line"></i>
                         <span>Admin User Accounts</span>
                     </a>

@@ -19,54 +19,43 @@
         </div>
         <!-- end page title -->
 
+        @foreach ($audits as $key => $item)
         <div class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog"
-            aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="modal_view_2">
+            aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="modal_view_{{$key}}">
             <div class="modal-dialog modal-dialog-centered modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="myExtraLargeModalLabel">Log Details #2</h5>
+                        <h5 class="modal-title" id="myExtraLargeModalLabel">Log Details</h5>
                         <button type="button" class="btn-close"
                             data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <dl class="row mb-0">
                             <dt class="col-sm-3">Event</dt>
-                            <dd class="col-sm-9">UPDATE</dd>
+                            <dd class="col-sm-9">{{$item->action_type}}</dd>
 
                             <dt class="col-sm-3">Event Log Date</dt>
-                            <dd class="col-sm-9">2022-01-13 14:15:19</dd>
+                            <dd class="col-sm-9">{{$item->performed_at}}</dd>
 
                             <dt class="col-sm-3">User</dt>
-                            <dd class="col-sm-9"><a href="{{ route('charity.users.view') }}">Pangilinan, J.</a></dd>
+                            <dd class="col-sm-9"><a href="#">{{$item->getuser->info->first_name . ' ' . $item->getuser->info->last_name}}</a></dd>
 
-                            <dt class="col-sm-3">Table</dt>
-                            <dd class="col-sm-9">Gift Giving</dd>
+                            <dt class="col-sm-3">Resource</dt>
+                            <dd class="col-sm-9">{{$item->table_name}}</dd>
 
                             <dt class="col-sm-3">Record ID</dt>
-                            <dd class="col-sm-9">139e93ef-7823-406c-8c4f-00294d1e3b64</dd>
+                            <dd class="col-sm-9">{{empty(!$item->record_id)?$item->record_id:'---'}}</dd>
 
-                            <dt class="col-sm-3">Action</dt>
-                            <dd class="col-sm-9">Charity Admin generated gift giving tickets for [ $name ].</dd>
-
-                            {{-- <dt class="col-sm-3">Fields</dt>
-                            <dd class="col-sm-9">description</dd>
-                            <dd class="col-sm-9 offset-sm-3">venue</dd>
-                            <dd class="col-sm-9 offset-sm-3">sponsor</dd>
-
-                            <dt class="col-sm-3">Old Value(s)</dt>
-                            <dd class="col-sm-9">"The quick brown fox jumps over the lazy dog."</dd>
-                            <dd class="col-sm-9 offset-sm-3">MCU Rotonda</dd>
-                            <dd class="col-sm-9 offset-sm-3">...</dd>
-
-                            <dt class="col-sm-3">New Value(s)</dt>
-                            <dd class="col-sm-9">"Orange is the new black."</dd>
-                            <dd class="col-sm-9 offset-sm-3">SM Novaliches</dd>
-                            <dd class="col-sm-9 offset-sm-3">SMDC</dd> --}}
+                            <dt class="col-sm-3">Description</dt>
+                            <dd class="col-sm-9">
+                                {{$item->action}}
+                            </dd>
                         </dl>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+        @endforeach
 
 
         <div class="col-12">
@@ -86,7 +75,7 @@
                                 <th>Charitable Organization</th>
                                 <th>Log Date</th>
                                 <th>User</th>
-                                <th>Table</th>
+                                <th>Resource</th>
                                 <th>Record ID</th>
                                 <th>Action</th>
                             </tr>
@@ -94,34 +83,24 @@
 
 
                         <tbody>
+                            @foreach ($audits as $key => $item)
+
                             <tr>
-                                <td>1</td>
-                                <td>SIGN OUT</td>
-                                <td>San Roque United, Inc.</td>
-                                <td>2022-01-13 14:15:16</td>
-                                <td>@jd.cruz</td>
-                                <td></td>
-                                <td></td>
+                                <td>{{$key+1}}</td>
+                                <td>{{$item->action_type}}</td>
+                                <td>{{empty(!$item->charitable_organization_id)?$item->charity->name:'[ROOT ADMIN]'}}</td>
+                                <td>{{ Carbon\Carbon::parse($item->performed_at)->toDateTimeString() }}</td>
+                                <td>{{'@'.$item->getuser->username}}</td>
+                                <td>{{$item->table_name}}</td>
+                                <td>{{empty(!$item->record_id)?$item->record_id:'---'}}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                    <button class="btn btn-sm btn-outline-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_view_{{$key}}">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>UPDATE</td>
-                                <td>Gawad Kalinga</td>
-                                <td>2022-01-13 14:15:19</td>
-                                <td>@jd.cruz</td>
-                                <td>Prospects</td>
-                                <td>24</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_view_2">
-                                        <i class="mdi mdi-open-in-new"></i> View
-                                    </button>
-                                </td>
-                            </tr>
+
+                            @endforeach
                         </tbody>
                     </table>
 
