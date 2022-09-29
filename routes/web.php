@@ -341,6 +341,16 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
             Route::post('/store', 'storePassword')->name('password.store');
         });
 
+        # Featured Projects
+        Route::name('feat-projects')->prefix('/featured-projects')->group(function () {
+            Route::get('/', function () {
+                return view('admin.main.featured-projects.all');
+            });
+            Route::get('/6e216252-0443-4326-81a0-3722050bf571', function () {
+                return view('admin.main.featured-projects.view');
+            })->name('.view');
+        });
+
         # Admin User Accounts
         Route::name('users')->prefix('/users')->controller(RootAdminUserController::class)->group(function () {
             Route::get('/', 'allAdminUsers');

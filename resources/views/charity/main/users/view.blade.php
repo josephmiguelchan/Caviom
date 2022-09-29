@@ -28,6 +28,7 @@
         <!-- end page title -->
 
         @if(Auth::user()->role == "Charity Admin" and $User->status == "Pending Unlock")
+
         <!-- Delete User Modal -->
         <div id="deleteModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
             <div class="modal-dialog modal-dialog-centered">
@@ -134,8 +135,6 @@
                                             <a type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn w-lg btn-outline-danger waves-effect waves-light">
                                                 <i class="mdi mdi-trash-can-outline"></i> Delete Account
                                             </a>
-
-                                            {{-- To add resend verification link from email-verify.blade.php --}}
 
                                             <form method="POST" action="{{ route('charity.users.resend', $User->code) }}" class="form-horizontal">
                                                 @csrf
