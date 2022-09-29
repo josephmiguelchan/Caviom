@@ -120,7 +120,7 @@ class UserController extends Controller
         # Create Audit Logs
         $log = new AuditLog();
         $log->user_id = Auth::user()->id;
-        $log->action_type = 'ADDED NEW ROOT ADMIN';
+        $log->action_type = 'ADDED ROOT ADMIN';
         $log->charitable_organization_id = null;
         $log->table_name = 'User, UserInfo, Address';
         $log->record_id = $user->code;

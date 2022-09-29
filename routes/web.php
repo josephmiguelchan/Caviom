@@ -5,6 +5,7 @@ use App\Http\Controllers\RootAdmin\AdminController;
 use App\Http\Controllers\Charity\AuditLogController;
 use App\Http\Controllers\Charity\GiftGivingController;
 use App\Http\Controllers\Charity\UserController;
+use App\Http\Controllers\RootAdmin\AuditLogController as RootAdminAuditLogController;
 use App\Http\Controllers\RootAdmin\UserController as RootAdminUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -350,9 +351,7 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
 
         # Audit Logs
         Route::name('audit-logs')->prefix('/audit-logs')->group(function () {
-            Route::get('/', function () {
-                return view('admin.main.audits.all');
-            });
+            Route::get('/', [RootAdminAuditLogController::class, 'viewAllAudits']);
         });
 
         # Notifiers

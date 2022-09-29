@@ -242,8 +242,8 @@ class GiftGivingController extends Controller
         $no_of_pack = $GiftGiving->no_of_packs;
 
         # Checks if there is a duplicate in name within the same gift giving project
-        $encryptedBeneficiary = new GiftGivingBeneficiary;
-        $encryptedBeneficiary->where('name',)->where('gift_giving_id', $GiftGiving->id)->first();
+        // $encryptedBeneficiary = new GiftGivingBeneficiary;
+        // $encryptedBeneficiary->where('name',)->where('gift_giving_id', $GiftGiving->id)->first();
 
 
         // $hasDuplicate = GiftGivingBeneficiary::where('name', $encryptedBeneficiary)->where('gift_giving_id', $GiftGiving->id)->first();
