@@ -56,8 +56,8 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="#" class="waves-effect">
+                <li class="{{ Request::routeIs('admin.users*')?'mm-active':'' }}">
+                    <a href="{{ route('admin.users') }}" class="waves-effect">
                         <i class="ri-admin-line"></i>
                         <span>Admin User Accounts</span>
                     </a>

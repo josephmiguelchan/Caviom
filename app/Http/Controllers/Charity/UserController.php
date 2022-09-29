@@ -185,6 +185,8 @@ class UserController extends Controller
         $current_bal->star_tokens = $current_bal->star_tokens - $cost;
         $current_bal->save();
 
+        # Create a New Event (registration) where an email verification will be sent.
+        event(new Registered($user));
 
         # Send Notification
 
@@ -201,8 +203,6 @@ class UserController extends Controller
         $log->performed_at = Carbon::now();
         $log->save();
 
-        # Create a New Event (registration) where an email verification will be sent.
-        event(new Registered($user));
 
         # Success Toastr Message display
         $notification = array(
@@ -242,6 +242,8 @@ class UserController extends Controller
 
             return redirect()->back()->with($notification);
         }
+
+        return view('charity.main.users.view');
     }
 
     public function DeleteUser($code)

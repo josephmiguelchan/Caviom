@@ -115,7 +115,7 @@
                                 </span>
                             </div>
                         </div>
-                        <a href="#" class="mt-3 btn btn-primary w-100 waves-effect waves-light">View Admin Accounts</a>
+                        <a href="{{ route('admin.users') }}" class="mt-3 btn btn-primary w-100 waves-effect waves-light">View Admin Accounts</a>
                     </div><!-- end cardbody -->
                 </div><!-- end card -->
             </div><!-- end col -->
