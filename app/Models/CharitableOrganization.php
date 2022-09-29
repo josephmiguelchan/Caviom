@@ -31,4 +31,8 @@ class CharitableOrganization extends Model
     {
         return $this->hasMany(User::class, 'charitable_organization_id', 'id');
     }
+    public function giftgiving()
+    {
+        return $this->hasMany(GiftGiving::class, 'charitable_organization_id', 'id');
+    }
 }

@@ -64,14 +64,15 @@
                             </div>
                         </div>
                         <hr class="my-3">
-                        <form method="POST" action="#" id="submit_form">
+                        <form method="POST" action="{{route('gifts.store')}}" id="submit_form">
                             @csrf
+
                             <div class="form-group mb-3 row">
                                 <!-- Name -->
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label for="name" class="form-label">*Name of Gift Giving Event</label>
-                                        <input class="form-control" name="name" id="name" type="text">
+                                        <input class="form-control" name="name" id="name" type="text" value="{{ old('name') }}">
                                         @error('name')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -88,9 +89,9 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="peso_currency">Php</span>
                                             </div>
-                                            <input class="form-control input-mask" data-inputmask="'alias': 'numeric', 'groupSeparator': ',',
+                                            <input class="form-control input-mask" data-inputmask="'alias': 'numeric',
                                                 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" name="amount_per_pack"
-                                                id="amount_per_pack" value="">
+                                                id="amount_per_pack" value="{{ old('amount_per_pack') }}">
                                         </div>
                                         @error('amount_per_pack')
                                             <div class="text-danger">
@@ -112,7 +113,7 @@
                                             </span>
                                         </label>
                                         <input type="number" class="form-control" name="no_of_packs" id="no_of_packs"
-                                            value="">
+                                            value="{{old('no_of_packs')}}">
                                         @error('no_of_packs')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -128,6 +129,7 @@
                                     <div class="form-group">
                                         <label for="objective" class="form-label">*Objective</label>
                                         <textarea id="elm1" rows="10" name="objective" maxlength="500">
+                                            {{old('objective')}}
                                         </textarea>
                                         @error('objective')
                                             <div class="text-danger">
@@ -144,7 +146,7 @@
                                     <div class="form-group">
                                         <label for="venue" class="form-label">*Address of Venue</label>
                                         <input class="form-control" name="venue" id="venue" type="text"
-                                            value="">
+                                            value="{{old('venue')}}">
                                         @error('venue')
                                             <div class="text-danger"><small>
                                                 {{ $message }}
@@ -158,7 +160,7 @@
                                     <div class="form-group">
                                         <label for="start_at" class="form-label">*Date & Time of Event</label>
                                         <input class="form-control" name="start_at" id="start_at" type="datetime-local"
-                                            value="">
+                                            value="{{old('start_at')}}">
                                         @error('start_at')
                                             <div class="text-danger"><small>
                                                 {{ $message }}
@@ -174,7 +176,7 @@
                                     <div class="form-group">
                                         <label for="sponsors" class="form-label">Sponsor/s (Optional)</label>
                                         <input class="form-control" name="sponsors" id="sponsors" type="text"
-                                            value="">
+                                            value="{{old('sponsors')}}">
                                         @error('sponsors')
                                             <div class="text-danger"><small>
                                                 {{ $message }}

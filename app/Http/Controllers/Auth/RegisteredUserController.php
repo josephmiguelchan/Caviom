@@ -70,7 +70,7 @@ class RegisteredUserController extends Controller
                 'province' => ['required', 'string', 'min:3', 'max:64'],
                 'city' => ['required', 'string', 'min:3', 'max:64'],
                 'barangay' => ['required', 'string', 'min:3', 'max:64'],
-                'postal_code' => ['required', 'string', 'min:4', 'max:10'],
+                'postal_code' => ['required', 'integer', 'digits:4'],
 
                 # Login Details
                 'name' => ['required', 'string', 'min:3', 'max:128', 'unique:charitable_organizations'], // Name of their Charitable Organization.
