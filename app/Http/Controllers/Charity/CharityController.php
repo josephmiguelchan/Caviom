@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Charity;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\AuditLog;
 use App\Models\CharitableOrganization;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\UserInfo;
 use Carbon\Carbon;
@@ -12,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Str;
 
 class CharityController extends Controller
 {
@@ -28,13 +31,24 @@ class CharityController extends Controller
     // Logout User
     public function destroy(Request $request)
     {
+        $user = Auth::user();
+
         Auth::guard('web')->logout();
+
+        # Create Audit Log for Logout
+        $log = new AuditLog;
+        $log->user_id = $user->id;
+        $log->action_type = 'LOGOUT';
+        $log->charitable_organization_id = $user->charitable_organization_id;
+        $log->table_name = null;
+        $log->record_id = null;
+        $log->action = $user->role . ' has successfully logged out on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
+            $request->ip();
+        $log->performed_at = Carbon::now();
+        $log->save();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        # Create Audit Log for Login
-
 
         return redirect('/login');
     }
@@ -139,15 +153,24 @@ class CharityController extends Controller
 
 
         # Create Audit Logs for Edit Profile
+        $log = new AuditLog;
+        $log->user_id = Auth::user()->id;
+        $log->action_type = 'UPDATE';
+        $log->charitable_organization_id = null;
+        $log->table_name = 'User, UserInfo, Address';
+        $log->record_id = $thisUser->code;
+        $log->action = $thisUser->role . ' [' . $thisUser->info->first_name . ' ' . $thisUser->info->last_name . '] updated their own profile.';
+        $log->performed_at = Carbon::now();
+        $log->save();
 
 
         # Return the user back with success toastr message
-        $notification = array(
+        $toastr = array(
             'message' => 'Profile has been saved successfully!',
             'alert-type' => 'success',
         );
 
-        return to_route('user.profile')->with($notification);
+        return to_route('user.profile')->with($toastr);
     }
 
     // Change User Password
@@ -182,42 +205,45 @@ class CharityController extends Controller
 
 
             # Create a Notification in-app
-
+            Notification::insert([
+                'code' => Str::uuid()->toString(),
+                'user_id' => $user->id,
+                'category' => 'User',
+                'Subject' => 'Change Password',
+                'message' => 'You have successfully updated your own password on ' . Carbon::now()->toDayDateTimeString() . '.',
+                'icon' => 'mdi mdi-form-textbox-password',
+                'color' => 'info',
+                'created_at' => Carbon::now(),
+            ]);
 
 
             # Create Audit Logs Record but with the Password being redacted
-
+            $log = new AuditLog;
+            $log->user_id = $user->id;
+            $log->action_type = 'UPDATE';
+            $log->charitable_organization_id = null;
+            $log->table_name = 'User';
+            $log->record_id = $user->code;
+            $log->action = $user->role . ' [' . $user->info->first_name . ' ' . $user->info->last_name . '] updated their own password.';
+            $log->performed_at = Carbon::now();
+            $log->save();
 
 
             # Success toastr message
-            $notification = array(
+            $toastr = array(
                 'message' => 'Password has been updated successfully!',
                 'alert-type' => 'success',
             );
         } else {
 
             # Throws an error message if current password did not match
-            $notification = array(
+            $toastr = array(
                 'message' => 'Your current password did not match. Please try again.',
                 'alert-type' => 'error',
             );
             session()->flash('error_msg', 'Current password is incorrect.');
         }
 
-        return redirect()->back()->with($notification);
-    }
-
-    // Retrieve all notifications of User
-    public function showNotifications()
-    {
-        # Get all notifications where user == ID;
-        return view('charity.user.notifications.all'); // include compact('notifs')
-    }
-
-    // Retrieve (one) selected notification of User
-    public function viewNotification()
-    {
-        # Get notification where code == ID;
-        return view('charity.user.notifications.view'); // include compact('notifs')
+        return redirect()->back()->with($toastr);
     }
 }
