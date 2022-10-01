@@ -11,6 +11,8 @@ use App\Models\Beneficiaries;
 use App\Models\CharitableOrganization;
 use App\Models\GiftGivingBeneficiaries;
 use App\Models\GiftGivingBeneficiary;
+use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -33,12 +35,13 @@ class GiftGivingController extends Controller
 
         # Check if Charity has sufficient Star Tokens with the chosen role
         if (Auth::user()->charity->star_tokens < 300) {
-            $notification = array(
+            $toastr = array();
+            $toastr = array(
                 'message' => 'Sorry, your Charitable Organization does not have sufficient Star Tokens.',
                 'alert-type' => 'error'
             );
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         }
 
         return view('charity.gifts.add');
@@ -48,12 +51,13 @@ class GiftGivingController extends Controller
     {
         # Check first if Charitable Organization has sufficient Star Tokens
         if (Auth::user()->charity->star_tokens < 300) {
-            $notification = array(
+            $toastr = array();
+            $toastr = array(
                 'message' => 'Sorry, your Charitable Organization does not have sufficient Star Tokens.',
                 'alert-type' => 'error'
             );
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         }
 
         $request->validate([
@@ -116,12 +120,31 @@ class GiftGivingController extends Controller
 
 
         # Shows notification
-        $notification = array(
+        $toastr = array();
+        $toastr = array(
             'message' => 'Gift Giving Added Successfully',
             'alert-type' => 'success'
         );
 
-        return redirect()->route('gifts.all')->with($notification);
+
+        # Send Notification to each user in their Charitable Organizations
+        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+
+        foreach ($users as $user) {
+            Notification::insert([
+                'code' => Str::uuid()->toString(),
+                'user_id' => $user->id,
+                'category' => 'Gift Giving',
+                'Subject' => 'New  Gift Giving Created',
+                'message' => 'A new Gift Giving project has been created by ' . Auth::user()->role . ' [' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name .
+                    '] named [' . $request->name . '] using 300 Star Tokens. ',
+                'icon' => 'mdi mdi-gift',
+                'color' => 'success',
+                'created_at' => Carbon::now(),
+            ]);
+        }
+
+        return redirect()->route('gifts.all')->with($toastr);
     }
 
     public function ViewGiftGivingProjectDetail($code)
@@ -141,12 +164,13 @@ class GiftGivingController extends Controller
 
             return view('charity.gifts.view', compact(['GiftGivings', 'listofBeneficiaries', 'GiftGivingBeneficiaries']));
         } else {
-            $notification = array(
+            $toastr = array();
+            $toastr = array(
                 'message' => 'Users can only access their own charity records.',
                 'alert-type' => 'error'
             );
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         }
     } // End Method
 
@@ -170,22 +194,24 @@ class GiftGivingController extends Controller
         if ($count >= $no_of_pack) {
 
             # Set conditon for the count of the Beneficiary of the GiftGiving Project will not surpass the no_of_pack
-            $notification = array(
+            $toastr = array();
+            $toastr = array(
                 'message' => 'You have already reached the limit of adding the beneficiary to this project.',
                 'alert-type' => 'error'
             );
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         }
         if ($request->beneficiaries == null) {
 
             # Set conditon for the dropdown must have a value first
-            $notification = array(
+            $toastr = array();
+            $toastr = array(
                 'message' => 'the beneficiary name is required.',
                 'alert-type' => 'error'
             );
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         }
         // if ($hasDuplicate) {
 
@@ -208,22 +234,23 @@ class GiftGivingController extends Controller
             $beneficiary->save();
 
             # Shows success toastr
-            $notification = array(
+            $toastr = array(
                 'message' => 'The selected beneficiary has been added successfully.',
                 'alert-type' => 'success'
             );
 
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         } else {
 
             # If the record was manipulated by non-members of the organization
-            $notification = array(
+
+            $toastr = array(
                 'message' => 'Users can only access their own charity records.',
                 'alert-type' => 'error'
             );
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         }
     } // End Method
 
@@ -242,8 +269,8 @@ class GiftGivingController extends Controller
         $no_of_pack = $GiftGiving->no_of_packs;
 
         # Checks if there is a duplicate in name within the same gift giving project
-        // $encryptedBeneficiary = new GiftGivingBeneficiary;
-        // $encryptedBeneficiary->where('name',)->where('gift_giving_id', $GiftGiving->id)->first();
+        $encryptedBeneficiary = new GiftGivingBeneficiary;
+        $encryptedBeneficiary->where('name',)->where('gift_giving_id', $GiftGiving->id)->first();
 
 
         // $hasDuplicate = GiftGivingBeneficiary::where('name', $encryptedBeneficiary)->where('gift_giving_id', $GiftGiving->id)->first();
@@ -251,36 +278,36 @@ class GiftGivingController extends Controller
         if ($count >= $no_of_pack) {
 
             # Set conditon for the count of the Beneficiary of the GiftGiving Project will not surpass the no_of_pack
-            $notification = array(
+
+            $toastr = array(
                 'message' => 'You have already reached the limit of adding the beneficiary to this project.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($toastr);
+        }
+        /* elseif ($request->custom_name == null) {
+
+            # Set conditon for the dropdown must have a value first
+            $notification = array(
+                'message' => 'The beneficiary name is required.',
                 'alert-type' => 'error'
             );
 
             return redirect()->back()->with($notification);
         }
-        // elseif ($request->custom_name == null) {
-
-        //     # Set conditon for the dropdown must have a value first
-        //     $notification = array(
-        //         'message' => 'The beneficiary name is required.',
-        //         'alert-type' => 'error'
-        //     );
-
-        //     return redirect()->back()->with($notification);
-        // }
 
 
-        // elseif ($hasDuplicate) {
+        elseif ($hasDuplicate) {
 
-        //     # Set conditon for when the beneficiary must not have existing names within the same Gift Giving.
-        //     $notification = array(
-        //         'message' => 'The beneficiary already exists in this gift giving.',
-        //         'alert-type' => 'warning'
-        //     );
+            # Set conditon for when the beneficiary must not have existing names within the same Gift Giving.
+            $notification = array(
+                'message' => 'The beneficiary already exists in this gift giving.',
+                'alert-type' => 'warning'
+            );
 
-        //     return redirect()->back()->with($notification);
-        // }
-        else {
+            return redirect()->back()->with($notification);
+        } */ else {
 
             # Validate first the custom name
             $request->validate([
@@ -295,12 +322,12 @@ class GiftGivingController extends Controller
             $beneficiary->save();
 
             # Shows success toastr
-            $notification = array(
+            $toastr = array(
                 'message' => 'The beneficiary has been added successfully.',
                 'alert-type' => 'success'
             );
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         }
     } // End Method
 
@@ -310,13 +337,12 @@ class GiftGivingController extends Controller
 
         # Attempt to delete the beneficiary using id
         GiftGivingBeneficiary::findOrFail($id)->delete();
-
-        $notification = array(
+        $toastr = array(
             'message' => 'Selected beneficiary has been deleted successfully.',
             'alert-type' => 'success'
         );
 
-        return redirect()->back()->with($notification);
+        return redirect()->back()->with($toastr);
     } // End Method
 
 
@@ -331,13 +357,12 @@ class GiftGivingController extends Controller
 
             # Must have at least one beneficiary before generating tickets
             if ($tickets->count() < 1) {
-
-                $notification = array(
+                $toastr = array(
                     'message' => 'Gift Giving must have at least one (1) beneficiary first before generating tickets',
                     'alert-type' => 'error'
                 );
 
-                return redirect()->back()->with($notification);
+                return redirect()->back()->with($toastr);
             }
 
             # Retrieve the last batch no. from the gift giving.
@@ -363,15 +388,34 @@ class GiftGivingController extends Controller
             $log->performed_at = Carbon::now();
             $log->save();
 
+
+            # Send Notification to each user in their Charitable Organizations
+            $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+
+            foreach ($users as $user) {
+                Notification::insert([
+                    'code' => Str::uuid()->toString(),
+                    'user_id' => $user->id,
+                    'category' =>  'GIft Giving',
+                    'subject' => 'Generated Tickets',
+                    'message' => Auth::user()->role . ' ' . Auth::user()->info->first_name . ' ' .
+                        Auth::user()->info->last_name . ' has generated tickets for [' . $GiftGiving->name . '] with batch no. ' .
+                        $GiftGiving->batch_no . '.',
+                    'icon' => 'mdi mdi-ticket',
+                    'color' => 'info',
+                    'created_at' => Carbon::now(),
+                ]);
+            }
+
             return $pdf->download($GiftGiving->name . ' - No. ' . $batch_no . '.pdf');
         } else {
 
-            $notification = array(
+            $toastr = array(
                 'message' => 'Users can only access their own charity records.',
                 'alert-type' => 'error'
             );
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         }
     }
 }

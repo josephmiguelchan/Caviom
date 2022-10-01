@@ -1,55 +1,28 @@
+@php
+$notifications = App\Models\Notification::where('user_id',Auth::user()->id)->latest()->limit(3)->get();
+
+@endphp
+
 <div data-simplebar style="max-height: 230px;">
-    <a href="{{ route('user.notifications.view') }}" class="text-reset notification-item">
+    @if(Auth::user()->notifications->count() == 0)
+    <p class="text-muted font-size-12 text-center">You have no new notifications.</p>
+    @endif
+    @foreach ($notifications as $notif)
+    <a href="{{ route('notifications.view' , $notif->code) }}" class="text-reset notification-item">
         <div class="d-flex">
             <div class="avatar-xs me-3">
-                <span class="avatar-title bg-success rounded-circle font-size-16">
-                    <i class="ri-shopping-cart-line"></i>
+                <span class="avatar-title bg-{{$notif->color}} rounded-circle font-size-16">
+                    <i class="{{$notif->icon}}"></i>
                 </span>
             </div>
             <div class="flex-1">
-                <h6 class="mb-1">Successful Purchase <span class="badge bg-danger">NEW</span></h6>
+                <h6 class="mb-1">{{$notif->subject}} @if($notif->read_status == 'unread')<span class="badge bg-danger">NEW</span>@endif</h6>
                 <div class="font-size-12 text-muted">
-                    <p class="mb-1">This is to confirm that your Caviom Order with ID:
-                        84D3AD was successful...</p>
-                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 3 min ago</p>
+                    <p class="mb-1">{{Str::limit($notif->message, 75)}}</p>
+                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> {{Carbon\Carbon::parse($notif->created_at)->diffForHumans()}}</p>
                 </div>
             </div>
         </div>
     </a>
-    <a href="" class="text-reset notification-item">
-        <div class="d-flex">
-            <div class="avatar-xs me-3">
-                <span class="avatar-title bg-info rounded-circle font-size-16">
-                    <i class="ri-heart-fill"></i>
-                </span>
-            </div>
-            <div class="flex-1">
-                <h6 class="mb-1">New Project Created</h6>
-                <div class="font-size-12 text-muted">
-                    <p class="mb-1">A new project has been created by user John Dela Cruz
-                        named "Gawad Kalinga"..</p>
-                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 1 hour ago</p>
-                </div>
-            </div>
-        </div>
-    </a>
-    <a href="" class="text-reset notification-item">
-        <div class="d-flex">
-            <div class="avatar-xs me-3">
-                <span class="avatar-title bg-danger rounded-circle font-size-16">
-                    <i class="ri-close-circle-line"></i>
-                </span>
-            </div>
-            <div class="flex-1">
-                <h6 class="mb-1">Rejected Application</h6>
-                <div class="font-size-12 text-muted">
-                    <p class="mb-1">We are very sorry but your application has been
-                        denied
-                        for the violating our terms..</p>
-                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 3 hours ago
-                    </p>
-                </div>
-            </div>
-        </div>
-    </a>
+    @endforeach
 </div>

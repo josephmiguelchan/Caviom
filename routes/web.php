@@ -4,6 +4,7 @@ use App\Http\Controllers\Charity\CharityController;
 use App\Http\Controllers\RootAdmin\AdminController;
 use App\Http\Controllers\Charity\AuditLogController;
 use App\Http\Controllers\Charity\GiftGivingController;
+use App\Http\Controllers\Charity\NotificationController;
 use App\Http\Controllers\Charity\UserController;
 use App\Http\Controllers\RootAdmin\AuditLogController as RootAdminAuditLogController;
 use App\Http\Controllers\RootAdmin\UserController as RootAdminUserController;
@@ -56,6 +57,20 @@ Route::controller(CharityController::class)->middleware(['auth', 'verified', 'pr
     Route::get('/user/logout', 'destroy')->name('user.logout');
 });
 
+# User Notifications
+Route::name('notifications')->middleware(['auth', 'verified', 'prevent-back-history'])->prefix('/notifications')->group(function () {
+    # Retrieve All Notifications of User
+    Route::get('/', [NotificationController::class, 'AllNotification'])->name('.all');
+
+    # View Notification via $code
+    Route::get('/{code}', [NotificationController::class, 'ViewNotification'])->name('.view');
+
+    # Delete Notification
+    Route::get('/delete/{code}', [NotificationController::class, 'DeleteNotification'])->name('.delete');
+
+    # Fetch last 3 notifications
+    Route::get('/fetchtthreenotification', [NotificationController::class, 'NotificationsData'])->name('.fetch');
+});
 
 # Charity Users Group
 Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function () {

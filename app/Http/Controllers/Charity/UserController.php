@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\AuditLog;
 use App\Models\CharitableOrganization;
 use App\Models\UserInfo;
+use App\Models\Notification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rules;
@@ -35,12 +36,12 @@ class UserController extends Controller
     {
         # Checks if user has at least 1500 Star Tokens
         if (Auth::user()->charity->star_tokens < 1500) {
-            $notification = array(
+            $toastr = array(
                 'message' => 'Sorry, your Charitable Organization does not have sufficient Star Tokens.',
                 'alert-type' => 'error'
             );
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         } else {
             return view('charity.main.users.add');
         }
@@ -65,21 +66,21 @@ class UserController extends Controller
         } elseif ($request->role == 'Charity Associate') {
             $cost = 1500;
         } else {
-            $notification = array(
+            $toastr = array(
                 'message' => 'The User Role must only be either Charity Admin or Charity Associate.',
                 'alert-type' => 'error'
             );
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         }
 
         # Check if Charity has sufficient Star Tokens with the chosen role
         if (Auth::user()->charity->star_tokens < $cost) {
-            $notification = array(
+            $toastr = array(
                 'message' => 'Sorry, your Charitable Organization does not have sufficient Star Tokens.',
                 'alert-type' => 'error'
             );
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         }
 
 
@@ -189,8 +190,20 @@ class UserController extends Controller
         event(new Registered($user));
 
         # Send Notification
-
-
+        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+        foreach ($users as $item) {
+            Notification::insert([
+                'code' => Str::uuid()->toString(),
+                'user_id' => $item->id,
+                'category' => 'User',
+                'subject' => 'Unlocked Account',
+                'message' => 'A new pending ' . Auth::user()->role . ' account [' . $user->email . '] has been added by [' .
+                    Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . '] using ' . $cost . ' Star Tokens.',
+                'icon' => 'mdi mdi-account-plus',
+                'color' => 'success',
+                'created_at' => Carbon::now(),
+            ]);
+        }
 
         # Create Audit Logs
         $log = new AuditLog;
@@ -205,12 +218,12 @@ class UserController extends Controller
 
 
         # Success Toastr Message display
-        $notification = array(
+        $toastr = array(
             'message' => 'The pending user has been successfully created. An invitation link has been sent to their email.',
             'alert-type' => 'success'
         );
 
-        return redirect()->route('charity.users')->with($notification);
+        return redirect()->route('charity.users')->with($toastr);
     }
 
     private function generateIdNo()
@@ -235,12 +248,12 @@ class UserController extends Controller
         if (($User->charitable_organization_id == Auth::user()->charitable_organization_id)) {
             return view('charity.main.users.view', compact('User'));
         } else {
-            $notification = array(
+            $toastr = array(
                 'message' => 'Sorry, Users can only access their own charity records..',
                 'alert-type' => 'error'
             );
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         }
 
         return view('charity.main.users.view');
@@ -254,22 +267,22 @@ class UserController extends Controller
         # User status must be pending or inactive to delete
         if (!($User->status == "Pending Unlock" || $User->status == "Inactive")) {
 
-            $notification = array(
+            $toastr = array(
                 'message' => 'Sorry, only pending or inactive users accounts can be deleted.',
                 'alert-type' => 'error'
             );
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         }
 
         # Retrieved User must be in the same charitable org; Else, return back with error message
         if (!$User->charitable_organization_id == Auth::user()->charitable_organization_id) {
-            $notification = array(
+            $toastr = array(
                 'message' => 'Sorry, Users can only access their own charity records..',
                 'alert-type' => 'error'
             );
 
-            return redirect()->back()->with($notification);
+            return redirect()->back()->with($toastr);
         }
 
         # Delete old Profile Image if exists
@@ -285,7 +298,19 @@ class UserController extends Controller
 
 
         # Send Notification
-
+        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+        foreach ($users as $user) {
+            Notification::insert([
+                'code' => Str::uuid()->toString(),
+                'user_id' => $user->id,
+                'category' =>  'User',
+                'subject' => 'Removed Pending Account',
+                'message' => 'The pending ' . Auth::user()->role . ' account [' . $User->email . '] has been deleted permanently.',
+                'icon' => 'mdi mdi-account-minus',
+                'color' => 'danger',
+                'created_at' => Carbon::now(),
+            ]);
+        }
 
         # Create Audit Logs
         $log = new AuditLog;
@@ -298,19 +323,32 @@ class UserController extends Controller
         $log->performed_at = Carbon::now();
         $log->save();
 
-        $notification = array(
+        $toastr = array(
             'message' => 'Selected Pending User Account has been removed successfully.',
             'alert-type' => 'success'
         );
 
 
-        return to_route('charity.users')->with($notification);
+        return to_route('charity.users')->with($toastr);
     }
 
     public function BackupUser()
     {
-        #Send Notification
-
+        # Send Notification to each user in their Charitable Organizations
+        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+        foreach ($users as $user) {
+            Notification::insert([
+                'code' => Str::uuid()->toString(),
+                'user_id' => $user->id,
+                'category' =>  'User',
+                'subject' => 'Backup Users',
+                'message' => Auth::user()->role . ' [' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name .
+                    '] has attempted to back up a copy of Users from [' . Auth::user()->charity->name . '] into an Excel File.',
+                'icon' => 'mdi mdi-file-download',
+                'color' => 'warning',
+                'created_at' => Carbon::now(),
+            ]);
+        }
 
         #Create Audit Logs
         $log = new AuditLog;
@@ -333,21 +371,21 @@ class UserController extends Controller
 
         if ($user->hasVerifiedEmail()) {
 
-            $notification = array(
+            $toastr = array(
                 'message' => 'Selected Pending User Account has already been verified.',
                 'alert-type' => 'warning'
             );
 
-            return back()->with($notification);
+            return back()->with($toastr);
         }
 
         $user->sendEmailVerificationNotification();
 
-        $notification = array(
+        $toastr = array(
             'message' => 'A verification link has been sent to this user\'s email address.',
             'alert-type' => 'success'
         );
 
-        return back()->with($notification);
+        return back()->with($toastr);
     }
 }
