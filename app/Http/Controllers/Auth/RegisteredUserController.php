@@ -169,7 +169,11 @@ class RegisteredUserController extends Controller
         $log_charity->action_type = 'REGISTER';
         $log_charity->charitable_organization_id = Auth::user()->charitable_organization_id;
         $log_charity->table_name = 'Charitable Organizations, UserInfo, User, Address';
+<<<<<<< HEAD
         $log_charity->record_id = Auth::user()->code;
+=======
+        $log_charity->record_id = Auth::user()->charity->code;
+>>>>>>> 4f8233db5ee71d2a69bbfb8492859311f84a31cb
         $log_charity->action = Auth::user()->role . ' has successfully registered their account to their Charitable Organization named [' . $charity->name . '].';
         $log_charity->performed_at = Carbon::now();
         $log_charity->save();
