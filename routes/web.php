@@ -341,6 +341,14 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
             Route::post('/store', 'storePassword')->name('password.store');
         });
 
+
+        # Charitable Organizations (Verify Profiles)
+        Route::name('charities')->prefix('/charitable-organizations')->group(function () {
+            Route::get('/', function () {
+                return view('admin.charities.all');
+            });
+        });
+
         # Star Token Orders
         Route::name('orders')->prefix('/orders')->group(function () {
             Route::get('/', function () {
