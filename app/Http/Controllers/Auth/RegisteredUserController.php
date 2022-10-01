@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\AuditLog;
 use App\Models\CharitableOrganization;
 use App\Models\User;
 use App\Models\UserInfo;
@@ -154,16 +155,24 @@ class RegisteredUserController extends Controller
         $user_info->save();
 
 
-        # Create New Audit Logs for Creation of Charity and User, and for Login.
-
-
-
         # Create a New Event (registration) where an email verification will be sent.
         event(new Registered($user));
 
 
         # Automatically Logs in the user
         Auth::login($user);
+
+
+        # Create New Audit Logs for Creation of Charity and User Account
+        $log_charity = new AuditLog;
+        $log_charity->user_id = Auth::user()->id;
+        $log_charity->action_type = 'REGISTER';
+        $log_charity->charitable_organization_id = Auth::user()->charitable_organization_id;
+        $log_charity->table_name = 'Charitable Organizations, UserInfo, User, Address';
+        $log_charity->record_id = Auth::user()->code;
+        $log_charity->action = Auth::user()->role . ' has successfully registered their account to their Charitable Organization named [' . $charity->name . '].';
+        $log_charity->performed_at = Carbon::now();
+        $log_charity->save();
 
 
         # Redirect to Home (Charity Dashboard Page)

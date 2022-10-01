@@ -10,7 +10,7 @@ class AuditLogController extends Controller
 {
     public function viewAllAudits()
     {
-        $audits = AuditLog::get();
+        $audits = AuditLog::orderByDesc('performed_at')->get();
         return view('admin.main.audits.all', compact('audits'));
     }
 }
