@@ -42,6 +42,7 @@ class UsersExport implements FromCollection,  WithMapping, WithHeadings, ShouldA
         return [
             $Userinfo->id,
             $Userinfo->organizational_id_no,
+            $Userinfo->user->email,
             $Userinfo->last_name,
             $Userinfo->first_name,
             $Userinfo->middle_name,
@@ -54,6 +55,7 @@ class UsersExport implements FromCollection,  WithMapping, WithHeadings, ShouldA
             $Userinfo->address->city,
             $Userinfo->address->postal_code,
             $Userinfo->address->barangay,
+            $Userinfo->user->status,
         ];
     }
 
@@ -64,6 +66,7 @@ class UsersExport implements FromCollection,  WithMapping, WithHeadings, ShouldA
         return [
             'id',
             'Organizational ID',
+            'Email',
             'Last name',
             'First name',
             'Middle name',
@@ -76,6 +79,8 @@ class UsersExport implements FromCollection,  WithMapping, WithHeadings, ShouldA
             'City',
             'Postal Code',
             'Barangay',
+            'Status',
+
         ];
     }
 }

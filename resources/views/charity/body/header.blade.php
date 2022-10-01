@@ -67,12 +67,21 @@
             </div>
 
             <div class="dropdown d-inline-block">
+
                 <button type="button" class="btn header-item noti-icon waves-effect"
                     id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="ri-notification-3-line"></i>
-                    <span class="noti-dot"></span>
+
+                    @foreach(Auth::user()->notifications as $item)
+                        @if ($item->read_status=='unread')
+                        <span class="noti-dot"></span>
+                        @endif
+                    @endforeach
+
+
                 </button>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+
+                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
                     aria-labelledby="page-header-notifications-dropdown">
                     <div class="p-3">
                         <div class="row align-items-center">
@@ -80,14 +89,14 @@
                                 <h6 class="m-0"> Notifications </h6>
                             </div>
                             <div class="col-auto">
-                                <a href="{{ route('user.notifications.all') }}" class="small"> View All</a>
+                                <a href="{{ route('notifications.all') }}" class="small"> View All</a>
                             </div>
                         </div>
                     </div>
                     @include('charity.body.notifications')
                     <div class="p-2 border-top">
                         <div class="d-grid">
-                            <a class="btn btn-sm btn-link font-size-14 text-center" href="{{ route('user.notifications.all') }}">
+                            <a class="btn btn-sm btn-link font-size-14 text-center" href="{{ route('notifications.all') }}">
                                 <i class="mdi mdi-arrow-right-circle me-1"></i> View all..
                             </a>
                         </div>

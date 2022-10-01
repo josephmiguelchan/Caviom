@@ -62,8 +62,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(CharitableOrganization::class, 'charitable_organization_id', 'id');
     }
-    // public function address()
-    // {
-    //     return $this->hasOneThrough(Address::class, UserInfo::class, 'user_id', 'address_id', 'id', 'id');
-    // }
+    /* public function address()
+    {
+         return $this->hasOneThrough(Address::class, UserInfo::class, 'user_id', 'address_id', 'id', 'id');
+    } */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id', 'id');
+    }
 }
