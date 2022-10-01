@@ -43,7 +43,7 @@
                                 </span>
                             </div>
                         </div>
-                        <a href="#" class="mt-3 btn btn-primary w-100 waves-effect waves-light">Go to Charitable Organizations</a>
+                        <a href="{{route('admin.charities')}}" class="mt-3 btn btn-primary w-100 waves-effect waves-light">Go to Charitable Organizations</a>
                     </div><!-- end cardbody -->
                 </div><!-- end card -->
             </div><!-- end col -->
