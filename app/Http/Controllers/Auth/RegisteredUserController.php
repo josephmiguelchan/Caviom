@@ -165,16 +165,12 @@ class RegisteredUserController extends Controller
 
         # Create New Audit Logs for Creation of Charity and User Account
         $log_charity = new AuditLog;
-        $log_charity->user_id = Auth::user()->id;
+        $log_charity->user_id = $user->id;
         $log_charity->action_type = 'REGISTER';
-        $log_charity->charitable_organization_id = Auth::user()->charitable_organization_id;
+        $log_charity->charitable_organization_id = $user->charitable_organization_id;
         $log_charity->table_name = 'Charitable Organizations, UserInfo, User, Address';
-<<<<<<< HEAD
-        $log_charity->record_id = Auth::user()->code;
-=======
-        $log_charity->record_id = Auth::user()->charity->code;
->>>>>>> 4f8233db5ee71d2a69bbfb8492859311f84a31cb
-        $log_charity->action = Auth::user()->role . ' has successfully registered their account to their Charitable Organization named [' . $charity->name . '].';
+        $log_charity->record_id = $user->code;
+        $log_charity->action = $user->role . ' has successfully registered their account to their Charitable Organization named [' . $charity->name . '].';
         $log_charity->performed_at = Carbon::now();
         $log_charity->save();
 
