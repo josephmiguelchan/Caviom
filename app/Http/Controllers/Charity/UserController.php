@@ -27,7 +27,7 @@ class UserController extends Controller
 {
     public function AllUser()
     {
-        $Users = User::where('charitable_organization_id', Auth::user()->charity->id)->latest()->get();
+        $Users = User::where('charitable_organization_id', Auth::user()->charity->id)->get();
 
         return view('charity.main.users.all', compact('Users'));
     }

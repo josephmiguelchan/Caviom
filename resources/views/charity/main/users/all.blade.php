@@ -26,16 +26,6 @@
             <div class="card p-3">
                 <div class="card-body">
                     <div class="float-end">
-                        {{-- <div class="dropdown mx-0 mt-2">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="mdi mdi-dots-vertical"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <!-- item-->
-                                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exportModal">
-                                    <i class="mdi mdi-download"></i> Export to Excel</button>
-                            </div>
-                        </div> --}}
 
                         <div class="row mt-4">
                             <div class="col-md-5">

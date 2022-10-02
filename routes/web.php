@@ -362,6 +362,22 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
             Route::get('/', function () {
                 return view('admin.charities.all');
             });
+            Route::get('/26cff452-8f95-4cd8-b42e-c1b3602dbb7e', function () {
+                return view('admin.charities.view');
+            })->name('.view');
+
+            Route::name('.users')->prefix('/users')->group(function () {
+                # View Individual Charity User
+                Route::get('/{code}', [RootAdminUserController::class, 'viewCharityUser'])->name('.view');
+
+                # Edit Individual Charity User
+                Route::get('/edit/{code}', [RootAdminUserController::class, 'editCharityUser'])->name('.edit');
+
+                // To add: (POST) Update User
+            });
+
+            // To Add: (POST) Send Notification in View Charity
+            // To Add: (POST) Edit Profile Settings (Visibility / Verification Status) in View Charity
         });
 
         # Star Token Orders

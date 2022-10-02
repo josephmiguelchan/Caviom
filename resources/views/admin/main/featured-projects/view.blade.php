@@ -140,7 +140,7 @@
                             <h2 class="fw-bold">Medical Mission 2022</h2>
                         </div>
                         <div class="col-lg-4 mt-4">
-                            <a href="{{ route('admin.feat-projects') }}" class="text-link float-end">
+                            <a href="{{ url()->previous() }}" class="text-link float-end">
                                 <i class="ri-arrow-left-line"></i> Go Back
                             </a>
                         </div>

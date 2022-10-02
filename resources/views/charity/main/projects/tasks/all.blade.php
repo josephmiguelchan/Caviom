@@ -26,8 +26,8 @@
                     <span class="badge badge-soft-warning">Pending</span> Prepare the program flow for..
                 </td>
                 <td>Prioritize this task as this will be..</td>
-                <td><a href="{{ route('charity.users.view') }}">Pangilinan, J.</a></td>
-                <td><a href="{{ route('charity.users.view') }}">Galleno, J.</a></td>
+                <td><a href="#">Pangilinan, J.</a></td>
+                <td><a href="#">Galleno, J.</a></td>
                 <td>Thu, Dec 25, 2022 2:15 PM</td>
                 <td>2 days</td>
                 <td>
@@ -42,8 +42,8 @@
                     <span class="badge badge-soft-primary">In-Progress</span> End the generational tra..
                 </td>
                 <td>---</td>
-                <td><a href="{{ route('charity.users.view') }}">Pangilinan, J.</a></td>
-                <td><a href="{{ route('charity.users.view') }}">Jojo, D.</a></td>
+                <td><a href="#">Pangilinan, J.</a></td>
+                <td><a href="#">Jojo, D.</a></td>
                 <td>Thu, Dec 25, 2022 2:15 PM</td>
                 <td>14 hours ago</td>
                 <td>
@@ -58,7 +58,7 @@
                     <span class="badge badge-soft-success">Completed</span> Prepare the financial plan for..
                 </td>
                 <td>---</td>
-                <td><a href="{{ route('charity.users.view') }}">Pangilinan, J.</a></td>
+                <td><a href="#">Pangilinan, J.</a></td>
                 <td><strong>You</strong></td>
                 <td>Thu, Dec 25, 2022 2:15 PM</td>
                 <td>Just now</td>
