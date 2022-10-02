@@ -84,25 +84,29 @@
                         <div class="row px-5 mb-5">
                             <dl class="row mb-0 col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Username:</strong></h4></dt>
-                                <dt class="col-md-6">
-                                    @isset($User->username)
-                                        {{'@'.$User->username}}
-                                    @endisset
+                                <dt class="col-md-6">{{($User->username)?'@'.$User->username:'---'}}
                                 </dt>
+                            </dl>
+                            <dl class="row mb-0 col-lg-6">
+                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated:</strong></h4></dt>
+                                <dt class="col-md-6">{{ Carbon\Carbon::parse($User->info->updated_at)->diffForHumans() }}</dt>
+                            </dl>
+                            <dl class="row mb-0 col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Email Address:</strong></h4></dt>
                                 <dt class="col-md-6"><a href="mailto:{{$User->email}}">{{$User->email}}</a></dt>
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Account Status:</strong></h4></dt>
-                                <dt class="col-md-6">{{ $User->status}}</dt>
-
-
                             </dl>
                             <dl class="row mb-0 col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Date Registered:</strong></h4></dt>
                                 <dt class="col-md-6">{{ Carbon\Carbon::parse($User->created_at)->toFormattedDateString() }}</dt>
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Carbon\Carbon::parse($User->info->updated_at)->diffForHumans() }}</dt>
+                            </dl>
+                            <dl class="row mb-0 col-lg-6">
+                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Account Status:</strong></h4></dt>
+                                <dt class="col-md-6">{{$User->status}}</dt>
+                            </dl>
+                            <dl class="row mb-0 col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
-                                <dt class="col-md-6">{{ !empty($User->remarks)? $User->remarks: '-------' }}</dt>
+                                <dt class="col-md-6"><h6 class="fw-bold">{{ empty($User->remarks)? '---': $User->remarks }}</h6></dt>
+                                <dt class="col-md-6 offset-md-6">{{ empty($User->remarks)? '': $User->remarks_message }}</dt>
                             </dl>
                             <hr class="my-3">
                             <dl class="row mb-0 col-lg-6">
