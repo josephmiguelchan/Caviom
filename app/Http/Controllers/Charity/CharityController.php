@@ -205,16 +205,16 @@ class CharityController extends Controller
 
 
             # Create a Notification in-app
-            Notification::insert([
-                'code' => Str::uuid()->toString(),
-                'user_id' => $user->id,
-                'category' => 'User',
-                'Subject' => 'Change Password',
-                'message' => 'You have successfully updated your own password on ' . Carbon::now()->toDayDateTimeString() . '.',
-                'icon' => 'mdi mdi-form-textbox-password',
-                'color' => 'info',
-                'created_at' => Carbon::now(),
-            ]);
+            $notif = new Notification;
+            $notif->code = Str::uuid()->toString();
+            $notif->user_id = $user->id;
+            $notif->category = 'User';
+            $notif->subject = 'Change Password';
+            $notif->message = 'You have successfully updated your own password on ' . Carbon::now()->toDayDateTimeString() . '.';
+            $notif->icon = 'mdi mdi-form-textbox-password';
+            $notif->color = 'info';
+            $notif->created_at = Carbon::now();
+            $notif->save();
 
 
             # Create Audit Logs Record but with the Password being redacted

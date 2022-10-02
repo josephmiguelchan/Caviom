@@ -21,7 +21,11 @@ class VerifyEmailController extends Controller
      */
     public function __invoke(EmailVerificationRequest $request)
     {
+        # (FINISH ACCOUNT SETUP) If user status is Pending Unlocked, redirect to form where they need to update their username and password
+        // To add
+
         if ($request->user()->hasVerifiedEmail()) {
+
             return redirect()->intended(RouteServiceProvider::HOME . '?verified=1');
         }
 
