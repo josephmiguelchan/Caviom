@@ -36,13 +36,13 @@
                             <dd class="col-sm-9">{{$item->action_type}}</dd>
 
                             <dt class="col-sm-3">Event Log Date</dt>
-                            <dd class="col-sm-9">{{$item->performed_at}}</dd>
+                            <dd class="col-sm-9">{{Carbon\Carbon::parse($item->performed_at)->isoFormat('MMM D, YYYY (h:mm A)') }}</dd>
 
                             <dt class="col-sm-3">User</dt>
                             <dd class="col-sm-9"><a href="{{route('charity.users.view',$item->getuser->code)}}">{{$item->getuser->info->first_name . ' ' . $item->getuser->info->last_name}}</a></dd>
 
                             <dt class="col-sm-3">Resource</dt>
-                            <dd class="col-sm-9">{{$item->table_name}}</dd>
+                            <dd class="col-sm-9">{{empty(!$item->table_name)?$item->table_name:'---'}}</dd>
 
                             <dt class="col-sm-3">Record ID</dt>
                             <dd class="col-sm-9">{{empty(!$item->record_id)?$item->record_id:'---'}}</dd>

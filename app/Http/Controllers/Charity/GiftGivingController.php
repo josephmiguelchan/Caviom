@@ -135,7 +135,7 @@ class GiftGivingController extends Controller
                 'code' => Str::uuid()->toString(),
                 'user_id' => $user->id,
                 'category' => 'Gift Giving',
-                'Subject' => 'New  Gift Giving Created',
+                'Subject' => 'New Gift Giving Created',
                 'message' => 'A new Gift Giving project has been created by ' . Auth::user()->role . ' [' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name .
                     '] named [' . $request->name . '] using 300 Star Tokens. ',
                 'icon' => 'mdi mdi-gift',
