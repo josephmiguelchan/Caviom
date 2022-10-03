@@ -43,13 +43,15 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="row" data-masonry='{"percentPosition": true }'>
+                        @foreach ($projects as $key => $item)
                         <div class="col-sm-6 col-lg-4 px-3">
                             <div class="card">
-                                <img class="card-img-top img-fluid" src="{{ asset('upload/test_files/lugaw-for-a-cause.webp') }}" alt="Project #1">
+                                <img class="card-img-top img-fluid" src="{{ asset('upload/charitable_org/projects/'. $item->cover_photo) }}" alt="Project #{{$key+1}}">
                                 <div class="card-body">
-                                    <h4 class="card-title">Lugaw for a Cause</h4>
-                                    <p class="card-text">A bottom-up, volunteer-led movement feeding program
-                                        with a cause...</p>
+                                    <h4 class="card-title">{{ $item->name }}</h4>
+                                    <p class="card-text">
+                                        {{ $item->objective }}
+                                    </p>
                                     <div class="mx-3">
                                         <p class="card-text my-0 mt-3">
                                             <i class="ri-checkbox-blank-circle-fill font-size-10 text-warning align-middle me-2"></i> 1 Pending Tasks
@@ -62,15 +64,16 @@
                                         </p>
                                     </div>
                                         <p class="card-text">
-                                            <small class="text-muted">Last updated 3 mins ago</small>
+                                            <small class="text-muted">Last updated at {{ Carbon\Carbon::parse($item->updated_at)->diffForHumans() }}</small>
                                         </p>
                                         <a href="{{ route('charity.projects.view') }}" class="btn btn-dark waves-effect waves-light w-100">
                                             <i class="mdi mdi-open-in-new"></i> View Project
                                     </a>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-4 px-3">
+                        </div>                        
+                        @endforeach
+                        {{-- <div class="col-sm-6 col-lg-4 px-3">
                             <div class="card">
                                 <img class="card-img-top img-fluid" src="{{ asset('upload/test_files/values-formation.jpg') }}" alt="Project #2">
                                 <div class="card-body">
@@ -175,7 +178,7 @@
                                     </a>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

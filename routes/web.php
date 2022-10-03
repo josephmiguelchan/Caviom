@@ -5,6 +5,7 @@ use App\Http\Controllers\RootAdmin\AdminController;
 use App\Http\Controllers\Charity\AuditLogController;
 use App\Http\Controllers\Charity\GiftGivingController;
 use App\Http\Controllers\Charity\NotificationController;
+use App\Http\Controllers\Charity\ProjectController;
 use App\Http\Controllers\Charity\UserController;
 use App\Http\Controllers\RootAdmin\AuditLogController as RootAdminAuditLogController;
 use App\Http\Controllers\RootAdmin\NotifierController;
@@ -138,9 +139,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
             # Projects
             Route::name('projects')->prefix('/projects')->group(function () {
-                Route::get('', function () {
-                    return view('charity.main.projects.all');
-                });
+                # View All Projects
+                Route::get('', [ProjectController::class, 'ViewAllProjects']);
+
+                
                 Route::get('/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () {
                     return view('charity.main.projects.view');
                 })->name('.view');
