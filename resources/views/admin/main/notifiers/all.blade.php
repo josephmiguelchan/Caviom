@@ -55,81 +55,34 @@
                             </thead>
 
                             <tbody>
+                                @foreach ($notifier as $key => $item)
+
                                 <tr>
-                                    <td>1</td>
-                                    <td>Public Profile</td>
+                                    <td>{{$key+1}}</td>
+                                    <td>{{$item->category}}</td>
                                     <td>
                                         <div class="d-flex">
                                             <div class="flex-1">
-                                                <h6 class="mb-1">Invalid Donation Streams</h6>
+                                                <h6 class="mb-1">{{$item->subject}}</h6>
                                                 <div class="font-size-12 text-muted">
-                                                    <p class="mb-1">Sorry, we have temporarily hidden your Charitable Organization's modes of donation on
-                                                        its public profile due to  ...
+                                                    <p class="mb-1">{{Str::limit($item->message, 50)}}
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.notifiers.view') }}" class="btn btn-sm w-xs btn-outline-primary waves-effect waves-light"
+                                        <a href="{{ route('admin.notifiers.view',$item->id) }}" class="btn btn-sm w-xs btn-outline-primary waves-effect waves-light"
                                             title="View">
                                             <i class="mdi mdi-open-in-new"></i> View
                                         </a>
-                                        <a href="{{ route('admin.notifiers.edit') }}" class="btn btn-sm w-xs btn-outline-dark waves-effect waves-light" title="Edit">
+                                        <a href="{{ route('admin.notifiers.edit', $item->id) }}" class="btn btn-sm w-xs btn-outline-dark waves-effect waves-light" title="Edit">
                                             <i class="mdi mdi-pencil"></i> Edit
                                         </a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Public Profile</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="flex-1">
-                                                <h6 class="mb-1">Violated Community Guidelines</h6>
-                                                <div class="font-size-12 text-muted">
-                                                    <p class="mb-1">Your Charitable Organization's public profile has been locked and hidden due to
-                                                        violation of ...
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="" class="btn btn-sm w-xs btn-outline-primary waves-effect waves-light"
-                                            title="View">
-                                            <i class="mdi mdi-open-in-new"></i> View
-                                        </a>
-                                        <a href="" class="btn btn-sm w-xs btn-outline-dark waves-effect waves-light" title="Edit">
-                                            <i class="mdi mdi-pencil"></i> Edit
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Charity Associates</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="flex-1">
-                                                <h6 class="mb-1">Suspicious Activity</h6>
-                                                <div class="font-size-12 text-muted">
-                                                    <p class="mb-1">We are very sorry but your application has been
-                                                        denied for the violating our terms and conditions. If you wish to appeal, ple...</p>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="" class="btn btn-sm w-xs btn-outline-primary waves-effect waves-light"
-                                            title="View">
-                                            <i class="mdi mdi-open-in-new"></i> View
-                                        </a>
-                                        <a href="" class="btn btn-sm w-xs btn-outline-dark waves-effect waves-light" title="Edit">
-                                            <i class="mdi mdi-pencil"></i> Edit
-                                        </a>
-                                    </td>
-                                </tr>
+                                @endforeach
+
                             </tbody>
                         </table>
 

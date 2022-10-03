@@ -7,6 +7,7 @@ use App\Http\Controllers\Charity\GiftGivingController;
 use App\Http\Controllers\Charity\NotificationController;
 use App\Http\Controllers\Charity\UserController;
 use App\Http\Controllers\RootAdmin\AuditLogController as RootAdminAuditLogController;
+use App\Http\Controllers\RootAdmin\NotifierController;
 use App\Http\Controllers\RootAdmin\UserController as RootAdminUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -337,105 +338,110 @@ Route::controller(AdminController::class)->group(function () {
 
 
 # Root Admin Group Controller
-Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->middleware(['auth', 'verified', 'prevent-back-history', 'admin.only'])
-    ->group(function () {
+Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->middleware(['auth', 'verified', 'prevent-back-history', 'admin.only'])->group(function () {
 
-        # Admin Panel
-        Route::get('/panel', 'showAdminPanel')->name('panel');
+    # Admin Panel
+    Route::get('/panel', 'showAdminPanel')->name('panel');
 
-        # Admin Profile
-        Route::prefix('/profile')->group(function () {
-            Route::get('/', 'showProfile')->name('profile');
-            Route::get('/edit', 'editProfile')->name('profile.edit');
-            Route::post('/store', 'storeProfile')->name('profile.store');
-        });
-
-        # Change Password
-        Route::prefix('/password')->group(function () {
-            Route::get('/change', 'editPassword')->name('password.change');
-            Route::post('/store', 'storePassword')->name('password.store');
-        });
-
-
-        # Charitable Organizations (Verify Profiles)
-        Route::name('charities')->prefix('/charitable-organizations')->group(function () {
-            Route::get('/', function () {
-                return view('admin.charities.all');
-            });
-            Route::get('/26cff452-8f95-4cd8-b42e-c1b3602dbb7e', function () {
-                return view('admin.charities.view');
-            })->name('.view');
-
-            Route::name('.users')->prefix('/users')->group(function () {
-                # View Individual Charity User
-                Route::get('/{code}', [RootAdminUserController::class, 'viewCharityUser'])->name('.view');
-
-                # Edit Individual Charity User
-                Route::get('/edit/{code}', [RootAdminUserController::class, 'editCharityUser'])->name('.edit');
-
-                // To add: (POST) Update User
-            });
-
-            // To Add: (POST) Send Notification in View Charity
-            // To Add: (POST) Edit Profile Settings (Visibility / Verification Status) in View Charity
-        });
-
-        # Star Token Orders
-        Route::name('orders')->prefix('/orders')->group(function () {
-            Route::get('/', function () {
-                return view('admin.main.orders.all');
-            });
-            Route::get('/4de11f39-87b4-433e-a427-b5e214dc42ce', function () {
-                return view('admin.main.orders.view');
-            })->name('.view');
-
-            // To Add: Delete COMPLETED/REJECTED orders (Optional: Processed Orders that exceeded 15 days)
-        });
-
-        # Featured Projects
-        Route::name('feat-projects')->prefix('/featured-projects')->group(function () {
-            Route::get('/', function () {
-                return view('admin.main.featured-projects.all');
-            });
-            Route::get('/6e216252-0443-4326-81a0-3722050bf571', function () {
-                return view('admin.main.featured-projects.view');
-            })->name('.view');
-            // To Add: Approve
-            // To Add: Reject
-        });
-
-        # Admin User Accounts
-        Route::name('users')->prefix('/users')->controller(RootAdminUserController::class)->group(function () {
-            Route::get('/', 'allAdminUsers');
-            Route::get('/add', 'addAdminUser')->name('.add');
-            Route::post('/store', 'storeAdminUser')->name('.store');
-            Route::get('/{code}', 'viewAdminUser')->name('.view');
-        });
-
-        # Audit Logs
-        Route::name('audit-logs')->prefix('/audit-logs')->group(function () {
-            Route::get('/', [RootAdminAuditLogController::class, 'viewAllAudits']);
-        });
-
-        # Notifiers
-        Route::name('notifiers')->prefix('/notifiers')->group(function () {
-            Route::get('/', function () {
-                return view('admin.main.notifiers.all');
-            });
-            Route::get('/add', function () {
-                return view('admin.main.notifiers.add');
-            })->name('.add');
-            Route::get('/1', function () {
-                return view('admin.main.notifiers.view');
-            })->name('.view');
-            Route::get('/edit/1', function () {
-                return view('admin.main.notifiers.edit');
-            })->name('.edit');
-            // To Add: Store New Notifier
-            // To Add: Update Notifier using $id
-            // To Add: Delete Notifier using $id
-        });
+    # Admin Profile
+    Route::prefix('/profile')->group(function () {
+        Route::get('/', 'showProfile')->name('profile');
+        Route::get('/edit', 'editProfile')->name('profile.edit');
+        Route::post('/store', 'storeProfile')->name('profile.store');
     });
 
+    # Change Password
+    Route::prefix('/password')->group(function () {
+        Route::get('/change', 'editPassword')->name('password.change');
+        Route::post('/store', 'storePassword')->name('password.store');
+    });
+
+
+    # Charitable Organizations (Verify Profiles)
+    Route::name('charities')->prefix('/charitable-organizations')->group(function () {
+        Route::get('/', function () {
+            return view('admin.charities.all');
+        });
+        Route::get('/26cff452-8f95-4cd8-b42e-c1b3602dbb7e', function () {
+            return view('admin.charities.view');
+        })->name('.view');
+
+        Route::name('.users')->prefix('/users')->group(function () {
+            # View Individual Charity User
+            Route::get('/{code}', [RootAdminUserController::class, 'viewCharityUser'])->name('.view');
+
+            # Edit Individual Charity User
+            Route::get('/edit/{code}', [RootAdminUserController::class, 'editCharityUser'])->name('.edit');
+
+            // To add: (POST) Update User
+        });
+
+        // To Add: (POST) Send Notification in View Charity
+        // To Add: (POST) Edit Profile Settings (Visibility / Verification Status) in View Charity
+    });
+
+    # Star Token Orders
+    Route::name('orders')->prefix('/orders')->group(function () {
+        Route::get('/', function () {
+            return view('admin.main.orders.all');
+        });
+        Route::get('/4de11f39-87b4-433e-a427-b5e214dc42ce', function () {
+            return view('admin.main.orders.view');
+        })->name('.view');
+
+        // To Add: Delete COMPLETED/REJECTED orders (Optional: Processed Orders that exceeded 15 days)
+    });
+
+    # Featured Projects
+    Route::name('feat-projects')->prefix('/featured-projects')->group(function () {
+        Route::get('/', function () {
+            return view('admin.main.featured-projects.all');
+        });
+        Route::get('/6e216252-0443-4326-81a0-3722050bf571', function () {
+            return view('admin.main.featured-projects.view');
+        })->name('.view');
+        // To Add: Approve
+        // To Add: Reject
+    });
+
+    # Admin User Accounts
+    Route::name('users')->prefix('/users')->controller(RootAdminUserController::class)->group(function () {
+        Route::get('/', 'allAdminUsers');
+        Route::get('/add', 'addAdminUser')->name('.add');
+        Route::post('/store', 'storeAdminUser')->name('.store');
+        Route::get('/{code}', 'viewAdminUser')->name('.view');
+    });
+
+    # Audit Logs
+    Route::name('audit-logs')->prefix('/audit-logs')->group(function () {
+        Route::get('/', [RootAdminAuditLogController::class, 'viewAllAudits']);
+    });
+});
+
+# Notifiers
+Route::controller(NotifierController::class)->prefix('/admin/notifiers')->middleware(['auth', 'verified', 'prevent-back-history', 'admin.only'])
+    ->group(function () {
+
+        # All notifier
+        Route::get('/', 'AllNotifier')->name('admin.notifiers');
+
+        # Add notifier
+        Route::get('/add',  'AddNotifier')->name('admin.notifiers.add');
+
+        # Store Notifier
+        Route::post('/store',  'StoreNotifier')->name('admin.notifiers.store');
+
+        # View Notifier
+        Route::get('/view/{id}',  'ViewNotifier')->name('admin.notifiers.view');
+
+        # Edit Notifier
+        Route::get('/edit/{id}',  'EditNotifier')->name('admin.notifiers.edit');
+
+        # Update Notifier
+        Route::post('/update/{id}', 'UpdateNotifier')->name('admin.notifiers.update');
+
+        # Delete Notifier
+        Route::get('/delete/{id}}', 'DeleteNotifier')->name('admin.notifiers.delete');
+    });
 
 require __DIR__ . '/auth.php';
