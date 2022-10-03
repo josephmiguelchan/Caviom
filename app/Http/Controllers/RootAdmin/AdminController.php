@@ -4,6 +4,8 @@ namespace App\Http\Controllers\RootAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\AuditLog;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\UserInfo;
 use Carbon\Carbon;
@@ -11,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -37,13 +40,23 @@ class AdminController extends Controller
     // Logout Admin
     public function destroy(Request $request)
     {
+        $user = Auth::user();
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         # Create Audit Log for Login
-
+        $log_in = new AuditLog();
+        $log_in->user_id = $user->id;
+        $log_in->action_type = 'LOGOUT';
+        $log_in->charitable_organization_id = null;
+        $log_in->table_name = null;
+        $log_in->record_id = null;
+        $log_in->action = $user->role . ' has successfully logged out on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
+            $request->ip();
+        $log_in->performed_at = Carbon::now();
+        $log_in->save();
 
         return redirect('/login');
     }
@@ -148,7 +161,15 @@ class AdminController extends Controller
 
 
         # Create Audit Logs for Edit Profile
-
+        $log = new AuditLog;
+        $log->user_id = Auth::user()->id;
+        $log->action_type = 'UPDATE';
+        $log->charitable_organization_id = null;
+        $log->table_name = 'User, UserInfo, Address';
+        $log->record_id = $thisUser->code;
+        $log->action = $thisUser->role . ' [' . $thisUser->info->first_name . ' ' . $thisUser->info->last_name . '] updated their own profile.';
+        $log->performed_at = Carbon::now();
+        $log->save();
 
         # Return the user back with success toastr message
         $notification = array(
@@ -190,11 +211,16 @@ class AdminController extends Controller
             $user->save();
 
 
-            # Create a Notification in-app
-
-
-
-            # Create Audit Logs Record but with the Password being redacted
+            # Create Audit Logs Record
+            $log = new AuditLog;
+            $log->user_id = $user->id;
+            $log->action_type = 'UPDATE';
+            $log->charitable_organization_id = null;
+            $log->table_name = 'User';
+            $log->record_id = $user->code;
+            $log->action = $user->role . ' [' . $user->info->first_name . ' ' . $user->info->last_name . '] updated their own password.';
+            $log->performed_at = Carbon::now();
+            $log->save();
 
 
 

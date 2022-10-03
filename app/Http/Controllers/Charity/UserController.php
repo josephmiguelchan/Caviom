@@ -27,7 +27,7 @@ class UserController extends Controller
 {
     public function AllUser()
     {
-        $Users = User::where('charitable_organization_id', Auth::user()->charity->id)->latest()->get();
+        $Users = User::where('charitable_organization_id', Auth::user()->charity->id)->get();
 
         return view('charity.main.users.all', compact('Users'));
     }
@@ -154,11 +154,8 @@ class UserController extends Controller
         $user->created_at = Carbon::now();
         $user->save();
 
-
-
         # Store Data to User Infos table
         $user_info = new UserInfo;
-
         $user_info->user_id = $user->id;
         $user_info->first_name = $request->first_name;
         $user_info->middle_name = $request->middle_name;
@@ -180,7 +177,6 @@ class UserController extends Controller
         $user_info->save();
 
 
-
         # Star Token Deduction
         $current_bal = CharitableOrganization::findOrFail(Auth::user()->charitable_organization_id);
         $current_bal->star_tokens = $current_bal->star_tokens - $cost;
@@ -192,17 +188,17 @@ class UserController extends Controller
         # Send Notification
         $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
         foreach ($users as $item) {
-            Notification::insert([
-                'code' => Str::uuid()->toString(),
-                'user_id' => $item->id,
-                'category' => 'User',
-                'subject' => 'Unlocked Account',
-                'message' => 'A new pending ' . Auth::user()->role . ' account [' . $user->email . '] has been added by [' .
-                    Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . '] using ' . $cost . ' Star Tokens.',
-                'icon' => 'mdi mdi-account-plus',
-                'color' => 'success',
-                'created_at' => Carbon::now(),
-            ]);
+            $notif = new Notification;
+            $notif->code = Str::uuid()->toString();
+            $notif->user_id = $item->id;
+            $notif->category = 'User';
+            $notif->subject = 'Unlocked Account';
+            $notif->message = 'A new pending ' . Auth::user()->role . ' account [' . $user->email . '] has been added by [' .
+                Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . '] using ' . $cost . ' Star Tokens.';
+            $notif->icon = 'mdi mdi-account-plus';
+            $notif->color = 'success';
+            $notif->created_at = Carbon::now();
+            $notif->save();
         }
 
         # Create Audit Logs
@@ -289,10 +285,11 @@ class UserController extends Controller
         $oldImg = $User->profile_image;
         if ($oldImg) unlink(public_path('upload/avatar_img/') . $oldImg);
 
-        # Temporarily Store address_id, firstname, and lastname before deleting their records in: Address, User, and User info records
+        # Temporarily Store address_id, firstname, email, and lastname before deleting their records in: Address, User, and User info records
         $address_id = $User->info->address_id;
         $fname = $User->info->first_name;
         $lname = $User->info->last_name;
+        $email = $User->email;
         $User->delete();
         Address::findOrFail($address_id)->delete();
 
@@ -300,16 +297,16 @@ class UserController extends Controller
         # Send Notification
         $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
         foreach ($users as $user) {
-            Notification::insert([
-                'code' => Str::uuid()->toString(),
-                'user_id' => $user->id,
-                'category' =>  'User',
-                'subject' => 'Removed Pending Account',
-                'message' => 'The pending ' . Auth::user()->role . ' account [' . $User->email . '] has been deleted permanently.',
-                'icon' => 'mdi mdi-account-minus',
-                'color' => 'danger',
-                'created_at' => Carbon::now(),
-            ]);
+            $notif = new Notification;
+            $notif->code = Str::uuid()->toString();
+            $notif->user_id = $user->id;
+            $notif->category = 'User';
+            $notif->subject = 'Removed Pending Account';
+            $notif->message = 'The pending ' . Auth::user()->role . ' account [' . $email . '] has been deleted permanently.';
+            $notif->icon = 'mdi mdi-account-minus';
+            $notif->color = 'danger';
+            $notif->created_at = Carbon::now();
+            $notif->save();
         }
 
         # Create Audit Logs
@@ -337,20 +334,20 @@ class UserController extends Controller
         # Send Notification to each user in their Charitable Organizations
         $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
         foreach ($users as $user) {
-            Notification::insert([
-                'code' => Str::uuid()->toString(),
-                'user_id' => $user->id,
-                'category' =>  'User',
-                'subject' => 'Backup Users',
-                'message' => Auth::user()->role . ' [' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name .
-                    '] has attempted to back up a copy of Users from [' . Auth::user()->charity->name . '] into an Excel File.',
-                'icon' => 'mdi mdi-file-download',
-                'color' => 'warning',
-                'created_at' => Carbon::now(),
-            ]);
+            $notif = new Notification;
+            $notif->code = Str::uuid()->toString();
+            $notif->user_id = $user->id;
+            $notif->category = 'User';
+            $notif->subject = 'Backup Users';
+            $notif->message = Auth::user()->role . ' [' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name .
+                '] has attempted to back up a copy of Users from [' . Auth::user()->charity->name . '] into an Excel File.';
+            $notif->icon = 'mdi mdi-file-download';
+            $notif->color = 'warning';
+            $notif->created_at = Carbon::now();
+            $notif->save();
         }
 
-        #Create Audit Logs
+        # Create Audit Logs
         $log = new AuditLog;
         $log->user_id = Auth::user()->id;
         $log->action_type = 'GENERATE EXCEL';

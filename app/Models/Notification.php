@@ -9,10 +9,11 @@ class Notification extends Model
 {
     use HasFactory;
     protected $guarded = [];
-
-
     protected $dates = [
         'created_at',
+    ];
+    protected $casts = [
+        'message' => 'encrypted',
     ];
 
     public $timestamps = false;

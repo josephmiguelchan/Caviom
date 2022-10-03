@@ -26,6 +26,7 @@ return new class extends Migration
             $table->foreignId('charitable_organization_id')->nullable()->constrained();
             $table->char('status', 20);
             $table->string('remarks', 128)->nullable();
+            $table->string('remarks_message', 255)->nullable();
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\RootAdmin;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\AuditLog;
+use App\Models\CharitableOrganization;
 use App\Models\User;
 use App\Models\UserInfo;
 use Carbon\Carbon;
@@ -148,5 +149,17 @@ class UserController extends Controller
                 $id_no_exist = false; // Ends the loop if the Generated ID No. is already unique.
             }
         }
+    }
+    public function viewCharityUser($code)
+    {
+        $User = User::where('code', $code)->firstOrFail();
+
+        return view('admin.charities.users.view', compact('User'));
+    }
+    public function editCharityUser($code)
+    {
+        $User = User::where('code', $code)->firstOrFail();
+
+        return view('admin.charities.users.edit', compact('User'));
     }
 }

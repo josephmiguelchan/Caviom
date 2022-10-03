@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="mt-3">
                                     <p class="text-muted mb-1"><span class="badge bg-light">ID No. {{ Auth::user()->info->organizational_id_no }}</span></p>
-                                    <h4 class="font-size-12">{{ Str::of(Auth::user()->role)->upper() }}</h4>
+                                    <h4 class="font-size-12 text-dark">{{ Str::of(Auth::user()->role)->upper() }}</h4>
                                     <h1 class="py-3" style="color: #62896d">
                                         <strong>
                                             {{ Auth::user()->info->last_name . ', ' . Auth::user()->info->first_name }}
@@ -58,19 +58,32 @@
                         <div class="row px-5">
                             <dl class="row mb-0 col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Username:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Auth::user()->username }}</dt>
+                                <dt class="col-md-6">
+                                    @isset(Auth::user()->username)
+                                        {{'@'.Auth::user()->username}}
+                                    @endisset
+                                </dt>
+                            </dl>
+                            <dl class="row mb-0 col-lg-6">
+                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated:</strong></h4></dt>
+                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->info->updated_at)->diffForHumans() }}</dt>
+                            </dl>
+                            <dl class="row mb-0 col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Email Address:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Auth::user()->email }}</dt>
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Account Status:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Auth::user()->status }}</dt>
+                                <dt class="col-md-6"><a href="mailto:{{Auth::user()->email}}">{{Auth::user()->email}}</a></dt>
                             </dl>
                             <dl class="row mb-0 col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Date Registered:</strong></h4></dt>
                                 <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->created_at)->toFormattedDateString() }}</dt>
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->info->updated_at)->diffForHumans() }}</dt>
+                            </dl>
+                            <dl class="row mb-0 col-lg-6">
+                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Account Status:</strong></h4></dt>
+                                <dt class="col-md-6">{{Auth::user()->status}}</dt>
+                            </dl>
+                            <dl class="row mb-0 col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Auth::user()->remarks }}</dt>
+                                <dt class="col-md-6"><h6 class="fw-bold">{{ empty(Auth::user()->remarks)? '---': Auth::user()->remarks }}</h6></dt>
+                                <dt class="col-md-6 offset-md-6">{{ empty(Auth::user()->remarks)? '': Auth::user()->remarks_message }}</dt>
                             </dl>
                             <hr class="my-3">
                             <dl class="row mb-0 col-lg-6">

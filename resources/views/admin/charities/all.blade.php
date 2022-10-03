@@ -12,7 +12,7 @@
                     <h1 class="mb-0" style="color: #62896d"><strong>CHARITABLE ORGANIZATIONS</strong></h1>
                     <ol class="breadcrumb m-0 p-0 mb-3">
                         <li class="breadcrumb-item">Menu</li>
-                        <li class="breadcrumb-item active">All Charitable Organizations</li>
+                        <li class="breadcrumb-item active">Charitable Organizations</li>
                     </ol>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                                 <td class="text-warning">Pending</td>
                                 <td>---</td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                    <a href="{{route('admin.charities.view')}}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>

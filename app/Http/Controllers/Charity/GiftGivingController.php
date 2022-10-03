@@ -120,7 +120,6 @@ class GiftGivingController extends Controller
 
 
         # Shows notification
-        $toastr = array();
         $toastr = array(
             'message' => 'Gift Giving Added Successfully',
             'alert-type' => 'success'
@@ -131,17 +130,17 @@ class GiftGivingController extends Controller
         $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
 
         foreach ($users as $user) {
-            Notification::insert([
-                'code' => Str::uuid()->toString(),
-                'user_id' => $user->id,
-                'category' => 'Gift Giving',
-                'Subject' => 'New Gift Giving Created',
-                'message' => 'A new Gift Giving project has been created by ' . Auth::user()->role . ' [' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name .
-                    '] named [' . $request->name . '] using 300 Star Tokens. ',
-                'icon' => 'mdi mdi-gift',
-                'color' => 'success',
-                'created_at' => Carbon::now(),
-            ]);
+            $notif = new Notification;
+            $notif->code = Str::uuid()->toString();
+            $notif->user_id = $user->id;
+            $notif->category = 'Gift Giving';
+            $notif->subject = 'Gift Giving Created';
+            $notif->message = 'A new Gift Giving project has been created by ' . Auth::user()->role . ' [' . Auth::user()->info->first_name .
+                ' ' . Auth::user()->info->last_name . '] named [' . $request->name . '] using 300 Star Tokens. ';
+            $notif->icon = 'mdi mdi-gift';
+            $notif->color = 'success';
+            $notif->created_at = Carbon::now();
+            $notif->save();
         }
 
         return redirect()->route('gifts.all')->with($toastr);
@@ -164,7 +163,6 @@ class GiftGivingController extends Controller
 
             return view('charity.gifts.view', compact(['GiftGivings', 'listofBeneficiaries', 'GiftGivingBeneficiaries']));
         } else {
-            $toastr = array();
             $toastr = array(
                 'message' => 'Users can only access their own charity records.',
                 'alert-type' => 'error'
@@ -194,7 +192,6 @@ class GiftGivingController extends Controller
         if ($count >= $no_of_pack) {
 
             # Set conditon for the count of the Beneficiary of the GiftGiving Project will not surpass the no_of_pack
-            $toastr = array();
             $toastr = array(
                 'message' => 'You have already reached the limit of adding the beneficiary to this project.',
                 'alert-type' => 'error'
@@ -205,7 +202,6 @@ class GiftGivingController extends Controller
         if ($request->beneficiaries == null) {
 
             # Set conditon for the dropdown must have a value first
-            $toastr = array();
             $toastr = array(
                 'message' => 'the beneficiary name is required.',
                 'alert-type' => 'error'
@@ -333,8 +329,6 @@ class GiftGivingController extends Controller
 
     public function DeleteGiftGivingBeneficiaries($id)
     {
-        // $beneficiary = GiftGivingBeneficiary::findOrFail($id)->first();
-
         # Attempt to delete the beneficiary using id
         GiftGivingBeneficiary::findOrFail($id)->delete();
         $toastr = array(
@@ -377,7 +371,6 @@ class GiftGivingController extends Controller
             $pdf = PDF::loadView('charity.gifts.generate_ticket', compact('tickets'));
 
             # Audit Logs Creation
-
             $log = new AuditLog;
             $log->user_id = Auth::user()->id;
             $log->action_type = 'GENERATE PDF';
@@ -393,18 +386,18 @@ class GiftGivingController extends Controller
             $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
 
             foreach ($users as $user) {
-                Notification::insert([
-                    'code' => Str::uuid()->toString(),
-                    'user_id' => $user->id,
-                    'category' =>  'GIft Giving',
-                    'subject' => 'Generated Tickets',
-                    'message' => Auth::user()->role . ' ' . Auth::user()->info->first_name . ' ' .
-                        Auth::user()->info->last_name . ' has generated tickets for [' . $GiftGiving->name . '] with batch no. ' .
-                        $GiftGiving->batch_no . '.',
-                    'icon' => 'mdi mdi-ticket',
-                    'color' => 'info',
-                    'created_at' => Carbon::now(),
-                ]);
+                $notif = new Notification;
+                $notif->code = Str::uuid()->toString();
+                $notif->user_id = $user->id;
+                $notif->category = 'Gift Giving';
+                $notif->subject = 'Generated Tickets';
+                $notif->message = Auth::user()->role . ' ' . Auth::user()->info->first_name . ' ' .
+                    Auth::user()->info->last_name . ' has generated tickets for [' . $GiftGiving->name . '] with batch no. ' .
+                    $GiftGiving->batch_no . '.';
+                $notif->icon = 'mdi mdi-ticket';
+                $notif->color = 'info';
+                $notif->created_at = Carbon::now();
+                $notif->save();
             }
 
             return $pdf->download($GiftGiving->name . ' - No. ' . $batch_no . '.pdf');

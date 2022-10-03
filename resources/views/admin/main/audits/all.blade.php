@@ -38,7 +38,17 @@
                             <dd class="col-sm-9">{{Carbon\Carbon::parse($item->performed_at)->isoFormat('MMM D, YYYY (h:mm A)') }}</dd>
 
                             <dt class="col-sm-3">User</dt>
-                            <dd class="col-sm-9"><a href="#">{{$item->getuser->info->first_name . ' ' . $item->getuser->info->last_name}}</a></dd>
+                            <dd class="col-sm-9">
+                                @if ($item->getuser->role != 'Root Admin')
+                                <a href="{{route('admin.charities.users.view', $item->getuser->code)}}">
+                                    {{$item->getuser->info->first_name . ' ' . $item->getuser->info->last_name}}
+                                </a>
+                                @else
+                                <a href="{{route('admin.users.view', $item->getuser->code)}}">
+                                    {{$item->getuser->info->first_name . ' ' . $item->getuser->info->last_name}}
+                                </a>
+                                @endif
+                            </dd>
 
                             <dt class="col-sm-3">Resource</dt>
                             <dd class="col-sm-9">{{empty(!$item->table_name)?$item->table_name:'---'}}</dd>
@@ -91,7 +101,7 @@
                                 <td>{{empty(!$item->charitable_organization_id)?$item->charity->name:'---'}}</td>
                                 <td>{{ Carbon\Carbon::parse($item->performed_at)->toDateTimeString() }}</td>
                                 <td>{{'@'.$item->getuser->username}}</td>
-                                <td>{{$item->table_name}}</td>
+                                <td>{{empty(!$item->table_name)?$item->table_name:'---'}}</td>
                                 <td>{{empty(!$item->record_id)?$item->record_id:'---'}}</td>
                                 <td>
                                     <button class="btn btn-sm btn-outline-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_view_{{$key}}">

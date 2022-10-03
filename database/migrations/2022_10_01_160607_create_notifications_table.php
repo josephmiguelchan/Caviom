@@ -20,7 +20,7 @@ return new class extends Migration
             $table->char('read_status', 20)->default('unread');
             $table->string('category', 64)->nullable();
             $table->string('subject', 64);
-            $table->string('message', 512)->nullable();
+            $table->text('message');
             $table->string('icon', 64)->nullable();
             $table->char('color', 20)->nullable();
             $table->timestamp('created_at');

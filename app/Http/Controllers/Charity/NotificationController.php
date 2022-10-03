@@ -52,7 +52,7 @@ class NotificationController extends Controller
             );
         }
 
-        return redirect()->back()->with($toastr);
+        return to_route('notifications.all')->with($toastr);
     }
 
     /*public function NotificationsData()
