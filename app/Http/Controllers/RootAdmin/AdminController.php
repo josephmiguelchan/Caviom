@@ -40,6 +40,7 @@ class AdminController extends Controller
     // Logout Admin
     public function destroy(Request $request)
     {
+        $user = Auth::user();
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
@@ -47,16 +48,15 @@ class AdminController extends Controller
 
         # Create Audit Log for Login
         $log_in = new AuditLog();
-        $log_in->user_id = Auth::user()->id;
-        $log_in->action_type = 'LOGIN';
+        $log_in->user_id = $user->id;
+        $log_in->action_type = 'LOGOUT';
         $log_in->charitable_organization_id = null;
         $log_in->table_name = null;
         $log_in->record_id = null;
-        $log_in->action = Auth::user()->role . ' has successfully logged in on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
+        $log_in->action = $user->role . ' has successfully logged out on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
             $request->ip();
         $log_in->performed_at = Carbon::now();
         $log_in->save();
-
 
         return redirect('/login');
     }

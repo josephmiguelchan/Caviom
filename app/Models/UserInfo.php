@@ -10,6 +10,7 @@ class UserInfo extends Model
     use HasFactory;
     protected $guarded = [];
     public $timestamps = false;
+    protected $touches = ['user'];
 
     public function address()
     {
