@@ -15,8 +15,7 @@ return new class extends Migration
     {
         Schema::create('user_infos', function (Blueprint $table) {
             $table->id();
-            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->references('id')->on('users')->constrained()->onDelete('cascade');
             $table->text('first_name');
             $table->text('last_name');
             $table->text('middle_name')->nullable();
@@ -25,7 +24,6 @@ return new class extends Migration
             $table->text('work_position');
             $table->foreignId('address_id')->constrained();
             $table->integer('organizational_id_no')->unsigned();
-            // $table->string('id_number', 50);
             $table->timestamp('updated_at')->nullable();
         });
     }

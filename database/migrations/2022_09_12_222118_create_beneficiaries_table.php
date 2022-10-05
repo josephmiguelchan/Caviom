@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('beneficiaries', function (Blueprint $table) {
             $table->id();
             $table->uuid('code');
+            $table->foreignId('charitable_organization_id')->references('id')->on('charitable_organizations')->constrained();
             $table->text('nick_name');
             $table->timestamp('interviewed_at')->nullable();
             $table->string('profile_photo', 255)->nullable();
@@ -25,19 +26,17 @@ return new class extends Migration
             $table->text('birth_date');
             $table->text('birth_place')->nullable();
             $table->text('religion')->nullable();
+            $table->foreignId('present_address_id')->references('id')->on('addresses')->constrained();
+            $table->foreignId('permanent_address_id')->references('id')->on('addresses')->constrained();
+            $table->foreignId('provincial_address_id')->references('id')->on('addresses')->constrained();
             $table->text('educational_attainment')->nullable();
             $table->text('last_school_year_attended')->nullable();
             $table->text('contact_no')->nullable();
             $table->text('prepared_by')->nullable();
             $table->text('noted_by')->nullable();
+            $table->foreignId('last_modified_by_id')->references('id')->on('users')->constrained();
             $table->text('category')->nullable();
             $table->text('label')->nullable();
-
-            $table->foreignId('charitable_organization_id')->references('id')->on('charitable_organizations')->constrained();
-            $table->foreignId('present_address_id')->references('id')->on('addresses')->constrained();
-            $table->foreignId('permanent_address_id')->references('id')->on('addresses')->constrained();
-            $table->foreignId('provincial_address_id')->references('id')->on('addresses')->constrained();
-            $table->foreignId('last_modified_by_id')->references('id')->on('users')->constrained();
             $table->timestamps();
         });
     }

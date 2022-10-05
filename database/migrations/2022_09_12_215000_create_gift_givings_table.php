@@ -13,7 +13,7 @@ return new class extends Migration
      * @return void
      */
 
-     
+
     public function up()
     {
         Schema::create('gift_givings', function (Blueprint $table) {
@@ -25,21 +25,15 @@ return new class extends Migration
             $table->timestamp('start_at')->nullable();
             $table->string('venue', 255);
             $table->string('sponsor', 255)->nullable();
-            // $table->foreignId('last_downloaded_by')->nullable()->constrained();
-            
-            $table->bigInteger('last_downloaded_by')->unsigned()->nullable();
-            $table->foreign('last_downloaded_by')->references('id')->on('users');
-            
+            $table->foreignId('last_downloaded_by')->references('id')->on('users')->nullable()->constrained();
             $table->unsignedInteger('batch_no')->default('0');
             $table->float('amount_per_pack', 6, 2);
             $table->unsignedInteger('no_of_packs')->nullable();
-            $table->float('total_budget', 8, 2); // might need to be updated for more value added
+            $table->float('total_budget', 12, 2);
             $table->timestamps();
-
-            
         });
     }
-   
+
     /**
      * Reverse the migrations.
      *
@@ -49,11 +43,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('gift_givings');
     }
- 
-
 };
-
-
-
-
-
