@@ -225,7 +225,6 @@ class GiftGivingController extends Controller
             $beneficiary->gift_giving_id = $GiftGiving->id;
             $beneficiary->name = $request->beneficiaries;
             $beneficiary->ticket_no = $randomNumber;
-            $beneficiary->created_at = Carbon::now();
             $beneficiary->save();
 
             # Shows success toastr
@@ -313,7 +312,6 @@ class GiftGivingController extends Controller
             $beneficiary->gift_giving_id = $GiftGiving->id;
             $beneficiary->name = $request->custom_name;
             $beneficiary->ticket_no = $randomNumber;
-            $beneficiary->created_at = Carbon::now();
             $beneficiary->save();
 
             # Shows success toastr
