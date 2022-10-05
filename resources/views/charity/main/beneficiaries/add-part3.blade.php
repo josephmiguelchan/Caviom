@@ -2,14 +2,10 @@
 @section('title', 'Add Beneficiary')
 @section('charity')
 
-@php
-    $avatar = 'upload/charitable_org/beneficiary_photos/';
-    $defaultAvatar = 'upload/charitable_org/beneficiary_photos/no_avatar.png';
-@endphp
-
 <div class="page-content">
     <div class="container-fluid">
 
+        <!-- start page title -->
         <!-- start page title -->
         <div class="row">
             <div class="col-12">
@@ -71,26 +67,23 @@
 
                         <hr class="my-3">
 
-                        <form method="POST" action="{{ route('charity.beneficiaries.store') }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('charity.beneficiaries3.storePart3', $beneficiary->code) }}" enctype="multipart/form-data">
                             @csrf
-                            <h2 class="my-3 mt-5" style="color: #62896d" ><strong>I. Indentifying Information</strong></h2>
-                            <!--Basic Info -->
-                            @include('charity.main.beneficiaries.add_components.basic')
 
-                            <!--Education, Contact, and Interview -->
-                            @include('charity.main.beneficiaries.add_components.other')
+                            <!-- Background Info -->
+                            @include('charity.main.beneficiaries.add_components.bg')
 
-                            <!-- Addresses -->
-                            @include('charity.main.beneficiaries.add_components.address')
+                            <!-- Last Part: Label, Category, Prepared By, Noted By-->
+                            @include('charity.main.beneficiaries.add_components.lastpart')
+
 
                             <div class="row p-3">
                                 <div class="">
-                                    <p class="btn list-inline-item float-left mx-4"><strong>1/3</strong></p>
+                                    <p class="btn list-inline-item float-left mx-4"><strong>3/3</strong></p>
                                     <button type="submit" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
-                                        Save and Go to the next part <i class="ri-arrow-right-fill"></i>
+                                        FINISH
                                     </button>
-                                    <a class="btn list-inline-item float-end mx-4" href="{{route('charity.beneficiaries.all' )}}">Cancel</a>
-
+                                    <a class="btn list-inline-item float-end mx-4" href="{{route('charity.beneficiaries.all' )}}">Beneficiary List</a>
                                 </div>
                             </div>
                         </form>

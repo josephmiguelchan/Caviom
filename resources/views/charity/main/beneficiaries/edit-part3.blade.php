@@ -1,11 +1,6 @@
 @extends('charity.charity_master')
-@section('title', 'Add Beneficiary')
+@section('title', 'Edit Beneficiary')
 @section('charity')
-
-@php
-    $avatar = 'upload/charitable_org/beneficiary_photos/';
-    $defaultAvatar = 'upload/charitable_org/beneficiary_photos/no_avatar.png';
-@endphp
 
 <div class="page-content">
     <div class="container-fluid">
@@ -20,7 +15,7 @@
                         <li class="breadcrumb-item">
                             <a href="{{ route('charity.beneficiaries.all') }}">Beneficiaries</a>
                         </li>
-                        <li class="breadcrumb-item active">Add</li>
+                        <li class="breadcrumb-item active">Edit</li>
                     </ol>
                     <button type="button" data-bs-target=".bs-example-modal-center" title="Learn more" class="btn btn-link waves-effect p-0 mb-3" data-bs-toggle="modal">
                         <small>
@@ -60,7 +55,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-8">
-                                <h1><strong>Add New Beneficiary</strong></h1>
+                                <h1><strong>Edit Beneficiary</strong></h1>
                             </div>
                             <div class="col-lg-4 mt-4">
                                 <a href="{{route('charity.beneficiaries.all')}}" class="text-link float-end">
@@ -71,30 +66,29 @@
 
                         <hr class="my-3">
 
-                        <form method="POST" action="{{ route('charity.beneficiaries.store') }}" enctype="multipart/form-data">
+                    @foreach($bgInfo as $key => $bi)
+                        <form method="POST" action="{{ route('charity.beneficiaries3.update', $beneficiary->code) }}" enctype="multipart/form-data">
                             @csrf
-                            <h2 class="my-3 mt-5" style="color: #62896d" ><strong>I. Indentifying Information</strong></h2>
-                            <!--Basic Info -->
-                            @include('charity.main.beneficiaries.add_components.basic')
 
-                            <!--Education, Contact, and Interview -->
-                            @include('charity.main.beneficiaries.add_components.other')
 
-                            <!-- Addresses -->
-                            @include('charity.main.beneficiaries.add_components.address')
+                            <!-- Background Info -->
+                            @include('charity.main.beneficiaries.edit_components.bg')
+
+                            <!-- Last Part: Label, Category, Prepared By, Noted By-->
+                            @include('charity.main.beneficiaries.edit_components.lastpart')
+
 
                             <div class="row p-3">
                                 <div class="">
-                                    <p class="btn list-inline-item float-left mx-4"><strong>1/3</strong></p>
+                                    <p class="btn list-inline-item float-left mx-4"><strong>3/3</strong></p>
                                     <button type="submit" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
-                                        Save and Go to the next part <i class="ri-arrow-right-fill"></i>
+                                        Save
                                     </button>
-                                    <a class="btn list-inline-item float-end mx-4" href="{{route('charity.beneficiaries.all' )}}">Cancel</a>
-
+                                    <a class="btn list-inline-item float-end mx-4" href="{{ route('charity.beneficiaries.show', $beneficiary->code) }}">Cancel</a>
                                 </div>
                             </div>
                         </form>
-
+                    @endforeach
                     </div><!-- end cardbody -->
                 </div><!-- end card -->
             </div><!-- end col -->
