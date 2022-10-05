@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Charity;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuditLog;
 use App\Models\Beneficiary;
 use App\Models\BeneficiaryBgInfo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,11 +26,9 @@ class Beneficiary3Controller extends Controller
             );
 
             return redirect()->back()->with($notification);
-
         } else {
 
-            return view('charity.main.beneficiaries.add-part3',compact('beneficiary'));
-
+            return view('charity.main.beneficiaries.add-part3', compact('beneficiary'));
         }
     }
 
@@ -45,18 +45,17 @@ class Beneficiary3Controller extends Controller
             );
 
             return redirect()->back()->with($notification);
-
         } else {
 
             $beneficiaryBgInfoId = BeneficiaryBgInfo::where('beneficiary_id', $beneficiary->id)->firstorFail();
 
             # Validation of New Beneficiary Background Info
             $request->validate([
-                'problem_presented' => ['required','string'],
-                'about_client' => ['required','string'],
-                'about_family' => ['required','string'],
-                'about_community' => ['required','string'],
-                'assessment' => ['required','string'],
+                'problem_presented' => ['required', 'string'],
+                'about_client' => ['required', 'string'],
+                'about_family' => ['required', 'string'],
+                'about_community' => ['required', 'string'],
+                'assessment' => ['required', 'string'],
 
                 'prepared_by' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'noted_by' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
@@ -80,20 +79,17 @@ class Beneficiary3Controller extends Controller
                 'prepared_by' => $request->prepared_by,
                 'noted_by' => $request->noted_by,
             ]);
-            
+
             # Create Audit Logs
-            //TO DO --- Not sure if this will work.
-//            $uuid = Str::uuid()->toString();
-//
-//            $log = new AuditLog;
-//            $log->user_id = Auth::user()->id;
-//            $log->action_type = 'ADD';
-//            $log->charitable_organization_id = Auth::user()->charitable_organization_id;
-//            $log->table_name = 'Beneficiary Background Info';
-//            $log->record_id = $uuid;
-//            $log->action = 'Charity User added beneficiary background info for [' . $request->last_name . ', '. $request->first_name . ' ' . $request->middle_name . ']';
-//            $log->performed_at = Carbon::now();
-//            $log->save();
+            $log = new AuditLog;
+            $log->user_id = Auth::user()->id;
+            $log->action_type = 'UPDATE';
+            $log->charitable_organization_id = Auth::user()->charitable_organization_id;
+            $log->table_name = 'Beneficiary Background Info';
+            $log->record_id = $beneficiary->code;
+            $log->action = Auth::user()->role . ' added Beneficiary Background Info for [ ' . $beneficiary->first_name . ' ' . $beneficiary->last_name . ' ].';
+            $log->performed_at = Carbon::now();
+            $log->save();
 
             # Success toastr message
             $notification = array(
@@ -102,7 +98,6 @@ class Beneficiary3Controller extends Controller
             );
 
             return redirect()->route('charity.beneficiaries.all')->with($notification);
-
         }
     }
 
@@ -119,12 +114,10 @@ class Beneficiary3Controller extends Controller
             );
 
             return redirect()->back()->with($notification);
-
         } else {
 
             $bgInfo = BeneficiaryBgInfo::where('beneficiary_id', $beneficiary->id)->get();
-            return view('charity.main.beneficiaries.edit-part3', compact('beneficiary','bgInfo'));
-
+            return view('charity.main.beneficiaries.edit-part3', compact('beneficiary', 'bgInfo'));
         }
     }
 
@@ -142,16 +135,15 @@ class Beneficiary3Controller extends Controller
             );
 
             return redirect()->back()->with($notification);
-
         } else {
 
             # Validation of Edit Beneficiary Background Info
             $request->validate([
-                'problem_presented' => ['required','string'],
-                'about_client' => ['required','string'],
-                'about_family' => ['required','string'],
-                'about_community' => ['required','string'],
-                'assessment' => ['required','string'],
+                'problem_presented' => ['required', 'string'],
+                'about_client' => ['required', 'string'],
+                'about_family' => ['required', 'string'],
+                'about_community' => ['required', 'string'],
+                'assessment' => ['required', 'string'],
 
                 'prepared_by' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'noted_by' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
@@ -177,18 +169,15 @@ class Beneficiary3Controller extends Controller
             ]);
 
             # Create Audit Logs
-            //TO DO --- Not sure if this will work.
-//            $uuid = Str::uuid()->toString();
-//
-//            $log = new AuditLog;
-//            $log->user_id = Auth::user()->id;
-//            $log->action_type = 'UPDATE';
-//            $log->charitable_organization_id = Auth::user()->charitable_organization_id;
-//            $log->table_name = 'Beneficiary Background Info';
-//            $log->record_id = $uuid;
-//            $log->action = 'Charity User updated beneficiary background info for [' . $request->last_name . ', '. $request->first_name . ' ' . $request->middle_name . ']';
-//            $log->performed_at = Carbon::now();
-//            $log->save();
+            $log = new AuditLog;
+            $log->user_id = Auth::user()->id;
+            $log->action_type = 'UPDATE';
+            $log->charitable_organization_id = Auth::user()->charitable_organization_id;
+            $log->table_name = 'Beneficiary Background Info';
+            $log->record_id = $beneficiary->code;
+            $log->action = Auth::user()->role . ' updated Beneficiary Background Info for [ ' . $beneficiary->first_name . ' ' . $beneficiary->last_name . ' ].';
+            $log->performed_at = Carbon::now();
+            $log->save();
 
             $notification = array(
                 'message' => 'Part 3 of this beneficiary record has been updated successfully!',

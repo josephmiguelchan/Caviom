@@ -7,7 +7,10 @@ use App\Models\Beneficiary;
 use App\Models\BeneficiaryFamilyInfo;
 use App\Models\BeneficiaryBgInfo;
 use App\Models\Address;
+use App\Models\AuditLog;
+use App\Models\Notification;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -227,36 +230,34 @@ class BeneficiaryController extends Controller
         $beneficiaryBgInfo->save();
 
         # Create Audit Logs
-        //TO DO --- Not sure if this will work.
-        //            $uuid = Str::uuid()->toString();
-        //
-        //            $log = new AuditLog;
-        //            $log->user_id = Auth::user()->id;
-        //            $log->action_type = 'ADD';
-        //            $log->charitable_organization_id = Auth::user()->charitable_organization_id;
-        //            $log->table_name = 'Beneficiaries';
-        //            $log->record_id = $uuid;
-        //            $log->action = 'Charity User added beneficiary [' . $request->last_name . ', '. $request->first_name . ' ' . $request->middle_name . ']';
-        //            $log->performed_at = Carbon::now();
-        //            $log->save();
+        $log = new AuditLog;
+        $log->user_id = Auth::user()->id;
+        $log->action_type = 'INSERT';
+        $log->charitable_organization_id = Auth::user()->charitable_organization_id;
+        $log->table_name = 'Beneficiaries';
+        $log->record_id = $beneficiary->code;
+        $log->action = Auth::user()->role . ' added Beneficiary record of [ ' . $request->first_name . ' ' . $request->last_name . ' ].';
+        $log->performed_at = Carbon::now();
+        $log->save();
 
-        # Send Notification to each user in their Charitable Organizations
-        //            $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
-        //
-        //            foreach ($users as $user) {
-        //                Notification::insert([
-        //                    'code' => Str::uuid()->toString(),
-        //                    'user_id' => $user->id,
-        //                    'category' => 'Beneficiary',
-        //                    'Subject' => 'Beneficiary Record Added',
-        //                    'message' => 'The Beneficiary Record of '. $beneficiaryDelete->last_name . ', ' . $beneficiaryDelete->first_name . ', ' . $beneficiaryDelete->middle_name .
-        //                        ' has been added by [' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ']',
-        //                    'icon' => 'mdi mdi-account-remove',
-        //                    'color' => 'success',
-        //                    'created_at' => Carbon::now(),
-        //                ]);
-        //            }
+        # (Not needed according to Docs) Send Notification to each user in their Charitable Organizations
+        /*
+        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
 
+        foreach ($users as $user) {
+            Notification::create([
+                'code' => Str::uuid()->toString(),
+                'user_id' => $user->id,
+                'category' => 'Beneficiary',
+                'Subject' => 'Added Beneficiary',
+                'message' => 'The Beneficiary record of [ ' . $request->first_name . ' ' . $request->last_name .
+                    ' ] has been added by [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ].',
+                'icon' => 'mdi mdi-account-plus',
+                'color' => 'success',
+                'created_at' => Carbon::now(),
+            ]);
+        }
+        */
 
         return redirect()->route('charity.beneficiaries2.createPart2', $beneficiary->code);
     }
@@ -524,18 +525,15 @@ class BeneficiaryController extends Controller
             );
 
             # Create Audit Logs
-            //TO DO --- Not sure if this will work.
-            //            $uuid = Str::uuid()->toString();
-            //
-            //            $log = new AuditLog;
-            //            $log->user_id = Auth::user()->id;
-            //            $log->action_type = 'UPDATE';
-            //            $log->charitable_organization_id = Auth::user()->charitable_organization_id;
-            //            $log->table_name = 'Beneficiaries';
-            //            $log->record_id = $uuid;
-            //            $log->action = 'Charity User updated beneficiary [' . $request->last_name . ', '. $request->first_name . ' ' . $request->middle_name . ']';
-            //            $log->performed_at = Carbon::now();
-            //            $log->save();
+            $log = new AuditLog;
+            $log->user_id = Auth::user()->id;
+            $log->action_type = 'UPDATE';
+            $log->charitable_organization_id = Auth::user()->charitable_organization_id;
+            $log->table_name = 'Beneficiaries';
+            $log->record_id = $beneficiary->code;
+            $log->action = Auth::user()->role . ' updated Beneficiary record of [ ' . $request->first_name . ' ' . $request->last_name . ' ].';
+            $log->performed_at = Carbon::now();
+            $log->save();
 
             return redirect()->route('charity.beneficiaries.show', $beneficiary->code)->with($notification);
         }
@@ -545,6 +543,8 @@ class BeneficiaryController extends Controller
     {
         # Retrieve the beneficiary record using Id
         $beneficiaryDelete = Beneficiary::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $firstname = $beneficiaryDelete->first_name;
+        $lastname = $beneficiaryDelete->last_name;
 
         if (!$beneficiaryDelete->charitable_organization_id == Auth::user()->charitable_organization_id) {
 
@@ -572,35 +572,31 @@ class BeneficiaryController extends Controller
             Address::where('id', $beneficiaryDelete->provincial_address_id)->delete();
 
             # Create Audit Logs
-            //TO DO --- Not sure if this will work.
-            //            $uuid = Str::uuid()->toString();
-            //
-            //            $log = new AuditLog;
-            //            $log->user_id = Auth::user()->id;
-            //            $log->action_type = 'DELETE';
-            //            $log->charitable_organization_id = Auth::user()->charitable_organization_id;
-            //            $log->table_name = 'Beneficiaries';
-            //            $log->record_id = $uuid;
-            //            $log->action = 'Charity User deleted beneficiary [' . $request->last_name . ', '. $request->first_name . ' ' . $request->middle_name . ']';
-            //            $log->performed_at = Carbon::now();
-            //            $log->save();
+            $log = new AuditLog;
+            $log->user_id = Auth::id();
+            $log->action_type = 'DELETE';
+            $log->charitable_organization_id = Auth::user()->charitable_organization_id;
+            $log->table_name = 'Beneficiaries';
+            $log->record_id = $id;
+            $log->action = Auth::user()->role . ' deleted Beneficiary record of [ ' . $firstname . ' ' . $lastname . ' ].';
+            $log->performed_at = Carbon::now();
+            $log->save();
 
             # Send Notification to each user in their Charitable Organizations
-            //            $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
-            //
-            //            foreach ($users as $user) {
-            //                Notification::insert([
-            //                    'code' => Str::uuid()->toString(),
-            //                    'user_id' => $user->id,
-            //                    'category' => 'Beneficiary',
-            //                    'Subject' => 'Beneficiary Record Deleted',
-            //                    'message' => 'The Beneficiary Record of '. $beneficiaryDelete->last_name . ', ' . $beneficiaryDelete->first_name . ', ' . $beneficiaryDelete->middle_name .
-            //                        ' has been deleted by [' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ']',
-            //                    'icon' => 'mdi mdi-account-remove',
-            //                    'color' => 'success',
-            //                    'created_at' => Carbon::now(),
-            //                ]);
-            //            }
+            $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+
+            foreach ($users as $user) {
+                Notification::create([
+                    'code' => Str::uuid()->toString(),
+                    'user_id' => $user->id,
+                    'category' => 'Beneficiary',
+                    'Subject' => 'Deleted Beneficiary',
+                    'message' => 'The Beneficiary Record of [ ' . $firstname . ' ' . $lastname . ' ] has been deleted by [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ].',
+                    'icon' => 'mdi mdi-account-remove',
+                    'color' => 'danger',
+                    'created_at' => Carbon::now(),
+                ]);
+            }
 
             $notification = array(
                 'message' => 'A beneficiary record has been deleted successfully!',
