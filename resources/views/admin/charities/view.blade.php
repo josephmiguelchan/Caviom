@@ -1,5 +1,5 @@
 @extends('admin.admin_master')
-@section('title', 'Our Lady of Sorrows Outreach Foundation, Inc.')
+@section('title', $organizationdetail->name)
 @section('charity')
 
 <div class="page-content">
@@ -12,8 +12,8 @@
                     <h1 class="mb-0" style="color: #62896d"><strong>CHARITABLE ORGANIZATIONS</strong></h1>
                     <ol class="breadcrumb m-0 p-0 mb-3">
                         <li class="breadcrumb-item">Menu</li>
-                        <li class="breadcrumb-item">Charitable Organizations</li>
-                        <li class="breadcrumb-item active">Our Lady of Sorrows Outreach Foundation, Inc.</li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.charities.all')}}">Charitable Organizations</a></li>
+                        <li class="breadcrumb-item active">{{$organizationdetail->name}}</li>
                     </ol>
                 </div>
             </div>
@@ -29,11 +29,9 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="#" method="POST">
-                            @csrf
-
+                    
                             <div class="m-2">
-                                <form action="" method="POST" id="submit_notification_form">
+                                <form action="{{route('admin.charities.send.notifcation',$organizationdetail->id)}}" method="POST" id="submit_notification_form">
                                     @csrf
 
                                     <label for="content_message">Message</label>
@@ -47,7 +45,7 @@
 
                                 <p class="mt-3">Are you sure you want to send this notification to active users of this Charitable Organization?</p>
                             </div>
-                        </form>
+                    
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">Cancel</button>
@@ -65,7 +63,7 @@
 
                         </div>
                         <div class="col-lg-4 mt-4">
-                            <a href="{{ route('admin.charities') }}" class="text-link float-end">
+                            <a href="{{ route('admin.charities.all') }}" class="text-link float-end">
                                 <i class="ri-arrow-left-line"></i> Go Back to List
                             </a>
                         </div>
@@ -76,12 +74,13 @@
                             <div id="carouselExampleCaption" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-inner" role="listbox">
                                     <div class="carousel-item active">
-                                        <img src="{{ asset('upload/charitable_org/profile_photo/OLSOFI.jpg') }}" class="rounded"
+                     
+                                        <img src="{{(!empty($organizationdetail->profile_photo))?$organizationdetail->profile_photo: asset('upload/charitable_org/profile_photo/no_avatar.png') }}" class="rounded"
                                             style="width: 100%; height: 30vh; object-fit: cover; opacity:.4;"
                                             alt="Profile Photo of Our Lady of Sorrows Outreach Foundation, Inc.">
                                         <div class="carousel-caption d-none d-md-block text-white-50 my-4">
-                                            <h1 class="text-white fw-bold">Our Lady of Sorrows Outreach Foundation, Inc.</h1>
-                                            <p>May 20, 2022</p>
+                                            <h1 class="text-white fw-bold">{{$organizationdetail->name}}</h1>
+                                            <p>{{$organizationdetail->created_at->format('F d Y')}}</p>   
                                         </div>
                                     </div>
                                 </div>
@@ -94,7 +93,7 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <p class="text-truncate font-size-14 fw-bold mb-2">Charity Admins</p>
-                                        <h4 class="mb-2 text-success">1</h4>
+                                        <h4 class="mb-2 text-success">{{(!empty($admins->count()))? $admins->count():'0'}}</h4>
                                         <p class="text-muted mb-0">
                                             Active Charity Admin Accounts
                                         </p>
@@ -112,7 +111,8 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <p class="text-truncate font-size-14 fw-bold mb-2">Charity Associates</p>
-                                        <h4 class="mb-2 text-success">1</h4>
+                                        <h4 class="mb-2 text-success">{{(!empty($countofAssociates))? $countofAssociates:'0'}}</h4>
+                                             
                                         <p class="text-muted mb-0">
                                             Active Charity Associates
                                         </p>
@@ -148,7 +148,7 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <p class="text-truncate font-size-14 fw-bold mb-2">Star Tokens</p>
-                                        <h4 class="mb-2 text-success">4,500</h4>
+                                        <h4 class="mb-2 text-success">{{ $organizationdetail->star_tokens }}</h4>
                                         <p class="text-muted mb-0">
                                             Organization's Current Balance
                                         </p>

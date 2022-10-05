@@ -18,10 +18,10 @@
                     <ol class="breadcrumb m-0 p-0 mb-3">
                         <li class="breadcrumb-item">Menu</li>
                         <li class="breadcrumb-item">
-                            <a href="{{route('admin.charities')}}">Charitable Organizations</a>
+                            <a href="{{route('admin.charities.all')}}">Charitable Organizations</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{route('admin.charities.view')}}">Our Lady of Sorrows Outreach Foundation, Inc.</a></li>
+                            <a href="{{route('admin.charities.view', $User->charity->code)}}">{{ $User->charity->name }}</a></li>
                         <li class="breadcrumb-item active">View Charity User</li>
                     </ol>
 
@@ -35,7 +35,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="p-4">
-                            <a href="{{ url()->previous() }}" class="text-link">
+                            <a href="{{ route('admin.charities.view', $User->charity->code) }}" class="text-link">
                                 <i class="ri-arrow-left-line"></i> Go Back
                             </a>
                         </div>
@@ -140,7 +140,7 @@
 
                                         @endif
 
-                                        <a href="{{route('admin.charities.users.edit', '535b921d-8063-4fe4-ac6a-718273344e11')}}" class="btn w-lg btn-outline-dark waves-effect waves-light mx-1" title="Resend Verification Link to Email">
+                                        <a href="{{route('admin.charities.users.edit', $User->code)}}" class="btn w-lg btn-outline-dark waves-effect waves-light mx-1" title="Resend Verification Link to Email">
                                             <i class="mdi mdi-pencil"></i> Edit
                                         </a>
 

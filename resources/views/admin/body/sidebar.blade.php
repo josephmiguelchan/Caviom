@@ -36,7 +36,7 @@
                 <li class="menu-title">Menu</li>
 
                 <li class="{{ Request::routeIs('admin.charities*')?'mm-active':'' }}">
-                    <a href="{{route('admin.charities')}}" class="waves-effect">
+                    <a href="{{route('admin.charities.all')}}" class="waves-effect">
                         <i class="ri-bank-line"></i>
                         <span>Charitable Organizations</span>
                     </a>

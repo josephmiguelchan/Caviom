@@ -46,66 +46,48 @@
 
 
                         <tbody>
+                            @foreach ($CharityOrganizations as $key => $item)
+                                
+                          
                             <tr>
-                                <td>1</td>
+                                <td>{{$key+1}}</td>
                                 <td>
-                                    <img src="{{asset('upload/charitable_org/profile_photo/no_avatar.png') }}" alt="OLSOFI Profile Photo" class="rounded avatar-xs"> Our Lady of Sorrows Outreach Foundation, Inc.
+
+                        
+                                    <img src="{{(!empty($item->profile_photo)) ?$item->profile_photo: asset('upload/charitable_org/profile_photo/no_avatar.png') }}" alt="Organization Profile Photo" class="rounded avatar-xs"> {{$item->name}}
                                 </td>
-                                <td><i class="ri-eye-line"></i> Visible</td>
-                                <td class="text-warning">Pending</td>
-                                <td>---</td>
+
+                                @if ($item->profile_status == 'Visible')
+                                    <td><i class="ri-eye-line"></i> Visible</td>
+                                @elseif($item->profile_status == 'Unset')                                
+                                    <td><i class="mdi mdi-cog-off-outline"></i> Unset</td>                                
+                                @elseif($item->profile_status == 'Locked')                                
+                                    <td class="text-danger"><i class="ri-lock-line"></i> Locked</td>                                
+                                @elseif($item->profile_status == 'Hidden')
+                                    <td><i class="ri-eye-off-line"></i> Hidden</td>
+                                @endif
+                          
+                                @if ($item->verification_status == 'Pending')
+                                    <td class="text-warning"> Pending</td>
+                                @elseif($item->verification_status == 'Verified')
+                                    <td class="text-success"> Verified</td>
+                                @elseif($item->verification_status == 'Unverified')
+                                    <td>Unverified</td>
+                                @elseif($item->verification_status == 'Declined')
+                                    <td class="text-danger"> Declined</td>
+                                @endif
+                                
+
+                         
+
+                                <td> {{ (!empty($item->remarks_subject))? $item->remarks_subject:'---' }}</td>
                                 <td>
-                                    <a href="{{route('admin.charities.view')}}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                    <a href="{{route('admin.charities.view',$item->code)}}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>
-                                    <img src="{{asset('upload/charitable_org/profile_photo/OLSOFI.jpg') }}" alt="SPECS Profile Photo" class="rounded avatar-xs"> Specs Foundation, Inc.
-                                </td>
-                                <td class="text-danger"><i class="ri-lock-line"></i> Locked</td>
-                                <td class="text-success">Verified</td>
-                                <td>
-                                    <h6>Violated Community Guidelines</h6>
-                                </td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                        <i class="mdi mdi-open-in-new"></i> View
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>
-                                    <img src="{{asset('upload/charitable_org/profile_photo/SaRU.jpg') }}" alt="SARU Profile Photo" class="rounded avatar-xs"> San Roque United, Inc.
-                                </td>
-                                <td><i class="ri-eye-off-line"></i> Hidden</td>
-                                <td>Unverified</td>
-                                <td>---</td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                        <i class="mdi mdi-open-in-new"></i> View
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>
-                                    <img src="{{asset('upload/charitable_org/profile_photo/no_avatar.png') }}" alt="GAWAD Profile Photo" class="rounded avatar-xs"> Gawad Kalinga, Inc.
-                                </td>
-                                <td><i class="ri-eye-line"></i> Visible</td>
-                                <td class="text-danger">Declined</td>
-                                <td>
-                                    <h6>[Re-Apply] Incomplete Requirements</h6>
-                                </td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                        <i class="mdi mdi-open-in-new"></i> View
-                                    </a>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
 

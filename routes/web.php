@@ -7,6 +7,7 @@ use App\Http\Controllers\Charity\GiftGivingController;
 use App\Http\Controllers\Charity\NotificationController;
 use App\Http\Controllers\Charity\UserController;
 use App\Http\Controllers\RootAdmin\AuditLogController as RootAdminAuditLogController;
+use App\Http\Controllers\RootAdmin\CharitableOrganizationController;
 use App\Http\Controllers\RootAdmin\NotifierController;
 use App\Http\Controllers\RootAdmin\UserController as RootAdminUserController;
 use Illuminate\Support\Facades\Route;
@@ -359,25 +360,35 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
 
     # Charitable Organizations (Verify Profiles)
     Route::name('charities')->prefix('/charitable-organizations')->group(function () {
-        Route::get('/', function () {
-            return view('admin.charities.all');
-        });
-        Route::get('/26cff452-8f95-4cd8-b42e-c1b3602dbb7e', function () {
-            return view('admin.charities.view');
-        })->name('.view');
+
+        # All Charities Organization 
+        Route::get('/', [CharitableOrganizationController::class, 'AllCharityOrganization'])->name('.all');
+
+        # View Organization Detail
+        Route::get('/view/{code}', [CharitableOrganizationController::class, 'ViewCharityOrganization'])->name('.view');
+
+        # Update Profile Settings
+        Route::post('/profile/setting/{code}', [CharitableOrganizationController::class, 'CharityProfileSetting'])->name('.profile.update');
 
         Route::name('.users')->prefix('/users')->group(function () {
             # View Individual Charity User
-            Route::get('/{code}', [RootAdminUserController::class, 'viewCharityUser'])->name('.view');
+            Route::get('/{code}', [CharitableOrganizationController::class, 'ViewCharityUserDetail'])->name('.view');
 
             # Edit Individual Charity User
-            Route::get('/edit/{code}', [RootAdminUserController::class, 'editCharityUser'])->name('.edit');
+            Route::get('/edit/{code}', [CharitableOrganizationController::class, 'EditCharityUserDetail'])->name('.edit');
 
-            // To add: (POST) Update User
+            # To add: (POST) Update User
+            Route::post('/edit/{code}', [CharitableOrganizationController::class, 'UpdateCharityUserDetail'])->name('.update');
+         
         });
 
-        // To Add: (POST) Send Notification in View Charity
+        // # Send Notification in View Charity
+
+        Route::post('/send/notification/{id}', [CharitableOrganizationController::class, 'SendNotification'])->name('.send.notifcation');
+
         // To Add: (POST) Edit Profile Settings (Visibility / Verification Status) in View Charity
+
+
     });
 
     # Star Token Orders
