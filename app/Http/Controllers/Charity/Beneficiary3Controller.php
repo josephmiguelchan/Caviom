@@ -80,13 +80,7 @@ class Beneficiary3Controller extends Controller
                 'prepared_by' => $request->prepared_by,
                 'noted_by' => $request->noted_by,
             ]);
-
-            # Success toastr message
-            $notification = array(
-                'message' => 'A new beneficiary record has been saved successfully!',
-                'alert-type' => 'success',
-            );
-
+            
             # Create Audit Logs
             //TO DO --- Not sure if this will work.
 //            $uuid = Str::uuid()->toString();
@@ -100,6 +94,12 @@ class Beneficiary3Controller extends Controller
 //            $log->action = 'Charity User added beneficiary background info for [' . $request->last_name . ', '. $request->first_name . ' ' . $request->middle_name . ']';
 //            $log->performed_at = Carbon::now();
 //            $log->save();
+
+            # Success toastr message
+            $notification = array(
+                'message' => 'A new beneficiary record has been saved successfully!',
+                'alert-type' => 'success',
+            );
 
             return redirect()->route('charity.beneficiaries.all')->with($notification);
 
@@ -176,11 +176,6 @@ class Beneficiary3Controller extends Controller
                 'noted_by' => $request->noted_by,
             ]);
 
-            $notification = array(
-                'message' => 'Part 3 of this beneficiary record has been updated successfully!',
-                'alert-type' => 'success',
-            );
-
             # Create Audit Logs
             //TO DO --- Not sure if this will work.
 //            $uuid = Str::uuid()->toString();
@@ -194,6 +189,11 @@ class Beneficiary3Controller extends Controller
 //            $log->action = 'Charity User updated beneficiary background info for [' . $request->last_name . ', '. $request->first_name . ' ' . $request->middle_name . ']';
 //            $log->performed_at = Carbon::now();
 //            $log->save();
+
+            $notification = array(
+                'message' => 'Part 3 of this beneficiary record has been updated successfully!',
+                'alert-type' => 'success',
+            );
 
             return redirect()->route('charity.beneficiaries.show', $id)->with($notification);
         }
