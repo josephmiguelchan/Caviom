@@ -84,12 +84,20 @@
                             @include('charity.main.beneficiaries.edit_components.address')
 
                             <div class="row p-3">
-                                <div class="">
-                                    <p class="btn list-inline-item float-left mx-4"><strong>1/3</strong></p>
-                                    <button type="submit" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
-                                        Save
-                                    </button>
-                                    <a class="btn list-inline-item float-end mx-4" href="{{ route('charity.beneficiaries.show', $beneficiaryEdit->code) }}">Cancel</a>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <p class="text-center mb-0 small col-2">Part 1/3</p>
+                                        <div class="progress col-2">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <button type="submit" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
+                                            Save
+                                        </button>
+                                        <a class="btn list-inline-item float-end mx-4" href="{{ route('charity.beneficiaries.show', $beneficiaryEdit->code) }}">Cancel</a>
+                                    </div>
                                 </div>
                             </div>
                         </form>

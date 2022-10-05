@@ -183,8 +183,8 @@
                                 </dt>
                                 <dt class="col-md-3"><h4 class="font-size-15"><strong>Provincial Address:</strong></h4></dt>
                                 <dt class="col-md-9 px-1">
-                                    {{ $provincialAddress->address_line_two.' '.$provincialAddress->address_line_one.', '.
-                                       $provincialAddress->barangay.', '.$provincialAddress->city.', '.$provincialAddress->postal_code.' '.$provincialAddress->province}}
+                                    {{ $provincialAddress->address_line_two.' '.$provincialAddress->address_line_one.' '.
+                                       $provincialAddress->barangay.' '.$provincialAddress->city.' '.$provincialAddress->postal_code.' '.$provincialAddress->province}}
                                 </dt>
                             </dl>
                             <!--End Address -->

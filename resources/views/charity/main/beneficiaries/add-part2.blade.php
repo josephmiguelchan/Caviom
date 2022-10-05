@@ -551,12 +551,19 @@
                         </div><!-- End Family Information -->
 
                         <div class="row p-3">
-                                <div class="">
-                                    <p class="btn list-inline-item float-left mx-4"><strong>2/3</strong></p>
-                                    <a href="{{ route('charity.beneficiaries3.createPart3', $beneficiary->code) }}" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
-                                        Go to the next part <i class="ri-arrow-right-fill"></i>
-                                    </a>
-                                    <a class="btn list-inline-item float-end mx-4" href="{{route('charity.beneficiaries.all' )}}">Beneficiary List</a>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <p class="text-center mb-0 small col-2">Part 2/3</p>
+                                        <div class="progress col-2">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100" style="width: 66%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a href="{{ route('charity.beneficiaries3.createPart3', $beneficiary->code) }}" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
+                                            Go to the next part <i class="ri-arrow-right-fill"></i>
+                                        </a>
+                                        <a class="btn list-inline-item float-end mx-4" href="{{route('charity.beneficiaries.all' )}}">Beneficiary List</a>
+                                    </div>
                                 </div>
                         </div>
 

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('province');
             $table->text('city')->nullable();
             $table->text('barangay')->nullable();
-            $table->text('postal_code', 20);
+            $table->text('postal_code');
             $table->timestamps();
         });
 
