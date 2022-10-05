@@ -73,9 +73,8 @@
                                         <dt class="col-md-6">
                                             <select class="form-control select2-search-disable" name="category">
                                                 <option disabled>Select category...</option>
-                                                <option value="Public Profile" {{$notifier->category == 'Public Profile' ? 'selected' : ''}}>Public Profile</option>
-                                                <option value="Charity Admins" {{$notifier->category == 'Charity Admins' ? 'selected' : ''}}>Charity Admins</option>
-                                                <option value="Charity Associates" {{$notifier->category == 'Charity Associates' ? 'selected' : ''}}>Charity Associates</option>
+                                                <option value="Public Profile" {{$notifier->category == 'Public Profile' ? 'selected' : ''}}>Public Profile</option>                                               
+                                                <option value="Charity User" {{$notifier->category == 'Charity User' ? 'selected' : ''}}>Charity User</option>
                                                 <option value="Star Token Order" {{$notifier->category == 'Star Token Order' ? 'selected' : ''}}>Star Token Order</option>
                                                 <option value="Featured Project Request" {{$notifier->category == 'Featured Project Request' ? 'selected' : ''}}>Featured Project Request</option>
                                             </select>
@@ -90,7 +89,7 @@
                                         <dt class="col-md-2"><h4 class="font-size-15"><strong>Subject:</strong></h4></dt>
                                         <dt class="col-md-10">
                                             <input type="text" class="form-control" name="subject" id="subject" placeholder="Enter subject..." value="{{$notifier->subject}}">
-                                            @error('subjects')
+                                            @error('subject')
                                             <div class="text-danger">
                                                 {{ $message }}
                                             </div>

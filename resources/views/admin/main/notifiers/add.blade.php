@@ -74,8 +74,7 @@
                                             <select class="form-control select2-search-disable" name="category">
                                                 <option selected disabled>Select category...</option>
                                                 <option value="Public Profile">Public Profile</option>
-                                                <option value="Charity Admins">Charity Admins</option>
-                                                <option value="Charity Associates">Charity Associates</option>
+                                                <option value="Charity User">Charity User</option>
                                                 <option value="Star Token Order">Star Token Order</option>
                                                 <option value="Featured Project Request">Featured Project Request</option>
                                             </select>
@@ -101,7 +100,7 @@
                                     <dl class="row col-md-12">
                                         <dt class="col-md-2"><h4 class="font-size-15"><strong>Message:</strong></h4></dt>
                                         <dt class="col-md-10">
-                                            <textarea name="remarks" class="form-control" rows="10" placeholder="Enter remarks for this prospect..."
+                                            <textarea name="remarks" class="form-control" rows="10" placeholder="Enter remarks message for this notifier..."
                                                placeholder="Enter message...">{{old('remarks')}}</textarea>
                                             @error('remarks')
                                             <div class="text-danger">

@@ -30,7 +30,7 @@ class NotifierController extends Controller
         # Validation Rules
         $request->validate([
             'category' => ['required'],
-            'subject' => ['required', 'min:5', 'max:128'],
+            'subject' => ['required', 'min:5', 'max:128', 'unique:notifiers'],
             'remarks' => ['required', 'min:5', 'max:518'],
         ]);
 
@@ -78,7 +78,7 @@ class NotifierController extends Controller
         # Validation Rules
         $request->validate([
             'category' => ['required'],
-            'subject' => ['required', 'min:5', 'max:128'],
+            'subject' => ['required', 'min:5', 'max:128', 'unique:notifiers'],
             'remarks' => ['required', 'min:5', 'max:518'],
         ]);
 
@@ -99,7 +99,7 @@ class NotifierController extends Controller
         $log_in->charitable_organization_id = null;
         $log_in->table_name = 'Notifier';
         $log_in->record_id = $notifier->id;
-        $log_in->action = Auth::user()->role . ' updated the notifier with ID no .' . $notifier->id . 'to [ ' . $notifier->category . ' ] with subject [ ' . $notifier->subject . ' ].';
+        $log_in->action = Auth::user()->role . ' updated the notifier with ID no .' . $notifier->id . ' to [ ' . $notifier->category . ' ] with subject [ ' . $notifier->subject . ' ].';
         $log_in->performed_at = Carbon::now();
         $log_in->save();
 
