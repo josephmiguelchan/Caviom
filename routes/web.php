@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Charity\CharityController;
+use App\Http\Controllers\Charity\BeneficiaryController;
+use App\Http\Controllers\Charity\Beneficiary2Controller;
+use App\Http\Controllers\Charity\Beneficiary3Controller;
 use App\Http\Controllers\RootAdmin\AdminController;
 use App\Http\Controllers\Charity\AuditLogController;
 use App\Http\Controllers\Charity\GiftGivingController;
@@ -203,26 +206,76 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::get('/{code}', [UserController::class, 'ViewUserDetail'])->name('.view');
             });
 
-
-            # Beneficiaries
+            # Beneficiaries Part 1
             Route::name('beneficiaries')->prefix('/beneficiaries')->group(function () {
-                Route::get('', function () {
-                    return view('charity.main.beneficiaries.all');
-                });
-                Route::get('/add', function () {
-                    return view('charity.main.beneficiaries.add');
-                })->name('.add');
-                Route::get('/69a60048-d093-41d7-bf58-d620ec99c979', function () {
-                    return view('charity.main.beneficiaries.view');
-                })->name('.view');
-                Route::get('/edit/69a60048-d093-41d7-bf58-d620ec99c979', function () {
-                    return view('charity.main.beneficiaries.edit');
-                })->name('.edit');
-                Route::post('/save', function () {
-                })->name('.update');
-                // To add - Route::get() for deleting individual beneficiary records.
-                // To add - Route::post() for storing newly created beneficiary records.
-                // To add - Route::get() for Backup list of beneficiaries in their Org via Excel.
+
+                # Retrieve All Beneficiaries of Charitable Organization
+                Route::get('/', [BeneficiaryController::class, 'index'])->name('.all');
+
+                # View A Specific Record from Beneficiaries
+                Route::get('/view/{beneficiaries:code}', [BeneficiaryController::class, 'show'])->name('.show');
+
+                # Create A Beneficiary Record
+                Route::get('/create', [BeneficiaryController::class, 'create'])->name('.create');
+
+                # About to Store the New Beneficiary Record
+                Route::post('/store', [BeneficiaryController::class, 'store'])->name('.store');
+
+                # Delete A Beneficiary Record
+                Route::get('/delete/{beneficiaries:code}', [BeneficiaryController::class, 'delete'])->name('.delete');
+
+                # Edit: Choose Which Part to Edit from Part1 - Part3
+                Route::post('/editPart/{beneficiaries:code}', [BeneficiaryController::class, 'editPart'])
+                    ->name('.editPart');
+
+                # Edit: User chose part 1 to edit
+                Route::get('/edit/{beneficiaries:code}', [BeneficiaryController::class, 'edit'])->name('.edit');
+
+                # About to Update the Edit Beneficiary Record
+                Route::post('/update/{beneficiary:code}', [BeneficiaryController::class, 'update'])->name('.update');
+            });
+
+            # Beneficiaries Part 2
+            Route::name('beneficiaries2')->prefix('/beneficiaries')->group(function () {
+
+                # Create A Family Info Record To A Beneficiary
+                Route::get('/create-part2/{beneficiaries:code}', [Beneficiary2Controller::class, 'createPart2'])
+                    ->name('.createPart2');
+
+                # About to Store the New Family Info Record To A Beneficiary
+                Route::post('/store-part2/{beneficiaries:code}', [Beneficiary2Controller::class, 'storePart2'])
+                    ->name('.storePart2');
+
+                # Delete A New Family Info Record From A Beneficiary
+                Route::post('/destroy-part2/{id}/{beneficiary_code}', [Beneficiary2Controller::class, 'destroyPart2'])
+                    ->name('.destroyPart2');
+
+                # Retrieve the Family Info that is about to be edited
+                Route::post('/update-part2/{id}/{beneficiary_code}', [Beneficiary2Controller::class, 'updatePart2'])
+                    ->name('.updatePart2');
+
+                # Edit: User chose part 2 to edit
+                Route::get('/edit-part2/{beneficiaries:code}', [Beneficiary2Controller::class, 'editPart2'])
+                    ->name('.editPart2');
+            });
+
+            # Beneficiaries Part 3
+            Route::name('beneficiaries3')->prefix('/beneficiaries')->group(function () {
+
+                # Create The Background Information To A Beneficiary
+                Route::get('/create-part3/{beneficiaries:code}', [Beneficiary3Controller::class, 'createPart3'])
+                    ->name('.createPart3');
+
+                # About to Store the Background Information Record To A Beneficiary
+                Route::post('/store-part3/{beneficiaries:code}', [Beneficiary3Controller::class, 'storePart3'])
+                    ->name('.storePart3');
+
+                # Edit: User chose part 3 to edit
+                Route::get('/edit-part3/{beneficiaries:code}', [Beneficiary3Controller::class, 'editPart3'])
+                    ->name('.editPart3');
+
+                # About to Update the Edit Beneficiary Record
+                Route::post('/update-part3/{beneficiary:code}', [Beneficiary3Controller::class, 'update'])->name('.update');
             });
 
 

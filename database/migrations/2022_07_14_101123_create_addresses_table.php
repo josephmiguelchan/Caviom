@@ -16,12 +16,13 @@ return new class extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->char('type', 20);
-            $table->string('address_line_one', 255);
-            $table->string('address_line_two', 255)->nullable();
-            $table->string('province', 255);
-            $table->string('city', 255);
-            $table->char('postal_code', 20);
-            $table->string('barangay', 255);
+            $table->text('address_line_one');
+            $table->text('address_line_two')->nullable();
+            $table->text('region');
+            $table->text('province');
+            $table->text('city')->nullable();
+            $table->text('barangay')->nullable();
+            $table->text('postal_code');
             $table->timestamps();
         });
 

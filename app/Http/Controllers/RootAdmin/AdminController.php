@@ -96,6 +96,7 @@ class AdminController extends Controller
                 # Current address
                 'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
                 'address_line_two' => ['nullable', 'string', 'min:5', 'max:128'],
+                'region' => ['required', 'string', 'min:3', 'max:64'],
                 'province' => ['required', 'string', 'min:3', 'max:64'],
                 'city' => ['required', 'string', 'min:3', 'max:64'],
                 'barangay' => ['required', 'string', 'min:3', 'max:64'],
@@ -153,6 +154,7 @@ class AdminController extends Controller
         Address::findOrFail($thisUserInfo->address_id)->update([
             'address_line_one' => $request->address_line_one,
             'address_line_two' => $request->address_line_two,
+            'region' => $request->region,
             'province' => $request->province,
             'city' => $request->city,
             'postal_code' => $request->postal_code,
