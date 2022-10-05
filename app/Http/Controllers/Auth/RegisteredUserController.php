@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\AuditLog;
 use App\Models\CharitableOrganization;
 use App\Models\User;
 use App\Models\UserInfo;
@@ -70,12 +71,12 @@ class RegisteredUserController extends Controller
                 'province' => ['required', 'string', 'min:3', 'max:64'],
                 'city' => ['required', 'string', 'min:3', 'max:64'],
                 'barangay' => ['required', 'string', 'min:3', 'max:64'],
-                'postal_code' => ['required', 'string', 'min:4', 'max:10'],
+                'postal_code' => ['required', 'integer', 'digits:4'],
 
                 # Login Details
                 'name' => ['required', 'string', 'min:3', 'max:128', 'unique:charitable_organizations'], // Name of their Charitable Organization.
                 // 'profile_photo' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
-                'username' => ['required', 'alpha_dash', 'string', 'max:20', 'unique:users'],
+                'username' => ['required', 'alpha_dash', 'string', 'min:6', 'max:20', 'unique:users'],
                 'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
                 'password' => ['required', 'confirmed', 'max:20', Rules\Password::defaults()],
                 'is_agreed' => ['required'],
@@ -154,16 +155,24 @@ class RegisteredUserController extends Controller
         $user_info->save();
 
 
-        # Create New Audit Logs for Creation of Charity and User, and for Login.
-
-
-
         # Create a New Event (registration) where an email verification will be sent.
         event(new Registered($user));
 
 
         # Automatically Logs in the user
         Auth::login($user);
+
+
+        # Create New Audit Logs for Creation of Charity and User Account
+        $log_charity = new AuditLog;
+        $log_charity->user_id = $user->id;
+        $log_charity->action_type = 'REGISTER';
+        $log_charity->charitable_organization_id = $user->charitable_organization_id;
+        $log_charity->table_name = 'Charitable Organizations, UserInfo, User, Address';
+        $log_charity->record_id = $user->code;
+        $log_charity->action = $user->role . ' has successfully registered their account to their Charitable Organization named [' . $charity->name . '].';
+        $log_charity->performed_at = Carbon::now();
+        $log_charity->save();
 
 
         # Redirect to Home (Charity Dashboard Page)

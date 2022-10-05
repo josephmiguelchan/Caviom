@@ -1,0 +1,15 @@
+{
+    "glyphicons halflings": {
+        "normal": "glyphicons_halflings_normal_3f1d765dcf0ca08093f988f82b3aedeb"
+    },
+    "oswald": {
+        "normal": "oswald_normal_8bbeb697af4c1c0be38549dbc7db240a"
+    },
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_64e570df753d2034ff4dea34374e39c9"
+    },
+    "font awesome 5 free": {
+        "normal": "C:\\xampp\\htdocs\\laravel9\\Caviom\\storage\\fonts\/font_awesome_5_free_normal_9e0707137c804c0e0299d6a0040c87c2",
+        "900": "font_awesome_5_free_900_dee497e58672073b8488fad3bc5c6c54"
+    }
+}

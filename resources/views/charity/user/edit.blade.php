@@ -60,19 +60,32 @@
                         <div class="row px-5">
                             <dl class="row mb-0 col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Username:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Auth::user()->username }}</dt>
+                                <dt class="col-md-6">
+                                    @isset(Auth::user()->username)
+                                        {{'@'.Auth::user()->username}}
+                                    @endisset
+                                </dt>
+                            </dl>
+                            <dl class="row mb-0 col-lg-6">
+                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated:</strong></h4></dt>
+                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->info->updated_at)->diffForHumans() }}</dt>
+                            </dl>
+                            <dl class="row mb-0 col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Email Address:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Auth::user()->email }}</dt>
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Account Status:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Auth::user()->status }}</dt>
+                                <dt class="col-md-6"><a href="mailto:{{Auth::user()->email}}">{{Auth::user()->email}}</a></dt>
                             </dl>
                             <dl class="row mb-0 col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Date Registered:</strong></h4></dt>
                                 <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->created_at)->toFormattedDateString() }}</dt>
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->info->updated_at)->diffForHumans() }}</dt>
+                            </dl>
+                            <dl class="row mb-0 col-lg-6">
+                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Account Status:</strong></h4></dt>
+                                <dt class="col-md-6">{{Auth::user()->status}}</dt>
+                            </dl>
+                            <dl class="row mb-0 col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Auth::user()->remarks }}</dt>
+                                <dt class="col-md-6"><h6 class="fw-bold">{{ empty(Auth::user()->remarks)? '---': Auth::user()->remarks }}</h6></dt>
+                                <dt class="col-md-6 offset-md-6">{{ empty(Auth::user()->remarks)? '': Auth::user()->remarks_message }}</dt>
                             </dl>
                             <hr class="my-3">
 
@@ -125,7 +138,7 @@
                                         <div class="form-group">
                                             <label for="middle_name" class="form-label">Middle Name</label>
                                             <input type="text" class="form-control" name="middle_name" id="middle_name"
-                                                value="{{ (empty($errors->has('middle_name')))?old('middle_name',Auth::user()->info->middle_name):Auth::user()->info->middle_name}}" required>
+                                                value="{{ (empty($errors->has('middle_name')))?old('middle_name',Auth::user()->info->middle_name):Auth::user()->info->middle_name}}">
                                             @error('middle_name')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -171,7 +184,7 @@
                                         <div class="form-group mb-3 row">
                                             <div class="col-12">
                                                 <label for="tel_no" class="form-label">Telephone No.</label>
-                                                <input class="form-control" name="tel_no" id="tel_no" type="tel" required
+                                                <input class="form-control" name="tel_no" id="tel_no" type="tel"
                                                     value="{{ (empty($errors->has('tel_no')))?old('tel_no',Auth::user()->info->tel_no):Auth::user()->info->tel_no}}">
                                                 @error('tel_no')
                                                     <div class="text-danger">

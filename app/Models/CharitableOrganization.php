@@ -17,7 +17,8 @@ class CharitableOrganization extends Model
     ];
     protected $fillable = [
         'name',
-        'visibility_status', // Tentative
+        'profile_photo', // Tentative
+        'profile_status', // Tentative
         'verification_status', // Tentative
         'remarks_subject',
         'remarks_message',
@@ -36,4 +37,8 @@ class CharitableOrganization extends Model
         return $this->hasMany(Beneficiary::class, 'charitable_organization_id', 'id');
     }
 
+    public function giftgiving()
+    {
+        return $this->hasMany(GiftGiving::class, 'charitable_organization_id', 'id');
+    }
 }

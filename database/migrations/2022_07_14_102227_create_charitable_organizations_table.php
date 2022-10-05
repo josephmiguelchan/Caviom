@@ -17,11 +17,12 @@ return new class extends Migration
             $table->id();
             $table->uuid('code');
             $table->string('name', 128);
+            $table->string('profile_photo', 255)->nullable();
             $table->unsignedInteger('star_tokens')->default(4500);
             $table->unsignedInteger('featured_project_credits')->default(0);
             $table->char('subscription', 20)->default('Free');
             $table->timestamp('subscribed_at')->nullable();
-            $table->char('visibility_status', 20)->default('Hidden');
+            $table->char('profile_status', 20)->default('Unset');
             $table->char('verification_status', 20)->default('Unverified');
             $table->unsignedInteger('view_count')->default(0);
 
@@ -33,7 +34,7 @@ return new class extends Migration
                 $table->foreignId('profile_requirement_id')->constrained()->nullable()->onDelete('cascade');
             */
 
-            $table->string('remarks_subject', 128)->nullable();
+            // $table->string('remarks_subject', 128)->nullable();
             $table->string('remarks_message', 512)->nullable();
             $table->timestamp('status_updated_at')->nullable();
             $table->timestamps();

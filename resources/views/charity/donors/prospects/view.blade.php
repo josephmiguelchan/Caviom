@@ -94,10 +94,13 @@
                                 <dt class="col-md-8 py-2 ">1 hour ago</dt>
                                 <dt class="col-md-4 py-2"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
                                 <dt class="col-md-8 py-2">
-                                    <textarea name="" class="form-control" rows="5" placeholder="Enter remarks for this prospect..." id=""></textarea>
-                                    <button type="button" class="btn btn-info btn-rounded waves-effect waves-light w-md mt-2 float-end">
-                                        <i class="ri-edit-line"></i> Save
-                                    </button>
+                                    <form action="#" method="POST">
+                                        @csrf
+                                        <textarea name="remarks" class="form-control" rows="5" placeholder="Enter remarks for this prospect..." id="remarks"></textarea>
+                                        <button type="submit" class="btn btn-info btn-rounded waves-effect waves-light w-md mt-2 float-end">
+                                            <i class="ri-edit-line"></i> Save
+                                        </button>
+                                    </form>
                                 </dt>
                             </dl>
                         </div>

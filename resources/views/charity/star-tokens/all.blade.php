@@ -54,7 +54,7 @@
                         <tbody>
                             <tr>
                                 <td>1</td>
-                                <td><a href="{{ route('charity.users.view') }}">Liwanag, C.</a></td>
+                                <td><a href="#">Liwanag, C.</a></td>
                                 <td>March 16, 2022</td>
                                 <td>2</td>
                                 <td class="text-danger">Failed</td>
@@ -67,7 +67,7 @@
                             </tr>
                             <tr>
                                 <td>2</td>
-                                <td><a href="{{ route('charity.users.view') }}">Pangilinan, J.</a></td>
+                                <td><a href="#">Pangilinan, J.</a></td>
                                 <td>March 18, 2022</td>
                                 <td>2</td>
                                 <td class="text-success">Completed</td>

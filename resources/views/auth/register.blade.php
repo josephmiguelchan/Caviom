@@ -306,7 +306,7 @@
                                     <div class="form-group mb-3 row">
                                         <div class="col-12">
                                             <label for="username" class="form-label">
-                                                *Username
+                                                *Username (Permanent)
                                                 <span data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                     title="You cannot change your username once you create one. Make sure it is appropriate."
                                                     data-bs-original-title="yes">
@@ -350,7 +350,7 @@
                                     <!-- Email Address -->
                                     <div class="form-group mb-3 row">
                                         <div class="col-12">
-                                            <label for="email" class="form-label">*Email Adress</label>
+                                            <label for="email" class="form-label">*Email Adress (Permanent)</label>
                                             <input class="form-control" name="email" id="email" type="email"
                                                 placeholder="@unless($errors->any())Ex. juan.delacruz@mycharity.org @endunless"
                                                 value="{{ old('email') }}" required>

@@ -1,6 +1,6 @@
 @php
-    $avatar = 'upload/avatar_img/'.Auth::user()->profile_image;
-    $defaultAvatar = 'upload/avatar_img/no_avatar.png';
+    $avatar = 'upload/charitable_org/profile_photo/'.Auth::user()->charity->profile_photo;
+    $defaultAvatar = 'upload/charitable_org/profile_photo/no_avatar.png';
 @endphp
 
 <div class="vertical-menu" style="background-color: #f7f3ea;">
@@ -9,12 +9,12 @@
 
         <!-- User details -->
         <div class="user-profile text-center mt-3">
-            <div class="">
-                <img src="{{ (!empty(Auth::user()->profile_image))? url($avatar):url($defaultAvatar) }}"
-                    alt="Profile Picture" class="avatar-lg rounded-circle">
+            <div>
+                <img src="{{ (!empty(Auth::user()->charity->profile_photo))? url($avatar):url($defaultAvatar) }}"
+                    alt="Profile Picture" class="rounded-circle me-2" width="100" data-holder-rendered="true">
             </div>
             <div class="mt-3">
-                <!-- <h4 class="font-size-16 mb-1">Julia Hudda</h4> -->
+                <h4 class="font-size-16 mb-1">{{ Auth::user()->charity->name }}</h4>
             </div>
         </div>
 
@@ -68,21 +68,23 @@
                     </a>
                 </li>
 
-                <li class="{{ Request::routeIs('audits*')?'mm-active':'' }}">
-                    <a href="{{ route('audits.all') }}" class="waves-effect">
-                        <i class="ri-file-search-line"></i>
-                        <span>Audit Logs</span>
-                    </a>
-                </li>
+                @if(Auth::user()->role == "Charity Admin")
+                    <li class="{{ Request::routeIs('audits*')?'mm-active':'' }}">
+                        <a href="{{ route('audits.all') }}" class="waves-effect">
+                            <i class="ri-file-search-line"></i>
+                            <span>Audit Logs</span>
+                        </a>
+                    </li>
 
-                <li class="menu-title">Balance</li>
+                    <li class="menu-title">Balance</li>
 
-                <li class="text-center {{ Request::routeIs('star.tokens*')?'mm-active':'' }}">
-                    <a href="{{ route('star.tokens.balance') }}">
-                        <i class="ri-coin-line"></i>
-                        <span>{{ Auth::user()->charity->star_tokens }} Star Tokens</span>
-                    </a>
-                </li>
+                    <li class="text-center {{ Request::routeIs('star.tokens*')?'mm-active':'' }}">
+                        <a href="{{ route('star.tokens.balance') }}">
+                            <i class="ri-coin-line"></i>
+                            <span>{{ Auth::user()->charity->star_tokens }} Star Tokens</span>
+                        </a>
+                    </li>
+                @endif
 
             </ul>
         </div>

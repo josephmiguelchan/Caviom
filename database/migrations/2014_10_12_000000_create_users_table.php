@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->uuid('code');
-            $table->string('username', 20)->unique();
+            $table->string('username', 20)->unique()->nullable();
             $table->string('email', 255)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 60);
@@ -26,6 +26,7 @@ return new class extends Migration
             $table->foreignId('charitable_organization_id')->nullable()->constrained();
             $table->char('status', 20);
             $table->string('remarks', 128)->nullable();
+            $table->string('remarks_message', 255)->nullable();
             $table->timestamps();
         });
     }

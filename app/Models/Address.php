@@ -31,4 +31,8 @@ class Address extends Model
         'postal_code' => 'encrypted',
     ];
 
+    public function info()
+    {
+        return $this->hasOne(UserInfo::class, 'address_id', 'id');
+    }
 }

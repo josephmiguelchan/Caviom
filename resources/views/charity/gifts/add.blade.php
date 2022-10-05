@@ -23,6 +23,28 @@
         </div>
         <!-- end page title -->
 
+        <!-- Submit Modal -->
+        <div id="submit_modal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            You can no longer edit the information here once submitted (e.g. No. of packs, Amount per pack, etc.). This action
+                            will notify and deduct your Charitable Organization 300 Star Tokens. Continue?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                        <button type="submit" form="submit_form" class="btn btn-dark waves-effect waves-light w-sm">Yes</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card p-4">
@@ -42,14 +64,15 @@
                             </div>
                         </div>
                         <hr class="my-3">
-                        <form method="POST" action="/sa">
+                        <form method="POST" action="{{route('gifts.store')}}" id="submit_form">
                             @csrf
+
                             <div class="form-group mb-3 row">
                                 <!-- Name -->
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label for="name" class="form-label">*Name of Gift Giving Event</label>
-                                        <input class="form-control" name="name" id="name" type="text" required>
+                                        <input class="form-control" name="name" id="name" type="text" value="{{ old('name') }}">
                                         @error('name')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -66,9 +89,9 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="peso_currency">Php</span>
                                             </div>
-                                            <input class="form-control input-mask" data-inputmask="'alias': 'numeric', 'groupSeparator': ',',
+                                            <input class="form-control input-mask" data-inputmask="'alias': 'numeric',
                                                 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" name="amount_per_pack"
-                                                id="amount_per_pack" value="" required>
+                                                id="amount_per_pack" value="{{ old('amount_per_pack') }}">
                                         </div>
                                         @error('amount_per_pack')
                                             <div class="text-danger">
@@ -90,7 +113,7 @@
                                             </span>
                                         </label>
                                         <input type="number" class="form-control" name="no_of_packs" id="no_of_packs"
-                                            value="1" required>
+                                            value="{{old('no_of_packs')}}">
                                         @error('no_of_packs')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -105,7 +128,8 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="objective" class="form-label">*Objective</label>
-                                        <textarea id="elm1" rows="10" name="objective" required maxlength="500">
+                                        <textarea id="elm1" rows="10" name="objective" maxlength="500">
+                                            {{old('objective')}}
                                         </textarea>
                                         @error('objective')
                                             <div class="text-danger">
@@ -122,7 +146,7 @@
                                     <div class="form-group">
                                         <label for="venue" class="form-label">*Address of Venue</label>
                                         <input class="form-control" name="venue" id="venue" type="text"
-                                            value="" required>
+                                            value="{{old('venue')}}">
                                         @error('venue')
                                             <div class="text-danger"><small>
                                                 {{ $message }}
@@ -136,7 +160,7 @@
                                     <div class="form-group">
                                         <label for="start_at" class="form-label">*Date & Time of Event</label>
                                         <input class="form-control" name="start_at" id="start_at" type="datetime-local"
-                                            value="">
+                                            value="{{old('start_at')}}">
                                         @error('start_at')
                                             <div class="text-danger"><small>
                                                 {{ $message }}
@@ -152,7 +176,7 @@
                                     <div class="form-group">
                                         <label for="sponsors" class="form-label">Sponsor/s (Optional)</label>
                                         <input class="form-control" name="sponsors" id="sponsors" type="text"
-                                            value="">
+                                            value="{{old('sponsors')}}">
                                         @error('sponsors')
                                             <div class="text-danger"><small>
                                                 {{ $message }}
@@ -164,9 +188,13 @@
 
                             <div class="row p-5">
                                 <ul class="list-inline mb-0 mt-4 float-end">
-                                    <button type="submit" class="btn btn-dark btn-rounded w-lg waves-effect waves-light float-end"><i class="ri-edit-2-line"></i> Save</button>
+                                    <button type="button" class="btn btn-dark btn-rounded w-lg waves-effect waves-light float-end"
+                                        data-bs-toggle="modal" data-bs-target="#submit_modal">
+                                        <i class="ri-edit-2-line"></i> Submit
+                                    </button>
                                     <a class="btn list-inline-item float-end mx-4" href="{{ route('gifts.all') }}">Cancel</a>
                                 </ul>
+
                             </div>
                         </form>
                     </div><!-- end cardbody -->
