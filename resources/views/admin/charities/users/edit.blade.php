@@ -341,8 +341,24 @@
                                 </div>
 
                                 <div class="form-group mb-3 row">
+                                    <!-- Region -->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="region" class="form-label">*Region</label>
+                                            <input class="form-control" name="region" id="region" type="text" required
+                                                value="{{ (empty($errors->has('region')))?old('region',$User->info->address->region):$User->info->address->region}}">
+                                            @error('region')
+                                                <div class="text-danger">
+                                                    <small>
+                                                        {{ $message }}
+                                                    </small>
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
                                     <!-- Province -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="province" class="form-label">*Province</label>
                                             <input class="form-control" name="province" id="province" type="text" required
@@ -356,7 +372,7 @@
                                     </div>
 
                                     <!-- City -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="city" class="form-label">*City / Municipality</label>
                                             <input class="form-control" name="city" id="city" type="text" required
