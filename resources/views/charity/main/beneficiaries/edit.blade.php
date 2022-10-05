@@ -3,8 +3,8 @@
 @section('charity')
 
 @php
-    $avatar = 'upload/avatar_img/'.Auth::user()->profile_image;
-    $defaultAvatar = 'upload/avatar_img/no_avatar.png';
+    $avatar = 'upload/charitable_org/beneficiary_photos/';
+    $defaultAvatar = 'upload/charitable_org/beneficiary_photos/no_avatar.png';
 @endphp
 
 <div class="page-content">
@@ -18,7 +18,7 @@
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">Our Charitable Organization</li>
                         <li class="breadcrumb-item">
-                            <a href="{{ route('charity.beneficiaries') }}">Beneficiaries</a>
+                            <a href="{{ route('charity.beneficiaries.all') }}">Beneficiaries</a>
                         </li>
                         <li class="breadcrumb-item active">Edit</li>
                     </ol>
@@ -59,166 +59,40 @@
                 <div class="card p-4">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12 px-4">
-                                <a href="{{ url()->previous() }}" class="text-link">
-                                    <i class="mdi mdi-arrow-left"></i> Go Back
+                            <div class="col-lg-8">
+                                <h1><strong>Edit Beneficiary</strong></h1>
+                            </div>
+                            <div class="col-lg-4 mt-4">
+                                <a href="{{route('charity.beneficiaries.all')}}" class="text-link float-end">
+                                    <i class="ri-arrow-left-line"></i> Go Back
                                 </a>
                             </div>
-                        </div>
-                        <div class="text-center">
-                            <div class="user-profile text-center mt-3">
-                                <div>
-                                    <img src="{{ url('upload/avatar_img/no_avatar.png') }}"
-                                        alt="Profile Picture" class="avatar-xl rounded-circle">
-                                </div>
-                                <div class="mt-3">
-                                    <p class="text-muted mb-1"><span class="badge bg-light">ID No. 1</span></p>
-                                    <h1 class="py-3" style="color: #62896d">
-                                        <strong>
-                                            {{-- {{ Auth::user()->info->last_name . ', ' . Auth::user()->info->first_name }}
-                                            @if (Auth::user()->info->middle_name)
-                                            {{
-                                                ' ' . Auth::user()->info->middle_name
-                                            }}
-                                            @endif --}}
-                                            Olarte, Clark Louse Sinko
-                                        </strong>
-                                    </h1>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row px-4">
-                            <!-- Dates -->
-                            <dl class="row mb-0 col-lg-6">
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Date Added:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->created_at)->toFormattedDateString() }}</dt>
-                            </dl>
-                            <dl class="row mb-0 col-lg-6">
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated at:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->info->updated_at)->diffForHumans() }}</dt>
-                                <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Modified by:</strong></h4></dt>
-                                <dt class="col-md-6">Martin Agpalza</dt>
-                            </dl>
-                            <!--End Dates -->
                         </div>
 
                         <hr class="my-3">
 
-                        <form action="" method="POST" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('charity.beneficiaries.update', $beneficiaryEdit->code ) }}" enctype="multipart/form-data">
                             @csrf
-
+                            <h2 class="my-3 mt-5" style="color: #62896d" ><strong>I. Indentifying Information</strong></h2>
                             <!--Basic Info -->
                             @include('charity.main.beneficiaries.edit_components.basic')
-
-                            <!-- Addresses -->
-                            @include('charity.main.beneficiaries.edit_components.address')
 
                             <!--Education, Contact, and Interview -->
                             @include('charity.main.beneficiaries.edit_components.other')
 
-                            <!-- Family Info -->
-                            @include('charity.main.beneficiaries.edit_components.family')
-
-                            <!-- Background Info -->
-                            @include('charity.main.beneficiaries.edit_components.bg')
-
-                            <!-- Label and Category-->
-                            <div class="form-group mt-5 my-3 row">
-                                <!-- Category -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="category" class="form-label">Category</label>
-                                        <input class="form-control" name="category" id="category" type="text"
-                                            value="ADB Scholar">
-                                        @error('category')
-                                            <div class="text-danger"><small>
-                                                {{ $message }}
-                                            </small></div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <!-- Label -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="label" class="form-label">Label</label>
-                                        <input class="form-control" name="label" id="label" type="text"
-                                            value="Unrenewed Sponsor">
-                                        @error('label')
-                                            <div class="text-danger"><small>
-                                                {{ $message }}
-                                            </small></div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!--Prepared and Noted by -->
-                            <div class="form-group mb-3 row">
-                                <!-- Prepared by -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="noted_by" class="form-label">Prepared by</label>
-                                        <input class="form-control" name="noted_by" id="noted_by" type="text"
-                                            value="Shiela Kay">
-                                        @error('noted_by')
-                                            <div class="text-danger"><small>
-                                                {{ $message }}
-                                            </small></div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <!-- Noted by -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="noted_by" class="form-label">Noted by</label>
-                                        <input class="form-control" name="noted_by" id="noted_by" type="text"
-                                            value="Justin Coa">
-                                        @error('noted_by')
-                                            <div class="text-danger"><small>
-                                                {{ $message }}
-                                            </small></div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-
-
+                            <!-- Addresses -->
+                            @include('charity.main.beneficiaries.edit_components.address')
 
                             <div class="row p-3">
                                 <div class="">
-                                    <a href="{{ route('charity.beneficiaries.update') }}" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
-                                        <i class="ri-edit-line"></i> Save
-                                    </a>
-                                    <a class="btn list-inline-item float-end mx-4" href="{{ url()->previous() }}">Cancel</a>
+                                    <p class="btn list-inline-item float-left mx-4"><strong>1/3</strong></p>
+                                    <button type="submit" class="btn btn-dark btn-rounded w-md waves-effect waves-light float-end">
+                                        Save
+                                    </button>
+                                    <a class="btn list-inline-item float-end mx-4" href="{{ route('charity.beneficiaries.show', $beneficiaryEdit->code) }}">Cancel</a>
                                 </div>
                             </div>
-
                         </form>
-
-
-                        <!-- Delete Modal -->
-                        <div id="deleteModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>You are about to delete the selected beneficiary [<strong> Olarte, Clark Louise </strong>] permanently . This action
-                                            cannot be undone and will notify all other users in your Charitable Organization. Continue?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                                        <button type="button" class="btn btn-danger waves-effect waves-light w-sm">Yes</button>
-                                    </div>
-                                </div><!-- /.modal-content -->
-                            </div><!-- /.modal-dialog -->
-                        </div>
-
 
                     </div><!-- end cardbody -->
                 </div><!-- end card -->
