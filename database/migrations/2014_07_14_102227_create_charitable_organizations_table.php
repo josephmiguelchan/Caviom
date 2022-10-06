@@ -22,19 +22,11 @@ return new class extends Migration
             $table->unsignedInteger('featured_project_credits')->default(0);
             $table->char('subscription', 20)->default('Free');
             $table->timestamp('subscribed_at')->nullable();
+            $table->timestamp('subscription_expires_at')->nullable();
             $table->char('profile_status', 20)->default('Unset');
             $table->char('verification_status', 20)->default('Unverified');
             $table->unsignedInteger('view_count')->default(0);
-
-            // These should be on the child tables
-            /*
-                $table->foreignId('profile_primary_info_id')->constrained()->nullable()->onDelete('cascade');
-                $table->foreignId('profile_secondary_info_id')->constrained()->nullable()->onDelete('cascade');
-                $table->foreignId('profile_cover_id')->constrained()->nullable()->onDelete('cascade');
-                $table->foreignId('profile_requirement_id')->constrained()->nullable()->onDelete('cascade');
-            */
-
-            // $table->string('remarks_subject', 128)->nullable();
+            $table->string('remarks_subject', 128)->nullable();
             $table->string('remarks_message', 512)->nullable();
             $table->timestamp('status_updated_at')->nullable();
             $table->timestamps();

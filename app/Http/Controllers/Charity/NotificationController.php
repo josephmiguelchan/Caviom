@@ -24,8 +24,18 @@ class NotificationController extends Controller
     public function ViewNotification($code)
     {
         $notification = Notification::where('code', $code)->firstOrFail();
-        # Set status from unread to read if clicked on view.
 
+        # Only its owner can view notification details.
+        if ($notification->user_id != Auth::id()) {
+            $toastr = array(
+                'message' => 'Sorry, notifications can only be viewed by its owner.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($toastr);
+        }
+
+        # Set status from unread to read if clicked on view.
         $notification->read_status = 'read';
         $notification->save();
 

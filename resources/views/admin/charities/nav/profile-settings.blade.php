@@ -1,6 +1,11 @@
+@php
+    $profileRemarks = App\Models\Admin\Notifier::where('category', 'Public Profile')->get();
+@endphp
+
 <div class="row">
     <div class="col-lg-6 border-end px-4">
 
+        @unless($organizationdetail->profile_status == 'Unset')
         <!-- Confirm Edit Modal -->
         <div id="confirmEditModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
             <div class="modal-dialog modal-dialog-centered">
@@ -21,28 +26,37 @@
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
-        </div>
+        </div>            
+        @endif
 
         <div class="card-body mt-3">
             <div class="row">
                 <div class="col-lg-11">
                     <h2><strong>Profile Settings</strong></h2>
-                    <p class="mb-2">Our Lady of Sorrows Foundation, Inc.</p>
+                    <p class="mb-2">{{$organizationdetail->name}}</p>
                 </div>
             </div>
         </div>
         <div class="card-body p-3">
 
-            <form action="#" method="POST" id="profile_settings_form">
+            <form action="{{route('admin.charities.profile.update', $organizationdetail->code)}}" method="POST" id="profile_settings_form">
                 @csrf
 
+                @if($organizationdetail->profile_status == 'Unset')
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Sorry, only Public Profiles that have been already setup can be updated/verified.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
                 <div class="form-group my-3 row">
                     <div class="col-md-6">
                         <label for="visibility_status" class="form-label">*Public Profile Visibility Status <i class="mdi mdi-eye"></i></label>
-                        <select class="form-select" name="visibility_status" id="visibility_status" aria-label="Select status">
-                            <option value="Hidden" selected>Hidden</option>
-                            <option value="Visible">Visible</option>
-                            <option value="Locked">Locked</option>
+                        <select class="form-select" name="visibility_status" id="visibility_status" aria-label="Select status"
+                            {{$organizationdetail->profile_status == 'Unset'?'disabled':''}}>
+                            <option value="Unset" {{$organizationdetail->profile_status == 'Unset'?'selected':''}} hidden>Unset</option>
+                            <option value="Hidden" {{$organizationdetail->profile_status == 'Hidden'?'selected':''}}>Hidden</option>
+                            <option value="Visible" {{$organizationdetail->profile_status == 'Visible'?'selected':''}}>Visible</option>
+                            <option value="Locked" {{$organizationdetail->profile_status == 'Locked'?'selected':''}}>Locked</option>
                         </select>
                         @error('visibility_status')
                             <div class="text-danger">
@@ -52,11 +66,12 @@
                     </div>
                     <div class="col-md-6">
                         <label for="verification_status" class="form-label">*Verification Status <i class="mdi mdi-check-decagram"></i></label>
-                        <select class="form-select" name="verification_status" id="verification_status" aria-label="Select status">
-                            <option selected hidden disabled>Pending</option>
-                            <option value="Verified">Verified</option>
-                            <option value="Declined">Declined</option>
-                            <option value="Unverified">Unverified</option>
+                        <select class="form-select" name="verification_status" id="verification_status" aria-label="Select status"
+                            {{$organizationdetail->profile_status == 'Unset'?'disabled':''}}>
+                            <option value="Pending" {{$organizationdetail->verification_status == 'Pending'?'selected':''}} hidden>Pending</option>
+                            <option value="Verified" {{$organizationdetail->verification_status == 'Verified'?'selected':''}}>Verified</option>
+                            <option value="Declined" {{$organizationdetail->verification_status == 'Declined'?'selected':''}}>Declined</option>
+                            <option value="Unverified" {{$organizationdetail->verification_status == 'Unverified'?'selected':''}}>Unverified</option>
                         </select>
                         @error('verification_status')
                             <div class="text-danger">
@@ -68,21 +83,22 @@
 
                 <div class="form-group my-3">
                     <label for="remarks" class="form-label">*Remarks <i class="mdi mdi-exclamation-thick"></i></label>
-                        <select class="form-select" name="remarks" id="remarks" aria-label="Select status">
-                            <option selected>None</option>
-                            <option value="1">Violated Community Guidelines</option>
-                            <option value="2">[Re-Apply] Invalid Requirements</option>
-                            <option value="3">[Re-Apply] Incomplete Requirements</option>
-                            <option value="4">[Re-Apply] Expired Documents</option>
-                        </select>
-                        @error('remarks')
-                            <div class="text-danger">
-                                {{ $message }}
-                            </div>
-                        @enderror
+                    <select class="form-select" name="remarks" id="remarks" aria-label="Select status"
+                        {{$organizationdetail->profile_status == 'Unset'?'disabled':''}}>
+                        <option value="" {{($organizationdetail->remarks_subject == null)?'selected':''}}>None</option>
+                        @foreach ($profileRemarks as $item)
+                            <option value="{{$item->subject}}" {{ ($organizationdetail->remarks_subject == $item->subject )?'selected':''}}>{{ $item->subject }}</option>
+                        @endforeach
+                    </select>
+                    @error('remarks')
+                        <div class="text-danger">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                    <p class="small my-2">{{$organizationdetail->remarks_message}}</p>
                 </div>
 
-                <button type="button" data-bs-target="#confirmEditModal" data-bs-toggle="modal" class="btn btn-dark w-lg waves-light waves-effect float-end">
+                <button type="button" data-bs-target="#confirmEditModal" data-bs-toggle="modal" class="btn btn-dark w-lg waves-light waves-effect float-end" {{$organizationdetail->profile_status == 'Unset'?'disabled':''}}>
                     <i class="mdi mdi-arrow-right-thick"></i> Save
                 </button>
 

@@ -5,6 +5,10 @@
 @php
     $avatar = 'upload/avatar_img/'.$User->profile_image;
     $defaultAvatar = 'upload/avatar_img/no_avatar.png';
+
+    $userremarks = App\Models\Admin\Notifier::where('category', 'Charity User')->get();
+
+ 
 @endphp
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -20,10 +24,10 @@
                         <ol class="breadcrumb m-0 p-0 mb-3">
                             <li class="breadcrumb-item">Menu</li>
                             <li class="breadcrumb-item">
-                                <a href="{{route('admin.charities')}}">Charitable Organizations</a>
+                                <a href="{{route('admin.charities.all')}}">Charitable Organizations</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{route('admin.charities.view')}}">Our Lady of Sorrows Outreach Foundation, Inc.</a></li>
+                                <a href="{{route('admin.charities.view', $User->charity->code)}}">{{ $User->charity->name }}</a></li>
                             <li class="breadcrumb-item active">Edit Charity User</li>
                         </ol>
                     </div>
@@ -58,6 +62,11 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
+                        <div class="p-4">
+                            <a href="{{ route('admin.charities.users.view', $User->code) }}" class="text-link">
+                                <i class="ri-arrow-left-line"></i> Go Back
+                            </a>
+                        </div>
                         <div class="text-center">
                             <div class="user-profile text-center mt-3">
                                 <div class="">
@@ -138,7 +147,7 @@
                                         <div class="form-group">
                                             <label for="text" class="form-label">*Username</label>
                                             <input type="username" class="form-control" name="username" id="username"
-                                                value="{{ empty($errors->has('username'))?old('username',$User->username):$User->username}}" required>
+                                                value="{{ empty($errors->has('username'))?old('username',$User->username):$User->username}}">
                                             @error('username')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -184,7 +193,7 @@
                                         <div class="form-group">
                                             <label for="account_status" class="form-label">*Account Status</label>
                                             <select class="form-select select2-search-disable" name="account_status" id="account_status" aria-label="Select status">
-                                                <option value="Pending Unlock" {{ ($User->status == 'Pending Unlock')? 'selected' : ''}} hidden disabled>Pending Unlock</option>
+                                                <option value="Pending Unlock" {{ ($User->status == 'Pending Unlock')? 'selected' : ''}} hidden>Pending Unlock</option>
                                                 <option value="Active" {{ ($User->status == 'Active')? 'selected' : ''}}>Active</option>
                                                 <option value="Inactive" {{ ($User->status == 'Inactive')? 'selected' : ''}}>Inactive</option>
                                                 <option value="Suspended" {{ ($User->status == 'Suspended')? 'selected' : ''}}>Suspended</option>
@@ -202,10 +211,11 @@
                                         <div class="form-group">
                                             <label for="remarks" class="form-label">*Remarks</label>
                                             <select class="form-select select2-search-disable" name="remarks" id="remarks" aria-label="Select status">
-                                                <!-- Foreach notifiers remarks with category of charity admin / charity associate -->
+                                                <!-- Foreach notifiers remarks with category of Charity User -->
                                                 <option value="" {{($User->remarks == null)?'selected':''}}>None</option>
-                                                <option value="Admin Suspicious Activity" {{($User->remarks == 'Admin Suspicious Activity')?'selected':''}}>Admin Suspicious Activity</option>
-                                                <option value="Harrassing Admin" {{($User->remarks == 'Harrassing Admin')?'selected':''}}>Harrassing Admin</option>
+                                                @foreach ($userremarks as $item)
+                                                <option value="{{$item->subject}}" {{ ($User->remarks == $item->subject )?'selected':''}}>{{ $item->subject }}</option>
+                                                @endforeach
                                             </select>
                                             @error('remarks')
                                                 <div class="text-danger">
@@ -341,8 +351,24 @@
                                 </div>
 
                                 <div class="form-group mb-3 row">
+                                    <!-- Region -->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="region" class="form-label">*Region</label>
+                                            <input class="form-control" name="region" id="region" type="text" required
+                                                value="{{ (empty($errors->has('region')))?old('region',$User->info->address->region):$User->info->address->region}}">
+                                            @error('region')
+                                                <div class="text-danger">
+                                                    <small>
+                                                        {{ $message }}
+                                                    </small>
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
                                     <!-- Province -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="province" class="form-label">*Province</label>
                                             <input class="form-control" name="province" id="province" type="text" required
@@ -356,7 +382,7 @@
                                     </div>
 
                                     <!-- City -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="city" class="form-label">*City / Municipality</label>
                                             <input class="form-control" name="city" id="city" type="text" required
@@ -402,7 +428,7 @@
                                 <div class="row p-5">
                                     <ul class="list-inline mb-0 mt-4 float-end">
                                         <input type="submit" class="btn btn-dark btn-rounded w-lg waves-effect waves-light float-end" style="background-color: #62896d;" value="Save">
-                                        <a class="btn list-inline-item float-end mx-4" href="{{ route('admin.charities.users.view', '535b921d-8063-4fe4-ac6a-718273344e11') }}">Cancel</a>
+                                        <a class="btn list-inline-item float-end mx-4" href="{{ route('admin.charities.users.view', $User->code) }}">Cancel</a>
                                     </ul>
                                 </div>
                             </form>

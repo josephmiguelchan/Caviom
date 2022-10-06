@@ -63,8 +63,9 @@
 
                         <hr class="my-3">
 
-                        <form method="POST" action="" enctype="multipart/form-data" id="add_form">
+                        <form method="POST" action="{{route('admin.notifiers.store')}}" enctype="multipart/form-data" id="add_form">
                             @csrf
+
                             <div class="row mt-5">
                                 <div class="col-lg-12">
                                     <dl class="row col-md-12">
@@ -73,26 +74,40 @@
                                             <select class="form-control select2-search-disable" name="category">
                                                 <option selected disabled>Select category...</option>
                                                 <option value="Public Profile">Public Profile</option>
-                                                <option value="Charity Admins">Charity Admins</option>
-                                                <option value="Charity Associates">Charity Associates</option>
+                                                <option value="Charity User">Charity User</option>
                                                 <option value="Star Token Order">Star Token Order</option>
                                                 <option value="Featured Project Request">Featured Project Request</option>
                                             </select>
+                                            @error('category')
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                         </dt>
                                     </dl>
                                     <dl class="row col-md-12">
                                         <dt class="col-md-2"><h4 class="font-size-15"><strong>Subject:</strong></h4></dt>
                                         <dt class="col-md-10">
-                                            <input type="text" class="form-control" name="subject" id="subject" value="" placeholder="Enter subject...">
+                                            <input type="text" class="form-control" name="subject" id="subject" value="{{old('subject')}}" placeholder="Enter subject..." value="{{old('subject')}}">
+                                            @error('subject')
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                         </dt>
+
                                     </dl>
                                     <dl class="row col-md-12">
                                         <dt class="col-md-2"><h4 class="font-size-15"><strong>Message:</strong></h4></dt>
                                         <dt class="col-md-10">
-                                            <textarea name="remarks" class="form-control" rows="10" placeholder="Enter remarks for this prospect..."
-                                                id="elm1" placeholder="Enter message...">
+                                            <textarea name="remarks" class="form-control" rows="10" placeholder="Enter remarks message for this notifier..."
+                                               placeholder="Enter message...">{{old('remarks')}}</textarea>
+                                            @error('remarks')
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
 
-                                            </textarea>
                                             <button type="button" class="btn btn-success w-md waves-effect waves-light w-md mt-4 float-end"
                                                 data-bs-target="#add_notifier" data-bs-toggle="modal">Add</button>
                                         </dt>

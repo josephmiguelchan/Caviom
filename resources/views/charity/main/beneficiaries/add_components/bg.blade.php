@@ -1,6 +1,6 @@
 <!-- Problem -->
-<h4 class="my-3 mt-5" style="color: #62896d">Problem Presented</h4>
-<textarea class="form-control" rows="5" name="problem_presented"></textarea>
+<h4 class="my-3 mt-5" style="color: #62896d"><strong>III. Problem Presented</strong></h4>
+<textarea class="form-control" rows="5" id="problem_presented" name="problem_presented">{{ old('problem_presented') }}</textarea>
 @error('problem_presented')
     <div class="text-danger"><small>
         {{ $message }}
@@ -8,10 +8,10 @@
 @enderror
 <!--End Problem-->
 
-<h4 class="my-3 mt-4" style="color: #62896d">Background Information</h4>
+<h4 class="my-3 mt-4" style="color: #62896d"><strong>IV. Background Information</strong></h4>
 
 <h6>A. About the Client</h6>
-<textarea class="form-control" rows="5" name="about_client"></textarea>
+<textarea class="form-control" rows="5" id="about_client" name="about_client">{{ old('about_client') }}</textarea>
 @error('about_client')
     <div class="text-danger"><small>
         {{ $message }}
@@ -19,7 +19,7 @@
 @enderror
 
 <h6 class="mt-3">B. About the Family</h6>
-<textarea class="form-control" rows="5" name="about_family"></textarea>
+<textarea class="form-control" rows="5" id="about_family" name="about_family">{{ old('about_family') }}</textarea>
 @error('about_family')
     <div class="text-danger"><small>
         {{ $message }}
@@ -27,7 +27,7 @@
 @enderror
 
 <h6 class="mt-3">C. About the Community</h6>
-<textarea class="form-control" rows="5" name="about_community"></textarea>
+<textarea class="form-control" rows="5" id="about_community" name="about_community">{{ old('about_community') }}</textarea>
 @error('about_community')
     <div class="text-danger"><small>
         {{ $message }}
@@ -36,8 +36,8 @@
 
 
 <!--Assessment / Recommendation -->
-<h4 class="my-3 mt-4" style="color: #62896d">Assessment / Recommendation</h4>
-<textarea class="form-control" rows="5" name="assessment"></textarea>
+<h4 class="my-3 mt-4" style="color: #62896d"><strong>V. Assessment / Recommendation</strong></h4>
+<textarea class="form-control" rows="5" id="assessment" name="assessment">{{ old('assessment') }}</textarea>
 @error('assessment')
     <div class="text-danger"><small>
         {{ $message }}

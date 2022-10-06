@@ -209,8 +209,25 @@
                                     </div>
 
                                     <div class="form-group mb-3 row">
+                                        <!-- Region -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="region" class="form-label">*Region</label>
+                                                <input class="form-control" name="region" id="region" type="text" required
+                                                    placeholder="@unless($errors->any())Ex. NCR @endunless"
+                                                    value="{{ old('region') }}">
+                                                @error('region')
+                                                    <div class="text-danger">
+                                                        <small>
+                                                            {{ $message }}
+                                                        </small>
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
                                         <!-- Province -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="province" class="form-label">*Province</label>
                                                 <input class="form-control" name="province" id="province" type="text" required
@@ -227,10 +244,10 @@
                                         </div>
 
                                         <!-- City -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="city" class="form-label">*City / Municipality</label>
-                                                <input class="form-control" name="city" id="city" type="text" required
+                                                <label for="city" class="form-label">City / Municipality</label>
+                                                <input class="form-control" name="city" id="city" type="text"
                                                     placeholder="@unless($errors->any())Ex. Manila City @endunless"
                                                     value="{{ old('city') }}">
                                                 @error('city')
@@ -248,8 +265,8 @@
                                         <!-- Barangay -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="barangay" class="form-label">*Barangay</label>
-                                                <input class="form-control" name="barangay" id="barangay" type="text" required
+                                                <label for="barangay" class="form-label">Barangay</label>
+                                                <input class="form-control" name="barangay" id="barangay" type="text"
                                                     placeholder="@unless($errors->any())Ex. Brgy. 204 @endunless"
                                                     value="{{ old('barangay') }}">
                                                 @error('barangay')

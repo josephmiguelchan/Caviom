@@ -80,7 +80,7 @@ class CharityController extends Controller
                 'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
 
                 # Contact and Occupation
-                'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9)
+                'cel_no' => ['required', 'regex:/(09)[0-9]{9}/', 'unique:user_infos'], // 09 + (Any 9-digit number from 1-9)
                 'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'], // 8 + (Any 7-digit number from 1-9)
                 'work_position' => ['required', 'string', 'min:4', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'organizational_id_no' => ['nullable', 'integer', 'numeric', 'min:100', 'max:9999999999', 'unique:user_infos'], // !! Must be unique only to their charitable organization only.
@@ -89,6 +89,7 @@ class CharityController extends Controller
                 'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
                 'address_line_two' => ['nullable', 'string', 'min:5', 'max:128'],
                 'province' => ['required', 'string', 'min:3', 'max:64'],
+                'region' => ['required', 'string', 'min:3', 'max:64'],
                 'city' => ['required', 'string', 'min:3', 'max:64'],
                 'barangay' => ['required', 'string', 'min:3', 'max:64'],
                 'postal_code' => ['required', 'integer', 'digits:4'],
@@ -145,6 +146,7 @@ class CharityController extends Controller
         Address::findOrFail($thisUserInfo->address_id)->update([
             'address_line_one' => $request->address_line_one,
             'address_line_two' => $request->address_line_two,
+            'region' => $request->region,
             'province' => $request->province,
             'city' => $request->city,
             'postal_code' => $request->postal_code,

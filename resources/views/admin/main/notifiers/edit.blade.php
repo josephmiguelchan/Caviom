@@ -63,8 +63,9 @@
 
                         <hr class="my-3">
 
-                        <form method="POST" action="" enctype="multipart/form-data" id="add_form">
+                        <form method="POST" action="{{route('admin.notifiers.update', $notifier->id)}}" enctype="multipart/form-data" id="add_form">
                             @csrf
+
                             <div class="row mt-5">
                                 <div class="col-lg-12">
                                     <dl class="row col-md-12">
@@ -72,31 +73,40 @@
                                         <dt class="col-md-6">
                                             <select class="form-control select2-search-disable" name="category">
                                                 <option disabled>Select category...</option>
-                                                <option value="Public Profile">Public Profile</option>
-                                                <option value="Charity Admins">Charity Admins</option>
-                                                <option value="Charity Associates">Charity Associates</option>
-                                                <option value="Star Token Order">Star Token Order</option>
-                                                <option selected value="Featured Project Request">Featured Project Request</option>
+                                                <option value="Public Profile" {{$notifier->category == 'Public Profile' ? 'selected' : ''}}>Public Profile</option>                                               
+                                                <option value="Charity User" {{$notifier->category == 'Charity User' ? 'selected' : ''}}>Charity User</option>
+                                                <option value="Star Token Order" {{$notifier->category == 'Star Token Order' ? 'selected' : ''}}>Star Token Order</option>
+                                                <option value="Featured Project Request" {{$notifier->category == 'Featured Project Request' ? 'selected' : ''}}>Featured Project Request</option>
                                             </select>
                                         </dt>
+                                        @error('category')
+                                        <div class="text-danger">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
                                     </dl>
                                     <dl class="row col-md-12">
                                         <dt class="col-md-2"><h4 class="font-size-15"><strong>Subject:</strong></h4></dt>
                                         <dt class="col-md-10">
-                                            <input type="text" class="form-control" name="subject" id="subject" value="Invalid Donation Streams" placeholder="Enter subject...">
+                                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Enter subject..." value="{{$notifier->subject}}">
+                                            @error('subject')
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                         </dt>
                                     </dl>
                                     <dl class="row col-md-12">
                                         <dt class="col-md-2"><h4 class="font-size-15"><strong>Message:</strong></h4></dt>
                                         <dt class="col-md-10">
                                             <textarea name="remarks" class="form-control" rows="10" placeholder="Enter remarks for this prospect..."
-                                                id="elm1" placeholder="Enter message...">
-                                                <p>
-                                                    Sorry, we have temporarily hidden your Charitable Organization's modes of donation
-                                                    on its public profile due to your submitted donation streams. If you wish to appeal,
-                                                    kindly send us an email at <a href="mailto: support@caviom.org">support@caviom.org</a>.
-                                                </p>
-                                            </textarea>
+                                                placeholder="Enter message...">{{$notifier->message}}</textarea>
+
+                                            @error('remarks')
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                             <button type="button" class="btn btn-primary w-md waves-effect waves-light w-md mt-4 float-end"
                                                 data-bs-target="#edit_notifier" data-bs-toggle="modal">Save</button>
                                         </dt>

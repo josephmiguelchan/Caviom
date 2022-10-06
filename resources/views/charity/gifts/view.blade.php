@@ -123,7 +123,7 @@
                                                     <option selected hidden disabled>Select a Beneficiary...</option>
                                                     <optgroup label="Beneficiaries of {{ Auth::user()->charity->name }}">
                                                         @foreach($listofBeneficiaries as $item)
-                                                            <option value="{{$item}}">{{$item}}</option>
+                                                            <option value="{{$item->first_name .' '. $item->last_name}}">{{$item->first_name .' '. $item->last_name}}</option>
                                                         @endforeach
                                                     </optgroup>
                                                 </select>

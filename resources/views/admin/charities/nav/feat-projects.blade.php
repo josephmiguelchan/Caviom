@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg-11">
             <h2><strong>Featured Projects</strong></h2>
-            <p class="mb-2">Our Lady of Sorrows Foundation, Inc.</p>
+            <p class="mb-2">{{$organizationdetail->name}}</p>
         </div>
     </div>
 </div>

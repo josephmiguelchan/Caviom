@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                                        <a href="#" class="btn btn-danger waves-effect waves-light w-sm">Yes</a>
+                                        <a href="{{ route('admin.notifiers.delete', $notifier->id)}}" class="btn btn-danger waves-effect waves-light w-sm">Yes</a>
                                     </div>
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->
@@ -67,23 +67,22 @@
                             <div class="col-lg-12">
                                 <dl class="row col-md-12">
                                     <dt class="col-md-2"><h4 class="font-size-15"><strong>Category:</strong></h4></dt>
-                                    <dt class="col-md-6">Public Profile</dt>
+                                    <dt class="col-md-6">{{$notifier->category}}</dt>
                                 </dl>
                                 <dl class="row col-md-12">
                                     <dt class="col-md-2"><h4 class="font-size-15"><strong>Subject:</strong></h4></dt>
-                                    <dt class="col-md-10">Invalid Donation Streams</dt>
+                                    <dt class="col-md-10">{{$notifier->subject}}</dt>
                                 </dl>
                                 <dl class="row col-md-12">
                                     <dt class="col-md-2"><h4 class="font-size-15"><strong>Message:</strong></h4></dt>
                                     <dt class="col-md-10">
                                         <p>
-                                            Sorry, we have temporarily hidden your Charitable Organization's modes of donation
-                                            on its public profile due to your submitted donation streams. If you wish to appeal,
-                                            kindly send us an email at <a href="mailto: support@caviom.org">support@caviom.org</a>.
+                                            {{$notifier->message}}
+                                            {{-- <a href="mailto: support@caviom.org">support@caviom.org</a>. --}}
                                         </p>
                                     </dt>
                                 </dl>
-                                <a href="{{ route('admin.notifiers.edit') }}" class="btn btn-dark w-md float-end waves-effect waves-light">
+                                <a href="{{ route('admin.notifiers.edit', $notifier->id) }}" class="btn btn-dark w-md float-end waves-effect waves-light">
                                     <i class="ri-edit-line"></i> Edit
                                 </a>
                                 <button type="button" data-bs-target="#delete_notifier" data-bs-toggle="modal"
