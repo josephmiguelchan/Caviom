@@ -431,7 +431,7 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
     # Charitable Organizations (Verify Profiles)
     Route::name('charities')->prefix('/charitable-organizations')->group(function () {
 
-        # All Charities Organization 
+        # All Charities Organization
         Route::get('/', [CharitableOrganizationController::class, 'AllCharityOrganization'])->name('.all');
 
         # View Organization Detail
@@ -449,7 +449,6 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
 
             # To add: (POST) Update User
             Route::post('/edit/{code}', [CharitableOrganizationController::class, 'UpdateCharityUserDetail'])->name('.update');
-         
         });
 
         // # Send Notification in View Charity
@@ -524,5 +523,14 @@ Route::controller(NotifierController::class)->prefix('/admin/notifiers')->middle
         # Delete Notifier
         Route::get('/delete/{id}}', 'DeleteNotifier')->name('admin.notifiers.delete');
     });
+
+Route::name('charities')->prefix('/charitable-organizations')->group(function () {
+    Route::get('/', function () {
+    })->name('.all');
+
+    Route::get('/5802112d-7751-431d-8caf-5368372f0b1c', function () {
+        return view('public.charities.view');
+    })->name('.view');
+});
 
 require __DIR__ . '/auth.php';
