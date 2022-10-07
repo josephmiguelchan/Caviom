@@ -3,8 +3,8 @@
 @section('charity')
 
 @php
-    $avatar = 'upload/avatar_img/'.Auth::user()->profile_image;
-    $defaultAvatar = 'upload/avatar_img/no_avatar.png';
+    $avatar = 'upload/charitable_org/benefactor_photos/';
+    $defaultAvatar = 'upload/charitable_org/benefactor_photos/no_avatar.png';
 @endphp
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -18,7 +18,7 @@
                     <h1 class="mb-0" style="color: #62896d"><strong>EDIT BENEFACTOR</strong></h1>
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">Our Charitable Organization</li>
-                        <li class="breadcrumb-item"><a href="{{ route('charity.benefactors') }}">Benefactors</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('charity.benefactors.all') }}">Benefactors</a></li>
                         <li class="breadcrumb-item active">Edit</li>
                     </ol>
 
@@ -40,20 +40,14 @@
                         <div class="text-center">
                             <div class="user-profile text-center mt-3">
                                 <div class="">
-                                    <img src="{{ (!empty(Auth::user()->profile_image))? url($avatar):url($defaultAvatar) }}"
-                                        alt="Profile Picture" class="avatar-xl rounded-circle" id="showImage">
+                                    <img src="{{ (!empty($benefactor->profile_photo))?url($avatar.$benefactor->profile_photo):url($defaultAvatar) }}"
+                                         alt="Profile Picture" class="avatar-xl rounded-circle">
                                 </div>
                                 <div class="mt-3">
-                                    <p class="text-muted mb-1"><span class="badge bg-light">ID No. 2</span></p>
+                                    <p class="text-muted mb-1"><span class="badge bg-light">ID No. {{ $benefactor->id }}</span></p>
                                     <h1 class="py-3" style="color: #62896d">
                                         <strong>
-                                            {{-- {{ Auth::user()->info->last_name . ', ' . Auth::user()->info->first_name }}
-                                            @if (Auth::user()->info->middle_name)
-                                            {{
-                                                ' ' . Str::substr(Auth::user()->info->middle_name, 0, 1) . '.'
-                                            }}
-                                            @endif --}}
-                                            Manalac, Leonard Abas
+                                            {{ $benefactor->last_name . ', ' . $benefactor->first_name .' '. $benefactor->middle_name}}
                                         </strong>
                                     </h1>
                                 </div>
@@ -62,16 +56,18 @@
                         <div class="row px-5">
                             <dl class="row col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Date Added:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->created_at)->toFormattedDateString() }}</dt>
+                                <dt class="col-md-6">{{ Carbon\Carbon::parse($benefactor->created_at)->toFormattedDateString() }}</dt>
                             </dl>
                             <dl class="row col-lg-6">
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated at:</strong></h4></dt>
-                                <dt class="col-md-6">{{ Carbon\Carbon::parse(Auth::user()->updated_at)->diffForHumans() }}</dt>
+                                <dt class="col-md-6">{{ Carbon\Carbon::parse($benefactor->updated_at)->diffForHumans() }}</dt>
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated by:</strong></h4></dt>
-                                <dt class="col-md-6">N/a</dt>
+                                <dt class="col-md-6">
+                                    {{ $userInfo->last_name . ', ' . $userInfo->first_name .' ' . $userInfo->middle_name}}
+                                </dt>
                             </dl>
                             <hr class="my-3">
-                            <form method="POST" action="" enctype="multipart/form-data" class="form-horizontal">
+                            <form method="POST" action="{{ route('charity.benefactors.update',  $benefactor->code) }}" enctype="multipart/form-data" class="form-horizontal">
                                 @csrf
                                 <h4 class="mt-4" style="color: #62896d">Personal Information</h4>
 
@@ -86,8 +82,8 @@
                                                     <i class="mdi mdi-information-outline"></i>
                                                 </span>
                                             </label>
-                                            <input class="form-control" name="profile_image" id="profile_image" type="file">
-                                            @error('profile_image')
+                                            <input class="form-control" name="profile_photo" id="profile_photo" type="file" value="{{ old('profile_photo') }}">
+                                            @error('profile_photo')
                                                 <div class="text-danger">
                                                     {{ $message }}
                                                 </div>
@@ -98,12 +94,11 @@
                                     <!-- Email Address -->
                                     <div class="col-md-6">
                                         <label for="email" class="form-label">*Email Address</label>
-                                        <input type="email" class="form-control" name="email" id="email"
-                                        value="manalac.leonard@ust.edu.ph" required>
+                                        <input class="form-control" name="email" id="email" value="{{ old('email', $benefactor->email_address) }}" required>
                                         @error('email')
-                                            <div class="text-danger">
-                                                {{ $message }}
-                                            </div>
+                                        <div class="text-danger">
+                                            {{ $message }}
+                                        </div>
                                         @enderror
                                     </div>
                                 </div>
@@ -113,12 +108,11 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="first_name" class="form-label">*First Name</label>
-                                            <input type="text" class="form-control" name="first_name" id="first_name"
-                                                value="Leonard" required>
+                                            <input type="text" class="form-control" name="first_name" id="first_name" value="{{ old('first_name', $benefactor->first_name) }}" required>
                                             @error('first_name')
-                                                <div class="text-danger">
-                                                    {{ $message }}
-                                                </div>
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
                                             @enderror
                                         </div>
                                     </div>
@@ -127,12 +121,11 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="middle_name" class="form-label">Middle Name</label>
-                                            <input type="text" class="form-control" name="middle_name" id="middle_name"
-                                                value="Abas" required>
+                                            <input type="text" class="form-control" name="middle_name" id="middle_name" value="{{ old('middle_name', $benefactor->middle_name) }}">
                                             @error('middle_name')
-                                                <div class="text-danger">
-                                                    {{ $message }}
-                                                </div>
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
                                             @enderror
                                         </div>
                                     </div>
@@ -140,12 +133,11 @@
                                     <!-- Last Name -->
                                     <div class="col-md-4">
                                         <label for="last_name" class="form-label">*Last Name</label>
-                                        <input type="text" class="form-control" name="last_name" id="last_name"
-                                        value="Manalac" required>
+                                        <input type="text" class="form-control" name="last_name" id="last_name" value="{{ old('last_name', $benefactor->last_name) }}" required>
                                         @error('last_name')
-                                            <div class="text-danger">
-                                                {{ $message }}
-                                            </div>
+                                        <div class="text-danger">
+                                            {{ $message }}
+                                        </div>
                                         @enderror
                                     </div>
                                 </div>
@@ -155,12 +147,12 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                            <input class="form-control" name="cel_no" id="cel_no" type="tel" required
-                                                value="09981235678">
+                                            <input class="form-control" name="cel_no" id="cel_no" type="tel" value="{{ old('cel_no', $benefactor->cel_no) }}" required
+                                                   placeholder="Ex. 09191234567">
                                             @error('cel_no')
-                                                <div class="text-danger">
-                                                    {{ $message }}
-                                                </div>
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
                                             @enderror
                                         </div>
                                     </div>
@@ -169,12 +161,12 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="tel_no" class="form-label">Telephone No.</label>
-                                            <input class="form-control" name="tel_no" id="tel_no" type="tel" required
-                                                value="82571234">
+                                            <input class="form-control" name="tel_no" id="tel_no" type="tel" value="{{ old('tel_no', $benefactor->tel_no) }}"
+                                                   placeholder="Ex. 82531234">
                                             @error('tel_no')
-                                                <div class="text-danger">
-                                                    {{ $message }}
-                                                </div>
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
                                             @enderror
                                         </div>
                                     </div>
@@ -185,10 +177,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="category" class="form-label">Category</label>
-                                            <input class="form-control" name="category" id="category" type="text"
-                                                value="ADB Scholar">
+                                            <input class="form-control" name="category" id="category" type="text" value="{{ old('category', $benefactor->category) }}">
                                             @error('category')
-                                                <div class="text-danger"><small>
+                                            <div class="text-danger"><small>
                                                     {{ $message }}
                                                 </small></div>
                                             @enderror
@@ -199,10 +190,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="label" class="form-label">Label</label>
-                                            <input class="form-control" name="label" id="label" type="text"
-                                                value="Unrenewed Sponsor">
+                                            <input class="form-control" name="label" id="label" type="text" value="{{ old('label', $benefactor->label) }}">
                                             @error('label')
-                                                <div class="text-danger"><small>
+                                            <div class="text-danger"><small>
                                                     {{ $message }}
                                                 </small></div>
                                             @enderror
@@ -216,12 +206,11 @@
                                 <div class="form-group mb-3 row">
                                     <div class="col-12">
                                         <label for="address_line_one" class="form-label">*Address Line 1</label>
-                                        <input class="form-control" name="address_line_one" id="address_line_one" type="text" required
-                                            value="13 Epifanio Santos Ave.">
+                                        <input class="form-control" name="address_line_one" id="address_line_one" type="text" value="{{ old('address_line_one', $benefactor->Address->address_line_one) }}" required>
                                         @error('address_line_one')
-                                            <div class="text-danger">
-                                                {{ $message }}
-                                            </div>
+                                        <div class="text-danger">
+                                            {{ $message }}
+                                        </div>
                                         @enderror
                                     </div>
                                 </div>
@@ -230,71 +219,79 @@
                                 <div class="form-group mb-3 row">
                                     <div class="col-12">
                                         <label for="address_line_two" class="form-label">Address Line 2 (Optional)</label>
-                                        <input class="form-control" name="address_line_two" id="address_line_two" type="text"
-                                            value="">
+                                        <input class="form-control" name="address_line_two" id="address_line_two" type="text" value="{{ old('address_line_two', $benefactor->Address->address_line_two) }}">
                                         @error('address_line_two')
-                                            <div class="text-danger">
-                                                {{ $message }}
-                                            </div>
+                                        <div class="text-danger">
+                                            {{ $message }}
+                                        </div>
                                         @enderror
                                     </div>
                                 </div>
 
                                 <div class="form-group mb-3 row">
-                                    <!-- Province -->
+                                    <!-- Region -->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="province" class="form-label">*Province</label>
-                                            <input class="form-control" name="province" id="province" type="text" required
-                                                value="Metro Manila">
-                                            @error('province')
-                                                <div class="text-danger">
-                                                    {{ $message }}
-                                                </div>
+                                            <label for="region" class="form-label">*Region</label>
+                                            <input class="form-control" name="region" id="region" type="text" value="{{ old('region', $benefactor->Address->region) }}" required>
+                                            @error('region')
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <!-- City -->
+                                    <!-- Province -->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="city" class="form-label">*City / Municipality</label>
-                                            <input class="form-control" name="city" id="city" type="text" required
-                                                value="Pasay City">
-                                            @error('city')
-                                                <div class="text-danger">
-                                                    {{ $message }}
-                                                </div>
+                                            <label for="province" class="form-label">*Province</label>
+                                            <input class="form-control" name="province" id="province" type="text" value="{{ old('province', $benefactor->Address->province) }}" required>
+                                            @error('province')
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
                                             @enderror
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group mb-3 row">
-                                    <!-- Barangay -->
-                                    <div class="col-md-6">
+                                    <!-- City -->
+                                    <div class="col-md-5">
                                         <div class="form-group">
-                                            <label for="barangay" class="form-label">*Barangay</label>
-                                            <input class="form-control" name="barangay" id="barangay" type="text" required
-                                                value="Brgy. Santolan">
-                                            @error('barangay')
-                                                <div class="text-danger">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
+                                            <label for="city" class="form-label">City</label>
+                                            <input class="form-control" name="city" id="city" type="text" value="{{ old('city', $benefactor->Address->city) }}">
+                                            @error('city')
+                                            <div class="text-danger">
+                                                {{ $message }}
                                             </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <!-- Barangay -->
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="barangay" class="form-label">Barangay</label>
+                                            <input class="form-control" name="barangay" id="barangay" type="text" value="{{ old('barangay', $benefactor->Address->barangay) }}">
+                                            @error('barangay')
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+                                        </div>
                                     </div>
 
                                     <!-- Postal Code -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="postal_code" class="form-label">*Postal Code</label>
-                                            <input class="form-control" name="postal_code" id="postal_code" type="text" required
-                                                value="1021">
+                                            <input class="form-control" name="postal_code" id="postal_code" type="text" value="{{ old('postal_code', $benefactor->Address->postal_code) }}" required>
                                             @error('postal_code')
-                                                <div class="text-danger">
-                                                    {{ $message }}
-                                                </div>
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
                                             @enderror
                                         </div>
                                     </div>
