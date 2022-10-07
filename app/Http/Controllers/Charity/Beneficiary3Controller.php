@@ -18,7 +18,7 @@ class Beneficiary3Controller extends Controller
         # Retrieve the beneficiary record with background info using foreign key
         $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -37,7 +37,7 @@ class Beneficiary3Controller extends Controller
         # Retrieve the beneficiary record with background info using foreign key
         $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -106,7 +106,7 @@ class Beneficiary3Controller extends Controller
         # Retrieve the beneficiary record with background info using foreign key
         $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -127,7 +127,7 @@ class Beneficiary3Controller extends Controller
         $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
         $beneficiaryBgInfoId = BeneficiaryBgInfo::where('beneficiary_id', $beneficiary->id)->firstorFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',

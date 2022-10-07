@@ -27,7 +27,7 @@ class BenefactorController extends Controller
         $benefactor = Benefactor::where('id', $id)->orWhere('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
-        if (!$benefactor->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($benefactor->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -147,7 +147,7 @@ class BenefactorController extends Controller
         $benefactor = Benefactor::where('id', $id)->orWhere('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
-        if (!$benefactor->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($benefactor->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -166,7 +166,7 @@ class BenefactorController extends Controller
         $benefactor = Benefactor::where('id', $id)->orWhere('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
-        if (!$benefactor->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($benefactor->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -283,7 +283,7 @@ class BenefactorController extends Controller
         $first_name = $benefactor->first_name;
         $code = $benefactor->code;
 
-        if (!$benefactor->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($benefactor->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only delete their own charity records.',

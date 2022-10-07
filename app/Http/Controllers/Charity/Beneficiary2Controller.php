@@ -17,7 +17,7 @@ class Beneficiary2Controller extends Controller
         # Retrieve the beneficiary record with family info using foreign key
         $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -37,7 +37,7 @@ class Beneficiary2Controller extends Controller
         # Retrieve the beneficiary record with family info using foreign key
         $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -57,7 +57,7 @@ class Beneficiary2Controller extends Controller
         # Retrieve the beneficiary record with family info using foreign key
         $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -153,7 +153,7 @@ class Beneficiary2Controller extends Controller
         # This is working!
         //        return $request->edit_fam_first_name;
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -244,7 +244,7 @@ class Beneficiary2Controller extends Controller
         $beneficiary = Beneficiary::where('id', $request->beneficiary_code)
             ->orWhere('code', $request->beneficiary_code)->firstorFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
