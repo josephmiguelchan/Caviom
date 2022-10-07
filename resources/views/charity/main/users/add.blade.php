@@ -315,6 +315,20 @@
                             </div>
 
                             <div class="form-group mb-3 row">
+                                <!-- Region -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="region" class="form-label">*Region</label>
+                                        <input class="form-control" name="region" id="region" type="text"
+                                            value="{{old('region')}}" placeholder="@unless($errors->any())Enter region @endunless">
+                                        @error('region')
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <!-- Province -->
                                 <div class="col-md-6">
                                     <div class="form-group">
