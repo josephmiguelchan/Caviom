@@ -13,6 +13,7 @@ use App\Http\Controllers\Charity\NotificationController;
 use App\Http\Controllers\Charity\UserController;
 use App\Http\Controllers\RootAdmin\AuditLogController as RootAdminAuditLogController;
 use App\Http\Controllers\RootAdmin\CharitableOrganizationController;
+use App\Http\Controllers\RootAdmin\FeaturedProjectController;
 use App\Http\Controllers\RootAdmin\NotifierController;
 use App\Http\Controllers\RootAdmin\UserController as RootAdminUserController;
 use Illuminate\Support\Facades\Route;
@@ -471,14 +472,16 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
 
     # Featured Projects
     Route::name('feat-projects')->prefix('/featured-projects')->group(function () {
-        Route::get('/', function () {
-            return view('admin.main.featured-projects.all');
-        });
-        Route::get('/6e216252-0443-4326-81a0-3722050bf571', function () {
-            return view('admin.main.featured-projects.view');
-        })->name('.view');
-        // To Add: Approve
-        // To Add: Reject
+     
+        Route::get('/', [FeaturedProjectController::class, 'AllFeaturedProject'])->name('.all');
+
+        Route::get('/view/{code}', [FeaturedProjectController::class, 'ViewFeaturedProject'])->name('.view');
+
+        # Approve
+        Route::get('/Approved/{code}', [FeaturedProjectController::class, 'ApproveFeaturedProject'])->name('.approve');
+
+        # Reject
+        Route::post('/Reject/{code}', [FeaturedProjectController::class, 'RejectFeaturedProject'])->name('.reject');
     });
 
     # Admin User Accounts

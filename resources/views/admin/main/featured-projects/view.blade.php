@@ -12,7 +12,7 @@
                     <h1 class="mb-0" style="color: #62896d"><strong>FEATURED PROJECTS</strong></h1>
                     <ol class="breadcrumb m-0 p-0 mb-3">
                         <li class="breadcrumb-item">Menu</li>
-                        <li class="breadcrumb-item"><a href="{{route('admin.feat-projects')}}">Featured Projects</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.feat-projects.all')}}">Featured Projects</a></li>
                         <li class="breadcrumb-item active">View</li>
                     </ol>
                 </div>
@@ -30,75 +30,38 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="#" method="POST">
+                            <form action="{{route('admin.feat-projects.reject',$fp->code)}}" method="POST">
                                 @csrf
 
                                 <h4 class="fw-bold">Remarks for Rejection</h4>
                                 <div class="m-3">
                                     <!-- Foreach ($notifiers (in featured project category) as $item) -->
+                                    @foreach ($FpRemarks as $key => $item)
+                                    
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="remarks_subject"
-                                            id="remarks_subject_1" value="Misleading Pictures" checked>
-                                        <label class="form-check-label" for="remarks_subject_1">
+                                            id="remarks_subject_{{$key+1}}" value="{{$item->subject}}" checked>
+                                        <label class="form-check-label" for="remarks_subject_{{$key+1}}">
                                             <!-- $notifier->subject -->
-                                            Misleading Pictures
+                                           {{$item->subject}}
                                         </label>
                                         <p>
-                                            The featured project has photos that are not relevant to the project.
+                                            {{$item->message}}
                                         </p>
                                     </div>
                                     <!-- End iF -->
-
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="remarks_subject"
-                                            id="remarks_subject_2" value="Inappropriate Pictures">
-                                        <label class="form-check-label" for="remarks_subject_2">Inappropriate Pictures</label>
-                                        <p>
-                                            The featured project has photos that are found to be inappropriate, abusive, malicious, etc.
-                                            that violates our Terms of Services.
-                                        </p>
-                                    </div>
-
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="remarks_subject"
-                                            id="remarks_subject_3" value="False Information">
-                                        <label class="form-check-label" for="remarks_subject_3">False Information</label>
-                                        <p>
-                                            The featured project has information that is found to be inaccurate, manipulative, exploitative, etc.
-                                            which are prohibited from being posted publicly.
-                                        </p>
-                                    </div>
-
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="remarks_subject"
-                                            id="remarks_subject_4" value="Spam">
-                                        <label class="form-check-label" for="remarks_subject_4">Spam</label>
-                                        <p>
-                                            The featured project has been reported to be a spam for being repeatedly submitted by the same user
-                                            within short periods of time.
-                                        </p>
-                                    </div>
-
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="remarks_subject"
-                                            id="remarks_subject_5" value="Hate Speech">
-                                        <label class="form-check-label" for="remarks_subject_5">Hate Speech</label>
-                                        <p>
-                                            The featured project involves slurs, explicit, unrestricted, racist, and/or hate speech which violates
-                                            our Terms of Services.
-                                        </p>
-                                    </div>
+                                    @endforeach
                                 </div>
 
                                 <p>
                                     You are about to <strong>REJECT</strong> this Featured Project with the following remarks above. This action <strong>CANNOT</strong> be undone and
                                     will refund their Star Tokens while notifying all other users in their Charitable Organization. Continue?
                                 </p>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light w-sm">Yes</button>
+                                </div>
                             </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                            <a href="#" class="btn btn-danger waves-effect waves-light w-sm">Yes</a>
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
@@ -124,7 +87,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                            <a href="#" class="btn btn-dark waves-effect waves-light w-sm">Yes</a>
+                            <a href="{{route('admin.feat-projects.approve',$fp->code)}}" class="btn btn-dark waves-effect waves-light w-sm">Yes</a>
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
@@ -137,10 +100,11 @@
                 <div class="card-body">
                     <div class="row px-2">
                         <div class="col-lg-8">
-                            <h2 class="fw-bold">Medical Mission 2022</h2>
+                            <h2 class="fw-bold">{{$fp->name}}</h2>
+                            <p>{{$fp->charity->name}}</p>
                         </div>
                         <div class="col-lg-4 mt-4">
-                            <a href="{{ url()->previous() }}" class="text-link float-end">
+                            <a href="{{ route('admin.feat-projects.all') }}" class="text-link float-end">
                                 <i class="ri-arrow-left-line"></i> Go Back
                             </a>
                         </div>
@@ -152,17 +116,17 @@
                         <div class="col-lg-6">
                             <div class="row">
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Venue:</strong></h4></dt>
-                                <dt class="col-md-8 mb-2">OLSOFI</dt>
+                                <dt class="col-md-8 mb-2">{{$fp->venue}}</dt>
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>No. of Beneficiaries:</strong></h4></dt>
-                                <dt class="col-md-8 mb-2">90</dt>
+                                <dt class="col-md-8 mb-2">{{$fp->total_beneficiaries}}</dt>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="row">
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Date:</strong></h4></dt>
-                                <dt class="col-md-8 mb-2">June 12, 2022</dt>
+                                <dt class="col-md-8 mb-2">{{$fp->started_on}}</dt>
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Sponsors:</strong></h4></dt>
-                                <dt class="col-md-8 mb-2">JCo. Lmtd, Jollibee Philtranco, Ayala Holdings</dt>
+                                <dt class="col-md-8 mb-2"> {{ ($fp->Sponsors)?$item->Sponsors:'---' }}</dt>
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -171,55 +135,57 @@
                                     <dl class="col-md-12">
                                         <h4 class="font-size-15"><strong>Objective:</strong></h4>
                                         <p>
-                                            It is a long established fact that a reader will be distracted by the readable content of
-                                            a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less
-                                            normal distribution of letters, as opposed to using 'Content here, content here', making it look
-                                            like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum
-                                            as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in
-                                            their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on
-                                            purpose (injected humour and the like).
+                                           {{$fp->objectives}}
                                         </p>
 
                                         <h4 class="font-size-15 mt-4"><strong>Thanksgiving Message:</strong></h4>
                                         <p>
-                                            There are many variations of passages of Lorem Ipsum available, but the majority have suffered
-                                            alteration in some form, by injected humour, or randomised words which don't look even slightly
-                                            believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't
-                                            anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet
-                                            tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.
-                                            It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures,
-                                            to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free
-                                            from repetition, injected humour, or non-characteristic words etc.
+                                           {{$fp->message}}
                                         </p>
 
                                         <div class="col-6">
                                             <h4 class="font-size-15 mt-4"><strong>Photos:</strong></h4>
-                                            {{-- <p class="mt-0 mb-3">(Up to a max of 8 pictures only)</p> --}}
+              
                                             <div class="row text-center">
                                                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                                                     <ol class="carousel-indicators">
-                                                        <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
-                                                        <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
-                                                        <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
-                                                        <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"></li>
-                                                        <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4"></li>
+                                                        {!! isset($fp->photos->featured_photo_1)?'<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>':'' !!}
+                                                        {!! isset($fp->photos->featured_photo_2)?'<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>':'' !!}
+                                                        {!! isset($fp->photos->featured_photo_3)?'<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>':'' !!}
+                                                        {!! isset($fp->photos->featured_photo_4)?'<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"></li>':'' !!}
+                                                        {!! isset($fp->photos->featured_photo_5)?'<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4"></li>':'' !!}
                                                     </ol>
                                                     <div class="carousel-inner" role="listbox">
+                                                        @isset($fp->photos->featured_photo_1)
                                                         <div class="carousel-item active">
-                                                            <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-1.jpg') }}" alt="First slide">
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_1) }}" alt="First Photo" 
+                                                                style="max-height: 100%; width: 100%;">
                                                         </div>
+                                                        @endisset
+                                                        @isset($fp->photos->featured_photo_2)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-2.jpg') }}" alt="Second slide">
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_2) }}" alt="Second Photo" 
+                                                                style="max-height: 100%; width: 100%;">
                                                         </div>
+                                                        @endisset
+                                                        @isset($fp->photos->featured_photo_3)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-3.jpg') }}" alt="Third slide">
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_3) }}" alt="Third Photo" 
+                                                                style="max-height: 100%; width: 100%;">
                                                         </div>
+                                                        @endisset
+                                                        @isset($fp->photos->featured_photo_4)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-4.jpg') }}" alt="Fourth slide">
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_4) }}" alt="Fourth Photo" 
+                                                                style="max-height: 100%; width: 100%;">
                                                         </div>
+                                                        @endisset
+                                                        @isset($fp->photos->featured_photo_5)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-5.jpg') }}" alt="Fifth slide">
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_5) }}" alt="Fifth Photo" 
+                                                                style="max-height: 100%; width: 100%;">
                                                         </div>
+                                                        @endisset
                                                     </div>
                                                     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
                                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -231,6 +197,7 @@
                                                     </a>
                                                 </div>
                                             </div>
+                                           
                                         </div>
 
                                     </dl>
@@ -245,27 +212,44 @@
                         <div class="col-lg-6">
                             <div class="row">
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Visibility Status:</strong></h4></dt>
-                                <dt class="col-md-8 mb-2"><i class="ri-eye-off-line"></i> Hidden</dt>
+
+                                @if ($fp->visibility_status == "Hidden")
+                                <dt class="col-md-8 mb-2"><i class="ri-eye-off-line"></i> {{$fp->visibility_status}}</dt>
+                                @elseif($fp->visibility_status == "Visible")
+                                <dt class="col-md-8 mb-2"><i class="ri-eye-line"></i> {{$fp->visibility_status}}</dt>
+                                @endif
+
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Approval Status:</strong></h4></dt>
-                                <dt class="col-md-8 mb-2"><span class="badge bg-warning">PENDING</span></dt>
+
+                                @if ($fp->approval_status == 'Pending')
+                                <dt class="col-md-8 mb-2"><span class="badge bg-warning">{{$fp->approval_status}}</span></dt>
+                                @elseif($fp->approval_status == 'Approved')         
+                                <dt class="col-md-8 mb-2"><span class="badge bg-success">{{$fp->approval_status}}</span></dt>     
+                                @elseif($fp->approval_status == 'Rejected')         
+                                <dt class="col-md-8 mb-2"><span class="badge bg-danger">Rejected</span></dt> 
+                                @endif
+                                
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
-                                <dt class="col-md-8 mb-2">---</dt>
+                                <dt class="col-md-8 mb-2"><h6 class="fw-bold">{{ ($fp->remarks_subject)?$fp->remarks_subject:'---' }}</h6></dt>
+                                <dd class="col-md-8 offset-md-4">{{ ($fp->remarks_message)?$fp->remarks_message:'' }}</dt>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="row">
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Date Added:</strong></h4></dt>
-                                <dt class="col-md-8 mb-2">July 14, 2022</dt>
-                                <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Last Updated:</strong></h4></dt>
-                                <dt class="col-md-8 mb-2">Just now</dt>
+                                <dt class="col-md-8 mb-2">{{ ($fp->created_at)?Carbon\Carbon::parse($fp->created_at)->isoFormat('MMMM d, YYYY'):'---' }}</dt>
+                                <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Status Last Updated:</strong></h4></dt>
+                                <dt class="col-md-8 mb-2">{{ ($fp->updated_at)?Carbon\Carbon::parse($fp->status_updated_at)->diffForHumans():'---' }}</dt>
                             </div>
                         </div>
                     </div>
 
                     <!-- Show these buttons only IF this Featured Project's Status == 'PENDING' -->
+                    @if ($fp->approval_status == 'Pending')
                     <div class="float-end">
                         <div class="row my-3 mx-2">
                             <div class="col-md-12">
+                               
                                 <div class="btn-group" role="group" aria-label="Actions">
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#rejectModal" class="btn w-lg btn-outline-danger waves-effect waves-light">
                                         <i class="mdi mdi-close-thick"></i> Reject
@@ -275,9 +259,12 @@
                                         <i class="mdi mdi-check"></i> Approve
                                     </button>
                                 </div>
+                               
+                             
                             </div>
                         </div>
                     </div>
+                    @endif
                     <!-- End IF -->
 
                 </div>

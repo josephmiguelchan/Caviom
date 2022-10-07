@@ -48,45 +48,39 @@
 
 
                         <tbody>
+                            @foreach ($fps as $key => $item)
+                          
+                           
                             <tr>
-                                <td>1</td>
-                                <td><span class="badge bg-warning">PENDING</span> Medical Mission 2022</a></td>
-                                <td>June 12, 2022</td>
-                                <td><i class="ri-eye-off-line"></i> Hidden</td>
-                                <td>---</td>
-                                <td>2015-04-21 22:32:05</td>
+                                <td>{{$key+1}}</td>
+
                                 <td>
-                                    <a href="{{ route('admin.feat-projects.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                    @if ($item->approval_status == 'Pending')
+                                    <span class="badge bg-warning">PENDING</span> 
+                                    @elseif($item->approval_status == 'Approved')         
+                                    <span class="badge bg-success">APPROVED</span>     
+                                    @elseif($item->approval_status == 'Rejected')         
+                                    <span class="badge bg-danger">REJECTED</span>   
+                                    @endif
+                                    {{$item->name}}</a></td>
+
+                                <td>{{$item->started_on}}</td>
+
+                                @if ($item->visibility_status == "Hidden")
+                                <td><i class="ri-eye-off-line"></i> {{$item->visibility_status}}</td>
+                                @elseif($item->visibility_status == "Visible")
+                                <td><i class="ri-eye-line"></i> {{$item->visibility_status}}</td>
+                                @endif
+                                <td>  {{ (!empty($item->remark_subject))? $item->remark_subject:'---' }}</td>
+                        
+                                <td>{{$item->created_at}}</td>
+                                <td>
+                                    <a href="{{ route('admin.feat-projects.view',$item->code) }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td><span class="badge bg-success">APPROVED</span> Lugaw for a Cause</a></td>
-                                <td>June 2, 2022</td>
-                                <td><i class="ri-eye-line"></i> Visible</td>
-                                <td>---</td>
-                                <td>2015-04-21 22:32:05</td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                        <i class="mdi mdi-open-in-new"></i> View
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td><span class="badge bg-danger">REJECTED</span> Spanish Inquisition</a></td>
-                                <td>June 1, 1672</td>
-                                <td><i class="ri-eye-off-line"></i> Hidden</td>
-                                <td>Inappropriate Project / Invalid date</td>
-                                <td>2015-04-21 22:32:05</td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                        <i class="mdi mdi-open-in-new"></i> View
-                                    </a>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
 
