@@ -3,8 +3,8 @@
 @section('charity')
 
 @php
-    $avatar = 'upload/avatar_img/'.Auth::user()->profile_image;
-    $defaultAvatar = 'upload/avatar_img/no_avatar.png';
+    $avatar = 'upload/charitable_org/benefactor_photos/';
+    $defaultAvatar = 'upload/charitable_org/benefactor_photos/no_avatar.png';
 @endphp
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -18,7 +18,7 @@
                     <h1 class="mb-0" style="color: #62896d"><strong>BENEFACTORS</strong></h1>
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">Our Charitable Organization</li>
-                        <li class="breadcrumb-item"><a href="{{ route('charity.benefactors') }}">Benefactors</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('charity.benefactors.all') }}">Benefactors</a></li>
                         <li class="breadcrumb-item active">Add</li>
                     </ol>
 
@@ -37,13 +37,13 @@
                                 <h2><strong>Add New Benefactor</strong></h2>
                             </div>
                             <div class="col-lg-4 mt-4">
-                                <a href="{{route('charity.benefactors')}}" class="text-link float-end">
+                                <a href="{{route('charity.benefactors.all')}}" class="text-link float-end">
                                     <i class="ri-arrow-left-line"></i> Go Back
                                 </a>
                             </div>
                         </div>
                         <hr class="my-3">
-                        <form method="POST" action="" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('charity.benefactors.store') }}" enctype="multipart/form-data">
                             @csrf
 
                             <h4 class="mt-4" style="color: #62896d">Personal Information</h4>
@@ -59,8 +59,8 @@
                                                 <i class="mdi mdi-information-outline"></i>
                                             </span>
                                         </label>
-                                        <input class="form-control" name="profile_image" id="profile_image" type="file">
-                                        @error('profile_image')
+                                        <input class="form-control" name="profile_photo" id="profile_photo" type="file" value="{{ old('profile_photo') }}">
+                                        @error('profile_photo')
                                             <div class="text-danger">
                                                 {{ $message }}
                                             </div>
@@ -71,8 +71,7 @@
                                 <!-- Email Address -->
                                 <div class="col-md-6">
                                     <label for="email" class="form-label">*Email Address</label>
-                                    <input type="email" class="form-control" name="email" id="email"
-                                    value="" required>
+                                    <input class="form-control" name="email" id="email" value="{{ old('email') }}" required>
                                     @error('email')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -86,8 +85,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="first_name" class="form-label">*First Name</label>
-                                        <input type="text" class="form-control" name="first_name" id="first_name"
-                                            value="" required>
+                                        <input type="text" class="form-control" name="first_name" id="first_name" value="{{ old('first_name') }}" required>
                                         @error('first_name')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -100,8 +98,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="middle_name" class="form-label">Middle Name</label>
-                                        <input type="text" class="form-control" name="middle_name" id="middle_name"
-                                            value="" required>
+                                        <input type="text" class="form-control" name="middle_name" id="middle_name" value="{{ old('middle_name') }}">
                                         @error('middle_name')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -113,8 +110,7 @@
                                 <!-- Last Name -->
                                 <div class="col-md-4">
                                     <label for="last_name" class="form-label">*Last Name</label>
-                                    <input type="text" class="form-control" name="last_name" id="last_name"
-                                        value="" required>
+                                    <input type="text" class="form-control" name="last_name" id="last_name" value="{{ old('last_name') }}" required>
                                     @error('last_name')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -128,8 +124,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                        <input class="form-control" name="cel_no" id="cel_no" type="tel" required
-                                            value="">
+                                        <input class="form-control" name="cel_no" id="cel_no" type="tel" value="{{ old('cel_no') }}" required
+                                               placeholder="Ex. 09191234567">
                                         @error('cel_no')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -142,8 +138,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="tel_no" class="form-label">Telephone No.</label>
-                                        <input class="form-control" name="tel_no" id="tel_no" type="tel" required
-                                            value="">
+                                        <input class="form-control" name="tel_no" id="tel_no" type="tel" value="{{ old('tel_no') }}"
+                                               placeholder="Ex. 82531234">
                                         @error('tel_no')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -158,8 +154,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="category" class="form-label">Category</label>
-                                        <input class="form-control" name="category" id="category" type="text"
-                                            value="">
+                                        <input class="form-control" name="category" id="category" type="text" value="{{ old('category') }}">
                                         @error('category')
                                             <div class="text-danger"><small>
                                                 {{ $message }}
@@ -172,8 +167,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="label" class="form-label">Label</label>
-                                        <input class="form-control" name="label" id="label" type="text"
-                                            value="">
+                                        <input class="form-control" name="label" id="label" type="text" value="{{ old('label') }}">
                                         @error('label')
                                             <div class="text-danger"><small>
                                                 {{ $message }}
@@ -189,8 +183,7 @@
                             <div class="form-group mb-3 row">
                                 <div class="col-12">
                                     <label for="address_line_one" class="form-label">*Address Line 1</label>
-                                    <input class="form-control" name="address_line_one" id="address_line_one" type="text" required
-                                        value="">
+                                    <input class="form-control" name="address_line_one" id="address_line_one" type="text" value="{{ old('address_line_one') }}" required>
                                     @error('address_line_one')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -203,8 +196,7 @@
                             <div class="form-group mb-3 row">
                                 <div class="col-12">
                                     <label for="address_line_two" class="form-label">Address Line 2 (Optional)</label>
-                                    <input class="form-control" name="address_line_two" id="address_line_two" type="text"
-                                        value="">
+                                    <input class="form-control" name="address_line_two" id="address_line_two" type="text" value="{{ old('address_line_two') }}">
                                     @error('address_line_two')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -214,13 +206,12 @@
                             </div>
 
                             <div class="form-group mb-3 row">
-                                <!-- Province -->
+                                <!-- Region -->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="province" class="form-label">*Province</label>
-                                        <input class="form-control" name="province" id="province" type="text" required
-                                            value="">
-                                        @error('province')
+                                        <label for="region" class="form-label">*Region</label>
+                                        <input class="form-control" name="region" id="region" type="text" value="{{ old('region') }}" required>
+                                        @error('region')
                                             <div class="text-danger">
                                                 {{ $message }}
                                             </div>
@@ -228,42 +219,52 @@
                                     </div>
                                 </div>
 
-                                <!-- City -->
+                                <!-- Province -->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="city" class="form-label">*City / Municipality</label>
-                                        <input class="form-control" name="city" id="city" type="text" required
-                                            value="">
-                                        @error('city')
-                                            <div class="text-danger">
-                                                {{ $message }}
-                                            </div>
+                                        <label for="province" class="form-label">*Province</label>
+                                        <input class="form-control" name="province" id="province" type="text" value="{{ old('province') }}" required>
+                                        @error('province')
+                                        <div class="text-danger">
+                                            {{ $message }}
+                                        </div>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group mb-3 row">
-                                <!-- Barangay -->
-                                <div class="col-md-6">
+                                <!-- City -->
+                                <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="barangay" class="form-label">*Barangay</label>
-                                        <input class="form-control" name="barangay" id="barangay" type="text" required
-                                            value="">
+                                        <label for="city" class="form-label">City</label>
+                                        <input class="form-control" name="city" id="city" type="text" value="{{ old('city') }}">
+                                        @error('city')
+                                        <div class="text-danger">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Barangay -->
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="barangay" class="form-label">Barangay</label>
+                                        <input class="form-control" name="barangay" id="barangay" type="text" value="{{ old('barangay') }}">
                                         @error('barangay')
                                             <div class="text-danger">
                                                 {{ $message }}
                                             </div>
                                         @enderror
-                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- Postal Code -->
-                                <div class="col-md-6">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="postal_code" class="form-label">*Postal Code</label>
-                                        <input class="form-control" name="postal_code" id="postal_code" type="text" required
-                                            value="">
+                                        <input class="form-control" name="postal_code" id="postal_code" type="text" value="{{ old('postal_code') }}" required>
                                         @error('postal_code')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -288,9 +289,11 @@
     </div>
 </div>
 
+<!-- Preview Image Before Uploading -->
+<!--
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#profile_image').change(function(e) {
+        $('#profile_photo').change(function(e) {
             var reader = new FileReader();
             reader.onload = function(e) {
                 $('#showImage').attr('src', e.target.result);
@@ -299,4 +302,5 @@
         })
     })
 </script>
+-->
 @endsection
