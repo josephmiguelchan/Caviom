@@ -69,8 +69,8 @@ class VolunteerController extends Controller
                 'address_line_two' => ['nullable', 'string', 'min:5', 'max:128'],
                 'region' => ['required', 'string', 'min:5', 'max:64'],
                 'province' => ['required', 'string', 'min:3', 'max:64'],
-                'city' => ['nullable', 'string', 'min:3', 'max:64'],
-                'barangay' => ['nullable', 'string', 'min:3', 'max:64'],
+                'city' => ['required', 'string', 'min:3', 'max:64'],
+                'barangay' => ['required', 'string', 'min:3', 'max:64'],
                 'postal_code' => ['required', 'numeric', 'digits:4'],
             ],
             [
@@ -193,8 +193,8 @@ class VolunteerController extends Controller
                     'address_line_two' => ['nullable', 'string', 'min:5', 'max:128'],
                     'region' => ['required', 'string', 'min:5', 'max:64'],
                     'province' => ['required', 'string', 'min:3', 'max:64'],
-                    'city' => ['nullable', 'string', 'min:3', 'max:64'],
-                    'barangay' => ['nullable', 'string', 'min:3', 'max:64'],
+                    'city' => ['required', 'string', 'min:3', 'max:64'],
+                    'barangay' => ['required', 'string', 'min:3', 'max:64'],
                     'postal_code' => ['required', 'numeric', 'digits:4'],
                 ],
                 [
