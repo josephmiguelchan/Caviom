@@ -125,6 +125,7 @@ class UserController extends Controller
         $address->type = 'Present';
         $address->address_line_one = $request->address_line_one;
         $address->address_line_two = $request->address_line_two;
+        $address->region = $request->region;
         $address->province = $request->province;
         $address->city = $request->city;
         $address->postal_code = $request->postal_code;

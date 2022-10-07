@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('beneficiary_bg_infos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('beneficiary_id')->references('id')->on('beneficiaries')->constrained();
             $table->text('problem_presented');
             $table->text('about_client');
             $table->text('about_family');
             $table->text('about_community');
             $table->text('assessment');
 
-            $table->foreignId('beneficiary_id')->references('id')->on('beneficiaries')->constrained();
             $table->timestamps();
         });
     }

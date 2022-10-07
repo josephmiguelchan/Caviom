@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\GiftGiving;
 use App\Models\Beneficiaries;
+use App\Models\Beneficiary;
 use App\Models\CharitableOrganization;
 use App\Models\GiftGivingBeneficiaries;
 use App\Models\GiftGivingBeneficiary;
@@ -154,9 +155,7 @@ class GiftGivingController extends Controller
         if ($GiftGivings->charitable_organization_id == Auth::user()->charitable_organization_id) {
 
             # Retrieve the list of the beneficiaries for the selection
-            // ADD: They should only able to retrieve beneficiaries from their own charity
-            // $listofBeneficiaries = Beneficiaries::get();
-            $listofBeneficiaries = ['Juan Cruz', 'Jane Dela Cruz', 'Thomas Thompson'];
+            $listofBeneficiaries = Beneficiary::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
 
             # Retrive the list of beneficiaries being added based on the 'Gift_Giving_Project' (CAN BE IMPROVED using Relationship Keys in Model)
             $GiftGivingBeneficiaries = GiftGivingBeneficiary::where('gift_giving_id', $GiftGivings->id)->get();
@@ -226,7 +225,6 @@ class GiftGivingController extends Controller
             $beneficiary->gift_giving_id = $GiftGiving->id;
             $beneficiary->name = $request->beneficiaries;
             $beneficiary->ticket_no = $randomNumber;
-            $beneficiary->created_at = Carbon::now();
             $beneficiary->save();
 
             # Shows success toastr
@@ -314,7 +312,6 @@ class GiftGivingController extends Controller
             $beneficiary->gift_giving_id = $GiftGiving->id;
             $beneficiary->name = $request->custom_name;
             $beneficiary->ticket_no = $randomNumber;
-            $beneficiary->created_at = Carbon::now();
             $beneficiary->save();
 
             # Shows success toastr
@@ -400,7 +397,7 @@ class GiftGivingController extends Controller
                 $notif->save();
             }
 
-            return $pdf->download($GiftGiving->name . ' - No. ' . $batch_no . '.pdf');
+            return $pdf->download($GiftGiving->name . ' - No. ' . $GiftGiving->batch_no . '.pdf');
         } else {
 
             $toastr = array(

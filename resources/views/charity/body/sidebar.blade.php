@@ -56,8 +56,8 @@
                         <li><a class="{{ Request::routeIs('charity.projects*')?'active':'' }}" href="{{ route('charity.projects') }}">Projects</a></li>
                         <li><a class="{{ Request::routeIs('charity.users*')?'active':'' }}" href="{{ route('charity.users') }}">Users</a></li>
                         <li><a class="{{ Request::routeIs('charity.beneficiaries*')?'active':'' }}" href="{{ route('charity.beneficiaries.all') }}">Beneficiaries</a></li>
-                        <li><a class="{{ Request::routeIs('charity.benefactors*')?'active':'' }}" href="{{ route('charity.benefactors') }}">Benefactors</a></li>
-                        <li><a class="{{ Request::routeIs('charity.volunteers*')?'active':'' }}" href="{{ route('charity.volunteers') }}">Volunteers</a></li>
+                        <li><a class="{{ Request::routeIs('charity.benefactors*')?'active':'' }}" href="{{ route('charity.benefactors.all') }}">Benefactors</a></li>
+                        <li><a class="{{ Request::routeIs('charity.volunteers*')?'active':'' }}" href="{{ route('charity.volunteers.all') }}">Volunteers</a></li>
                     </ul>
                 </li>
 

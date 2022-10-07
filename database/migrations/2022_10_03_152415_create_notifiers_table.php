@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('category', 128);
             $table->string('subject', 128);
-            $table->string('message', 518);
+            $table->string('message', 512);
             $table->timestamps();
         });
     }

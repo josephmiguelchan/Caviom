@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('gift_giving_id')->constrained()->onDelete('cascade');
             $table->unsignedInteger('ticket_no');
             $table->text('name');
-            $table->timestamps();
         });
     }
 

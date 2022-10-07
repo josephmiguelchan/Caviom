@@ -25,7 +25,7 @@ class CharitableOrganizationController extends Controller
     {
         $CharityOrganizations = CharitableOrganization::orderBy('name', 'ASC')->get();
 
-        return view('admin.charities.all',compact('CharityOrganizations'));
+        return view('admin.charities.all', compact('CharityOrganizations'));
     }
     public function ViewCharityOrganization($code)
     {
@@ -33,18 +33,18 @@ class CharitableOrganizationController extends Controller
         $organizationdetail = CharitableOrganization::where('code', $code)->firstOrFail();
 
         # Get the count of Admins in the Organization
-        $admins =  User::where('charitable_organization_id',$organizationdetail->id)->where('role' ,'Charity Admin')->where('status','Active')->get();
+        $admins =  User::where('charitable_organization_id', $organizationdetail->id)->where('role', 'Charity Admin')->where('status', 'Active')->get();
 
         # Get the count of Associates in the Organization
-        $countofAssociates =  User::where('charitable_organization_id',$organizationdetail->id)->where('role' ,'Charity Associate')->where('status','Active')->count();
-        
-        return view('admin.charities.view', compact('organizationdetail','admins','countofAssociates'));
+        $countofAssociates =  User::where('charitable_organization_id', $organizationdetail->id)->where('role', 'Charity Associate')->where('status', 'Active')->count();
+
+        return view('admin.charities.view', compact('organizationdetail', 'admins', 'countofAssociates'));
     }
 
 
-    public function SendNotification(Request $request , $id)
+    public function SendNotification(Request $request, $id)
     {
-        # Validation Rules        
+        # Validation Rules
         $request->validate([
             'content_message' => 'required|min:5|max:350'
         ]);
@@ -53,7 +53,7 @@ class CharitableOrganizationController extends Controller
         $users = User::where('charitable_organization_id', $id)->where('status', 'Active')->get();
 
         foreach ($users as $user) {
-    
+
             $notif = new Notification;
             $notif->code = Str::uuid()->toString();
             $notif->user_id = $user->id;
@@ -87,7 +87,7 @@ class CharitableOrganizationController extends Controller
                 'message' => 'Sorry, the public profile of this Organization must be setup first before it can be updated.',
                 'alert-type' => 'error'
             );
-    
+
             return redirect()->back()->with($toastr);
         }
 
@@ -115,8 +115,8 @@ class CharitableOrganizationController extends Controller
 
         $organization->profile_status = $request->visibility_status;
         $organization->verification_status = $request->verification_status;
-        $organization->status_updated_at =Carbon::now();
-        
+        $organization->status_updated_at = Carbon::now();
+
         $organization->update();
 
 
@@ -129,9 +129,9 @@ class CharitableOrganizationController extends Controller
             $notif->user_id = $user->id;
             $notif->category = 'Public Profile';
             $notif->subject = 'Profile Status Update';
-            $notif->message ='Caviom has received and reviewed your verification request.
-             Your Charitable Organization Public Profile has been set to '. str::upper($request->visibility_status).' 
-             and its verification status as '.str::upper($request->verification_status) .' with remarks: [ ' .$request->remarks.' ].' ;
+            $notif->message = 'Caviom has received and reviewed your verification request.
+             Your Charitable Organization Public Profile has been set to ' . str::upper($request->visibility_status) . '
+             and its verification status as ' . str::upper($request->verification_status) . ' with remarks: [ ' . $request->remarks . ' ].';
             $notif->icon = 'mdi mdi-cog';
             $notif->color = 'info';
             $notif->created_at = Carbon::now();
@@ -146,7 +146,7 @@ class CharitableOrganizationController extends Controller
         $log_in->charitable_organization_id = $organization->id;
         $log_in->table_name = 'Charitable Organization';
         $log_in->record_id = $organization->id;
-        $log_in->action = Auth::user()->role . ' updated the User Visibility_status , Verification_status and Remarks For ['.$organization->name.'].';
+        $log_in->action = Auth::user()->role . ' updated the User Visibility_status , Verification_status and Remarks For [' . $organization->name . '].';
         $log_in->performed_at = Carbon::now();
         $log_in->save();
 
@@ -157,7 +157,6 @@ class CharitableOrganizationController extends Controller
         );
 
         return redirect()->back()->with($toastr);
-
     }
 
     public function ViewCharityUserDetail($code)
@@ -175,18 +174,18 @@ class CharitableOrganizationController extends Controller
     }
 
     public function UpdateCharityUserDetail(Request $request, $code)
-    {       
+    {
         # Retrieve the select  user record
         $User = User::where('code', $code)->firstOrFail();
 
         # Validation of Form
         $request->validate([
 
-            # For Account fields       
+            # For Account fields
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255',  Rule::unique('users')->ignore($User)],
             'username' => ['required_unless:account_status,Pending Unlock'],
-                        
-            # For Personal Information       
+
+            # For Personal Information
             'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
@@ -197,12 +196,13 @@ class CharitableOrganizationController extends Controller
             # Current Address
             'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
             'address_line_two' => ['nullable', 'string', 'min:5', 'max:128'],
+            'region' => ['required', 'string', 'min:3', 'max:64'],
             'province' => ['required', 'string', 'min:3', 'max:64'],
             'city' => ['required', 'string', 'min:3', 'max:64'],
             'barangay' => ['required', 'string', 'min:3', 'max:64'],
             'postal_code' =>  ['required', 'integer', 'digits:4'],
         ], [
-            
+
             'first_name.regex' => 'The first name field must not include number/s.',
             'middle_name.regex' => 'The middle name field must not include number/s.',
             'work_position.regex' => 'Work position must not include number(s) or must be a valid format.',
@@ -211,18 +211,18 @@ class CharitableOrganizationController extends Controller
             'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
         ]);
 
-        # Update Record 
+        # Update Record
         $User->email = $request->email;
         $User->username = $request->username;
-        
+
         # If New Password field has value
-        if($request->password){
+        if ($request->password) {
             $request->validate([
                 'password' => ['max:20', Rules\Password::defaults()],
                 'confirm_password' => ['nullable', 'same:password'],
             ]);
             $User->password = Hash::make($request->password);
-        } 
+        }
 
         # Make the username field as nullable as long as the account status is Pending Unlock.
         if ($request->username) {
@@ -265,6 +265,7 @@ class CharitableOrganizationController extends Controller
         $address = Address::findOrFail($User->info->address_id);
         $address->address_line_one = $request->address_line_one;
         $address->address_line_two = $request->address_line_two;
+        $address->region = $request->region;
         $address->province = $request->province;
         $address->city = $request->city;
         $address->barangay = $request->barangay;
@@ -272,36 +273,30 @@ class CharitableOrganizationController extends Controller
         $address->updated_at = Carbon::now();
         $address->update();
 
-
-        # Create Audti Logs
+        # Create Audit Logs
         $log_in = new AuditLog();
         $log_in->user_id = Auth::user()->id;
         $log_in->action_type = 'UPDATE';
-        $log_in->charitable_organization_id =  $User->charitable_organization_id;
+        $log_in->charitable_organization_id =  null;
         $log_in->table_name = 'User, User Info, Address';
         $log_in->record_id = $User->id;
-        $log_in->action = Auth::user()->role . ' updated the User profile with ID no .' . $User->id;
+        $log_in->action = Auth::user()->role . ' updated the User profile with ID ' . $User->code;
         $log_in->performed_at = Carbon::now();
         $log_in->save();
 
         # Send notification to the user who the root admin edited
+        $notif = new Notification;
+        $notif->code = Str::uuid()->toString();
+        $notif->user_id = $User->id;
+        $notif->category = 'Charity User';
+        $notif->subject = 'Updated User Profile';
+        $notif->message =  'Caviom has updated your User Profile. Kindly check your profile for updated information.';
+        $notif->icon = 'mdi mdi-account-cog';
+        $notif->color = 'warning';
+        $notif->created_at = Carbon::now();
+        $notif->save();
 
 
-         
-        
-     
-             $notif = new Notification;
-             $notif->code = Str::uuid()->toString();
-             $notif->user_id = $User->id;
-             $notif->category = 'Charity User';
-             $notif->subject = 'Updated User Profile';
-             $notif->message =  'Caviom has updated your User Profile. Kindly check your profile for updated information.';
-             $notif->icon = 'mdi mdi-account-cog';
-             $notif->color = 'warning';
-             $notif->created_at = Carbon::now();
-             $notif->save();
-         
- 
 
         # Send Success toastr
         $toastr = array(
@@ -313,14 +308,7 @@ class CharitableOrganizationController extends Controller
     }
 
 
-
-
-
-    
     public function CharityFeaturedProject()
     {
-        
     }
-
-
 }
