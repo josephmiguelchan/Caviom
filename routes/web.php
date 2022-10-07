@@ -4,6 +4,8 @@ use App\Http\Controllers\Charity\CharityController;
 use App\Http\Controllers\Charity\BeneficiaryController;
 use App\Http\Controllers\Charity\Beneficiary2Controller;
 use App\Http\Controllers\Charity\Beneficiary3Controller;
+use App\Http\Controllers\Charity\BenefactorController;
+use App\Http\Controllers\Charity\VolunteerController;
 use App\Http\Controllers\RootAdmin\AdminController;
 use App\Http\Controllers\Charity\AuditLogController;
 use App\Http\Controllers\Charity\GiftGivingController;
@@ -278,42 +280,54 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::post('/update-part3/{beneficiary:code}', [Beneficiary3Controller::class, 'update'])->name('.update');
             });
 
-
             # Benefactors
             Route::name('benefactors')->prefix('/benefactors')->group(function () {
-                Route::get('', function () {
-                    return view('charity.main.benefactors.all');
-                });
-                Route::get('/add', function () {
-                    return view('charity.main.benefactors.add');
-                })->name('.add');
-                Route::get('/6e4a560c-1252-11ed-861d-0242ac120002', function () {
-                    return view('charity.main.benefactors.view');
-                })->name('.view');
-                Route::get('/edit/6e4a560c-1252-11ed-861d-0242ac120002', function () {
-                    return view('charity.main.benefactors.edit');
-                })->name('.edit');
-                // To add - Route::get() for deleting individual benefactor records.
-                // To add - Route::get() for Backup list of benefactors in their Org via Excel.
-            });
 
+                # Retrieve All Benefactors of Charitable Organization
+                Route::get('/', [BenefactorController::class, 'index'])->name('.all');
+
+                # View A Specific Record from Benefactors
+                Route::get('/view/{benefactors:code}', [BenefactorController::class, 'show'])->name('.view');
+
+                # Create A Benefactor Record
+                Route::get('/create', [BenefactorController::class, 'create'])->name('.create');
+
+                # About to Store the New Benefactor Record
+                Route::post('/store', [BenefactorController::class, 'store'])->name('.store');
+
+                # Delete A Benefactor Record
+                Route::get('/delete/{benefactors:code}', [BenefactorController::class, 'delete'])->name('.delete');
+
+                # Edit A Benefactor Record
+                Route::get('/edit/{benefactors:code}', [BenefactorController::class, 'edit'])->name('.edit');
+
+                # About to Update the Edit Benefactor Record
+                Route::post('/update/{benefactors:code}', [BenefactorController::class, 'update'])->name('.update');
+            });
 
             # Volunteers
             Route::name('volunteers')->prefix('/volunteers')->group(function () {
-                Route::get('', function () {
-                    return view('charity.main.volunteers.all');
-                });
-                Route::get('/add', function () {
-                    return view('charity.main.volunteers.add');
-                })->name('.add');
-                Route::get('/7ba0c587-d347-4bcf-9e0e-28ec06066fb0', function () {
-                    return view('charity.main.volunteers.view');
-                })->name('.view');
-                Route::get('/edit/7ba0c587-d347-4bcf-9e0e-28ec06066fb0', function () {
-                    return view('charity.main.volunteers.edit');
-                })->name('.edit');
-                // To add - Route::get() for deleting individual volunteer records.
-                // To add - Route::get() for Backup list of volunteers in their Org via Excel.
+
+                # Retrieve All Volunteers of Charitable Organization
+                Route::get('/', [VolunteerController::class, 'index'])->name('.all');
+
+                # View A Specific Record from Volunteers
+                Route::get('/view/{volunteers:code}', [VolunteerController::class, 'show'])->name('.view');
+
+                # Create A Volunteer Record
+                Route::get('/create', [VolunteerController::class, 'create'])->name('.create');
+
+                # About to Store the New Volunteer Record
+                Route::post('/store', [VolunteerController::class, 'store'])->name('.store');
+
+                # Delete A Volunteer Record
+                Route::get('/delete/{volunteers:code}', [VolunteerController::class, 'delete'])->name('.delete');
+
+                # Edit A Volunteer Record
+                Route::get('/edit/{volunteers:code}', [VolunteerController::class, 'edit'])->name('.edit');
+
+                # About to Update the Edit Volunteer Record
+                Route::post('/update/{volunteers:code}', [VolunteerController::class, 'update'])->name('.update');
             });
         });
 
@@ -356,7 +370,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
         # Audit Logs
         Route::name('audits.')->prefix('/audit-logs')->middleware('charity.admin')->group(function () {
-            Route::get('/auditlogs/all', [AuditLogController::class, 'AllAuditLogs'])->name('all');
+            Route::get('/', [AuditLogController::class, 'AllAuditLogs'])->name('all');
             // Route::get('/139e93ef-7823-406c-8c4f-00294d1e3b64', function () {
             //     return view('charity.audits.view');
             // })->name('view');

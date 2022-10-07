@@ -240,25 +240,6 @@ class BeneficiaryController extends Controller
         $log->performed_at = Carbon::now();
         $log->save();
 
-        # (Not needed according to Docs) Send Notification to each user in their Charitable Organizations
-        /*
-        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
-
-        foreach ($users as $user) {
-            Notification::create([
-                'code' => Str::uuid()->toString(),
-                'user_id' => $user->id,
-                'category' => 'Beneficiary',
-                'Subject' => 'Added Beneficiary',
-                'message' => 'The Beneficiary record of [ ' . $request->first_name . ' ' . $request->last_name .
-                    ' ] has been added by [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ].',
-                'icon' => 'mdi mdi-account-plus',
-                'color' => 'success',
-                'created_at' => Carbon::now(),
-            ]);
-        }
-        */
-
         return redirect()->route('charity.beneficiaries2.createPart2', $beneficiary->code);
     }
 
