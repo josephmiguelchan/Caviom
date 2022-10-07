@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Admin\FeaturedProject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -40,5 +41,10 @@ class CharitableOrganization extends Model
     public function giftgiving()
     {
         return $this->hasMany(GiftGiving::class, 'charitable_organization_id', 'id');
+    }
+
+    public function featuredProject()
+    {
+        return $this->hasMany(FeaturedProject::class, 'charitable_organization_id', 'id');
     }
 }

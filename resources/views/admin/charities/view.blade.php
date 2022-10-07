@@ -75,12 +75,13 @@
                                 <div class="carousel-inner" role="listbox">
                                     <div class="carousel-item active">
                      
+                                        <!-- This must display the correct profile photo of the org. -->
                                         <img src="{{(!empty($organizationdetail->profile_photo))?$organizationdetail->profile_photo: asset('upload/charitable_org/profile_photo/no_avatar.png') }}" class="rounded"
                                             style="width: 100%; height: 30vh; object-fit: cover; opacity:.4;"
                                             alt="Profile Photo of Our Lady of Sorrows Outreach Foundation, Inc.">
                                         <div class="carousel-caption d-none d-md-block text-white-50 my-4">
                                             <h1 class="text-white fw-bold">{{$organizationdetail->name}}</h1>
-                                            <p>{{$organizationdetail->created_at->format('F d Y')}}</p>   
+                                            <p>{{$organizationdetail->created_at->isoFormat('MMMM d, YYYY')}}</p>   
                                         </div>
                                     </div>
                                 </div>

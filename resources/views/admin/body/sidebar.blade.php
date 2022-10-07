@@ -50,7 +50,7 @@
                 </li>
 
                 <li class="{{ Request::routeIs('admin.feat-projects*')?'mm-active':'' }}">
-                    <a href="{{ route('admin.feat-projects') }}" class="waves-effect">
+                    <a href="{{ route('admin.feat-projects.all') }}" class="waves-effect">
                         <i class="ri-heart-add-line"></i>
                         <span>Featured Projects</span>
                     </a>
