@@ -27,7 +27,7 @@ class VolunteerController extends Controller
         $volunteer = Volunteer::where('id', $id)->orWhere('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
-        if (!$volunteer->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($volunteer->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -147,7 +147,7 @@ class VolunteerController extends Controller
         $volunteer = Volunteer::where('id', $id)->orWhere('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
-        if (!$volunteer->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($volunteer->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -166,7 +166,7 @@ class VolunteerController extends Controller
         $volunteer = Volunteer::where('id', $id)->orWhere('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
-        if (!$volunteer->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($volunteer->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -283,7 +283,7 @@ class VolunteerController extends Controller
         $first_name = $volunteer->first_name;
         $code = $volunteer->code;
 
-        if (!$volunteer->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($volunteer->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only delete their own charity records.',
