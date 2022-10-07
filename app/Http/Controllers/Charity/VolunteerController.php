@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\UserInfo;
 use App\Models\Volunteer;
 use App\Models\Address;
+use App\Models\AuditLog;
+use App\Models\Notification;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -21,7 +25,6 @@ class VolunteerController extends Controller
     public function show($id)
     {
         $volunteer = Volunteer::where('id', $id)->orWhere('code', $id)->firstOrFail();
-        $userInfo = UserInfo::where('id', $volunteer->last_modified_by_id)->firstOrFail();
 
         # Users can only access their own charity's records
         if (!$volunteer->charitable_organization_id == Auth::user()->charitable_organization_id) {
@@ -32,11 +35,9 @@ class VolunteerController extends Controller
             );
 
             return redirect()->back()->with($notification);
-
         } else {
 
-            return view('charity.main.volunteers.view', compact('volunteer','userInfo'));
-
+            return view('charity.main.volunteers.view', compact('volunteer'));
         }
     }
 
@@ -67,7 +68,7 @@ class VolunteerController extends Controller
                 # Address
                 'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
                 'address_line_two' => ['nullable', 'string', 'min:5', 'max:128'],
-                'region' => ['required', 'string', 'min:5', 'max:64'],
+                'region' => ['required', 'string', 'min:3', 'max:64'],
                 'province' => ['required', 'string', 'min:3', 'max:64'],
                 'city' => ['required', 'string', 'min:3', 'max:64'],
                 'barangay' => ['required', 'string', 'min:3', 'max:64'],
@@ -80,7 +81,8 @@ class VolunteerController extends Controller
                 'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
                 'postal_code.digits' => 'The postal code must have 4 numbers.',
 
-            ]);
+            ]
+        );
 
         # Creating New Volunteer Address
         $volunteerAddress = new Address;
@@ -118,7 +120,6 @@ class VolunteerController extends Controller
 
         $volunteer->charitable_organization_id = Auth::user()->charitable_organization_id;
         $volunteer->address_id = $volunteerAddress->id;
-        $volunteer->last_modified_by_id = Auth::user()->id;
         $volunteer->save();
 
         # Success toastr message
@@ -128,7 +129,15 @@ class VolunteerController extends Controller
         );
 
         # Audit Log
-        //TO DO -- Audit log stating that a new volunteer record has been ADDED.
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action_type' => 'INSERT',
+            'charitable_organization_id' => Auth::user()->charitable_organization_id,
+            'table_name' => 'Volunteers',
+            'record_id' => $volunteer->code,
+            'action' => Auth::user()->role . ' added Volunteer named [ ' . $volunteer->first_name . ' ' . $volunteer->last_name . ' ].',
+            'performed_at' => Carbon::now(),
+        ]);
 
         return redirect()->route('charity.volunteers.all')->with($notification);
     }
@@ -136,7 +145,6 @@ class VolunteerController extends Controller
     public function edit($id)
     {
         $volunteer = Volunteer::where('id', $id)->orWhere('code', $id)->firstOrFail();
-        $userInfo = UserInfo::where('id', $volunteer->last_modified_by_id)->firstOrFail();
 
         # Users can only access their own charity's records
         if (!$volunteer->charitable_organization_id == Auth::user()->charitable_organization_id) {
@@ -147,11 +155,9 @@ class VolunteerController extends Controller
             );
 
             return redirect()->back()->with($notification);
-
         } else {
 
-            return view('charity.main.volunteers.edit', compact('volunteer', 'userInfo'));
-
+            return view('charity.main.volunteers.edit', compact('volunteer'));
         }
     }
 
@@ -168,7 +174,6 @@ class VolunteerController extends Controller
             );
 
             return redirect()->back()->with($notification);
-
         } else {
 
             # Validation of Edit Volunteer
@@ -191,7 +196,7 @@ class VolunteerController extends Controller
                     # Address
                     'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
                     'address_line_two' => ['nullable', 'string', 'min:5', 'max:128'],
-                    'region' => ['required', 'string', 'min:5', 'max:64'],
+                    'region' => ['required', 'string', 'min:3', 'max:64'],
                     'province' => ['required', 'string', 'min:3', 'max:64'],
                     'city' => ['required', 'string', 'min:3', 'max:64'],
                     'barangay' => ['required', 'string', 'min:3', 'max:64'],
@@ -204,7 +209,8 @@ class VolunteerController extends Controller
                     'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
                     'postal_code.digits' => 'The postal code must have 4 numbers.',
 
-                ]);
+                ]
+            );
 
             # Update Volunteer Profile Picture
             if ($request->file('profile_photo')) {
@@ -255,10 +261,17 @@ class VolunteerController extends Controller
             );
 
             # Audit Log
-            //TO DO -- Audit log stating that a new volunteer record has been UPDATED.
+            AuditLog::create([
+                'user_id' => Auth::id(),
+                'action_type' => 'UPDATE',
+                'charitable_organization_id' => Auth::user()->charitable_organization_id,
+                'table_name' => 'Volunteers',
+                'record_id' => $volunteer->code,
+                'action' => Auth::user()->role . ' updated Volunteer [ ' . $volunteer->first_name . ' ' . $volunteer->last_name . ' ].',
+                'performed_at' => Carbon::now(),
+            ]);
 
             return redirect()->route('charity.volunteers.view', $volunteer->code)->with($notification);
-
         }
     }
 
@@ -266,6 +279,9 @@ class VolunteerController extends Controller
     {
         # Retrieve the volunteer record using Id
         $volunteer = Volunteer::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $last_name = $volunteer->last_name;
+        $first_name = $volunteer->first_name;
+        $code = $volunteer->code;
 
         if (!$volunteer->charitable_organization_id == Auth::user()->charitable_organization_id) {
 
@@ -275,11 +291,10 @@ class VolunteerController extends Controller
             );
 
             return redirect()->back()->with($notification);
-
         } else {
             # Delete the Profile Photo from the path
             $deletePhoto = $volunteer->profile_photo;
-            if($deletePhoto)unlink(public_path('upload/charitable_org/volunteer_photos/').$deletePhoto);
+            if ($deletePhoto) unlink(public_path('upload/charitable_org/volunteer_photos/') . $deletePhoto);
 
             # Delete the volunteer
             $volunteer->delete();
@@ -293,13 +308,32 @@ class VolunteerController extends Controller
             );
 
             # Audit Log
-            //TO DO -- Audit log stating that a new volunteer record has been DELETED.
+            AuditLog::create([
+                'user_id' => Auth::id(),
+                'action_type' => 'DELETE',
+                'charitable_organization_id' => Auth::user()->charitable_organization_id,
+                'table_name' => 'Volunteers',
+                'record_id' => $code,
+                'action' => Auth::user()->role . ' deleted Volunteer [ ' . $first_name . ' ' . $last_name . ' ] permanently.',
+                'performed_at' => Carbon::now(),
+            ]);
 
             # Notification
-            //TO DO -- Send notification to the organization about the action.
+            $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+            foreach ($users as $user) {
+                Notification::create([
+                    'code' => Str::uuid()->toString(),
+                    'user_id' => $user->id,
+                    'category' => 'Volunteer',
+                    'Subject' => 'Deleted Volunteer',
+                    'message' => 'The Volunteer Record of [ ' . $first_name . ' ' . $last_name . ' ] has been deleted by [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ].',
+                    'icon' => 'mdi mdi-account-remove',
+                    'color' => 'danger',
+                    'created_at' => Carbon::now(),
+                ]);
+            }
 
             return redirect()->route('charity.volunteers.all')->with($notification);
         }
-
     }
 }

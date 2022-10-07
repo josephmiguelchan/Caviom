@@ -303,7 +303,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
                 # About to Update the Edit Benefactor Record
                 Route::post('/update/{benefactors:code}', [BenefactorController::class, 'update'])->name('.update');
-
             });
 
             # Volunteers
@@ -329,9 +328,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
                 # About to Update the Edit Volunteer Record
                 Route::post('/update/{volunteers:code}', [VolunteerController::class, 'update'])->name('.update');
-
             });
-
         });
 
         # Gift Givings
@@ -373,7 +370,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
         # Audit Logs
         Route::name('audits.')->prefix('/audit-logs')->middleware('charity.admin')->group(function () {
-            Route::get('/auditlogs/all', [AuditLogController::class, 'AllAuditLogs'])->name('all');
+            Route::get('/', [AuditLogController::class, 'AllAuditLogs'])->name('all');
             // Route::get('/139e93ef-7823-406c-8c4f-00294d1e3b64', function () {
             //     return view('charity.audits.view');
             // })->name('view');
