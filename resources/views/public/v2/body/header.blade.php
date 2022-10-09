@@ -16,8 +16,7 @@
         </nav><!-- .nav-menu -->
 
         <div class="header-social-links">
-            <a href="{{route('login')}}" class="twitter"><i class="bx bx-log-in"></i></a>
-            <a href="{{route('register')}}" class="twitter"><i class="bx bx-solid bx-user-plus"></i></a>
+            <a href="{{route('login')}}" class="twitter"><i class="icofont-login"></i></a>
         </div>
 
     </div>

@@ -138,6 +138,7 @@ class UserController extends Controller
         $user = new User;
         $user->code = Str::uuid()->toString();
         $user->email = $request->email;
+        $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->role = $request->role;
         $user->charitable_organization_id = Auth::user()->charitable_organization_id;
@@ -183,8 +184,8 @@ class UserController extends Controller
         $current_bal->star_tokens = $current_bal->star_tokens - $cost;
         $current_bal->save();
 
-        # Create a New Event (registration) where an email verification will be sent.
-        event(new Registered($user));
+        # Create a New Event (registration) where an email verification will be sent. (TEMPORARILY REMOVED)
+        // event(new Registered($user));
 
         # Send Notification
         $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
@@ -216,7 +217,7 @@ class UserController extends Controller
 
         # Success Toastr Message display
         $toastr = array(
-            'message' => 'The pending user has been successfully created. An invitation link has been sent to their email.',
+            'message' => 'The Pending User has been successfully created.',
             'alert-type' => 'success'
         );
 

@@ -12,7 +12,7 @@
                 Caviom is a platform for Charitable Organizations to collaborate with their fellow volunteers or co-workers at the comfort of their own space.
                 The platform helps them easen the digitalization of their records and processes without breaking the bank.
             </p>
-            <div class="text-center"><a href="{{route('services')}}" class="btn-get-started">Read More</a></div>
+            <div class="text-center"><a href="{{route('register')}}" class="btn-get-started">Get Started</a></div>
             </div>
         </div>
         </div>

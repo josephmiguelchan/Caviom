@@ -88,6 +88,7 @@ class UserController extends Controller
         $user = new User;
         $user->code = Str::uuid()->toString();
         $user->email = $request->email;
+        $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->role = 'Root Admin';
         $user->charitable_organization_id = null;
@@ -118,7 +119,7 @@ class UserController extends Controller
         $user_info->save();
 
         # Create a New Event (registration) where an email verification will be sent.
-        event(new Registered($user));
+        // event(new Registered($user));
 
         # Create Audit Logs
         $log = new AuditLog();
@@ -133,7 +134,7 @@ class UserController extends Controller
 
         # Success Toastr Message display
         $notification = array(
-            'message' => 'Pending Root Admin added successfully. A link has been sent to their email.',
+            'message' => 'Pending Root Admin added successfully.',
             'alert-type' => 'success'
         );
 
