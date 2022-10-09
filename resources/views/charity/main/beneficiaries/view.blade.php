@@ -62,7 +62,8 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>You are about to attempt to back up the data of the selected beneficiary [<strong> Olarte, Clark Louise </strong>].
+                                        <p>You are about to attempt to back up the data of the selected beneficiary [<strong> {{ $beneficiary->last_name . ', ' .
+                                            $beneficiary->first_name .' '. $beneficiary->middle_name}} </strong>].
                                             This action will notify all other users in your Charitable Organization. Continue?</p>
                                     </div>
                                     <div class="modal-footer">

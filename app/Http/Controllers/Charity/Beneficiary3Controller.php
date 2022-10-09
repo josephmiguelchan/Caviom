@@ -202,10 +202,10 @@ class Beneficiary3Controller extends Controller
         }
     }
 
-    
+
     public function BackupBeneficiary()
     {
-        return Excel::download(new BeneficiaryExport(), Auth::user()->charity->name .' Beneficiaries.xlsx');
+        return Excel::download(new BeneficiaryExport(), Auth::user()->charity->name . ' Beneficiaries.xlsx');
     }
 
     public function GeneratePDF($code)
@@ -219,15 +219,12 @@ class Beneficiary3Controller extends Controller
         $orgimage = $beneficiary->charitableOrganization->profile_photo;
         // $familymember = BeneficiaryFamilyInfo::where('beneficiary_id',$beneficiary->id)->get();
 
-        if($beneficiary->charitable_organization_id ==  Auth::user()->charitable_organization_id)
-        {
+        if ($beneficiary->charitable_organization_id ==  Auth::user()->charitable_organization_id) {
             // return view('charity.main.beneficiaries.BackupPdf', compact('beneficiary','mytime'));
 
-            $pdf = PDF::loadView('charity.main.beneficiaries.BackupPdf', compact('beneficiary','mytime','beneficiaryimage','orgimage'));
-            return $pdf->download($beneficiary->charitableOrganization->name.'-'.$beneficiary->last_name . ', ' . $beneficiary->first_name . '.pdf');
-        }
-        else
-        {
+            $pdf = PDF::loadView('charity.main.beneficiaries.BackupPdf', compact('beneficiary', 'mytime', 'beneficiaryimage', 'orgimage'));
+            return $pdf->download($beneficiary->charitableOrganization->name . '-' . $beneficiary->last_name . ', ' . $beneficiary->first_name . '.pdf');
+        } else {
             $toastr = array(
                 'message' => 'Users can only access their own charity records.',
                 'alert-type' => 'error'
