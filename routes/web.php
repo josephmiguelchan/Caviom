@@ -292,6 +292,13 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
                 # About to Update the Edit Beneficiary Record
                 Route::post('/update-part3/{beneficiary:code}', [Beneficiary3Controller::class, 'update'])->name('.update');
+
+                
+                # Backup Beneficiaries
+                Route::get('/export', [Beneficiary3Controller::class, 'BackupBeneficiary'])->name('.export');
+
+                # Generate tickets for a Gift Giving
+                 Route::get('/export/pdf/{code}', [Beneficiary3Controller::class, 'GeneratePDF'])->name('generate.pdf');
             });
 
             # Benefactors
@@ -317,6 +324,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
                 # About to Update the Edit Benefactor Record
                 Route::post('/update/{benefactors:code}', [BenefactorController::class, 'update'])->name('.update');
+
+                # Backup Benefactor
+                Route::get('/export', [BenefactorController::class, 'BackupBenefactor'])->name('.export');
+
             });
 
             # Volunteers
@@ -342,6 +353,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
                 # About to Update the Edit Volunteer Record
                 Route::post('/update/{volunteers:code}', [VolunteerController::class, 'update'])->name('.update');
+
+                # Backup Volunteer
+                Route::get('/export', [VolunteerController::class, 'BackupVolunteer'])->name('.export');
+
             });
         });
 

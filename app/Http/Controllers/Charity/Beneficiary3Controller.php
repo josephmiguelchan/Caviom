@@ -10,6 +10,20 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Exports\Benefactors;
+use App\Exports\BeneficiaryExport;
+use App\Models\BeneficiaryFamilyInfo;
+// use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+// use Barryvdh\DomPDF\PDF as DomPDFPDF;
+use Maatwebsite\Excel\Facades\Excel;
+
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
+
+
+
+
 class Beneficiary3Controller extends Controller
 {
 
@@ -185,6 +199,41 @@ class Beneficiary3Controller extends Controller
             );
 
             return redirect()->route('charity.beneficiaries.show', $id)->with($notification);
+        }
+    }
+
+    
+    public function BackupBeneficiary()
+    {
+        return Excel::download(new BeneficiaryExport(), Auth::user()->charity->name .' Beneficiaries.xlsx');
+    }
+
+    public function GeneratePDF($code)
+    {
+        # Retrieve Record for the select Beneficiaries
+        $beneficiary = Beneficiary::where('code', $code)->firstOrFail();
+        $mytime = Carbon::now();
+
+
+        $beneficiaryimage = $beneficiary->profile_photo;
+        $orgimage = $beneficiary->charitableOrganization->profile_photo;
+        // $familymember = BeneficiaryFamilyInfo::where('beneficiary_id',$beneficiary->id)->get();
+
+        if($beneficiary->charitable_organization_id ==  Auth::user()->charitable_organization_id)
+        {
+            // return view('charity.main.beneficiaries.BackupPdf', compact('beneficiary','mytime'));
+
+            $pdf = PDF::loadView('charity.main.beneficiaries.BackupPdf', compact('beneficiary','mytime','beneficiaryimage','orgimage'));
+            return $pdf->download($beneficiary->charitableOrganization->name.'-'.$beneficiary->last_name . ', ' . $beneficiary->first_name . '.pdf');
+        }
+        else
+        {
+            $toastr = array(
+                'message' => 'Users can only access their own charity records.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($toastr);
         }
     }
 }
