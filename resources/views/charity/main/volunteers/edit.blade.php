@@ -148,8 +148,8 @@
                                         <!-- Cellphone -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                                <input class="form-control" name="cel_no" id="cel_no" type="tel" value="{{ old('cel_no', $volunteer->cel_no) }}" required
+                                                <label for="cel_no" class="form-label">Cellphone No.</label>
+                                                <input class="form-control" name="cel_no" id="cel_no" type="tel" value="{{ old('cel_no', $volunteer->cel_no) }}"
                                                        placeholder="Ex. 09191234567">
                                                 @error('cel_no')
                                                 <div class="text-danger">

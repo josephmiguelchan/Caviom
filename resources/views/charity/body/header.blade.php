@@ -34,31 +34,31 @@
         <div class="d-flex">
 
             <div class="dropdown d-none d-lg-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" value="#">
+                <button type="button" onclick="location.href='{{route('home')}}'" class="btn header-item noti-icon waves-effect">
                     Home
                 </button>
             </div>
 
             <div class="dropdown d-none d-lg-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" value="#">
+                <button type="button" onclick="location.href='{{route('about')}}'" class="btn header-item noti-icon waves-effect" value="#">
                     About
                 </button>
             </div>
 
             <div class="dropdown d-none d-lg-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" value="#">
-                    Blog
-                </button>
-            </div>
-
-            <div class="dropdown d-none d-lg-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" value="#">
+                <button type="button" onclick="location.href='{{route('contact')}}'" class="btn header-item noti-icon waves-effect" value="#">
                     Contact
                 </button>
             </div>
 
             <div class="dropdown d-none d-lg-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" value="#">
+                <button type="button" onclick="location.href='{{route('services')}}'" class="btn header-item noti-icon waves-effect" value="#">
+                    Services
+                </button>
+            </div>
+
+            <div class="dropdown d-none d-lg-inline-block ms-1">
+                <button type="button" onclick="location.href='{{route('charities.all')}}'" class="btn header-item noti-icon waves-effect">
                     Charitable Organizations
                 </button>
             </div>

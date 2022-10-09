@@ -7,7 +7,6 @@
     $defaultAvatar = 'upload/charitable_org/benefactor_photos/no_avatar.png';
 @endphp
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <div class="page-content">
     <div class="container-fluid">
 
@@ -148,8 +147,8 @@
                                     <!-- Cellphone -->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                            <input class="form-control" name="cel_no" id="cel_no" type="tel" value="{{ old('cel_no', $benefactor->cel_no) }}" required
+                                            <label for="cel_no" class="form-label">Cellphone No.</label>
+                                            <input class="form-control" name="cel_no" id="cel_no" type="tel" value="{{ old('cel_no', $benefactor->cel_no) }}"
                                                    placeholder="Ex. 09191234567">
                                             @error('cel_no')
                                             <div class="text-danger">
@@ -315,15 +314,9 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#profile_image').change(function(e) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#showImage').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(e.target.files['0']);
-        })
-    })
-</script>
+{{-- <script type="text/javascript">
+    window.onbeforeunload = function(){
+        return 'Are you sure you want to leave?';
+    };
+</script> --}}
 @endsection
