@@ -355,7 +355,7 @@ class UserController extends Controller
         $log->charitable_organization_id = Auth::user()->charitable_organization_id;
         $log->table_name = 'User, UserInfo, Address';
         $log->record_id = null;
-        $log->action = 'Charity Admin generated Excel to backup all Users in ' . Auth::user()->charity->name;
+        $log->action = Auth::user()->role . ' generated Excel to backup all Users in ' . Auth::user()->charity->name;
         $log->performed_at = Carbon::now();
         $log->save();
 

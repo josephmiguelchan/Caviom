@@ -10,7 +10,7 @@
         <!-- User details -->
         <div class="user-profile text-center mt-3">
             <div>
-                <img src="{{ (!empty(Auth::user()->charity->profile_photo))? url($avatar):url($defaultAvatar) }}"
+                <img src="{{ Auth::user()->charity->profile_photo? url($avatar):url($defaultAvatar) }}"
                     alt="Profile Picture" class="rounded-circle me-2" width="100" data-holder-rendered="true">
             </div>
             <div class="mt-3">
