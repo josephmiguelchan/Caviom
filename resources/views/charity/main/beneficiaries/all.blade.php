@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                                    <a href="#" class="btn btn-danger waves-effect waves-light w-sm">Yes</a>
+                                    <a href="{{route('charity.beneficiaries3.export')}}" class="btn btn-danger waves-effect waves-light w-sm">Yes</a>
                                 </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->

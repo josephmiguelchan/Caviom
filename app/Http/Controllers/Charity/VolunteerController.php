@@ -14,6 +14,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
+
+use App\Exports\Volunteers;
+use Maatwebsite\Excel\Facades\Excel;
+
 class VolunteerController extends Controller
 {
     public function index()
@@ -335,5 +339,10 @@ class VolunteerController extends Controller
 
             return redirect()->route('charity.volunteers.all')->with($notification);
         }
+    }
+
+    public function BackupVolunteer()
+    {
+        return Excel::download(new Volunteers, Auth::user()->charity->name .' Volunteers.xlsx');
     }
 }

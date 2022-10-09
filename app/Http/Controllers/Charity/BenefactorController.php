@@ -14,10 +14,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
+
+use App\Exports\Benefactors;
+use Maatwebsite\Excel\Facades\Excel;
+
 class BenefactorController extends Controller
 {
     public function index()
     {
+
         $benefactors = Benefactor::where('charitable_organization_id', Auth::user()->charitable_organization_id)->latest()->get();
         return view('charity.main.benefactors.all', compact('benefactors'));
     }
@@ -334,5 +339,10 @@ class BenefactorController extends Controller
             }
             return redirect()->route('charity.benefactors.all')->with($notification);
         }
+    }
+
+    public function BackupBenefactor()
+    {
+        return Excel::download(new Benefactors(), Auth::user()->charity->name .' Benefactor.xlsx');
     }
 }

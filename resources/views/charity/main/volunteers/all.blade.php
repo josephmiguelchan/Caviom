@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                                        <button type="button" class="btn btn-danger waves-effect waves-light w-sm">Yes</button>
+                                        <a type="button" href="{{route('charity.volunteers.export')}}" class="btn btn-danger waves-effect waves-light w-sm">Yes</a>
                                     </div>
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->

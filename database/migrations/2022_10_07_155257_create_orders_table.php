@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('code');
             $table->foreignId('charitable_organization_id')->constrained();
-            $table->unsignedBigInteger('reference_no',20);
+            $table->unsignedBigInteger('reference_no');
             $table->string('proof_of_payment',128);
             $table->char('mode_of_payment',128);
             $table->float('total', 5, 2)->nullable();
