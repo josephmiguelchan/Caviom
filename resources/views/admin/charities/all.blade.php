@@ -47,26 +47,24 @@
 
                         <tbody>
                             @foreach ($CharityOrganizations as $key => $item)
-                                
-                          
+
+
                             <tr>
                                 <td>{{$key+1}}</td>
                                 <td>
-
-                        
-                                    <img src="{{(!empty($item->profile_photo)) ?$item->profile_photo: asset('upload/charitable_org/profile_photo/no_avatar.png') }}" alt="Organization Profile Photo" class="rounded avatar-xs"> {{$item->name}}
+                                    <img src="{{(!empty($item->profile_photo))?url('upload/charitable_org/profile_photo/'.$item->profile_photo):url('upload/charitable_org/profile_photo/no_avatar.png') }}" alt="Organization Profile Photo" class="rounded avatar-xs"> {{$item->name}}
                                 </td>
 
                                 @if ($item->profile_status == 'Visible')
                                     <td><i class="ri-eye-line"></i> Visible</td>
-                                @elseif($item->profile_status == 'Unset')                                
-                                    <td><i class="mdi mdi-cog-off-outline"></i> Unset</td>                                
-                                @elseif($item->profile_status == 'Locked')                                
-                                    <td class="text-danger"><i class="ri-lock-line"></i> Locked</td>                                
+                                @elseif($item->profile_status == 'Unset')
+                                    <td><i class="mdi mdi-cog-off-outline"></i> Unset</td>
+                                @elseif($item->profile_status == 'Locked')
+                                    <td class="text-danger"><i class="ri-lock-line"></i> Locked</td>
                                 @elseif($item->profile_status == 'Hidden')
                                     <td><i class="ri-eye-off-line"></i> Hidden</td>
                                 @endif
-                          
+
                                 @if ($item->verification_status == 'Pending')
                                     <td class="text-warning"> Pending</td>
                                 @elseif($item->verification_status == 'Verified')
@@ -76,9 +74,9 @@
                                 @elseif($item->verification_status == 'Declined')
                                     <td class="text-danger"> Declined</td>
                                 @endif
-                                
 
-                         
+
+
 
                                 <td> {{ (!empty($item->remarks_subject))? $item->remarks_subject:'---' }}</td>
                                 <td>

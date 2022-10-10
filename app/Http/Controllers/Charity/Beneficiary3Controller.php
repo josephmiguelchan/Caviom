@@ -9,10 +9,12 @@ use App\Models\BeneficiaryBgInfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Str;
 use App\Exports\Benefactors;
 use App\Exports\BeneficiaryExport;
 use App\Models\BeneficiaryFamilyInfo;
+use App\Models\Notification;
+use App\Models\User;
 // use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 // use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Maatwebsite\Excel\Facades\Excel;
@@ -202,32 +204,61 @@ class Beneficiary3Controller extends Controller
         }
     }
 
-    
+
     public function BackupBeneficiary()
     {
-        return Excel::download(new BeneficiaryExport(), Auth::user()->charity->name .' Beneficiaries.xlsx');
+        $beneficiaries = Beneficiary::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
+
+        # Check if atleast one beneficiary exists before attempting to generate.
+        if ($beneficiaries->count() < 1) {
+
+            $notification = array(
+                'message' => 'Sorry, cannot generate a backup unless one (1) or more beneficiaries exist.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($notification);
+        }
+
+        # Create Audit Logs
+        $log = new AuditLog;
+        $log->user_id = Auth::user()->id;
+        $log->action_type = 'GENERATE EXCEL';
+        $log->charitable_organization_id = Auth::user()->charitable_organization_id;
+        $log->table_name = 'Beneficiary, Beneficiary_Bg_Info , Beneficiary_Family, Address';
+        $log->record_id = null;
+        $log->action = Auth::user()->role . ' generated Excel to backup all Beneficiariesq in ' . Auth::user()->charity->name;
+        $log->performed_at = Carbon::now();
+        $log->save();
+
+
+        # Send Notification
+        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+        foreach ($users as $user) {
+            $notif = new Notification();
+            $notif->code = Str::uuid()->toString();
+            $notif->user_id = $user->id;
+            $notif->category = 'Beneficiary';
+            $notif->subject = 'Backup Beneficiary';
+            $notif->message = Auth::user()->role . ' [' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name .
+                '] has attempted to back up a copy of All Beneficiaries from [' . Auth::user()->charity->name . '] into an Excel File.';
+            $notif->icon = 'mdi mdi-file-download';
+            $notif->color = 'warning';
+            $notif->created_at = Carbon::now();
+            $notif->save();
+        }
+
+
+        return Excel::download(new BeneficiaryExport(), Auth::user()->charity->name . ' Beneficiaries (' . Carbon::now()->isoFormat('lll') . ').xlsx');
     }
 
     public function GeneratePDF($code)
     {
         # Retrieve Record for the select Beneficiaries
         $beneficiary = Beneficiary::where('code', $code)->firstOrFail();
-        $mytime = Carbon::now();
 
-
-        $beneficiaryimage = $beneficiary->profile_photo;
-        $orgimage = $beneficiary->charitableOrganization->profile_photo;
-        // $familymember = BeneficiaryFamilyInfo::where('beneficiary_id',$beneficiary->id)->get();
-
-        if($beneficiary->charitable_organization_id ==  Auth::user()->charitable_organization_id)
-        {
-            // return view('charity.main.beneficiaries.BackupPdf', compact('beneficiary','mytime'));
-
-            $pdf = PDF::loadView('charity.main.beneficiaries.BackupPdf', compact('beneficiary','mytime','beneficiaryimage','orgimage'));
-            return $pdf->download($beneficiary->charitableOrganization->name.'-'.$beneficiary->last_name . ', ' . $beneficiary->first_name . '.pdf');
-        }
-        else
-        {
+        # Check if beneficiary belongs to same org as user
+        if ($beneficiary->charitable_organization_id !=  Auth::user()->charitable_organization_id) {
             $toastr = array(
                 'message' => 'Users can only access their own charity records.',
                 'alert-type' => 'error'
@@ -235,5 +266,102 @@ class Beneficiary3Controller extends Controller
 
             return redirect()->back()->with($toastr);
         }
+
+        $mytime = Carbon::now();
+        $beneficiaryimage = $beneficiary->profile_photo;
+        $orgimage = $beneficiary->charitableOrganization->profile_photo;
+        // $familymember = BeneficiaryFamilyInfo::where('beneficiary_id',$beneficiary->id)->get();
+
+
+        # Create Audit Logs
+        $log = new AuditLog;
+        $log->user_id = Auth::user()->id;
+        $log->action_type = 'GENERATE PDF';
+        $log->charitable_organization_id = Auth::user()->charitable_organization_id;
+        $log->table_name = 'Beneficiary, Beneficiary_Bg_Info , Beneficiary_Family, Address';
+        $log->record_id = $beneficiary->code;
+        $log->action = Auth::user()->role . ' generated filled out PDF to Export individual Beneficiary [ '
+            . $beneficiary->last_name . ', ' . $beneficiary->last_name . ' '
+            . $beneficiary->middle_name . ' ] record.';
+        $log->performed_at = Carbon::now();
+        $log->save();
+
+
+        # Send notification to User
+        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+        foreach ($users as $user) {
+            $notif = new Notification();
+            $notif->code = Str::uuid()->toString();
+            $notif->user_id = $user->id;
+            $notif->category = 'Beneficiary';
+            $notif->subject = 'Export Beneficiary';
+            $notif->message = Auth::user()->role . ' [' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name .
+                '] has attempted to export a filled record of Beneficiary [ ' . $beneficiary->last_name . ', ' . $beneficiary->first_name . ' ] into a PDF File.';
+            $notif->icon = 'mdi mdi-file-download';
+            $notif->color = 'warning';
+            $notif->created_at = Carbon::now();
+            $notif->save();
+        }
+
+        // return view('charity.main.beneficiaries.BackupPdf', compact('beneficiary','mytime'));
+
+        $pdf = PDF::loadView('charity.main.beneficiaries.BackupPdf', compact('beneficiary', 'mytime', 'beneficiaryimage', 'orgimage'));
+        return $pdf->download($beneficiary->charitableOrganization->name . '-' . $beneficiary->last_name . ', ' . $beneficiary->first_name . '.pdf');
+    }
+    public function GeneratePDFblank($code)
+    {
+        # Retrieve Record for the select Beneficiaries
+        $beneficiary = Beneficiary::where('code', $code)->firstOrFail();
+
+        # Check if beneficiary belongs to same org as user
+        if ($beneficiary->charitable_organization_id !=  Auth::user()->charitable_organization_id) {
+            $toastr = array(
+                'message' => 'Users can only access their own charity records.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($toastr);
+        }
+
+        // return view('charity.main.beneficiaries.BackupPdf', compact('beneficiary','mytime'));
+
+        $mytime = Carbon::now();
+        $beneficiaryimage = $beneficiary->profile_photo;
+        $orgimage = $beneficiary->charitableOrganization->profile_photo;
+        // $familymember = BeneficiaryFamilyInfo::where('beneficiary_id',$beneficiary->id)->get();
+
+
+        # Create Audit Logs
+        $log = new AuditLog;
+        $log->user_id = Auth::user()->id;
+        $log->action_type = 'GENERATE PDF';
+        $log->charitable_organization_id = Auth::user()->charitable_organization_id;
+        $log->table_name = 'Beneficiary, Beneficiary_Bg_Info , Beneficiary_Family, Address';
+        $log->record_id = Null;
+        $log->action = Auth::user()->role . ' generated blank copy of PDF to Export Beneficiary [ '
+            . $beneficiary->last_name . ', ' . $beneficiary->last_name . ' '
+            . $beneficiary->middle_name . ' ] record.';
+        $log->performed_at = Carbon::now();
+        $log->save();
+
+
+        # Send notification to User
+        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+        foreach ($users as $user) {
+            $notif = new Notification();
+            $notif->code = Str::uuid()->toString();
+            $notif->user_id = $user->id;
+            $notif->category = 'Beneficiary';
+            $notif->subject = 'Export Beneficiary';
+            $notif->message = Auth::user()->role . ' [' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name .
+                '] has attempted to export a blank copy record of Beneficiary [ ' . $beneficiary->last_name . ', ' . $beneficiary->first_name . ' ] into a PDF File.';
+            $notif->icon = 'mdi mdi-file-download';
+            $notif->color = 'warning';
+            $notif->created_at = Carbon::now();
+            $notif->save();
+        }
+
+        $pdf = PDF::loadView('charity.main.beneficiaries.BackupPdfblank', compact('beneficiary', 'mytime', 'beneficiaryimage', 'orgimage'));
+        return $pdf->download($beneficiary->charitableOrganization->name . '-' . $beneficiary->last_name . ', ' . $beneficiary->first_name . '.pdf');
     }
 }

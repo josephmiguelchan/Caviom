@@ -343,6 +343,47 @@ class BenefactorController extends Controller
 
     public function BackupBenefactor()
     {
-        return Excel::download(new Benefactors(), Auth::user()->charity->name .' Benefactor.xlsx');
+        $benefactors = Benefactor::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
+
+        # Check if atleast one benefactor exists before attempting to generate.
+        if ($benefactors->count() < 1) {
+
+            $notification = array(
+                'message' => 'Sorry, cannot generate a backup unless one (1) or more benefactors exist.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($notification);
+        }
+
+        # Create Audit Logs
+        $log = new AuditLog;
+        $log->user_id = Auth::user()->id;
+        $log->action_type = 'GENERATE EXCEL';
+        $log->charitable_organization_id = Auth::user()->charitable_organization_id;
+        $log->table_name = 'Benefactor';
+        $log->record_id = null;
+        $log->action = Auth::user()->role . ' generated Excel to backup all Benefactors in ' . Auth::user()->charity->name;
+        $log->performed_at = Carbon::now();
+        $log->save();
+
+
+        # Send Notification
+        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+        foreach ($users as $user) {
+            $notif = new Notification;
+            $notif->code = Str::uuid()->toString();
+            $notif->user_id = $user->id;
+            $notif->category = 'Benefactor';
+            $notif->subject = 'Backup Benefactors';
+            $notif->message = Auth::user()->role . ' [' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name .
+                '] has attempted to back up a copy of Benefactors from [' . Auth::user()->charity->name . '] into an Excel File.';
+            $notif->icon = 'mdi mdi-file-download';
+            $notif->color = 'warning';
+            $notif->created_at = Carbon::now();
+            $notif->save();
+        }
+
+        return Excel::download(new Benefactors(), Auth::user()->charity->name . ' - Benefactors (' . Carbon::now()->isoFormat('lll') . ').xlsx');
     }
 }

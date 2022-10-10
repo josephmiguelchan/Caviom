@@ -4,23 +4,23 @@
   <title>Backup Beneficiary Data as PDF</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 </head>
 
 
 <style>
-  
+
   .tableinformation {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 75%;
-  
+
     margin-left: auto;
     margin-right: auto;
     border-style: none;
-  
-    
+
+
   }
   .tableinformation td
   {
@@ -30,27 +30,27 @@
   .tableinformation :nth-child(odd) {
     width: 40%;
     }
-  
-  
+
+
   td, th {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
   }
-  
-  
+
+
     .organization {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 75%;
-  
+
     margin-left: auto;
     margin-right: auto;
     margin-top: 50px ;
     margin-bottom: 50px;
-  
-    
-  } 
+
+
+  }
   .organization td
   {
     border:none;
@@ -74,24 +74,24 @@
   {
     text-align: center;
   }
-  
+
   .tableinformation2 {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 75%;
-  
+
     margin-left: auto;
     margin-right: auto;
-  
-    
+
+
   }
-  
+
   .tableinformation2 td ,th
   {
     border:none;
      outline:none;
   }
-  
+
   .prepareandnoted
   {
     font-family: arial, sans-serif;
@@ -108,7 +108,7 @@
     border:none;
      outline:none;
   }
-  
+
   .page-break {
       page-break-after: always;
   }
@@ -116,11 +116,11 @@
 <body>
 
 
-  
+
 
 <table class="organization" >
 <tr>
- 
+
   {{-- <td style="width:30%"><img src="{{ ($beneficiary->charitableOrganization->profile_photo)?url('upload/charitable_org/profile_photo/'.$beneficiary->charitableOrganization->profile_photo):url('upload/charitable_org/profile_photo/no_avatar.png') }}" alt="Charity Organization Profile Photo" width="100px" height="100px"></td> --}}
   <td style="text-align: center;  font-size: 150%;">{{$beneficiary->charitableOrganization->name}}</td>
 </tr>
@@ -128,13 +128,13 @@
 
 <table class="organization">
   <tr>
-    <td > Date: <span style="text-decoration:underline;">{{$mytime->isoFormat('MMMM d, YYYY')}}</span>
-      <br> 
+    <td > Date: <span style="text-decoration:underline;">{{$mytime->isoFormat('MMMM D, YYYY')}}</span>
+      <br>
       <span>Time: </span><span style="text-decoration:underline;">{{$mytime->format('g:i A');}}</span>
     </td>
 
-  
-    {{-- <td style="width:30%"><img src="  {{ ($beneficiary->profile_photo)?url('upload/charitable_org/beneficiary_photos/'. $beneficiary->profile_photo):url('upload/avatar_img/no_avatar.png') }}" alt="beneficiaries photo" width="150px" height="150px"></td> --}}
+
+    <td style="width:30%"><img src="{{ ($beneficiary->profile_photo)?url('upload/charitable_org/beneficiary_photos/'. $beneficiary->profile_photo):url('upload/avatar_img/no_avatar.png') }}" alt="beneficiaries photo" width="150px" height="150px"></td>
 
   </tr>
 </table>
@@ -142,21 +142,21 @@
 <table class="tableinformation">
   <tr>
     <th colspan="2">I.  Identifying Information</th>
-  
+
   </tr>
   <tr>
     <td>Full name</td>
     <td>{{$beneficiary->last_name. ', '.$beneficiary->first_name.' '. $beneficiary->middle_name}}</td>
-  
+
   </tr>
   <tr>
     <td>Nickname :</td>
     <td>{{$beneficiary->nick_name}}</td>
-  
+
   </tr>
   <tr>
     <td>Date of Birth :</td>
-    <td>{{Carbon\Carbon::parse($beneficiary->brith_date)->isoFormat('MMMM d, YYYY')}}</td>
+    <td>{{Carbon\Carbon::parse($beneficiary->brith_date)->isoFormat('MMMM D, YYYY')}}</td>
   </tr>
   <tr>
     <td>Age During interview :</td>
@@ -213,15 +213,15 @@
     <td>{{$beneficiary->contact_no}}</td>
   </tr>
 
-  
+
 </table>
 
 
 <table class="family">
 
-   
-        
-    
+
+
+
     <tr>
       <th colspan="8" style="text-align: left;" >II. Family Composition</th>
     </tr>
@@ -253,7 +253,7 @@
   <table class="tableinformation2">
 
     <tr>
-      <th >III. Presented Problem  </th>  
+      <th >III. Presented Problem  </th>
     </tr>
     <tr>
       <td style=" padding-left: 10%;">
@@ -318,11 +318,11 @@
     </tr>
 
     <tr>
-      <td style="text-decoration: underline;">{{$beneficiary->prepared_by}}</td>
-       <td style="text-decoration: underline;">{{$beneficiary->noted_by}}</td>
+      <td style="text-decoration: underline;">{{$beneficiary->prepared_by ?? '___________________'}}</td>
+       <td style="text-decoration: underline;">{{$beneficiary->noted_by ?? '___________________'}}</td>
     </tr>
   </table>
-    
-  
+
+
 </body>
 </html>

@@ -146,7 +146,7 @@
                                             @csrf
                                             <label for="custom_name" class="form-label">Enter a New Beneficiary</label>
                                             <div class="input-group col-md-8">
-                                                <input type="text" name="custom_name" id="custom_name" placeholder="Ex: Lastname, Firstname M." class="form-control">
+                                                <input type="text" name="custom_name" id="custom_name" placeholder="Ex: Firstname Lastname" class="form-control">
                                                 <button type="submit" class="btn btn-success waves-effect w-md btn-sm" title="Add New Beneficiary">
                                                     <i class="mdi mdi-plus"></i> Add
                                                 </button>

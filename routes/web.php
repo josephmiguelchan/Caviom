@@ -11,6 +11,7 @@ use App\Http\Controllers\Charity\AuditLogController;
 use App\Http\Controllers\Charity\GiftGivingController;
 use App\Http\Controllers\Charity\NotificationController;
 use App\Http\Controllers\Charity\UserController;
+use App\Http\Controllers\PublicController;
 use App\Http\Controllers\RootAdmin\AuditLogController as RootAdminAuditLogController;
 use App\Http\Controllers\RootAdmin\CharitableOrganizationController;
 use App\Http\Controllers\RootAdmin\FeaturedProjectController;
@@ -29,14 +30,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+# Public Pages
+Route::controller(PublicController::class)->group(function () {
+    Route::get('/', 'showHome')->name('home');
+    Route::get('/about', 'showAbout')->name('about');
+    Route::get('/services', 'showServices')->name('services');
+    Route::get('/contact', 'showContact')->name('contact');
+
+    # Charity Public Profile Pages
+    Route::name('charities')->prefix('/charitable-organizations')->middleware(['prevent-back-history'])->group(function () {
+
+        # Show All Charitable Organizations
+        Route::get('/', 'showAllCharities')->name('.all');
+
+        # View Specific Charitable Organization
+        Route::get('/5802112d-7751-431d-8caf-5368372f0b1c', 'viewCharity')->name('.view');
+
+        # View Specific Featured Project of a Charitable Organization
+        Route::get('/featured-project/f99b68ee-86f6-4f25-9c1f-33523bdd5554', 'viewFeaturedProject')->name('.feat-proj.view');
+    });
 });
-
-// Route::get('/charity/dashboard', function () {
-//     return view('charity.index');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
 
 # Charity Group Controller
 Route::controller(CharityController::class)->middleware(['auth', 'verified', 'prevent-back-history'])->group(function () {
@@ -280,12 +293,15 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 # About to Update the Edit Beneficiary Record
                 Route::post('/update-part3/{beneficiary:code}', [Beneficiary3Controller::class, 'update'])->name('.update');
 
-                
+
                 # Backup Beneficiaries
                 Route::get('/export', [Beneficiary3Controller::class, 'BackupBeneficiary'])->name('.export');
 
-                # Generate tickets for a Gift Giving
-                 Route::get('/export/pdf/{code}', [Beneficiary3Controller::class, 'GeneratePDF'])->name('generate.pdf');
+                # Export Beneficiaries with PDF
+                Route::get('/export/pdf/{code}', [Beneficiary3Controller::class, 'GeneratePDF'])->name('generate.pdf');
+
+                # Export Beneficiaries with PDF (with blank page)
+                Route::get('/export/pdf/blank/{code}', [Beneficiary3Controller::class, 'GeneratePDFblank'])->name('generate.pdf.blank');
             });
 
             # Benefactors
@@ -314,7 +330,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
                 # Backup Benefactor
                 Route::get('/export', [BenefactorController::class, 'BackupBenefactor'])->name('.export');
-
             });
 
             # Volunteers
@@ -343,7 +358,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
                 # Backup Volunteer
                 Route::get('/export', [VolunteerController::class, 'BackupVolunteer'])->name('.export');
-
             });
         });
 
@@ -487,7 +501,7 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
 
     # Featured Projects
     Route::name('feat-projects')->prefix('/featured-projects')->group(function () {
-     
+
         Route::get('/', [FeaturedProjectController::class, 'AllFeaturedProject'])->name('.all');
 
         Route::get('/view/{code}', [FeaturedProjectController::class, 'ViewFeaturedProject'])->name('.view');
@@ -538,14 +552,5 @@ Route::controller(NotifierController::class)->prefix('/admin/notifiers')->middle
         # Delete Notifier
         Route::get('/delete/{id}}', 'DeleteNotifier')->name('admin.notifiers.delete');
     });
-
-Route::name('charities')->prefix('/charitable-organizations')->group(function () {
-    Route::get('/', function () {
-    })->name('.all');
-
-    Route::get('/5802112d-7751-431d-8caf-5368372f0b1c', function () {
-        return view('public.charities.view');
-    })->name('.view');
-});
 
 require __DIR__ . '/auth.php';

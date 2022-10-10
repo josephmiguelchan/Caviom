@@ -53,8 +53,8 @@
 
 <!-- Our Team -->
 <h1 class="display-3 mt-5 text-center">The Team</h1>
-{{-- <div class="row justify-content-center my-4" data-masonry='{"percentPosition": true }'>
-    <div class="col-lg-4 col-sm-6">
+<div class="row justify-content-center my-4" data-masonry='{"percentPosition": true }'>
+    <div class="col-lg-3 col-sm-6">
         <div class="card m-b-30">
             <div class="card-body">
 
@@ -69,7 +69,7 @@
             </div>
         </div>
     </div> <!-- end col -->
-    <div class="col-lg-4 col-sm-6">
+    <div class="col-lg-3 col-sm-6">
         <div class="card m-b-30">
             <div class="card-body">
 
@@ -84,7 +84,7 @@
             </div>
         </div>
     </div> <!-- end col -->
-    <div class="col-lg-4 col-sm-6">
+    <div class="col-lg-3 col-sm-6">
         <div class="card m-b-30">
             <div class="card-body">
 
@@ -99,7 +99,7 @@
             </div>
         </div>
     </div> <!-- end col -->
-    <div class="col-lg-4 col-sm-6">
+    <div class="col-lg-3 col-sm-6">
         <div class="card m-b-30">
             <div class="card-body">
 
@@ -114,10 +114,40 @@
             </div>
         </div>
     </div> <!-- end col -->
-</div> --}}
+    <div class="col-lg-3 col-sm-6">
+        <div class="card m-b-30">
+            <div class="card-body">
+
+                <div class="d-flex align-items-center">
+                    <img class="d-flex me-3 rounded-circle img-thumbnail avatar-lg" src="{{ asset('backend/assets/images/users/avatar-6.jpg') }}" alt="Generic placeholder image">
+                    <div class="flex-grow-1">
+                        <h5 class="mt-0 font-size-18 mb-1">Dong A. Bolpen</h5>
+                        <p class="text-muted font-size-14">Webdeveloper</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div> <!-- end col -->
+    <div class="col-lg-3 col-sm-6">
+        <div class="card m-b-30">
+            <div class="card-body">
+
+                <div class="d-flex align-items-center">
+                    <img class="d-flex me-3 rounded-circle img-thumbnail avatar-lg" src="{{ asset('backend/assets/images/users/avatar-7.jpg') }}" alt="Generic placeholder image">
+                    <div class="flex-grow-1">
+                        <h5 class="mt-0 font-size-18 mb-1">Yos X. Kween</h5>
+                        <p class="text-muted font-size-14">Webdeveloper</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
 
 
-<div class="row justify-content-center my-4"> <!-- data-masonry='{"percentPosition": true }' -->
+{{-- <div class="row justify-content-center my-4"> <!-- data-masonry='{"percentPosition": true }' -->
     <div class="col-sm-6 col-lg-2">
         <div class="card border border-dark">
             <div class="text-center my-4">
@@ -173,11 +203,11 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <!-- end row -->
 
 <!-- Awards -->
-<h1 class="display-3 mt-5 text-center">Certificates & Recognition</h1>
+<h1 class="display-3 mt-5 mb-4 text-center">Certificates & Recognition</h1>
 <div class="row text-center">
     <div id="carouselExampleIndicators2" class="carousel slide" data-bs-ride="carousel">
         <ol class="carousel-indicators">
@@ -187,31 +217,56 @@
             <li data-bs-target="#carouselExampleIndicators2" data-bs-slide-to="3"></li>
             <li data-bs-target="#carouselExampleIndicators2" data-bs-slide-to="4"></li>
         </ol>
-        <div class="carousel-inner " role="listbox">
+        <div class="carousel-inner" style="max-height: 20vh" role="listbox">
             <div class="carousel-item active">
-                <img class="d-block img-fluid" style="width: 100%; height: 21vh; object-fit: cover; background: rgb(191,255,199);
-                    background: linear-gradient(347deg, rgba(191,255,199,1) 0%, rgba(24,165,167,1) 100%);">
-                <div class="carousel-caption align-text-center text-white-50">
-                    <a href="#">
-                        <h1>Outstanding Foundation of 2022 Awarded by Association of Charitable Organizations in the Philippines</h1>
-                    </a>
+                <img class="align-items-center w-100" style="height: 20vh; object-fit: cover;"
+                    src="{{ asset('backend/assets/images/bg.jpg') }}" alt="First award">
+                <div class="align-top carousel-caption d-none d-md-block text-white-50">
+                    <h5 class="text-white">Outstanding Award</h5>
+                    <p class="text-white-50">Certificate and Recognition
+                        <a href="#" target="_blank" class="text-white-50"><i class="mdi mdi-open-in-new"></i></a>
+                    </p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img class="align-items-center" style="width: 100%; height: 40vh; object-fit: cover;"
-                    src="{{ asset('backend/assets/images/small/img-2.jpg') }}" alt="Second cover photo">
+                <img class="align-items-center w-100" style="height: 20vh; object-fit: cover;"
+                    src="{{ asset('backend/assets/images/bg.jpg') }}" alt="Second award">
+                <div class="align-top carousel-caption d-none d-md-block text-white-50">
+                    <h5 class="text-white">Outstanding Organization Award in the Philippines 2022</h5>
+                    <p class="text-white-50">Certificate and Recognition
+                        <a href="#" target="_blank" class="text-white-50"><i class="mdi mdi-open-in-new"></i></a>
+                    </p>
+                </div>
             </div>
             <div class="carousel-item">
-                <img class="d-block img-fluid" style="width: 100%; height: 40vh; object-fit: cover;"
-                    src="{{ asset('backend/assets/images/small/img-3.jpg') }}" alt="Third cover photo">
+                <img class="align-items-center w-100" style="height: 20vh; object-fit: cover;"
+                    src="{{ asset('backend/assets/images/bg.jpg') }}" alt="Third award">
+                <div class="align-top carousel-caption d-none d-md-block text-white-50">
+                    <h5 class="text-white">Outstanding Award</h5>
+                    <p class="text-white-50">Certificate and Recognition
+                        <a href="#" target="_blank" class="text-white-50"><i class="mdi mdi-open-in-new"></i></a>
+                    </p>
+                </div>
             </div>
             <div class="carousel-item">
-                <img class="d-block img-fluid" style="width: 100%; height: 40vh; object-fit: cover;"
-                    src="{{ asset('backend/assets/images/small/img-4.jpg') }}" alt="Fourth cover photo">
+                <img class="align-items-center w-100" style="height: 20vh; object-fit: cover;"
+                    src="{{ asset('backend/assets/images/bg.jpg') }}" alt="Fourth award">
+                <div class="align-top carousel-caption d-none d-md-block text-white-50">
+                    <h5 class="text-white">Yes na Yes Academy Famas Award 2023</h5>
+                    <p class="text-white-50">Certificate and Recognition
+                        <a href="#" target="_blank" class="text-white-50"><i class="mdi mdi-open-in-new"></i></a>
+                    </p>
+                </div>
             </div>
             <div class="carousel-item">
-                <img class="d-block img-fluid" style="width: 100%; height: 40vh; object-fit: cover;"
-                    src="{{ asset('backend/assets/images/small/img-5.jpg') }}" alt="Fifth cover photo">
+                <img class="align-items-center w-100" style="height: 20vh; object-fit: cover;"
+                    src="{{ asset('backend/assets/images/bg.jpg') }}" alt="Fifth award">
+                <div class="align-top carousel-caption d-none d-md-block text-white-50">
+                    <h5 class="text-white">Outstanding Award</h5>
+                    <p class="text-white-50">Certificate and Recognition
+                        <a href="#" target="_blank" class="text-white-50"><i class="mdi mdi-open-in-new"></i></a>
+                    </p>
+                </div>
             </div>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators2" role="button" data-bs-slide="prev">

@@ -109,8 +109,16 @@
                             </div>
 
                             <div class="form-group mb-3 row">
+                                <!-- Profile Photo Preview -->
+                                <div class="col-md-1">
+                                    <label for="showImage" class="form-label text-center">Preview</label>
+                                    <div class="col-sm-10">
+                                        <img id="showImage" class="rounded-circle avatar-lg" src="{{ asset('upload/avatar_img/no_avatar.png') }}" alt="Profile picture preview">
+                                    </div>
+                                </div>
+
                                 <!-- Profile Photo -->
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="profile_image" class="form-label">
                                             Profile Photo (Optional)
@@ -128,19 +136,11 @@
                                     </div>
                                 </div>
 
-                                <!-- Profile Photo Preview -->
-                                <div class="col-md-2">
-                                    <label for="example-text-input" class="col-sm-2 col-form-label">  </label>
-                                   <div class="col-sm-10">
-                                       <img id="showImage" class="rounded avatar-lg" src="{{ asset('upload/avatar_img/no_avatar.png') }}" alt="Profile picture preview">
-                                   </div>
-                                </div>
-
                                 <!-- Email Address -->
                                 <div class="col-md-4">
                                     <label for="email" class="form-label">*Email Address (Permanent)</label>
                                     <input type="email" class="form-control" name="email" id="email"
-                                    value="{{old('email')}}" placeholder="@unless($errors->any())Enter the email address where the link will be sent to @endunless">
+                                        value="{{old('email')}}" placeholder="@unless($errors->any())Enter the email address where the link will be sent to @endunless">
                                     @error('email')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -162,8 +162,36 @@
                             </div>
 
                             <div class="form-group mb-3 row">
+                                <!-- Username -->
+                                <div class="col-md-4">
+                                    <label for="username" class="form-label">
+                                        *Username (Permanent)
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                            title="You cannot change their username once you create one. Make sure it is appropriate."
+                                            data-bs-original-title="yes">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="username">@</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="username" id="username"
+                                            placeholder="@unless($errors->any())Enter permanent username @endunless"
+                                            aria-describedby="validationTooltipUsernamePrepend"
+                                            value="{{ old('username') }}">
+                                    </div>
+                                    @error('username')
+                                        <div class="text-danger">
+                                            <small>
+                                                {{ $message }}
+                                            </small>
+                                        </div>
+                                    @enderror
+                                </div>
+
                                 <!-- Password -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="password" class="form-label">
                                             *Temporary Password
@@ -174,7 +202,7 @@
                                             </span>
                                         </label>
                                         <input class="form-control" name="password" id="password" type="password"
-                                            placeholder="Enter password" value="{{old('password')}}">
+                                            placeholder="Enter temporary password" value="{{old('password')}}">
 
                                         @error('password')
                                             <div class="text-danger">
@@ -185,7 +213,7 @@
                                 </div>
 
                                 <!-- Confirm Password -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="confirm_password" class="form-label">*Confirm Password</label>
                                         <input class="form-control" name="confirm_password" id="confirm_password" type="password" placeholder="Retype password">
@@ -316,7 +344,7 @@
 
                             <div class="form-group mb-3 row">
                                 <!-- Region -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="region" class="form-label">*Region</label>
                                         <input class="form-control" name="region" id="region" type="text"
@@ -330,7 +358,7 @@
                                 </div>
 
                                 <!-- Province -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="province" class="form-label">*Province</label>
                                         <input class="form-control" name="province" id="province" type="text"
@@ -344,7 +372,7 @@
                                 </div>
 
                                 <!-- City -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="city" class="form-label">*City / Municipality</label>
                                         <input class="form-control" name="city" id="city" type="text"
