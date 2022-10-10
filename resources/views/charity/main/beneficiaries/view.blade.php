@@ -83,12 +83,12 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>You are about to attempt to export a blank copy of the selected beneficiary [<strong> Olarte, Clark Louise </strong>] for
+                                        <p>You are about to attempt to export a blank copy of the selected beneficiary [<strong> {{$beneficiary->last_name. ', '.$beneficiary->first_name.' '. $beneficiary->middle_name   }} </strong>] for
                                             manual assessment. Continue?</p>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                                        <button type="button" class="btn btn-dark waves-effect waves-light w-sm">Yes</button>
+                                        <a type="button" href="{{route('charity.beneficiaries3generate.pdf.blank',$beneficiary->code)}}" class="btn btn-dark waves-effect waves-light w-sm">Yes</a>
                                     </div>
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->
