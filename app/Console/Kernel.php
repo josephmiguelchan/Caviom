@@ -4,6 +4,8 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Models\CharitableOrganization;
+use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,6 +18,17 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+
+        $schedule->call(function () {
+
+            CharitableOrganization::whereDate('subscription_expires_at','>=', now())
+            ->update([
+                'subscription' => 'Free',
+                'subscribed_at' => null,
+                'subscription_expires_at' => null
+            ]);          
+            
+        })->daily();	
     }
 
     /**

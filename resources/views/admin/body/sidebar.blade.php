@@ -1,6 +1,8 @@
 @php
     $avatar = 'upload/avatar_img/'.Auth::user()->profile_image;
     $defaultAvatar = 'upload/avatar_img/no_avatar.png';
+    $pending_orders = App\Models\Admin\order::where('status', 'Pending')->count();
+    $pending_projects = App\Models\Admin\FeaturedProject::where('approval_status', 'Pending')->count();
 @endphp
 
 <div class="vertical-menu" style="background-color: #3c4661;">
@@ -43,16 +45,22 @@
                 </li>
 
                 <li class="{{ Request::routeIs('admin.orders*')?'mm-active':'' }}">
-                    <a href="{{route('admin.orders')}}" class="waves-effect">
+                    <a href="{{route('admin.orders.all')}}" class="waves-effect">
                         <i class="ri-shopping-cart-2-line"></i>
                         <span>Star Token Orders</span>
+                        @unless($pending_orders == 0)
+                        <span class="badge rounded-pill bg-danger float-end">{{$pending_orders>99?'99+':$pending_orders}}</span>
+                        @endunless
                     </a>
                 </li>
-
+                
                 <li class="{{ Request::routeIs('admin.feat-projects*')?'mm-active':'' }}">
                     <a href="{{ route('admin.feat-projects.all') }}" class="waves-effect">
                         <i class="ri-heart-add-line"></i>
                         <span>Featured Projects</span>
+                        @unless($pending_projects == 0)
+                        <span class="badge rounded-pill bg-danger float-end">{{$pending_projects>99?'99+':$pending_projects}}</span>
+                        @endunless
                     </a>
                 </li>
 

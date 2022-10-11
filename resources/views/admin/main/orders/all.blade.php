@@ -69,39 +69,32 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-
-
+                        
                         <tbody>
+                            @foreach ($orders as $key =>$item)
                             <tr>
-                                <td>1</td>
-                                <td><a href="#">Pangilinan, J.</a></td>
-                                <td>2015-04-21 22:32:05</td>
-                                <td>2</td>
+                                <td>{{$key+1}}</td>
+                                <td><a href="">{{$item->User->username}}</a></td>
+                                <td>{{$item->created_at}}</td>
+                                <td>{{$item->order_items->count()}}</td>
+
+                                @if ($item->status == 'Pending')
                                 <td class="text-warning">Pending</td>
-                                <td>---</td>
-                                <td>
-                                    <a href="{{ route('admin.orders.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                        <i class="mdi mdi-open-in-new"></i> View
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td><a href="#">Liwanag, C.</a></td>
-                                <td>2015-04-21 22:32:05</td>
-                                <td>1</td>
+                                @elseif($item->status == 'Confirmed')         
+                                <td class="text-success">Confirmed</td>
+                                @elseif($item->status == 'Rejected')         
                                 <td class="text-danger">Rejected</td>
-                                <td>Inexact Amount</td>
+                                @endif
+                                <td>{{$item->remarks_subject ?? '---'}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                    <a href="{{ route('admin.orders.view',$item->code) }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
-                                    <!-- If order is completed -->
-                                    <button class="btn btn-sm btn-outline-danger waves-effect waves-light" data-bs-target="#deleteModal_1" data-bs-toggle="modal">
-                                        <i class="mdi mdi-trash-can"></i> Delete
-                                    </button>
                                 </td>
                             </tr>
+
+                            @endforeach
+                           
                         </tbody>
                     </table>
 

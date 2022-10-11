@@ -8,6 +8,7 @@ use App\Models\AuditLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class NotifierController extends Controller
 {
@@ -74,16 +75,16 @@ class NotifierController extends Controller
 
     public function UpdateNotifier(Request $request, $id)
     {
+        # Retrieve the record using ID
+        $notifier = Notifier::findOrFail($id);
 
         # Validation Rules
         $request->validate([
             'category' => ['required'],
-            'subject' => ['required', 'min:5', 'max:128', 'unique:notifiers'],
+            'subject' => ['required', 'min:5', 'max:128', Rule::unique('notifiers')->ignore($notifier)],
             'remarks' => ['required', 'min:5', 'max:518'],
         ]);
 
-        # Retrieve the record using ID
-        $notifier = Notifier::findOrFail($id);
 
         # Update records in database
         $notifier->category = $request->category;

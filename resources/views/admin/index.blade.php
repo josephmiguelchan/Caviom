@@ -66,7 +66,7 @@
                                 </span>
                             </div>
                         </div>
-                        <a href="{{route('admin.orders')}}" class="mt-3 btn btn-primary w-100 waves-effect waves-light">View Star Token Orders</a>
+                        <a href="{{route('admin.orders.all')}}" class="mt-3 btn btn-primary w-100 waves-effect waves-light">View Star Token Orders</a>
                     </div><!-- end cardbody -->
                 </div><!-- end card -->
             </div><!-- end col -->
