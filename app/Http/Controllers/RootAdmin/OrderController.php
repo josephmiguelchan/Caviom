@@ -103,7 +103,7 @@ class OrderController extends Controller
             $notif->category = 'Order';
             $notif->subject = 'Order Rejected';
             $notif->message = 'Sorry, your Order: '.Str::upper(Str::limit($order->code,6,'')).' has been decline by Caviom due to [
-                ' .$order->remarks_subject. ' ]. If you wish to reorder, please try again or email us at support@caviom.org if you think there was a mistake';
+                ' .$order->remarks_subject. ' ]. '. $order->remarks_message .' If you wish to reorder, please try again or email us at support@caviom.org if you think there was a mistake';
             $notif->icon = 'mdi mdi-cart-off';
             $notif->color = 'danger';
             $notif->created_at = Carbon::now();
