@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\Rule;
 
@@ -45,9 +46,18 @@ class CharitableOrganizationController extends Controller
     public function SendNotification(Request $request, $id)
     {
         # Validation Rules
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'content_message' => 'required|min:5|max:350'
         ]);
+
+        if ($validator->fails()) {
+            $toastr = array(
+                'message' => $validator->errors()->first() . '. Please try again.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
 
         # Send Notification to each user in their Charitable Organizations
         $users = User::where('charitable_organization_id', $id)->where('status', 'Active')->get();
