@@ -20,13 +20,16 @@ return new class extends Migration
             $table->unsignedBigInteger('reference_no');
             $table->string('proof_of_payment',128);
             $table->char('mode_of_payment',128);
-            $table->float('total', 5, 2)->nullable();
+            $table->float('total', 8, 2)->nullable();
             $table->char('status',128)->default('Pending');
+            $table->foreignId('submitted_by')->references('id')->on('users')->constrained();
             $table->string('remarks_subject',128)->nullable();
             $table->string('remarks_message',512)->nullable();
             $table->timestamp('status_updated_at')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('paid_at')->nullable();
+
+            
         });
     }
 

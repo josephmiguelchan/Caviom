@@ -17,6 +17,7 @@ use App\Http\Controllers\RootAdmin\AuditLogController as RootAdminAuditLogContro
 use App\Http\Controllers\RootAdmin\CharitableOrganizationController;
 use App\Http\Controllers\RootAdmin\FeaturedProjectController;
 use App\Http\Controllers\RootAdmin\NotifierController;
+use App\Http\Controllers\RootAdmin\OrderController;
 use App\Http\Controllers\RootAdmin\UserController as RootAdminUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -517,12 +518,18 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
 
     # Star Token Orders
     Route::name('orders')->prefix('/orders')->group(function () {
-        Route::get('/', function () {
-            return view('admin.main.orders.all');
-        });
-        Route::get('/4de11f39-87b4-433e-a427-b5e214dc42ce', function () {
-            return view('admin.main.orders.view');
-        })->name('.view');
+ 
+        # All  Order
+        Route::get('/all', [OrderController::class, 'AllOrders'])->name('.all');
+        
+        # View Order
+        Route::get('/view/{code}', [OrderController::class, 'ViewOrder'])->name('.view');
+
+        # Reject Star Token/Subscription Order
+        Route::post('/Reject/{code}', [OrderController::class, 'RejectOrder'])->name('.reject');
+
+        # Approve Star Token/Subscription Order
+        Route::get('/Approved/{code}', [OrderController::class, 'ApprovedOrder'])->name('.approved');
 
         // To Add: Delete COMPLETED/REJECTED orders (Optional: Processed Orders that exceeded 15 days)
     });

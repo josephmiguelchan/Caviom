@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Admin\FeaturedProject;
+use App\Models\Admin\order;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -46,5 +47,10 @@ class CharitableOrganization extends Model
     public function featuredProject()
     {
         return $this->hasMany(FeaturedProject::class, 'charitable_organization_id', 'id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(order::class, 'charitable_organization_id', 'id');
     }
 }
