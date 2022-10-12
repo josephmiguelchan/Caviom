@@ -29,8 +29,17 @@ class PublicController extends Controller
     }
     public function viewCharity(/*$code*/) // Uncomment the $code here
     {
-        $code = 'fa82aab5-5144-4e5a-a4f8-ed57697d9d77'; // This is just a test sample uuid and this line should be REMOVED.
+        $code = 'c3d1d1c5-6665-4b68-ad54-ceeb973a9348'; // This is just a test sample uuid and this line should be REMOVED.
         $charity = CharitableOrganization::where('code', $code)->firstOrfail();
+
+        if ($charity->profile_status != 'Visible') {
+            $notification = array(
+                'message' => 'Sorry, the Public Profile of this Charitable Organization might be Locked or Hidden.',
+                'alert-type' => 'error',
+            );
+
+            return to_route('charity.profile')->with($notification);
+        }
 
         $charity->view_count += 1;
         $charity->save();

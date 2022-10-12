@@ -113,7 +113,7 @@
 
                                 <p class="text-muted font-size-12 mt-2">
                                     <em>
-                                        <strong>Note:</strong> File size must not exceed 2mb. Only allowed file types are: PNG, JPG, and PDF.
+                                        <strong>Note:</strong> File size must not exceed 2mb. Only allowed file types are: PNG and JPG.
                                     </em>
                                 </p>
 

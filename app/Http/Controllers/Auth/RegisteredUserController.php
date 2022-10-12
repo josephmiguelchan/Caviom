@@ -151,6 +151,10 @@ class RegisteredUserController extends Controller
         }
 
 
+        # Create an empty profile_requirements table
+        // TO ADD
+
+
         # Create User Info Record (Continued)
         $user_info->address_id = $address->id;
         $user_info->updated_at = Carbon::now();
