@@ -9,6 +9,7 @@ use App\Models\BeneficiaryFamilyInfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class Beneficiary2Controller extends Controller
 {
@@ -68,7 +69,7 @@ class Beneficiary2Controller extends Controller
         } else {
 
             # Validation of New Beneficiary
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 'fam_first_name' => ['required', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'fam_last_name' => ['required', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'fam_middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
@@ -100,6 +101,16 @@ class Beneficiary2Controller extends Controller
                 'fam_relationship.regex' => 'Relationship format is invalid',
                 'fam_relationship.string' => 'Relationship format is invalid',
             ]);
+
+            # Return error toastr if validate request failed
+            if ($validator->fails()) {
+                $toastr = array(
+                    'message' => $validator->errors()->first() . '. Please try again.',
+                    'alert-type' => 'error'
+                );
+
+                return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+            }
 
             # Creating New Beneficiary Record Part 2 - Family Economic Background
             $familyInfo = new BeneficiaryFamilyInfo;
@@ -164,7 +175,7 @@ class Beneficiary2Controller extends Controller
         } else {
 
             # Validation of Edit Beneficiary
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 'edit_fam_first_name' => ['required', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'edit_fam_last_name' => ['required', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'edit_fam_middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
@@ -196,6 +207,16 @@ class Beneficiary2Controller extends Controller
                 'edit_fam_relationship.regex' => 'Relationship format is invalid',
                 'edit_fam_relationship.string' => 'Relationship format is invalid',
             ]);
+
+            # Return error toastr if validate request failed
+            if ($validator->fails()) {
+                $toastr = array(
+                    'message' => $validator->errors()->first() . '. Please try again.',
+                    'alert-type' => 'error'
+                );
+
+                return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+            }
 
             # Begin updating the family info of the retrieved beneficiary.
             BeneficiaryFamilyInfo::findOrFail($familyInfoId)->update([

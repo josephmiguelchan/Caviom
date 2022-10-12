@@ -6,11 +6,12 @@
                 <h5 class="modal-title" id="myLargeModalLabel">Cover Photos</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="dZUpload">
                 <h4 class="card-title">Upload Cover Photos of your Charitable Organization</h4>
-                <p class="card-title-desc">At least one photo is required, up to a maximum of 5 cover photos.</p>
+                <p class="card-title-desc">Please upload at least one (1) cover photo, up to 5 cover photos. Maximum of 2MB in file size only.</p>
 
-                <form action="#" method="POST" class="dropzone" enctype="multipart/form-data">
+                <form action="{{route('charity.profile.cover_photos.save')}}" method="POST" class="dropzone" enctype="multipart/form-data"
+                    id="myGreatDropzone">
                     @csrf
                     <div class="fallback">
                         <input name="file" type="file" multiple="multiple">
@@ -24,17 +25,18 @@
                     </div>
                 </form>
 
-                <div class="float-end mt-4 p-1">
-                    <button type="button" class="btn btn-primary waves-effect waves-light w-lg">
+                {{-- <div class="float-end mt-4 p-1">
+                    <button type="button" class="btn btn-primary waves-effect waves-light w-lg" id="uploadFile">
                         <i class="mdi mdi-upload"></i> Upload image(s)
                     </button>
-                </div>
+                </div> --}}
+
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<form method="POST" action="" class="form-horizontal">
+<form method="POST" action="{{route('charity.profile.store')}}" class="form-horizontal">
     @csrf
     <div id="accordion" class="custom-accordion">
         <div class="card mb-1 shadow-none">
@@ -72,39 +74,30 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-10">
-                                    <a class="image-popup-no-margins" title="Charitable Organization Profile Photo Preview" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                        <img class="img-fluid rounded" alt="Charitable Organization Profile Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                    </a>
+                                    <img class="img-fluid rounded" alt="Charitable Organization Profile Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" id="showImage">
                                 </div>
                             </div>
+
+                            @php
+                                $cover_photos = App\Models\Charity\Profile\ProfileCoverPhoto::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
+                            @endphp
+
                             <div class="col-6">
                                 <h5>Cover Photos</h5>
-                                <p class="mt-0 mb-3">(Up to a max of 5 pictures only)</p>
+                                <p class="mt-0 mb-3">(Refresh this page after uploading your cover photos)</p>
                                 <div class="row text-center">
                                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                                         <ol class="carousel-indicators">
-                                            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
-                                            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
-                                            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
-                                            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"></li>
-                                            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4"></li>
+                                            @foreach ($cover_photos as $key => $photo)
+                                                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{$key}}" {!! $key == 0?'class="active"':'' !!}></li>
+                                            @endforeach
                                         </ol>
                                         <div class="carousel-inner" role="listbox">
-                                            <div class="carousel-item active">
-                                                <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-1.jpg') }}" alt="First slide">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-2.jpg') }}" alt="Second slide">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-3.jpg') }}" alt="Third slide">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-4.jpg') }}" alt="Fourth slide">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-5.jpg') }}" alt="Fifth slide">
-                                            </div>
+                                            @foreach ($cover_photos as $key => $photo)
+                                                <div class="carousel-item {{ $key == 0?'active':'' }}">
+                                                    <img class="d-block img-fluid" src="{{ url('upload/charitable_org/cover_photos/'. $photo->file_name) }}" alt="Slide {{$key+1}}">
+                                                </div>
+                                            @endforeach
                                         </div>
                                         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -163,16 +156,16 @@
                                     </label>
                                     <select class="form-control select2" name="category" required>
                                         <option disabled hidden selected>Select a category</option>
-                                        <optgroup label="International Charity Groups">
-                                            <option value="AK">Community Development Charities</option>
-                                            <option value="HI">Education Charities</option>
-                                        </optgroup>
-                                        <optgroup label="Local Charity Groups">
-                                            <option value="CA">Health Charities</option>
-                                            <option value="NV">Human Services</option>
-                                            <option value="OR">Environmental Charities</option>
-                                            <option value="WA">Human Service Charities</option>
-                                        </optgroup>
+                                        <option value="Community" {{old('category')=='Community'?'selected':''}}>Community Development</option>
+                                        <option value="Education" {{old('category')=='Education'?'selected':''}}>Education</option>
+                                        <option value="Human" {{old('category')=='Human'?'selected':''}}>Human</option>
+                                        <option value="Health" {{old('category')=='Health'?'selected':''}}>Health</option>
+                                        <option value="Environment" {{old('category')=='Environment'?'selected':''}}>Environmental</option>
+                                        <option value="SocialWelfare" {{old('category')=='SocialWelfare'?'selected':''}}>Social Welfare</option>
+                                        <option value="Corporate" {{old('category')=='Corporate'?'selected':''}}>Corporate</option>
+                                        <option value="Church" {{old('category')=='Church'?'selected':''}}>Church</option>
+                                        <option value="Livelihood" {{old('category')=='Livelihood'?'selected':''}}>Livelihood</option>
+                                        <option value="SportsVolunteerism" {{old('category')=='SportsVolunteerism'?'selected':''}}>Sports Volunteerism</option>
                                     </select>
                                     @error('category')
                                         <div class="text-danger my-2">
@@ -186,7 +179,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="tagline" class="form-label">Tagline (Optional)</label>
-                                    <input class="form-control" name="tagline" id="tagline" type="text" placeholder="Enter tagline" value="{{ old('tagline') }}">
+                                    <input class="form-control" name="tagline" id="thresholdconfig" type="text" placeholder="Enter tagline"
+                                        maxlength="200" value="{{ old('tagline') }}">
                                     @error('tagline')
                                         <div class="text-danger my-2">
                                             {{ $message }}
@@ -200,10 +194,10 @@
                         <h4 class="mt-4" style="color: #62896d">Primary Information & Address</h4>
 
                         <!-- Dev note: Might delete this checkbox below -->
-                        <div class="form-check form-switch mb-4" dir="ltr">
+                        {{-- <div class="form-check form-switch mb-4" dir="ltr">
                             <input type="checkbox" name="use_own_info" class="form-check-input" id="use_own_info">
                             <label class="form-check-label" for="use_own_info">Use my own information</label>
-                        </div>
+                        </div> --}}
 
                         <!-- Email Address -->
                         <div class="form-group mb-3 row">
@@ -380,8 +374,8 @@
 
     <div class="row px-3">
         <ul class="list-inline mb-0 mt-4 text-center">
-            <input type="submit" class="btn btn-dark btn-rounded w-xl waves-effect waves-light w-100"
-                style="background-color: #62896d;" value="Save Primary Information">
+            <button type="submit" class="btn btn-dark btn-rounded w-xl waves-effect waves-light w-100"
+                style="background-color: #62896d;">Save Primary Information</button>
         </ul>
     </div>
 
@@ -393,4 +387,15 @@
 </form>
 
 
+{{-- <script type="text/javascript">
+    $(document).ready(function() {
+        $('#profile_photo').change(function(e) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#showImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+</script> --}}
 

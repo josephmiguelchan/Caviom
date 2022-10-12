@@ -11,6 +11,7 @@ use App\Http\Controllers\Charity\AuditLogController;
 use App\Http\Controllers\Charity\GiftGivingController;
 use App\Http\Controllers\Charity\NotificationController;
 use App\Http\Controllers\Charity\UserController;
+use App\Http\Controllers\Charity\PublicProfile\ProfileController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\RootAdmin\AuditLogController as RootAdminAuditLogController;
 use App\Http\Controllers\RootAdmin\CharitableOrganizationController;
@@ -129,15 +130,42 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
             Route::name('profile')->prefix('/profile')->middleware(['charity.admin'])->group(function () {
 
                 # Public Profile
-                Route::get('', function () {
-                    return view('charity.main.profile.index');
+                Route::controller(ProfileController::class)->group(function () {
+
+                    # Show Public Profile Controls
+                    Route::get('', 'showProfileIndex');
+
+                    # Setup Public Profile (for the 1st Time)
+                    Route::get('/setup', 'setupProfile')->name('.setup');
+
+                    # Save Public Profile (for the 1st Time)
+                    Route::post('/save', 'storeProfile')->name('.store');
+
+                    # Save Profile Cover Photos using Dropzone
+                    Route::get('/cover_photos/gallery', 'getImages')->name('.cover_photos.get');
+                    Route::post('/cover_photos/gallery', 'destroy')->name('.cover_photo.delete');
+                    Route::post('/cover_photos/save', 'dropZoneCoverPhotos')->name('.cover_photos.save');
+
+                    # Apply for Verification (for Unverified)
+                    Route::get('/apply-for-verification', 'applyVerification')->name('.verify');
+
+                    # To add: Re-apply for Verification (for Declined)
+                    Route::get('/reapply-for-verification', 'reapplyVerification')->name('.reverify');
+
+                    # To add: Submit application with POST
+
+
+                    # Make changes to Public Profile
+                    Route::get('/edit', 'editProfile')->middleware('profile.set')->name('.edit');
+
+                    # Update Public Profile
+                    Route::get('/update', 'updateProfile')->middleware('profile.set')->name('.update');
+
+                    # To add: Set profile_status to Hidden - middleware('profile.set')->
+
+
+                    # To add: Set profile_status to Visible - middleware('profile.set')-> and $charity->profile_status != 'Locked' only.
                 });
-                Route::get('/setup', function () {
-                    return view('charity.main.profile.setup');
-                })->name('.setup');
-                Route::get('/apply-for-verification', function () {
-                    return view('charity.main.profile.verify');
-                })->name('.verify');
 
 
                 # Featured Projects

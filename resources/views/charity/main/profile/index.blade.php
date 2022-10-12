@@ -28,8 +28,8 @@
                     <div class="text-center">
                         <h1 style="color: #62896d"><strong>PUBLIC PROFILE</strong></h1>
 
-                        <!-- if (Auth::user->charity->profile_status == 'Unset') -->
-                        {{-- <div class="col-lg-12">
+                        @if (Auth::user()->charity->profile_status == 'Unset')
+                        <div class="col-lg-12">
                             <div class="text-center">
                                 <p class="mb-5">Introduce your nonprofit to the community by creating your Charitable Organization a public profile.</p>
                                 <a type="button" style="background-color: #62896d" href="{{ route('charity.profile.setup') }}" class="btn btn-rounded btn-dark w-xl waves-effect waves-light">
@@ -41,25 +41,25 @@
                                     </em>
                                 </p>
                             </div>
-                        </div> --}}
+                        </div>
 
-                        <!-- else () -->
+                        @else
                         <p class="mb-5">Kindly select from these:</p>
                         <div class="row justify-content-center">
                             <div class="col-lg-3">
                                 <div class="mb-3">
 
-                                    <!-- if (status == 'Pending'): -->
-                                        {{-- <button type="button" href="javascript: void(0);" class="btn btn-outline-secondary w-100 waves-effect waves-light" disabled>
+                                    @if (Auth::user()->charity->verification_status == 'Pending')
+                                        <button type="button" href="javascript: void(0);" class="btn btn-outline-secondary w-100 waves-effect waves-light" disabled>
                                             <i class="mdi mdi-check-decagram"></i> Pending for Review
-                                        </button> --}}
+                                        </button>
 
-                                    <!-- if (status == 'Approved'): Put disabled (readonly) button instead -->
-                                        {{-- <button type="button" href="javascript: void(0);" class="btn btn-outline-dark w-100 waves-effect waves-light" disabled>
+                                    @elseif (Auth::user()->charity->verification_status == 'Verified')
+                                        <button type="button" href="javascript: void(0);" class="btn btn-outline-dark w-100 waves-effect waves-light" disabled>
                                             <i class="mdi mdi-check-decagram"></i> Already Verified
-                                        </button> --}}
+                                        </button>
 
-                                    <!-- if (status == 'Denied') -->
+                                    @elseif (Auth::user()->charity->verification_status == 'Declined')
                                         <button data-bs-toggle="modal" data-bs-target="#reapply_modal" type="button" class="btn btn-outline-dark w-100 waves-effect waves-light" >
                                             <i class="mdi mdi-check-decagram"></i> Re-Apply for Verification
                                         </button>
@@ -75,57 +75,32 @@
                                                     <div class="modal-body text-start">
                                                         <p>
                                                             Your previously submitted documents has been declined. You can re-apply again for verification, but your currently submitted
-                                                            documents will be replaced. Continue?
+                                                            documents will be removed and replaced. Continue?
                                                         </p>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                                                        <a href="{{ route('charity.profile.verify') }}" class="btn btn-dark waves-effect waves-light w-sm">Yes</a>
+                                                        <a href="{{ route('charity.profile.reverify') }}" class="btn btn-dark waves-effect waves-light w-sm">Yes</a>
                                                     </div>
                                                 </div><!-- /.modal-content -->
                                             </div><!-- /.modal-dialog -->
                                         </div>
 
-                                    <!-- if (status == 'Unverified'): -->
-                                        {{-- <a type="button" href="{{ route('charity.profile.verify') }}" class="btn btn-outline-dark w-100 waves-effect waves-light">
+                                    @elseif (Auth::user()->charity->verification_status == 'Unverified')
+                                        <a type="button" href="{{ route('charity.profile.verify') }}" class="btn btn-outline-dark w-100 waves-effect waves-light">
                                             <i class="mdi mdi-check-decagram"></i> Apply for Verification
-                                        </a> --}}
-
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
 
                             <div class="col-lg-3">
                                 <div class="mb-3">
-                                    <a type="button" href="#" target="_blank"
-                                        class="btn btn-secondary w-100 waves-effect waves-light">
+                                    <button type="button" onclick="location.href='{{route('charities.view')}}'" target="_blank"
+                                        class="btn btn-secondary w-100 waves-effect waves-light" {{Auth::user()->charity->profile_status == 'Locked'?'disabled':''}}>
                                         <i class="mdi mdi-eye-outline"></i> View Public Profile
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3">
-                                <div class="mb-3">
-                                    <a type="button" style="background-color: #62896d" href="{{ route('charity.profile.setup') }}"
-                                        class="btn btn-dark w-100 waves-effect waves-light">
-                                        <i class="mdi mdi-circle-edit-outline"></i> Make Changes
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3">
-                                <div class="mb-3">
-                                    <div class="dropdown mb-1">
-                                        <!-- if(status == locked) : add disabled on button -->
-                                        <button class="btn btn-outline-dark w-100 waves-effect waves-light dropdown-toggle" type="button" id="dropdownMenuButton"
-                                            data-bs-toggle="dropdown" aria-expanded="false" disabled>
-                                            Set Visibility <i class="mdi mdi-chevron-down"></i>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">Hidden</a>
-                                            <a class="dropdown-item" href="#">Visible</a>
-                                        </div>
-                                    </div>
-                                    <!-- if(status == locked) -->
+                                    </button>
+                                    @if(Auth::user()->charity->profile_status == 'Locked')
                                     <p class="text-muted text-center font-size-12">
                                         <em>
                                             <small>
@@ -137,20 +112,57 @@
                                             </small>
                                         </em>
                                     </p>
-                                    <!-- end if -->
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <a type="button" style="background-color: #62896d" href="{{ route('charity.profile.edit') }}"
+                                        class="btn btn-dark w-100 waves-effect waves-light">
+                                        <i class="mdi mdi-circle-edit-outline"></i> Make Changes
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3">
+                                <div class="mb-3">
+                                    <div class="dropdown mb-1">
+                                        <button class="btn btn-outline-dark w-100 waves-effect waves-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                                            data-bs-toggle="dropdown" aria-expanded="false" {{Auth::user()->charity->profile_status == 'Locked'?'disabled':''}}>
+                                            Set Visibility <i class="mdi mdi-chevron-down"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">Hidden</a>
+                                            <a class="dropdown-item" href="#">Visible</a>
+                                        </div>
+                                    </div>
+                                    @if(Auth::user()->charity->profile_status == 'Locked')
+                                    <p class="text-muted text-center font-size-12">
+                                        <em>
+                                            <small>
+                                                <span data-bs-toggle="tooltip" data-bs-placement="left"
+                                                    title="If you wish to appeal, send email to support@caviom.org"
+                                                    data-bs-original-title="yes">
+                                                    <i class="mdi mdi-information-outline"></i>
+                                                </span>Public Profile locked due to violation/s.
+                                            </small>
+                                        </em>
+                                    </p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                        <!-- end else -->
+                        @endif
 
                     </div>
 
                 </div>
             </div>
 
+            @unless (Auth::user()->charity->profile_status == 'Unset')
             <div class="card p-3">
                 <div class="card-body">
-                    <!-- unless (Auth::user->charity->profile_status == 'Unset') -->
                     <div class="text-center">
                         <h1 style="color: #62896d"><strong>FEATURED PROJECTS</strong></h1>
 
@@ -168,6 +180,7 @@
                     </div>
                 </div>
             </div>
+            @endunless
         </div> <!-- end col -->
 
     </div>
