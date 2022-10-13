@@ -252,4 +252,50 @@ class OrderController extends Controller
         return redirect()->back()->with($toastr);
     
     }
+
+
+    public function DeleteOrder($code)
+    {
+        # Retrieve first the seleted Order
+        $order = order::where('code', $code)->firstOrFail();
+        
+        # Order status must not be pending in order to delete it.
+        if ($order->status == "Pending")
+        {
+
+            $toastr = array(
+                'message' => 'Sorry, only confirm or rejected order can be deleted.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($toastr);
+        }
+
+        # Delete old proof of payment if exists
+        $oldImg = $order->proof_of_payment;
+        if ($oldImg) unlink(public_path('upload/orders/') . $oldImg);
+
+        $order->delete();
+
+        # Create Audit Logs
+        $log = new AuditLog;
+        $log->user_id = Auth::user()->id;
+        $log->action_type = 'DELETE';
+        $log->charitable_organization_id = $order->charitable_organization_id;
+        $log->table_name = 'Order';
+        $log->record_id = $order->code;
+        $log->action = Auth::user()->role.' deleted the processed Order ID: '.Str::upper(Str::limit($order->code,6, '')).' permanently.';
+        $log->performed_at = Carbon::now();
+        $log->save();
+
+
+        # Send success toastr
+        $toastr = array(
+            'message' => 'Selected Processed Order has been removed successfully.',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($toastr);
+    
+    }
 }

@@ -531,7 +531,8 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
         # Approve Star Token/Subscription Order
         Route::get('/Approved/{code}', [OrderController::class, 'ApprovedOrder'])->name('.approved');
 
-        // To Add: Delete COMPLETED/REJECTED orders (Optional: Processed Orders that exceeded 15 days)
+        # Delete Confirmed/Rejected Order
+        Route::get('/Delete/{code}', [OrderController::class, 'DeleteOrder'])->name('.delete');
     });
 
     # Featured Projects
@@ -555,7 +556,7 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
         Route::post('/store', 'storeAdminUser')->name('.store');
         Route::get('/{code}', 'viewAdminUser')->name('.view');
     });
-
+ 
     # Audit Logs
     Route::name('audit-logs')->prefix('/audit-logs')->group(function () {
         Route::get('/', [RootAdminAuditLogController::class, 'viewAllAudits']);
