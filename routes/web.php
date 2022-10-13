@@ -139,7 +139,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                     Route::get('/setup', 'setupProfile')->name('.setup');
 
                     # Save Public Profile (for the 1st Time)
-                    Route::post('/save', 'storeProfile')->name('.store');
+                    Route::post('/save', 'storePrimaryInfo')->name('.store');
 
                     # Save Profile Cover Photos using Dropzone
                     Route::get('/cover_photos/gallery', 'getImages')->name('.cover_photos.get');
@@ -154,6 +154,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
                     # To add: Submit application with POST
 
+                    # To add: Publish public profile and set profile_status to Visible // add validation that must have profile_* existing.
 
                     # Make changes to Public Profile
                     Route::get('/edit', 'editProfile')->middleware('profile.set')->name('.edit');
@@ -518,10 +519,10 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
 
     # Star Token Orders
     Route::name('orders')->prefix('/orders')->group(function () {
- 
+
         # All  Order
         Route::get('/all', [OrderController::class, 'AllOrders'])->name('.all');
-        
+
         # View Order
         Route::get('/view/{code}', [OrderController::class, 'ViewOrder'])->name('.view');
 

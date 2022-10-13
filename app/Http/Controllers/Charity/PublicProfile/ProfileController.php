@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Charity\PublicProfile;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
+use App\Models\AuditLog;
 use App\Models\CharitableOrganization;
 use App\Models\Charity\Profile\ProfileCoverPhoto;
+use App\Models\Charity\Profile\ProfilePrimaryInfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -28,7 +34,9 @@ class ProfileController extends Controller
             return to_route('charity.profile')->with($notification);
         }
 
-        return view('charity.main.profile.setup');
+        $primaryInfo = ProfilePrimaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
+
+        return view('charity.main.profile.setup', compact('primaryInfo'));
     }
     public function dropZoneCoverPhotos(Request $request)
     {
@@ -84,8 +92,146 @@ class ProfileController extends Controller
         }
         return response()->json(['success' => $filename]);
     }
-    public function storeProfile(Request $request)
+    public function storePrimaryInfo(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            # Basic Info
+            'profile_photo' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file', 'dimensions:ratio=1.0'],
+            'category' => ['required', Rule::in(['Community', 'Education', 'Human', 'Health', 'Environment', 'SocialWelfare', 'Corporate', 'Church', 'Livelihood', 'SportsVolunteerism'])],
+            'tagline' => ['nullable', 'string', 'max:200'],
+            'email' => ['required', 'string', 'email:rfc,dns', 'max:100'],
+            'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9)
+            'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'], // 8 + (Any 7-digit number from 1-9)
+
+            # Address
+            'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
+            'address_line_two' => ['nullable', 'string', 'min:5', 'max:128'],
+            'province' => ['required', 'string', 'min:3', 'max:64'],
+            'region' => ['required', 'string', 'min:3', 'max:64'],
+            'city' => ['required', 'string', 'min:3', 'max:64'],
+            'barangay' => ['required', 'string', 'min:3', 'max:64'],
+            'postal_code' => ['required', 'integer', 'digits:4'],
+        ], [
+            'profile_photo.dimensions' => 'Profile photo of the Organization must be 1x1 in ratio.',
+            'category.array' => 'Invalid category.',
+            'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
+            'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+        ]);
+
+        # Return error toastr if validate request failed
+        if ($validator->fails()) {
+
+            $toastr = array(
+                'message' => $validator->errors()->first() . ' Please try again.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
+
+        # Retrieve Charity Data from DB
+        $charity = CharitableOrganization::findOrFail(Auth::user()->charitable_organization_id);
+
+        # Do this only when input field: profile_photo has a value
+        if ($request->file('profile_photo')) {
+
+            # Delete old Profile photo if exists
+            $oldImg = $charity->profile_photo;
+            if ($oldImg) unlink(public_path('upload/charitable_org/profile_photo/') . $oldImg);
+
+            # Upload profile photo of the Charitable Organization to the server
+            $file = $request->file('profile_photo');
+            $filename = Str::limit($charity->name, 50, '') . ' - ' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('upload/charitable_org/profile_photo/'), $filename);
+
+            # Link the profile photo to the Charity Data by updating DB
+            $charity->profile_photo = $filename;
+            $charity->save();
+        }
+
+        # Check if the Charity already has an existing address in profile_primary_info in DB.
+        $profile_exists = ProfilePrimaryInfo::where('charitable_organization_id', $charity->id)->first();
+
+        if ($profile_exists) {
+
+            # Update Address
+            $address = Address::find($profile_exists->address_id);
+            $address->address_line_one = $request->address_line_one;
+            $address->address_line_two = $request->address_line_two;
+            $address->region = $request->region;
+            $address->province = $request->province;
+            $address->city = $request->city;
+            $address->postal_code = $request->postal_code;
+            $address->barangay = $request->barangay;
+            $address->update();
+
+            # Update Primary Info
+            $profile_exists->update([
+                'charitable_organization_id' => Auth::user()->charitable_organization_id,
+                'category' => $request->category,
+                'tagline' => $request->tagline,
+                'email_address' => $request->email,
+                'cel_no' => $request->cel_no,
+                'tel_no' => $request->tel_no,
+                'updated_at' => Carbon::now(),
+            ]);
+
+            # Audit Logs (Update)
+            AuditLog::create([
+                'user_id' => Auth::id(),
+                'action_type' => 'UPDATE',
+                'charitable_organization_id' => Auth::user()->charitable_organization_id,
+                'table_name' => 'Profile Primary Info, Address',
+                'record_id' => Auth::user()->charity->code,
+                'action' => Auth::user()->role . ' saved ' . Auth::user()->charity->name . '\'s Public Profile primary information.',
+                'performed_at' => Carbon::now(),
+            ]);
+        } else {
+
+            # Create New Data to addresses table
+            $address = new Address;
+            $address->type = 'Present';
+            $address->address_line_one = $request->address_line_one;
+            $address->address_line_two = $request->address_line_two;
+            $address->region = $request->region;
+            $address->province = $request->province;
+            $address->city = $request->city;
+            $address->postal_code = $request->postal_code;
+            $address->barangay = $request->barangay;
+            $address->created_at = Carbon::now();
+            $address->save();
+
+            # Create New Profile Primary Info
+            ProfilePrimaryInfo::create([
+                'charitable_organization_id' => Auth::user()->charitable_organization_id,
+                'address_id' => $address->id,
+                'category' => $request->category,
+                'tagline' => $request->tagline,
+                'email_address' => $request->email,
+                'cel_no' => $request->cel_no,
+                'tel_no' => $request->tel_no,
+                'updated_at' => Carbon::now(),
+            ]);
+
+            # Audit Logs (Insert)
+            AuditLog::create([
+                'user_id' => Auth::id(),
+                'action_type' => 'INSERT',
+                'charitable_organization_id' => Auth::user()->charitable_organization_id,
+                'table_name' => 'Profile Primary Info, Address',
+                'record_id' => Auth::user()->charity->code,
+                'action' => Auth::user()->role . ' updated ' . Auth::user()->charity->name . '\'s Public Profile primary information.',
+                'performed_at' => Carbon::now(),
+            ]);
+        }
+
+        # Throw success toastr
+        $toastr = array(
+            'message' => 'Profile has been updated successfully.',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->withInput()->with($toastr);
     }
     public function applyVerification()
     {
