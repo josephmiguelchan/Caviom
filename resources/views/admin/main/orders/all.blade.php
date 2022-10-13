@@ -19,31 +19,8 @@
         </div>
         <!-- end page title -->
 
-        <!-- Foreach PROCESSED orders (Optional: status_updated_at 15 days or more ago) -->
-            <!-- Delete Order Modal -->
-            <div id="deleteModal_1" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>
-                                You are about to permanently delete this processed order. This action
-                                <strong>CANNOT</strong> be undone. Continue?
-                            </p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                            <a href="#" class="btn btn-danger waves-effect waves-light w-sm">Yes</a>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div>
-        <!-- End if -->
-
-
+    
+        
         <div class="col-12">
             <div class="card p-3">
                 <div class="card-body">
@@ -90,7 +67,35 @@
                                     <a href="{{ route('admin.orders.view',$item->code) }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
+                                    @if ($item->status != 'Pending')
+
+                                    <a class="btn btn-sm btn-outline-danger waves-effect waves-light" data-bs-target="#deleteModal_1" data-bs-toggle="modal">
+                                        <i class="mdi mdi-trash-can"></i> Delete
+                                    </a>
                                 </td>
+                                 <!-- Delete Order Modal -->
+                                 <div id="deleteModal_{{$key+1}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>
+                                                    You are about to permanently delete this processed order. This action
+                                                    <strong>CANNOT</strong> be undone. Continue?
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                                                <a href="{{ route('admin.orders.delete',$item->code) }} " class="btn btn-danger waves-effect waves-light w-sm">Yes</a>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div>
+                            
+                            @endif
                             </tr>
 
                             @endforeach
