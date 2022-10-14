@@ -38,7 +38,7 @@ class PublicController extends Controller
                 'alert-type' => 'error',
             );
 
-            return to_route('charity.profile')->with($notification);
+            return redirect()->back()->with($notification);
         }
 
         $charity->view_count += 1;

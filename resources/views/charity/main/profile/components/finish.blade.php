@@ -14,7 +14,7 @@
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" name="is_agreed" class="form-check-input" id="is_agreed" required>
                                 <label class="form-label ms-1 fw-normal" for="is_agreed">
-                                    I have carefully reviewed, and I consent to allow my Charitable Organization’s profile be viewable to the public.
+                                    I have carefully reviewed, completed, and I consent to allow my Charitable Organization’s profile be viewable to the public.
                                 </label>
                                 @error('is_agreed')
                                     <div class="text-danger">

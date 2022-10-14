@@ -27,6 +27,9 @@
     <!-- Template Main CSS File -->
     <link href="{{ asset('frontend/assets/css/style.css') }}" rel="stylesheet">
 
+    <!-- Toastr Css-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/assets/libs/toastr/build/toastr.min.css') }}">
+
     <!-- =======================================================
   * Template Name: Company - v2.1.0
   * Template URL: https://bootstrapmade.com/company-free-html-bootstrap-template/
@@ -66,6 +69,53 @@
     <!-- Template Main JS File -->
     <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
 
+    <!-- toastr plugin -->
+    <script src="{{ asset('backend/assets/libs/toastr/build/toastr.min.js') }}"></script>
+
+    <!-- toastr init -->
+    <script src="{{ asset('backend/assets/js/pages/toastr.init.js') }}"></script>
+
+    <script>
+        @if (Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}"
+
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": 500,
+                "hideDuration": 1000,
+                "timeOut": 5000,
+                "extendedTimeOut": 1500,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "slideDown",
+                "hideMethod": "fadeOut"
+            }
+
+            switch (type) {
+                case 'info':
+                    toastr.info(" {{ Session::get('message') }} ", "{{ Session::get('title') }}");
+                    break;
+
+                case 'success':
+                    toastr.success(" {{ Session::get('message') }} ", "{{ Session::get('title') }}");
+                    break;
+
+                case 'warning':
+                    toastr.warning(" {{ Session::get('message') }} ", "{{ Session::get('title') }}");
+                    break;
+
+                case 'error':
+                    toastr.error(" {{ Session::get('message') }} ", "{{ Session::get('title') }}");
+                    break;
+            }
+        @endif
+    </script>
 </body>
 
 </html>

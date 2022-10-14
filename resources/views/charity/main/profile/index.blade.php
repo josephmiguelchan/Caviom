@@ -30,16 +30,18 @@
 
                         @if (Auth::user()->charity->profile_status == 'Unset')
                         <div class="col-lg-12">
-                            <div class="text-center">
+                            <div class="row justify-content-center">
                                 <p class="mb-5">Introduce your nonprofit to the community by creating your Charitable Organization a public profile.</p>
-                                <a type="button" style="background-color: #62896d" href="{{ route('charity.profile.setup') }}" class="btn btn-rounded btn-dark w-xl waves-effect waves-light">
-                                    Start
-                                </a>
-                                <p class="text-muted text-center font-size-12 mt-2">
-                                    <em>
-                                        Click the <strong>start</strong> button to begin setup.
-                                    </em>
-                                </p>
+                                <div class="col-lg-3">
+                                    <a type="button" style="background-color: #62896d" href="{{ route('charity.profile.setup') }}" class="btn btn-rounded btn-dark w-100 waves-effect waves-light">
+                                        Start
+                                    </a>
+                                    <p class="text-muted text-center font-size-12 mt-2">
+                                        <em>
+                                            Click the <strong>start</strong> button to begin setup.
+                                        </em>
+                                    </p>
+                                </div>
                             </div>
                         </div>
 
@@ -118,7 +120,7 @@
 
                             <div class="col-lg-3">
                                 <div class="mb-3">
-                                    <a type="button" style="background-color: #62896d" href="{{ route('charity.profile.edit') }}"
+                                    <a type="button" style="background-color: #62896d" href="{{ route('charity.profile.setup') }}"
                                         class="btn btn-dark w-100 waves-effect waves-light">
                                         <i class="mdi mdi-circle-edit-outline"></i> Make Changes
                                     </a>

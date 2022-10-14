@@ -141,7 +141,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                     Route::get('/setup', 'setupProfile')->name('.setup');
 
                     # Save Public Profile (for the 1st Time)
-                    Route::post('/save', 'storeProfile')->name('.store');
+                    Route::post('/save', 'storePrimaryInfo')->name('.store_primary');
+                    Route::post('secondary-info/save', 'storeSecondaryInfo')->name('.store_secondary');
+                    Route::post('awards/save', 'storeAwards')->name('.store_awards');
+                    Route::get('awards/delete/{id}', 'destroyAward')->name('.destroy_awards');
 
                     # Save Profile Cover Photos using Dropzone
                     Route::get('/cover_photos/gallery', 'getImages')->name('.cover_photos.get');
@@ -154,14 +157,8 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                     # To add: Re-apply for Verification (for Declined)
                     Route::get('/reapply-for-verification', 'reapplyVerification')->name('.reverify');
 
-                    # To add: Submit application with POST
+                    # To add: Publish public profile and set profile_status to Visible // add validation that must have profile_* existing.
 
-
-                    # Make changes to Public Profile
-                    Route::get('/edit', 'editProfile')->middleware('profile.set')->name('.edit');
-
-                    # Update Public Profile
-                    Route::get('/update', 'updateProfile')->middleware('profile.set')->name('.update');
 
                     # To add: Set profile_status to Hidden - middleware('profile.set')->
 
@@ -529,10 +526,10 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
 
     # Star Token Orders
     Route::name('orders')->prefix('/orders')->group(function () {
- 
+
         # All  Order
         Route::get('/all', [OrderController::class, 'AllOrders'])->name('.all');
-        
+
         # View Order
         Route::get('/view/{code}', [OrderController::class, 'ViewOrder'])->name('.view');
 
@@ -567,7 +564,7 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
         Route::post('/store', 'storeAdminUser')->name('.store');
         Route::get('/{code}', 'viewAdminUser')->name('.view');
     });
- 
+
     # Audit Logs
     Route::name('audit-logs')->prefix('/audit-logs')->group(function () {
         Route::get('/', [RootAdminAuditLogController::class, 'viewAllAudits']);

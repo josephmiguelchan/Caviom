@@ -36,7 +36,7 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<form method="POST" action="{{route('charity.profile.store')}}" class="form-horizontal">
+<form method="POST" action="{{route('charity.profile.store_primary')}}" class="form-horizontal" id="primary_info_save" enctype="multipart/form-data">
     @csrf
     <div id="accordion" class="custom-accordion">
         <div class="card mb-1 shadow-none">
@@ -65,16 +65,21 @@
                                         <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Must not exceed 2mb." data-bs-original-title="yes">
                                             <i class="mdi mdi-information-outline"></i>
                                         </span>
-                                        <input type="file" class="form-control" id="profile_photo" required>
+                                        <input type="file" class="form-control" id="profile_photo" name="profile_photo">
                                         @error('profile_photo')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-10">
-                                    <img class="img-fluid rounded" alt="Charitable Organization Profile Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" id="showImage">
+                                    @php
+                                        $avatar = 'upload/charitable_org/profile_photo/'.Auth::user()->charity->profile_photo;
+                                        $defaultAvatar = 'upload/charitable_org/profile_photo/no_avatar.png';
+                                    @endphp
+
+                                    <img class="img-fluid rounded" alt="Charitable Organization Profile Photo Preview" src="{{ Auth::user()->charity->profile_photo? url($avatar):url($defaultAvatar) }}" id="showImage">
                                 </div>
                             </div>
 
@@ -84,7 +89,7 @@
 
                             <div class="col-6">
                                 <h5>Cover Photos</h5>
-                                <p class="mt-0 mb-3">(Refresh this page after uploading your cover photos)</p>
+                                <p class="mt-0 mb-3">(Cover photos will be updated after uploading and refreshing this page)</p>
                                 <div class="row text-center">
                                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                                         <ol class="carousel-indicators">
@@ -154,21 +159,21 @@
                                             <i class="mdi mdi-information-outline"></i>
                                         </span>
                                     </label>
-                                    <select class="form-control select2" name="category" required>
+                                    <select class="form-control select2" name="category" >
                                         <option disabled hidden selected>Select a category</option>
-                                        <option value="Community" {{old('category')=='Community'?'selected':''}}>Community Development</option>
-                                        <option value="Education" {{old('category')=='Education'?'selected':''}}>Education</option>
-                                        <option value="Human" {{old('category')=='Human'?'selected':''}}>Human</option>
-                                        <option value="Health" {{old('category')=='Health'?'selected':''}}>Health</option>
-                                        <option value="Environment" {{old('category')=='Environment'?'selected':''}}>Environmental</option>
-                                        <option value="SocialWelfare" {{old('category')=='SocialWelfare'?'selected':''}}>Social Welfare</option>
-                                        <option value="Corporate" {{old('category')=='Corporate'?'selected':''}}>Corporate</option>
-                                        <option value="Church" {{old('category')=='Church'?'selected':''}}>Church</option>
-                                        <option value="Livelihood" {{old('category')=='Livelihood'?'selected':''}}>Livelihood</option>
-                                        <option value="SportsVolunteerism" {{old('category')=='SportsVolunteerism'?'selected':''}}>Sports Volunteerism</option>
+                                        <option value="Community" {{($primaryInfo->category=='Community'?'selected':'')??(old('category')=='Community'?'selected':'')}}>Community Development</option>
+                                        <option value="Education" {{($primaryInfo->category=='Education'?'selected':'')??(old('category')=='Education'?'selected':'')}}>Education</option>
+                                        <option value="Human" {{($primaryInfo->category=='Human'?'selected':'')??(old('category')=='Human'?'selected':'')}}>Human</option>
+                                        <option value="Health" {{($primaryInfo->category=='Health'?'selected':'')??(old('category')=='Health'?'selected':'')}}>Health</option>
+                                        <option value="Environment" {{($primaryInfo->category=='Environment'?'selected':'')??(old('category')=='Environment'?'selected':'')}}>Environmental</option>
+                                        <option value="SocialWelfare" {{($primaryInfo->category=='SocialWelfare'?'selected':'')??(old('category')=='SocialWelfare'?'selected':'')}}>Social Welfare</option>
+                                        <option value="Corporate" {{($primaryInfo->category=='Corporate'?'selected':'')??(old('category')=='Corporate'?'selected':'')}}>Corporate</option>
+                                        <option value="Church" {{($primaryInfo->category=='Church'?'selected':'')??(old('category')=='Church'?'selected':'')}}>Church</option>
+                                        <option value="Livelihood" {{($primaryInfo->category=='Livelihood'?'selected':'')??(old('category')=='Livelihood'?'selected':'')}}>Livelihood</option>
+                                        <option value="SportsVolunteerism" {{($primaryInfo->category=='SportsVolunteerism'?'selected':'')??(old('category')=='SportsVolunteerism'?'selected':'')}}>Sports Volunteerism</option>
                                     </select>
                                     @error('category')
-                                        <div class="text-danger my-2">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -180,9 +185,9 @@
                                 <div class="form-group">
                                     <label for="tagline" class="form-label">Tagline (Optional)</label>
                                     <input class="form-control" name="tagline" id="thresholdconfig" type="text" placeholder="Enter tagline"
-                                        maxlength="200" value="{{ old('tagline') }}">
+                                        maxlength="200" value="{{ $primaryInfo->tagline ?? old('tagline') }}">
                                     @error('tagline')
-                                        <div class="text-danger my-2">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -211,7 +216,7 @@
                                 </label>
                                 <input class="form-control" name="email" id="email" type="email"
                                     placeholder="@unless($errors->any())Ex. info@mycharity.org @endunless"
-                                    value="{{ old('email') }}" required>
+                                    value="{{ $primaryInfo->email_address ?? old('email') }}" >
                                 @error('email')
                                     <div class="text-danger">
                                         <small>
@@ -229,8 +234,8 @@
                                     <div class="col-12">
                                         <label for="cel_no" class="form-label">*Cellphone No.</label>
                                         <input class="form-control" name="cel_no" id="cel_no" type="tel"
-                                            placeholder="@unless($errors->any())Ex. 09981234567 @endunless" required
-                                            value="{{ old('cel_no') }}">
+                                            placeholder="@unless($errors->any())Ex. 09981234567 @endunless"
+                                            value="{{ $primaryInfo->cel_no ?? old('cel_no') }}">
                                         @error('cel_no')
                                             <div class="text-danger">
                                                 <small>
@@ -247,8 +252,8 @@
                                 <div class="form-group mb-3 row">
                                     <div class="col-12">
                                         <label for="tel_no" class="form-label">Telephone No.</label>
-                                        <input class="form-control" name="tel_no" id="tel_no" type="tel" required
-                                            placeholder="@unless($errors->any())Ex. 82531234 @endunless" value="{{ old('tel_no') }}">
+                                        <input class="form-control" name="tel_no" id="tel_no" type="tel"
+                                            placeholder="@unless($errors->any())Ex. 82531234 @endunless" value="{{ $primaryInfo->tel_no ?? old('tel_no') }}">
                                         @error('tel_no')
                                             <div class="text-danger">
                                                 <small>
@@ -265,9 +270,9 @@
                         <div class="form-group mb-3 row">
                             <div class="col-12">
                                 <label for="address_line_one" class="form-label">*Address Line 1</label>
-                                <input class="form-control" name="address_line_one" id="address_line_one" type="text" required
+                                <input class="form-control" name="address_line_one" id="address_line_one" type="text"
                                     placeholder="@unless($errors->any())Ex. 1123 Kahoy St. @endunless"
-                                    value="{{ old('address_line_one') }}">
+                                    value="{{ $primaryInfo->address->address_line_one ?? old('address_line_one') }}">
                                 @error('address_line_one')
                                     <div class="text-danger">
                                         <small>
@@ -284,7 +289,7 @@
                                 <label for="address_line_two" class="form-label">Address Line 2 (Optional)</label>
                                 <input class="form-control" name="address_line_two" id="address_line_two" type="text"
                                     placeholder="@unless($errors->any())Ex. Unit 34B 4th Floor @endunless"
-                                    value="{{ old('address_line_two') }}">
+                                    value="{{ $primaryInfo->address->address_line_two ?? old('address_line_two') }}">
                                 @error('address_line_two')
                                     <div class="text-danger">
                                         <small>
@@ -296,13 +301,30 @@
                         </div>
 
                         <div class="form-group mb-3 row">
+                            <!-- Region -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="region" class="form-label">*Region</label>
+                                    <input class="form-control" name="region" id="region" type="text"
+                                        placeholder="@unless($errors->any())Ex. NCR @endunless"
+                                        value="{{ $primaryInfo->address->region ?? old('region') }}">
+                                    @error('region')
+                                        <div class="text-danger">
+                                            <small>
+                                                {{ $message }}
+                                            </small>
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <!-- Province -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="province" class="form-label">*Province</label>
-                                    <input class="form-control" name="province" id="province" type="text" required
+                                    <input class="form-control" name="province" id="province" type="text"
                                         placeholder="@unless($errors->any())Ex. Metro Manila @endunless"
-                                        value="{{ old('province') }}">
+                                        value="{{ $primaryInfo->address->province ?? old('province') }}">
                                     @error('province')
                                         <div class="text-danger">
                                             <small>
@@ -314,12 +336,12 @@
                             </div>
 
                             <!-- City -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="city" class="form-label">*City / Municipality</label>
-                                    <input class="form-control" name="city" id="city" type="text" required
+                                    <input class="form-control" name="city" id="city" type="text"
                                         placeholder="@unless($errors->any())Ex. Manila City @endunless"
-                                        value="{{ old('city') }}">
+                                        value="{{ $primaryInfo->address->city ?? old('city') }}">
                                     @error('city')
                                         <div class="text-danger">
                                             <small>
@@ -336,9 +358,9 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="barangay" class="form-label">*Barangay</label>
-                                    <input class="form-control" name="barangay" id="barangay" type="text" required
+                                    <input class="form-control" name="barangay" id="barangay" type="text"
                                         placeholder="@unless($errors->any())Ex. Brgy. 204 @endunless"
-                                        value="{{ old('barangay') }}">
+                                        value="{{ $primaryInfo->address->barangay ?? old('barangay') }}">
                                     @error('barangay')
                                         <div class="text-danger">
                                             <small>
@@ -353,9 +375,9 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="postal_code" class="form-label">*Postal Code</label>
-                                    <input class="form-control" name="postal_code" id="postal_code" type="text" required
+                                    <input class="form-control" name="postal_code" id="postal_code" type="text"
                                         placeholder="@unless($errors->any())Ex. 1013 @endunless"
-                                        value="{{ old('postal_code') }}">
+                                        value="{{ $primaryInfo->address->postal_code ?? old('postal_code') }}">
                                     @error('postal_code')
                                         <div class="text-danger">
                                             <small>
@@ -374,7 +396,7 @@
 
     <div class="row px-3">
         <ul class="list-inline mb-0 mt-4 text-center">
-            <button type="submit" class="btn btn-dark btn-rounded w-xl waves-effect waves-light w-100"
+            <button type="submit" form="primary_info_save" class="btn btn-dark btn-rounded w-xl waves-effect waves-light w-100"
                 style="background-color: #62896d;">Save Primary Information</button>
         </ul>
     </div>
@@ -387,7 +409,7 @@
 </form>
 
 
-{{-- <script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function() {
         $('#profile_photo').change(function(e) {
             var reader = new FileReader();
@@ -397,5 +419,5 @@
             reader.readAsDataURL(e.target.files['0']);
         });
     });
-</script> --}}
+</script>
 
