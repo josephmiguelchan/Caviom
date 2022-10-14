@@ -36,7 +36,7 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<form method="POST" action="{{route('charity.profile.store')}}" class="form-horizontal" id="primary_info_save" enctype="multipart/form-data">
+<form method="POST" action="{{route('charity.profile.store_primary')}}" class="form-horizontal" id="primary_info_save" enctype="multipart/form-data">
     @csrf
     <div id="accordion" class="custom-accordion">
         <div class="card mb-1 shadow-none">

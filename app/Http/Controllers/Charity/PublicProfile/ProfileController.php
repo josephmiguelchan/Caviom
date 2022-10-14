@@ -8,6 +8,8 @@ use App\Models\AuditLog;
 use App\Models\CharitableOrganization;
 use App\Models\Charity\Profile\ProfileCoverPhoto;
 use App\Models\Charity\Profile\ProfilePrimaryInfo;
+use App\Models\Charity\Profile\ProfileSecondaryInfo;
+use App\Models\Charity\Profile\ProfileAward;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,8 +37,10 @@ class ProfileController extends Controller
         }
 
         $primaryInfo = ProfilePrimaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
+        $secondaryInfo = ProfileSecondaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
+        $awards = ProfileAward::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
 
-        return view('charity.main.profile.setup', compact('primaryInfo'));
+        return view('charity.main.profile.setup', compact(['primaryInfo', 'secondaryInfo', 'awards']));
     }
     public function dropZoneCoverPhotos(Request $request)
     {
@@ -228,6 +232,176 @@ class ProfileController extends Controller
         # Throw success toastr
         $toastr = array(
             'message' => 'Profile has been updated successfully.',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->withInput()->with($toastr);
+    }
+    public function storeAwards(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            # Awards
+            'award_name' => ['required', 'string', 'max:200', 'min:10'],
+            'file_link' => ['nullable', 'url', 'max:250', 'min:10'],
+        ]);
+
+        # Return error toastr if validate request failed
+        if ($validator->fails()) {
+
+            $toastr = array(
+                'message' => $validator->errors()->first() . ' Please try again.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
+
+        # Return an error toastr if equal to or more than 5 awards have been added already.
+        $awards = ProfileAward::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
+        if ($awards->count() >= 5) {
+            $toastr = array(
+                'message' => 'Only a maximum of 5 awards can be added.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
+
+        ProfileAward::create([
+            'charitable_organization_id' => Auth::user()->charitable_organization_id,
+            'name' => $request->award_name,
+            'file_link' => $request->file_link,
+        ]);
+
+        $toastr = array(
+            'message' => 'Award has been added successfully.',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($toastr);
+    }
+    public function destroyAward($id)
+    {
+        $award = ProfileAward::findOrFail($id);
+        if ($award->charitable_organization_id != Auth::user()->charitable_organization_id) {
+            $toastr = array(
+                'message' => 'You can only remove your own Charitable Organization\'s pre-existing award(s).',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->with($toastr);
+        }
+
+        $award->delete();
+
+        $toastr = array(
+            'message' => 'Selected award has been removed successfully.',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->withInput()->with($toastr);
+    }
+    public function storeSecondaryInfo(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            # Secondary Info
+            'our_story' => ['required', 'string', 'max:1300', 'min:10'],
+            'our_story_photo' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
+            'our_goal' => ['required', 'string', 'max:1300', 'min:10'],
+            'our_goal_photo' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
+
+        ]);
+
+        # Return error toastr if validate request failed
+        if ($validator->fails()) {
+
+            $toastr = array(
+                'message' => $validator->errors()->first() . ' Please try again.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
+
+        # Check if the Charity already has an existing address in profile_secondary_info in DB.
+        $profile_secondary_exists = ProfileSecondaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
+
+        if ($profile_secondary_exists) {
+            # Start Updating Database
+            $profile_secondary_exists->charitable_organization_id = Auth::user()->charitable_organization_id;
+            $profile_secondary_exists->our_story = $request->our_story;
+            $profile_secondary_exists->our_goal = $request->our_goal;
+
+            # Upload the image only when our_story_photo has value...
+            if ($request->file('our_story_photo')) {
+
+                # Delete old Story photo if exists
+                $oldImg = $profile_secondary_exists->our_story_photo;
+                if ($oldImg) unlink(public_path('upload/charitable_org/our_story/') . $oldImg);
+
+                # Upload New Story photo to the server
+                $file = $request->file('our_story_photo');
+                $filename = 'Our_story_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('upload/charitable_org/our_story/'), $filename);
+
+                # Link the story photo to the Profile by updating DB
+                $profile_secondary_exists->our_story_photo = $filename;
+            }
+
+            # Upload the image only when our_goal_photo has value...
+            if ($request->file('our_goal_photo')) {
+
+                # Delete old Story photo if exists
+                $oldImg = $profile_secondary_exists->our_goal_photo;
+                if ($oldImg) unlink(public_path('upload/charitable_org/our_goal/') . $oldImg);
+
+                # Upload profile photo of the Charitable Organization to the server
+                $file = $request->file('our_goal_photo');
+                $filename = 'Our_goal_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('upload/charitable_org/our_goal/'), $filename);
+
+                # Link the profile photo to the Charity Data by updating DB
+                $profile_secondary_exists->our_goal_photo = $filename;
+            }
+
+            $profile_secondary_exists->updated_at = Carbon::now();
+            $profile_secondary_exists->save();
+        } else {
+
+            # Start Creating New Record in the Database
+            $secondaryInfo = new ProfileSecondaryInfo;
+            $secondaryInfo->charitable_organization_id = Auth::user()->charitable_organization_id;
+            $secondaryInfo->our_story = $request->our_story;
+            $secondaryInfo->our_goal = $request->our_goal;
+
+            # Upload the image only when our_story_photo has value...
+            if ($request->file('our_story_photo')) {
+
+                # Upload profile photo of the Charitable Organization to the server
+                $file = $request->file('our_story_photo');
+                $filename = 'Our_story_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('upload/charitable_org/our_story/'), $filename);
+
+                # Link the profile photo to the Charity Data by updating DB
+                $secondaryInfo->our_story_photo = $filename;
+            }
+
+            # Upload the image only when our_goal_photo has value...
+            if ($request->file('our_goal_photo')) {
+
+                # Upload profile photo of the Charitable Organization to the server
+                $file = $request->file('our_goal_photo');
+                $filename = 'Our_goal_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('upload/charitable_org/our_goal/'), $filename);
+
+                # Link the profile photo to the Charity Data by updating DB
+                $secondaryInfo->our_goal_photo = $filename;
+            }
+
+            $secondaryInfo->save();
+        }
+
+        # Throw success toastr
+        $toastr = array(
+            'message' => 'Profile (Secondary Information) has been updated successfully.',
             'alert-type' => 'success'
         );
 

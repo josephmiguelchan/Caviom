@@ -139,7 +139,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                     Route::get('/setup', 'setupProfile')->name('.setup');
 
                     # Save Public Profile (for the 1st Time)
-                    Route::post('/save', 'storePrimaryInfo')->name('.store');
+                    Route::post('/save', 'storePrimaryInfo')->name('.store_primary');
+                    Route::post('secondary-info/save', 'storeSecondaryInfo')->name('.store_secondary');
+                    Route::post('awards/save', 'storeAwards')->name('.store_awards');
+                    Route::get('awards/delete/{id}', 'destroyAward')->name('.destroy_awards');
 
                     # Save Profile Cover Photos using Dropzone
                     Route::get('/cover_photos/gallery', 'getImages')->name('.cover_photos.get');
@@ -557,7 +560,7 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
         Route::post('/store', 'storeAdminUser')->name('.store');
         Route::get('/{code}', 'viewAdminUser')->name('.view');
     });
- 
+
     # Audit Logs
     Route::name('audit-logs')->prefix('/audit-logs')->group(function () {
         Route::get('/', [RootAdminAuditLogController::class, 'viewAllAudits']);
