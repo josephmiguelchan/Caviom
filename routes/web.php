@@ -98,7 +98,7 @@ Route::name('notifications')->middleware(['auth', 'verified', 'prevent-back-hist
 });
 
 # Charity Users Group
-Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function () {
+Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])->group(function () {
 
     Route::prefix('/charity')->group(function () {
         # Donors and Donations Group
@@ -172,19 +172,19 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 # All Featured Project
                 Route::get('/featured-project/all', [CharityFeaturedProjectController::class, 'AllFeaturedProject'])->name('.feat-project.all');
 
-                # View Featured Project 
+                # View Featured Project
                 Route::get('/featured-project/view/{code}', [CharityFeaturedProjectController::class, 'ViewFeaturedProject'])->name('.feat-project.view');
 
                 # Create New Featured Project
                 Route::get('/featured-project/new', [CharityFeaturedProjectController::class, 'NewFeaturedProject'])->name('.feat-project.new');
 
-                # Store New Freatured Project 
+                # Store New Freatured Project
                 Route::post('/featured-project/store/new', [CharityFeaturedProjectController::class, 'StoreNewFeaturedProject'])->name('.feat-project.new.store');
 
                 # Add Featured Project (from Existing Gift Giving Project)
-           
+
                 Route::get('/featured-project/add/gift/{code}', [CharityFeaturedProjectController::class, 'AddExistedGiftFeaturedProject'])->name('.feat-projects.add.gift');
-                
+
                 # Store Featured Project (from Existing Gift Giving Project)
                 Route::post('/featured-project/store/add/gift', [CharityFeaturedProjectController::class, 'StoreExistedGiftFeaturedProject'])->name('.feat-project.add.gift.store');
 
