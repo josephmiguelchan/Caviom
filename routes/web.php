@@ -155,15 +155,8 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                     # To add: Re-apply for Verification (for Declined)
                     Route::get('/reapply-for-verification', 'reapplyVerification')->name('.reverify');
 
-                    # To add: Submit application with POST
-
                     # To add: Publish public profile and set profile_status to Visible // add validation that must have profile_* existing.
 
-                    # Make changes to Public Profile
-                    Route::get('/edit', 'editProfile')->middleware('profile.set')->name('.edit');
-
-                    # Update Public Profile
-                    Route::get('/update', 'updateProfile')->middleware('profile.set')->name('.update');
 
                     # To add: Set profile_status to Hidden - middleware('profile.set')->
 

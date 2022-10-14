@@ -120,7 +120,7 @@
 
                             <div class="col-lg-3">
                                 <div class="mb-3">
-                                    <a type="button" style="background-color: #62896d" href="{{ route('charity.profile.edit') }}"
+                                    <a type="button" style="background-color: #62896d" href="{{ route('charity.profile.setup') }}"
                                         class="btn btn-dark w-100 waves-effect waves-light">
                                         <i class="mdi mdi-circle-edit-outline"></i> Make Changes
                                     </a>

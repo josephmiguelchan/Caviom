@@ -26,15 +26,15 @@ class ProfileController extends Controller
     }
     public function setupProfile()
     {
-        # Only users with Unset Public Profile of their Charity can access this function
-        if (Auth::user()->charity->profile_status != "Unset") {
-            $notification = array(
-                'message' => 'Sorry, only Public Profiles that have not been set up yet can access this page.',
-                'alert-type' => 'error',
-            );
+        # [No Longer Required] Only users with Unset Public Profile of their Charity can access this function
+        // if (Auth::user()->charity->profile_status != "Unset") {
+        //     $notification = array(
+        //         'message' => 'Sorry, only Public Profiles that have not been set up yet can access this page.',
+        //         'alert-type' => 'error',
+        //     );
 
-            return to_route('charity.profile')->with($notification);
-        }
+        //     return to_route('charity.profile')->with($notification);
+        // }
 
         $primaryInfo = ProfilePrimaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
         $secondaryInfo = ProfileSecondaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
@@ -443,16 +443,5 @@ class ProfileController extends Controller
 
         # redirect to applyVerification function
         return to_route('charity.profile.verify');
-    }
-    public function editProfile()
-    {
-        $charity = CharitableOrganization::findOrFail(Auth::user()->charity->id);
-
-
-        return view('', compact('charity')); // To Change
-    }
-    public function updateProfile(Request $request)
-    {
-        # code...
     }
 }

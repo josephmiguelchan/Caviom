@@ -38,7 +38,7 @@
                                 <tr>
                                     <th scope="row">{{ $key+1 }}</th>
                                     <td>{{ $award->name }}</td>
-                                    <td><a target="_blank" href="{{ $award->file_link }}">{{ $award->file_link }}</a></td>
+                                    <td>{!! $award->file_link?'<a target="_blank" href="' . $award->file_link .'"> ' . $award->file_link . '</a>':'---'!!}</td>
                                     <td>{{ $award->created_at }}</a></td>
                                     <td>
                                         <a href="{{route('charity.profile.destroy_awards',$award->id)}}" class="btn btn-rounded btn-sm btn-outline-danger waves-effect waves-light">
