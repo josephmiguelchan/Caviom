@@ -16,7 +16,7 @@ class GiftGiving extends Model
 
     public function GiftGivingBeneficiaries()
     {
-        return $this->hasMany(Gift_Giving_Beneficiaries::class, 'gift_giving_id', 'id');
+        return $this->hasMany(GiftGivingBeneficiary::class, 'gift_giving_id', 'id');
     }
 
     public function downloadedBy()

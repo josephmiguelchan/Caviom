@@ -40,10 +40,10 @@
                                     
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="remarks_subject"
-                                            id="remarks_subject_{{$key+1}}" value="{{$item->subject}}" checked>
+                                            id="remarks_subject_{{$key+1}}" value="{{$item->subject}}" required>
                                         <label class="form-check-label" for="remarks_subject_{{$key+1}}">
                                             <!-- $notifier->subject -->
-                                           {{$item->subject}}
+                                            {{$item->subject}}
                                         </label>
                                         <p>
                                             {{$item->message}}
@@ -135,12 +135,12 @@
                                     <dl class="col-md-12">
                                         <h4 class="font-size-15"><strong>Objective:</strong></h4>
                                         <p>
-                                           {{$fp->objectives}}
+                                           {!!$fp->objectives!!}
                                         </p>
 
                                         <h4 class="font-size-15 mt-4"><strong>Thanksgiving Message:</strong></h4>
                                         <p>
-                                           {{$fp->message}}
+                                           {!!$fp->message!!}
                                         </p>
 
                                         <div class="col-6">
@@ -148,16 +148,13 @@
               
                                             <div class="row text-center">
                                                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                                                    <ol class="carousel-indicators">
-                                                        {!! isset($fp->photos->featured_photo_1)?'<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>':'' !!}
-                                                        {!! isset($fp->photos->featured_photo_2)?'<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>':'' !!}
-                                                        {!! isset($fp->photos->featured_photo_3)?'<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>':'' !!}
-                                                        {!! isset($fp->photos->featured_photo_4)?'<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"></li>':'' !!}
-                                                        {!! isset($fp->photos->featured_photo_5)?'<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4"></li>':'' !!}
-                                                    </ol>
                                                     <div class="carousel-inner" role="listbox">
-                                                        @isset($fp->photos->featured_photo_1)
                                                         <div class="carousel-item active">
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->cover_photo) }}" alt="Cover Photo" 
+                                                                style="max-height: 100%; width: 100%;">
+                                                        </div>
+                                                        @isset($fp->photos->featured_photo_1)
+                                                        <div class="carousel-item">
                                                             <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_1) }}" alt="First Photo" 
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
@@ -168,18 +165,21 @@
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @endisset
+
                                                         @isset($fp->photos->featured_photo_3)
                                                         <div class="carousel-item">
                                                             <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_3) }}" alt="Third Photo" 
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @endisset
+
                                                         @isset($fp->photos->featured_photo_4)
                                                         <div class="carousel-item">
                                                             <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_4) }}" alt="Fourth Photo" 
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @endisset
+
                                                         @isset($fp->photos->featured_photo_5)
                                                         <div class="carousel-item">
                                                             <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_5) }}" alt="Fifth Photo" 
@@ -240,6 +240,8 @@
                                 <dt class="col-md-8 mb-2">{{ ($fp->created_at)?Carbon\Carbon::parse($fp->created_at)->isoFormat('MMMM d, YYYY'):'---' }}</dt>
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Status Last Updated:</strong></h4></dt>
                                 <dt class="col-md-8 mb-2">{{ ($fp->updated_at)?Carbon\Carbon::parse($fp->status_updated_at)->diffForHumans():'---' }}</dt>
+                                <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Reviewed By:</strong></h4></dt>
+                                <dt class="col-md-8 mb-2">{!! ($fp->reviewed_by)?'<a target="_blank" href="'.route('admin.users.view',$fp->user->code).'">'.$fp->user->username.'</a>':'---' !!}</dt>
                             </div>
                         </div>
                     </div>

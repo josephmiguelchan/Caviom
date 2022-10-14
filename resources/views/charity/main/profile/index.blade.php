@@ -171,7 +171,7 @@
                                 <p class="mb-5">Share your Charitable Organization's existing projects to your public profile.</p>
 
                                 <div class="col-lg-3">
-                                    <a style="background-color: #92713e; border-color: #92713e" href="{{ route('charity.profile.feat-projects') }}"
+                                    <a style="background-color: #92713e; border-color: #92713e" href="{{ route('charity.profile.feat-project.all') }}"
                                     class="btn btn-dark w-100 waves-effect waves-light"><i class="mdi mdi-view-split-horizontal"></i> View Featured Projects</a>
                                 </div>
                             </div>

@@ -19,6 +19,8 @@ use App\Http\Controllers\RootAdmin\FeaturedProjectController;
 use App\Http\Controllers\RootAdmin\NotifierController;
 use App\Http\Controllers\RootAdmin\OrderController;
 use App\Http\Controllers\RootAdmin\UserController as RootAdminUserController;
+
+use App\Http\Controllers\Charity\PublicProfile\FeaturedProjectController as CharityFeaturedProjectController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -169,20 +171,29 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
 
                 # Featured Projects
-                Route::get('/featured-projects', function () {
-                    return view('charity.main.profile.featured-projects.all');
-                })->name('.feat-projects');
-                Route::get('/featured-projects/6e216252-0443-4326-81a0-3722050bf571', function () {
-                    return view('charity.main.profile.featured-projects.view');
-                })->name('.feat-projects.view');
-                # Add Featured Project (from Existing)
-                Route::get('/featured-projects/add', function () { // Add middleware that star tokens must be sufficient
-                    return view('charity.main.profile.featured-projects.add');
-                })->name('.feat-projects.add');
+
+                # All Featured Project
+                Route::get('/featured-project/all', [CharityFeaturedProjectController::class, 'AllFeaturedProject'])->name('.feat-project.all');
+
+                # View Featured Project 
+                Route::get('/featured-project/view/{code}', [CharityFeaturedProjectController::class, 'ViewFeaturedProject'])->name('.feat-project.view');
+
                 # Create New Featured Project
-                Route::get('/featured-projects/new', function () { // Add middleware that star tokens must be sufficient
-                    return view('charity.main.profile.featured-projects.new');
-                })->name('.feat-projects.new');
+                Route::get('/featured-project/new', [CharityFeaturedProjectController::class, 'NewFeaturedProject'])->name('.feat-project.new');
+
+                # Store New Freatured Project 
+                Route::post('/featured-project/store/new', [CharityFeaturedProjectController::class, 'StoreNewFeaturedProject'])->name('.feat-project.new.store');
+
+                # Add Featured Project (from Existing Gift Giving Project)
+           
+                Route::get('/featured-project/add/gift/{code}', [CharityFeaturedProjectController::class, 'AddExistedGiftFeaturedProject'])->name('.feat-projects.add.gift');
+                
+                # Store Featured Project (from Existing Gift Giving Project)
+                Route::post('/featured-project/store/add/gift', [CharityFeaturedProjectController::class, 'StoreExistedGiftFeaturedProject'])->name('.feat-project.add.gift.store');
+
+                # Add Featured Project (from Existing Task based Project)
+
+                # Store Featured Project (from Existing Task based Project)
             });
 
             # Projects
