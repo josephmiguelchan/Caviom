@@ -17,7 +17,7 @@
                             <a href="{{ route('charity.profile') }}">Public Profile</a>
                         </li>
                         <li class="breadcrumb-item active">
-                            <a href="{{ route('charity.profile.feat-projects') }}">Featured Projects</a>
+                            <a href="{{ route('charity.profile.feat-project.all') }}">Featured Projects</a>
                         </li>
                         <li class="breadcrumb-item active">Add</li>
                     </ol>

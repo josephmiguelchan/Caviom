@@ -71,7 +71,7 @@
                                 @elseif($item->visibility_status == "Visible")
                                 <td><i class="ri-eye-line"></i> {{$item->visibility_status}}</td>
                                 @endif
-                                <td>  {{ (!empty($item->remark_subject))? $item->remark_subject:'---' }}</td>
+                                <td>  {{ (!empty($item->remarks_subject))? $item->remarks_subject:'---' }}</td>
                         
                                 <td>{{$item->created_at}}</td>
                                 <td>

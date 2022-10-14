@@ -110,7 +110,7 @@ class FeaturedProjectController extends Controller
             $notif->subject = 'Featured Project Update';
             $notif->message = 'Your featured project [ '.$fp->name.' ] has been reviewed by Caviom. Unfortunately,
                             your featured project request has been declined due to [ '.$request->remarks_subject . ' ]
-                            . ' . $fp->paid_using . ' has refunded back to your Charitable Organization.';
+                            . Your ' . $fp->paid_using . ' has been refunded back to your Charitable Organization.';
             $notif->icon = 'mdi mdi-heart-remove';
             $notif->color = 'danger';
             $notif->created_at = Carbon::now();
