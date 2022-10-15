@@ -19,6 +19,8 @@ use App\Http\Controllers\RootAdmin\FeaturedProjectController;
 use App\Http\Controllers\RootAdmin\NotifierController;
 use App\Http\Controllers\RootAdmin\OrderController;
 use App\Http\Controllers\RootAdmin\UserController as RootAdminUserController;
+use App\Http\Controllers\Charity\LeadController;
+use App\Http\Controllers\Charity\ProspectController;
 
 use App\Http\Controllers\Charity\PublicProfile\FeaturedProjectController as CharityFeaturedProjectController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +42,7 @@ Route::controller(PublicController::class)->group(function () {
     Route::get('/about', 'showAbout')->name('about');
     Route::get('/services', 'showServices')->name('services');
     Route::get('/contact', 'showContact')->name('contact');
+    Route::post('/Donate','Donate')->name('store.donate');
 
     # Charity Public Profile Pages
     Route::name('charities')->prefix('/charitable-organizations')->middleware(['prevent-back-history'])->group(function () {
@@ -105,23 +108,34 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
         Route::prefix('/donors-and-donations')->group(function () {
 
             # Leads
-            Route::get('/leads', function () {
-                return view('charity.donors.leads.all');
-            })->name('leads.all');
-            Route::get('/leads/9a7445e2-07eb-11ed-861d-0242ac120002', function () {
-                return view('charity.donors.leads.view');
-            })->name('leads.view');
+
+            # All Leads
+            Route::get('/leads', [LeadController::class, 'AllLeads'])->name('leads.all');
+
+            # View Leads
+            Route::get('/leads/{code}', [LeadController::class, 'ViewLead'])->name('leads.view');
+
             // To add - Route::get() for Deleting Leads
+            Route::get('/leads/delete/{code}', [LeadController::class, 'DeleteLead'])->name('leads.delete');
+
             // To add - Route::post() for Storing Leads to Prospects table and deleting the current record in Leads table.
+            Route::get('/leads/update/prospect/{code}', [LeadController::class, 'MoveAsProspect'])->name('move.to.prospect');
+
 
             # Prospects
-            Route::get('/prospects', function () {
-                return view('charity.donors.prospects.all');
-            })->name('prospects.all');
-            Route::get('/prospects/93e5c76a-2316-46e4-b24f-b33131100457', function () {
-                return view('charity.donors.prospects.view');
-            })->name('prospects.view');
+            // Route::get('/prospects', function () {
+            //     return view('charity.donors.prospects.all');
+            // })->name('prospects.all');
+            Route::get('/prospects', [ProspectController::class, 'AllProspect'])->name('prospects.all');
+
+            // Route::get('/prospects/93e5c76a-2316-46e4-b24f-b33131100457', function () {
+            //     return view('charity.donors.prospects.view');
+            // })->name('prospects.view');
+
+            Route::get('/prospects/view/{code}', [ProspectController::class, 'ViewProspect'])->name('prospects.view');
             // To add - Route::post() for Moving Prospects back to Leads table and deleting the current record in Prospects table.
+            // Route::get('/leads/move/back/leads/{code}', [ProspectController::class, 'MoveToLeads'])->name('move.back.leads');
+
             // To add - Route::post() for editing the remarks of Prospects.
         });
 
