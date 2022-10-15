@@ -68,15 +68,16 @@ class PublicController extends Controller
             'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
-            'mode_of_donation' => ['required',Rule::in(['BDO', 'GCash'])], // Must be in array of Charitable Organization's mode of payments only.
-            'amount' => 'required|numeric|between:0,999999.99',
-            'paid_at' => 'required',
-            'message'=> 'nullable|max:512',
-            'g-recaptcha-response' => 'required|captcha'
+            'mode_of_donation' => ['required', Rule::in(['BDO', 'GCash'])], // Must be in array of Charitable Organization's mode of payments only.
+            'amount' => ['required', 'numeric', 'between:0,999999.99'],
+            'paid_at' => ['required', 'date', 'before:' . now()->addDay()->toDateString(), 'after:' . now()->subYears(3)->toDateString()],
+            'message' => ['nullable', 'max:500'],
+            'g-recaptcha-response' => ['required', 'captcha'],
         ], [
+            'paid_at.before' => 'Earliest date of payment must not be more than one (1) day before tomorrow.',
+            'paid_at.after' => 'Latest date of payment must not be more than three (3) years after today.',
             'g-recaptcha-response.captcha' => 'Captcha error! Please try again',
             'g-recaptcha-response.required' => 'Please verify that you are not a robot.',
-
         ]);
 
         # Return error toastr if validate request failed
@@ -90,8 +91,8 @@ class PublicController extends Controller
 
 
         $donate = new Lead;
-        $donate->code =Str::uuid()->toString();
-        $donate->charitable_organization_id = 4;    //hardcoded because unfished public profile
+        $donate->code = Str::uuid()->toString();
+        $donate->charitable_organization_id = 3;    //hardcoded because unfished public profile
 
         # Insert Proof of Payment photo
         if ($request->file('proof_of_payment_photo')) {
@@ -113,11 +114,10 @@ class PublicController extends Controller
         $donate->save();
 
         $notification = array(
-            'message' => 'Donation Uploaded Successfully',
+            'message' => 'Donation lead submitted successfully. Thank you!',
             'alert-type' => 'success'
         );
 
         return redirect()->back()->with($notification);
-
     }
 }

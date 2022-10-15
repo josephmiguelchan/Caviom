@@ -83,7 +83,7 @@
                         </label>
                         <input class="form-control" name="proof_of_payment_photo" id="proof_of_payment_photo" type="file">
                         @error('proof_of_payment_photo')
-                        <div class="text-danger">
+                        <div class="text-danger small">
                             {{ $message }}
                         </div>
                         @enderror
@@ -95,7 +95,7 @@
                     <label for="email" class="form-label">*Email Address</label>
                     <input class="form-control" name="email" id="email" value="{{ old('email') }}" required>
                     @error('email')
-                    <div class="text-danger">
+                    <div class="text-danger small">
                         {{ $message }}
                     </div>
                     @enderror
@@ -109,7 +109,7 @@
                         <label for="first_name" class="form-label">*First Name</label>
                         <input type="text" class="form-control" name="first_name" id="first_name" value="{{ old('first_name') }}" required>
                         @error('first_name')
-                        <div class="text-danger">
+                        <div class="text-danger small">
                             {{ $message }}
                         </div>
                         @enderror
@@ -122,7 +122,7 @@
                         <label for="middle_name" class="form-label">Middle Name</label>
                         <input type="text" class="form-control" name="middle_name" id="middle_name" value="{{ old('middle_name') }}">
                         @error('middle_name')
-                        <div class="text-danger">
+                        <div class="text-danger small">
                             {{ $message }}
                         </div>
                         @enderror
@@ -134,7 +134,7 @@
                     <label for="last_name" class="form-label">*Last Name</label>
                     <input type="text" class="form-control" name="last_name" id="last_name" value="{{ old('last_name') }}" required>
                     @error('last_name')
-                    <div class="text-danger">
+                    <div class="text-danger small">
                         {{ $message }}
                     </div>
                     @enderror
@@ -153,7 +153,7 @@
                             <option value="BDO" {{old('mode_of_donation')=='BDO'?'selected':''}}>BDO</option>
                         </select>
                         @error('mode_of_donation')
-                            <div class="text-danger">
+                            <div class="text-danger small">
                                 {{ $message }}
                             </div>
                         @enderror
@@ -173,7 +173,7 @@
                                 id="amount" value="{{ old('amount') }}">
                         </div>
                         @error('amount')
-                            <div class="text-danger">
+                            <div class="text-danger small">
                                 {{ $message }}
                             </div>
                         @enderror
@@ -185,17 +185,22 @@
                     <div class="form-group">
                         <label for="paid_at" class="form-label">Date of Payment</label>
                         <input type="datetime-local" class="form-control" name="paid_at" id="paid_at" value="{{ old('paid_at') }}"
-                            min="{{Carbon\Carbon::now()->subYears(20)->startOfYear()}}" max="{{Carbon\Carbon::now()}}">
+                            min="{{Carbon\Carbon::now()->subYears(3)->startOfYear()}}" max="{{Carbon\Carbon::now()}}">
+                        @error('paid_at')
+                        <div class="text-danger small">
+                            {{ $message }}
+                        </div>
+                        @enderror
                     </div>
                 </div>
             </div>
 
             <!-- Message -->
             <label for="message" class="form-label">Message</label>
-            <textarea class="form-control" name="message" id="message" rows="4" maxlength="300"
-                placeholder="Max. of 100 Characters only...">{{old('message')}}</textarea>
+            <textarea class="form-control" name="message" id="textarea" rows="4" maxlength="500"
+                placeholder="Max. of 500 Characters only...">{{old('message')}}</textarea>
             @error('message')
-                <div class="text-danger">
+                <div class="text-danger small">
                     {{ $message }}
                 </div>
             @enderror
@@ -205,12 +210,12 @@
                 {!! NoCaptcha::renderJs() !!}
                 {!! NoCaptcha::display() !!}
                 @error('g-recaptcha-response')
-                    <div class="text-danger">
+                    <div class="text-danger small">
                         {{ $message }}
                     </div>
                 @enderror
             </div>
-      
+
 
             <button type="submit" class="btn btn-rounded btn-dark waves-effect waves-light w-lg float-end mt-3 mb-5">Submit</button>
 

@@ -42,7 +42,7 @@ Route::controller(PublicController::class)->group(function () {
     Route::get('/about', 'showAbout')->name('about');
     Route::get('/services', 'showServices')->name('services');
     Route::get('/contact', 'showContact')->name('contact');
-    Route::post('/Donate','Donate')->name('store.donate');
+    Route::post('/Donate', 'Donate')->name('store.donate');
 
     # Charity Public Profile Pages
     Route::name('charities')->prefix('/charitable-organizations')->middleware(['prevent-back-history'])->group(function () {
@@ -106,8 +106,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
     Route::prefix('/charity')->group(function () {
         # Donors and Donations Group
         Route::prefix('/donors-and-donations')->group(function () {
-
-            # Leads
 
             # All Leads
             Route::get('/leads', [LeadController::class, 'AllLeads'])->name('leads.all');
@@ -535,13 +533,8 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
             Route::post('/edit/{code}', [CharitableOrganizationController::class, 'UpdateCharityUserDetail'])->name('.update');
         });
 
-        // # Send Notification in View Charity
-
+        # Send Notification in View Charity
         Route::post('/send/notification/{id}', [CharitableOrganizationController::class, 'SendNotification'])->name('.send.notifcation');
-
-        // To Add: (POST) Edit Profile Settings (Visibility / Verification Status) in View Charity
-
-
     });
 
     # Star Token Orders
