@@ -1,4 +1,4 @@
-<form method="POST" action="" enctype="multipart/form-data">
+<form method="POST" action="{{route('charity.profile.publish')}}">
     @csrf
     <div class="row justify-content-center mb-5">
         <div class="col-lg-6">

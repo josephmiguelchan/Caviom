@@ -141,7 +141,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                     Route::get('/setup', 'setupProfile')->name('.setup');
 
                     # Save Public Profile
-                    Route::post('/save', 'storePrimaryInfo')->name('.store_primary');
+                    Route::post('primary-info/save', 'storePrimaryInfo')->name('.store_primary');
                     Route::post('secondary-info/save', 'storeSecondaryInfo')->name('.store_secondary');
                     Route::post('awards/save', 'storeAwards')->name('.store_awards');
                     Route::get('awards/delete/{id}', 'destroyAward')->name('.destroy_awards');
@@ -149,6 +149,9 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                     Route::get('programs/delete/{id}', 'destroyProgram')->name('.destroy_programs');
                     Route::post('donation-mode/save', 'storeDonationModes')->name('.store_donations');
                     Route::get('donation-mod/delete/{id}', 'destroyDonationModes')->name('.destroy_donation_mode');
+
+                    # Publish public profile
+                    Route::post('publish', 'publishProfile')->name('.publish');
 
                     # Save Profile Cover Photos using Dropzone
                     Route::get('/cover_photos/gallery', 'getImages')->name('.cover_photos.get');
@@ -161,8 +164,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                     # To add: Re-apply for Verification (for Declined)
                     Route::get('/reapply-for-verification', 'reapplyVerification')->name('.reverify');
 
-                    # To add: Publish public profile and set profile_status to Visible // add validation that must have profile_* existing.
-
 
                     # To add: Set profile_status to Hidden - middleware('profile.set')->
 
@@ -172,29 +173,30 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
 
 
                 # Featured Projects
+                Route::middleware('profile.set')->name('.feat-project')->prefix('/featured-project')->controller(CharityFeaturedProjectController::class)->group(function () {
 
-                # All Featured Project
-                Route::get('/featured-project/all', [CharityFeaturedProjectController::class, 'AllFeaturedProject'])->name('.feat-project.all');
+                    # All Featured Project
+                    Route::get('/all', 'AllFeaturedProject')->name('.all');
 
-                # View Featured Project
-                Route::get('/featured-project/view/{code}', [CharityFeaturedProjectController::class, 'ViewFeaturedProject'])->name('.feat-project.view');
+                    # View Featured Project
+                    Route::get('/view/{code}', 'ViewFeaturedProject')->name('.view');
 
-                # Create New Featured Project
-                Route::get('/featured-project/new', [CharityFeaturedProjectController::class, 'NewFeaturedProject'])->name('.feat-project.new');
+                    # Create New Featured Project
+                    Route::get('/new', 'NewFeaturedProject')->name('.new');
 
-                # Store New Freatured Project
-                Route::post('/featured-project/store/new', [CharityFeaturedProjectController::class, 'StoreNewFeaturedProject'])->name('.feat-project.new.store');
+                    # Store New Freatured Project
+                    Route::post('/store/new', 'StoreNewFeaturedProject')->name('.new.store');
 
-                # Add Featured Project (from Existing Gift Giving Project)
+                    # Add Featured Project (from Existing Gift Giving Project)
+                    Route::get('/add/gift/{code}', 'AddExistedGiftFeaturedProject')->name('.add.gift');
 
-                Route::get('/featured-project/add/gift/{code}', [CharityFeaturedProjectController::class, 'AddExistedGiftFeaturedProject'])->name('.feat-projects.add.gift');
+                    # Store Featured Project (from Existing Gift Giving Project)
+                    Route::post('/store/add/gift', 'StoreExistedGiftFeaturedProject')->name('.add.gift.store');
 
-                # Store Featured Project (from Existing Gift Giving Project)
-                Route::post('/featured-project/store/add/gift', [CharityFeaturedProjectController::class, 'StoreExistedGiftFeaturedProject'])->name('.feat-project.add.gift.store');
+                    # Add Featured Project (from Existing Task based Project)
 
-                # Add Featured Project (from Existing Task based Project)
-
-                # Store Featured Project (from Existing Task based Project)
+                    # Store Featured Project (from Existing Task based Project)
+                });
             });
 
             # Projects

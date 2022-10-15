@@ -12,6 +12,7 @@ use App\Models\Charity\Profile\ProfileSecondaryInfo;
 use App\Models\Charity\Profile\ProfileAward;
 use App\Models\Charity\Profile\ProfileModeOfDonation;
 use App\Models\Charity\Profile\ProfileProgram;
+use App\Models\Notification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -548,6 +549,95 @@ class ProfileController extends Controller
             'alert-type' => 'success'
         );
         return redirect()->back()->withInput()->with($toastr);
+    }
+    public function publishProfile(Request $request)
+    {
+        # Retrieve public profile data for validation
+        $primaryInfo = ProfilePrimaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
+        $secondaryInfo = ProfileSecondaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
+        $programs = ProfileProgram::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
+        $donationModes = ProfileModeOfDonation::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
+
+        $validator = Validator::make($request->all(), [
+            'is_agreed' => ['required']
+        ], [
+            'is_agreed.required' => 'You must agree first before you can publish your Public Profile.',
+        ]);
+
+        # Return error toastr if validate request failed
+        if ($validator->fails()) {
+            $toastr = array(
+                'message' => $validator->errors()->first() . ' Please try again.',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($toastr);
+        } elseif ($primaryInfo == null) {
+            $toastr = array(
+                'message' => 'You have not yet setup primary information of your Charitable Organization. Kindly complete the forms and try again.',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($toastr);
+        } elseif ($secondaryInfo == null) {
+            $toastr = array(
+                'message' => 'You have not yet setup secondary information of your Charitable Organization. Kindly complete the forms and try again.',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($toastr);
+        } elseif ($donationModes->count() < 1) {
+            $toastr = array(
+                'message' => 'At least one (1) program / activity is required. Kindly add one and try again.',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($toastr);
+        } elseif ($programs->count() < 1) {
+            $toastr = array(
+                'message' => 'At least one (1) mode of donation is required. Kindly add one and try again.',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($toastr);
+        } else {
+
+            # Retrieve the Charity record
+            $charityStatus = Auth::user()->charity;
+
+            # Set status of the Charity to visible
+            $charityStatus->profile_status = 'Visible';
+            $charityStatus->status_updated_at = Carbon::now();
+            $charityStatus->save();
+
+            # Audit Logs
+            AuditLog::create([
+                'user_id' => Auth::user()->id,
+                'action_type' => 'UPDATE',
+                'charitable_organization_id' => $charityStatus->id,
+                'table_name' => 'Charitable Organization',
+                'record_id' => $charityStatus->id,
+                'action' => Auth::user()->role . ' published their Charitable Organization\'s Public Profile [' . $charityStatus->name . ']
+                    and is now visible to the public.',
+                'performed_at' => Carbon::now(),
+            ]);
+
+            # Notifications
+            foreach ($charityStatus->users as $user) {
+                $notif = new Notification;
+                $notif->code = Str::uuid()->toString();
+                $notif->user_id = $user->id;
+                $notif->category = 'Public Profile';
+                $notif->subject = 'Profile Status Published';
+                $notif->message = $charityStatus->name . '\'s Public Profile was updated and published by ' . Auth::user()->role .
+                    ' [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]. It can now be viewed publicly.';
+                $notif->icon = 'mdi mdi-cog';
+                $notif->color = 'success';
+                $notif->created_at = Carbon::now();
+                $notif->save();
+            }
+
+            $toastr = array(
+                'message' => 'Success! Your Charitable Organization\'s Profile is now visible to the public.',
+                'alert-type' => 'success'
+            );
+            return to_route('charity.profile')->with($toastr);
+        }
     }
     public function applyVerification()
     {
