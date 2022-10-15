@@ -1,7 +1,7 @@
 <h1 class="text-center display-3 my-5">Programs & Activities</h1>
 
 <!-- Program #1 -->
-<div class="row align-items-center">
+<div class="row align-items-center my-4">
     <div class="col-md-6 p-5">
         <h1 class="display-5 fw-bold my-3">Program Title #1</h1>
         <p>
@@ -22,7 +22,7 @@
 </div>
 
 <!-- Program #2 -->
-<div class="row align-items-center">
+<div class="row align-items-center my-4">
     <div class="col-md-6 p-5">
         <h1 class="display-5 fw-bold my-3">Program Title #2</h1>
         <p>
@@ -43,7 +43,7 @@
 </div>
 
 <!-- Program #3 -->
-<div class="row align-items-center">
+<div class="row align-items-center my-4">
     <div class="col-md-6 p-5">
         <h1 class="display-5 fw-bold my-3">Program Title #3</h1>
         <p>

@@ -26,7 +26,7 @@
 </div>
 
 <!-- Our Goal -->
-<div class="row align-items-center">
+<div class="row align-items-center my-4">
     <div class="col-md-6 text-center">
         <img src="{{ asset('backend/assets/images/small/img-1.jpg') }}" class="img-fluid rounded" alt="Responsive image">
     </div>

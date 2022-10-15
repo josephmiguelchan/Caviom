@@ -1,4 +1,4 @@
-<form method="POST" action="" enctype="multipart/form-data">
+<form method="POST" action="{{ route('charity.profile.store_programs') }}" enctype="multipart/form-data">
     @csrf
     <div id="accordion" class="custom-accordion">
         <div class="card mb-1 shadow-none">
@@ -16,11 +16,56 @@
             <div id="collapseSix" class="collapse show"
                     aria-labelledby="headingSix" data-bs-parent="#accordion">
                 <div class="card-body">
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="1">No.</th>
+                                    <th>Program Name</th>
+                                    <th>Description</th>
+                                    <th>Photo</th>
+                                    <th>Date Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @if ($programs->count() == 0)
+                            <tr>
+                                <td colspan="6" class="text-center small text-muted">
+                                    Your Charitable Organization currently has no programs / activities.
+                                </td>
+                            </tr>
+                            @endif
+                            @foreach($programs as $key => $program)
+                                <tr>
+                                    <th scope="row">{{ $key+1 }}</th>
+                                    <td>{{ $program->name }}</td>
+                                    <td>{!! Str::limit($program->description, 1000) !!}</td>
+                                    <td>
+                                        @isset($program->program_photo)
+                                        <a class="image-popup-no-margins" title="Program #{{$key+1}} Photo" href="{{ asset('upload/charitable_org/programs/'.$program->program_photo) }}">
+                                            <img class="rounded" alt="Program #{{$key+1}} Photo" src="{{ asset('upload/charitable_org/programs/'.$program->program_photo) }}" style="max-height: 10vh">
+                                        </a>
+                                        @else
+                                        ---
+                                        @endisset
+                                    </td>
+                                    <td>{{ Carbon\Carbon::parse($program->created_at)->isoFormat('LL (LT)') }}</a></td>
+                                    <td>
+                                        <a href="{{route('charity.profile.destroy_programs',$program->id)}}" class="btn btn-rounded btn-sm btn-outline-danger waves-effect waves-light">
+                                            <i class="mdi mdi-trash-can-outline"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-9">
                             <div class="mb-3">
                                 <label class="form-label" for="program_name">*Program / Activity Name</label>
-                                <input type="text" class="form-control" id="program_name" name="program_name" placeholder="Enter name" required
+                                <input type="text" class="form-control" id="program_name" name="program_name" placeholder="Enter name"
                                     value="{{ old('program_name') }}" >
                                 @error('program_name')
                                     <div class="text-danger">
@@ -32,9 +77,9 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <div class="col-lg-3">
                             <div class="mb-3">
-                                <label class="form-label" for="program_photo">Photo of the Program / Activity</label>
+                                <label class="form-label" for="program_photo">Photo</label>
                                 <input class="form-control" name="program_photo" id="program_photo" type="file">
                                 @error('program_photo')
                                     <div class="text-danger">
@@ -44,16 +89,14 @@
                                     </div>
                                 @enderror
                             </div>
-                            <a class="image-popup-no-margins" title="Photo Story" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                <img class="img-fluid rounded" alt="Our Story's Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="230">
-                            </a>
+                            <img id="showImageProgram" class="img-fluid rounded" alt="Program's Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="230">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="mb-3">
                                 <label class="form-label" for="program_description">*Description</label>
-                                <textarea id="elm3" name="program_description" required>{{ old('program_description') }}</textarea>
+                                <textarea id="elm3" name="program_description">{{ old('program_description') }}</textarea>
                                 @error('program_description')
                                     <div class="text-danger">
                                         <small>
@@ -66,33 +109,42 @@
                     </div>
 
                     <div class="row">
-                        <div class="float-end">
+                        <div class="col-12">
                             <span class="text-muted font-size-12 mt-2">
                                 <em>
-                                    Max of 5 programs / activities only.
+                                    Max of 5 programs / activities only. At least one (1) Program or Activity is required.
                                 </em>
                             </span>
-                            <button type="button" class="btn btn-light btn-rounded waves-effect waves-light w-xl float-end mt-2">
-                                <i class="mdi mdi-plus"></i> Add more
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-dark btn-rounded waves-effect waves-light w-100 mt-5" style="background-color: #62896d">
+                                <i class="mdi mdi-plus"></i> Add Program / Activity
                             </button>
                         </div>
                     </div>
+                    <p class="text-muted text-center font-size-12 mt-1">
+                        <em>
+                            Please click on <strong>Add </strong> first before proceeding to the next.
+                        </em>
+                    </p>
 
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row px-3">
-        <ul class="list-inline mb-0 mt-4 text-center">
-            <input type="submit" class="btn btn-dark btn-rounded w-xl waves-effect waves-light w-100"
-                style="background-color: #62896d;" value="Save Programs & Activities">
-        </ul>
-    </div>
-
-    <p class="text-muted text-center font-size-12 mt-2">
-        <em>
-            Please click on <strong>Save</strong> first before proceeding to the next.
-        </em>
-    </p>
 </form>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#program_photo').change(function(e) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#showImageProgram').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+</script>

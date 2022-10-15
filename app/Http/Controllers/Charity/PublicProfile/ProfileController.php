@@ -10,6 +10,7 @@ use App\Models\Charity\Profile\ProfileCoverPhoto;
 use App\Models\Charity\Profile\ProfilePrimaryInfo;
 use App\Models\Charity\Profile\ProfileSecondaryInfo;
 use App\Models\Charity\Profile\ProfileAward;
+use App\Models\Charity\Profile\ProfileProgram;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,8 +40,9 @@ class ProfileController extends Controller
         $primaryInfo = ProfilePrimaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
         $secondaryInfo = ProfileSecondaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
         $awards = ProfileAward::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
+        $programs = ProfileProgram::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
 
-        return view('charity.main.profile.setup', compact(['primaryInfo', 'secondaryInfo', 'awards']));
+        return view('charity.main.profile.setup', compact(['primaryInfo', 'secondaryInfo', 'awards', 'programs']));
     }
     public function dropZoneCoverPhotos(Request $request)
     {
@@ -257,7 +259,7 @@ class ProfileController extends Controller
         }
 
         # Return an error toastr if equal to or more than 5 awards have been added already.
-        $awards = ProfileAward::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
+        $awards = ProfileAward::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
         if ($awards->count() >= 5) {
             $toastr = array(
                 'message' => 'Only a maximum of 5 awards can be added.',
@@ -405,6 +407,88 @@ class ProfileController extends Controller
             'alert-type' => 'success'
         );
 
+        return redirect()->back()->with($toastr);
+    }
+    public function storePrograms(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            # Programs
+            'program_name' => ['required', 'string', 'max:200', 'min:4'],
+            'program_photo' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
+            'program_description' => ['required', 'string', 'max:1300', 'min:10'],
+        ]);
+
+        # Return error toastr if validate request failed
+        if ($validator->fails()) {
+            $toastr = array(
+                'message' => $validator->errors()->first() . ' Please try again.',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
+
+        # Return an error toastr if equal to or more than 5 programs have been added already.
+        $programs = ProfileProgram::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
+        if ($programs->count() >= 5) {
+            $toastr = array(
+                'message' => 'Only a maximum of 5 programs / activities can be added.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
+
+        # Start Creating records in DB
+        $program = new ProfileProgram;
+        $program->charitable_organization_id = Auth::user()->charitable_organization_id;
+        $program->name = $request->program_name;
+        $program->description = $request->program_description;
+
+        # Upload the image only when our_story_photo has value...
+        if ($request->file('program_photo')) {
+
+            # Upload profile photo of the Charitable Organization to the server
+            $file = $request->file('program_photo');
+            $filename = 'program_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('upload/charitable_org/programs/'), $filename);
+
+            # Link the profile photo to the Charity Data by updating DB
+            $program->program_photo = $filename;
+        }
+
+        $program->created_at = Carbon::now();
+        $program->save();
+
+        # Throw success toastr
+        $toastr = array(
+            'message' => 'Program / Activity has been added successfully.',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($toastr);
+    }
+    public function destroyProgram($id)
+    {
+        $program = ProfileProgram::findOrFail($id);
+        if ($program->charitable_organization_id != Auth::user()->charitable_organization_id) {
+            $toastr = array(
+                'message' => 'You can only remove your own Charitable Organization\'s pre-existing program(s).',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->with($toastr);
+        }
+
+        # Delete old Program photo if exists
+        $oldImg = $program->program_photo;
+        if ($oldImg) unlink(public_path('upload/charitable_org/programs/') . $oldImg);
+
+        $program->delete();
+
+        $toastr = array(
+            'message' => 'Selected program has been removed successfully.',
+            'alert-type' => 'success'
+        );
         return redirect()->back()->withInput()->with($toastr);
     }
     public function applyVerification()

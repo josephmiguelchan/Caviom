@@ -16,7 +16,7 @@
                     aria-labelledby="headingThree" data-bs-parent="#accordion">
                 <div class="card-body">
                     <div class="table-responsive mb-4">
-                        <table class="table table-bordered table-hover mb-0">
+                        <table class="table table-bordered mb-0">
                             <thead class="table-light">
                                 <tr>
                                     <th scope="1">No.</th>
@@ -39,7 +39,7 @@
                                     <th scope="row">{{ $key+1 }}</th>
                                     <td>{{ $award->name }}</td>
                                     <td>{!! $award->file_link?'<a target="_blank" href="' . $award->file_link .'"> ' . $award->file_link . '</a>':'---'!!}</td>
-                                    <td>{{ $award->created_at }}</a></td>
+                                    <td>{{ Carbon\Carbon::parse($award->created_at)->isoFormat('LL (LT)') }}</a></td>
                                     <td>
                                         <a href="{{route('charity.profile.destroy_awards',$award->id)}}" class="btn btn-rounded btn-sm btn-outline-danger waves-effect waves-light">
                                             <i class="mdi mdi-trash-can-outline"></i>
@@ -152,7 +152,7 @@
                                     </div>
                                 @enderror
                             </div>
-                            <img id="showImageStory" class="img-fluid rounded" alt="Our Story's Photo Preview" src="{{ asset('upload/charitable_org/our_story/'.$secondaryInfo->our_story_photo) ?? asset('backend/assets/images/placeholder-image.jpg') }}" height="300">
+                            <img id="showImageStory" class="img-fluid rounded" alt="Our Story's Photo Preview" src="{{ $secondaryInfo ? asset('upload/charitable_org/our_story/'.$secondaryInfo->our_story_photo) : asset('backend/assets/images/placeholder-image.jpg') }}" height="300">
                         </div>
                     </div>
                 </div>
@@ -198,7 +198,7 @@
                                     </div>
                                 @enderror
                             </div>
-                            <img id="showImageGoal" class="img-fluid rounded" alt="Our Story's Photo Preview" src="{{ asset('upload/charitable_org/our_goal/'.$secondaryInfo->our_goal_photo) ?? asset('backend/assets/images/placeholder-image.jpg') }}">
+                            <img id="showImageGoal" class="img-fluid rounded" alt="Our Story's Photo Preview" src="{{ $secondaryInfo ? asset('upload/charitable_org/our_goal/'.$secondaryInfo->our_goal_photo) : asset('backend/assets/images/placeholder-image.jpg') }}">
                         </div>
                     </div>
                 </div>

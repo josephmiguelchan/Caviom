@@ -137,14 +137,16 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                     # Show Public Profile Controls
                     Route::get('', 'showProfileIndex');
 
-                    # Setup Public Profile (for the 1st Time)
+                    # Setup Public Profile
                     Route::get('/setup', 'setupProfile')->name('.setup');
 
-                    # Save Public Profile (for the 1st Time)
+                    # Save Public Profile
                     Route::post('/save', 'storePrimaryInfo')->name('.store_primary');
                     Route::post('secondary-info/save', 'storeSecondaryInfo')->name('.store_secondary');
                     Route::post('awards/save', 'storeAwards')->name('.store_awards');
                     Route::get('awards/delete/{id}', 'destroyAward')->name('.destroy_awards');
+                    Route::post('programs/save', 'storePrograms')->name('.store_programs');
+                    Route::get('programs/delete/{id}', 'destroyProgram')->name('.destroy_programs');
 
                     # Save Profile Cover Photos using Dropzone
                     Route::get('/cover_photos/gallery', 'getImages')->name('.cover_photos.get');
