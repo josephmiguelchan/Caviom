@@ -94,7 +94,7 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <p class="text-truncate font-size-14 fw-bold mb-2">Charity Admins</p>
-                                        <h4 class="mb-2 text-success">{{(!empty($admins->count()))? $admins->count():'0'}}</h4>
+                                        <h4 class="mb-2 text-success">{{ $admins->count() }}</h4>
                                         <p class="text-muted mb-0">
                                             Active Charity Admin Accounts
                                         </p>
@@ -112,7 +112,7 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <p class="text-truncate font-size-14 fw-bold mb-2">Charity Associates</p>
-                                        <h4 class="mb-2 text-success">{{(!empty($countofAssociates))? $countofAssociates:'0'}}</h4>
+                                        <h4 class="mb-2 text-success">{{ $countofAssociates }}</h4>
 
                                         <p class="text-muted mb-0">
                                             Active Charity Associates
@@ -131,7 +131,7 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <p class="text-truncate font-size-14 fw-bold mb-2">Featured Projects</p>
-                                        <h4 class="mb-2 text-success">6</h4>
+                                        <h4 class="mb-2 text-success">{{ $featuredProjectsCount }}</h4>
                                         <p class="text-muted mb-0">
                                             Posted Projects on Public Profile
                                         </p>
