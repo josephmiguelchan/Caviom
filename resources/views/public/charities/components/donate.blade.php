@@ -68,7 +68,7 @@
         <img class="rounded img-fluid" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" id="showImage" alt="Avatar">
     </div>
     <div class="col-8">
-        <form action="#" method="POST" class="my-5">
+        <form action="{{route('store.donate')}}" method="POST" class="my-5" enctype="multipart/form-data">
             @csrf
             <div class="form-group mb-3 row">
                 <!-- Profile Photo -->
@@ -81,7 +81,7 @@
                                 <i class="mdi mdi-information-outline"></i>
                             </span>
                         </label>
-                        <input class="form-control" name="proof_of_payment_photo" id="proof_of_payment_photo" type="file" value="{{ old('proof_of_payment_photo') }}">
+                        <input class="form-control" name="proof_of_payment_photo" id="proof_of_payment_photo" type="file">
                         @error('proof_of_payment_photo')
                         <div class="text-danger">
                             {{ $message }}
@@ -92,9 +92,9 @@
 
                 <!-- Email Address -->
                 <div class="col-md-6">
-                    <label for="email_address" class="form-label">*Email Address</label>
-                    <input class="form-control" name="email" id="email_address" value="{{ old('email_address') }}" required>
-                    @error('email_address')
+                    <label for="email" class="form-label">*Email Address</label>
+                    <input class="form-control" name="email" id="email" value="{{ old('email') }}" required>
+                    @error('email')
                     <div class="text-danger">
                         {{ $message }}
                     </div>
@@ -148,9 +148,9 @@
                         <label for="mode_of_donation" class="form-label">Mode of Donation Used</label>
                         <select class="form-select select2-search-disable" name="mode_of_donation" id="mode_of_donation" aria-label="Select method">
                             <!-- For each mode of donations of Charitable Organization, display each option as item -->
-                            <option value="" selected>Select mode of donation...</option>
-                            <option value="GCash">GCash</option>
-                            <option value="BDO">BDO</option>
+                            <option selected>Select mode of donation...</option>
+                            <option value="GCash" {{old('mode_of_donation')=='GCash'?'selected':''}}>GCash</option>
+                            <option value="BDO" {{old('mode_of_donation')=='BDO'?'selected':''}}>BDO</option>
                         </select>
                         @error('mode_of_donation')
                             <div class="text-danger">
@@ -193,7 +193,7 @@
             <!-- Message -->
             <label for="message" class="form-label">Message</label>
             <textarea class="form-control" name="message" id="message" rows="4" maxlength="300"
-                placeholder="Max. of 100 Characters only..."></textarea>
+                placeholder="Max. of 100 Characters only...">{{old('message')}}</textarea>
             @error('message')
                 <div class="text-danger">
                     {{ $message }}
@@ -201,8 +201,16 @@
             @enderror
 
             <!-- Put captcha test here -->
-            <code>PUT CAPTCHA HERE (Placeholder only)</code>
-
+            <div name="captcha" class="mt-5">
+                {!! NoCaptcha::renderJs() !!}
+                {!! NoCaptcha::display() !!}
+                @error('g-recaptcha-response')
+                    <div class="text-danger">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+      
 
             <button type="submit" class="btn btn-rounded btn-dark waves-effect waves-light w-lg float-end mt-3 mb-5">Submit</button>
 
