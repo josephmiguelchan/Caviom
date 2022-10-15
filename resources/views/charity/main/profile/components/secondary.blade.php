@@ -29,8 +29,8 @@
                             <tbody>
                             @if ($awards->count() == 0)
                             <tr>
-                                <td colspan="5" class="text-center small text-muted">
-                                    Your Charitable Organization currently has no awards.
+                                <td colspan="5" class="text-center text-black-50 fst-italic">
+                                    <i class="mdi mdi-information-outline"></i> Your Charitable Organization currently has no awards.
                                 </td>
                             </tr>
                             @endif
@@ -90,18 +90,18 @@
                     </div>
 
                     <div class="row px-3">
-                        <div class="float-end">
-                            <span class="text-muted font-size-12 mt-2">
-                                <em>
-                                    Max of 5 awards only.
-                                </em>
-                            </span>
-                        </div>
                         <ul class="list-inline mb-0 mt-4 text-center">
                             <button type="submit" class="btn btn-outline-dark btn-rounded w-xl waves-effect waves-light w-50" {{ $awards->count()>=5?'disabled':'' }}>
                                 <i class="mdi mdi-plus"></i> Add Award
                             </button>
                         </ul>
+                        @if ($awards->count() >= 5)
+                        <span class="text-muted text-center font-size-12 mt-2">
+                            <em>
+                                Max of 5 awards only.
+                            </em>
+                        </span>
+                        @endif
                     </div>
 
 

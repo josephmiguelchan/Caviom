@@ -147,6 +147,8 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                     Route::get('awards/delete/{id}', 'destroyAward')->name('.destroy_awards');
                     Route::post('programs/save', 'storePrograms')->name('.store_programs');
                     Route::get('programs/delete/{id}', 'destroyProgram')->name('.destroy_programs');
+                    Route::post('donation-mode/save', 'storeDonationModes')->name('.store_donations');
+                    Route::get('donation-mod/delete/{id}', 'destroyDonationModes')->name('.destroy_donation_mode');
 
                     # Save Profile Cover Photos using Dropzone
                     Route::get('/cover_photos/gallery', 'getImages')->name('.cover_photos.get');

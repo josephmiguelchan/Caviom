@@ -21,7 +21,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th scope="1">No.</th>
-                                    <th>Program Name</th>
+                                    <th>Name</th>
                                     <th>Description</th>
                                     <th>Photo</th>
                                     <th>Date Created</th>
@@ -31,8 +31,8 @@
                             <tbody>
                             @if ($programs->count() == 0)
                             <tr>
-                                <td colspan="6" class="text-center small text-muted">
-                                    Your Charitable Organization currently has no programs / activities.
+                                <td colspan="6" class="text-center text-black-50 fst-italic">
+                                    <i class="mdi mdi-information-outline"></i> Your Charitable Organization currently has no programs / activities.
                                 </td>
                             </tr>
                             @endif
@@ -112,21 +112,22 @@
                         <div class="col-12">
                             <span class="text-muted font-size-12 mt-2">
                                 <em>
-                                    Max of 5 programs / activities only. At least one (1) Program or Activity is required.
+                                    Mininum of 1, maximum of 5 programs / activities only.
                                 </em>
                             </span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 text-center">
-                            <button type="submit" class="btn btn-dark btn-rounded waves-effect waves-light w-100 mt-5" style="background-color: #62896d">
+                            <button type="submit" class="btn btn-dark btn-rounded waves-effect waves-light w-100 mt-5" {{$programs->count()>=5 ? 'disabled':''}}
+                                style="background-color: #62896d">
                                 <i class="mdi mdi-plus"></i> Add Program / Activity
                             </button>
                         </div>
                     </div>
                     <p class="text-muted text-center font-size-12 mt-1">
                         <em>
-                            Please click on <strong>Add </strong> first before proceeding to the next.
+                            {!! $donationModes->count()>=5 ? 'Sorry, a max of 5 programs / activities have already been reached.' : 'Please click on <strong>Add</strong> first before proceeding to the next.' !!}
                         </em>
                     </p>
 
