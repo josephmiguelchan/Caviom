@@ -7,6 +7,7 @@ use App\Models\Admin\order;
 use App\Models\Charity\Profile\ProfileAward;
 use App\Models\Charity\Profile\ProfileCoverPhoto;
 use App\Models\Charity\Profile\ProfilePrimaryInfo;
+use App\Models\Charity\Profile\ProfileProgram;
 use App\Models\Charity\Profile\ProfileSecondaryInfo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -76,5 +77,10 @@ class CharitableOrganization extends Model
     public function awards()
     {
         return $this->hasMany(ProfileAward::class, 'charitable_organization_id', 'id');
+    }
+
+    public function programs()
+    {
+        return $this->hasMany(ProfileProgram::class, 'charitable_organization_id', 'id');
     }
 }

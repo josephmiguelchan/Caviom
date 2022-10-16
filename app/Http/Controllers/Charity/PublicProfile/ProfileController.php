@@ -472,6 +472,17 @@ class ProfileController extends Controller
             return redirect()->back()->withInput()->with($toastr);
         }
 
+        # Prevent the user from deleting the program if only one left is remaining.
+        $programs = ProfileProgram::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
+        if ($programs->count() == 1) {
+            $toastr = array(
+                'message' => 'A minimum of one (1) program / activity is required.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->with($toastr);
+        }
+
         # Delete old Program photo if exists
         $oldImg = $program->program_photo;
         if ($oldImg) unlink(public_path('upload/charitable_org/programs/') . $oldImg);
@@ -536,6 +547,17 @@ class ProfileController extends Controller
         if ($donationMode->charitable_organization_id != Auth::user()->charitable_organization_id) {
             $toastr = array(
                 'message' => 'You can only remove your own Charitable Organization\'s pre-existing donation mode(s).',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->with($toastr);
+        }
+
+        # Prevent the user from deleting the mode of donation if only one left is remaining.
+        $donationModes = ProfileModeOfDonation::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
+        if ($donationModes->count() == 1) {
+            $toastr = array(
+                'message' => 'A minimum of one (1) mode of donation is required.',
                 'alert-type' => 'error'
             );
 
