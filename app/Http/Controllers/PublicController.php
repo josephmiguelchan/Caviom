@@ -116,7 +116,6 @@ class PublicController extends Controller
             return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
         }
 
-
         $donate = new Lead;
         $donate->code = Str::uuid()->toString();
         $donate->charitable_organization_id = $charity->id;
@@ -124,7 +123,7 @@ class PublicController extends Controller
         # Insert Proof of Payment photo
         if ($request->file('proof_of_payment_photo')) {
             $file = $request->file('proof_of_payment_photo');
-            $filename = date('YmdHi') . '.' . $file->getClientOriginalExtension();
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('upload/charitable_org/donates/'), $filename);
             $donate->proof_of_payment_photo = $filename;
         }
