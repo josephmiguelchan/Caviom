@@ -374,7 +374,7 @@ class GiftGivingController extends Controller
             $log->charitable_organization_id = Auth::user()->charitable_organization_id;
             $log->table_name = 'Gift Giving';
             $log->record_id = $GiftGiving->code;
-            $log->action = 'Charity Admin generated tickets for the Gift Giving [' . $GiftGiving->name . '] with batch no. ' . $GiftGiving->batch_no . '.';
+            $log->action =  Auth::user()->role . ' generated tickets for the Gift Giving [' . $GiftGiving->name . '] with batch no. ' . $GiftGiving->batch_no . '.';
             $log->performed_at = Carbon::now();
             $log->save();
 
