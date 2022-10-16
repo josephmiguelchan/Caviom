@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Admin\FeaturedProject;
 use App\Models\Admin\order;
+use App\Models\Charity\Profile\ProfilePrimaryInfo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -52,5 +53,10 @@ class CharitableOrganization extends Model
     public function orders()
     {
         return $this->hasMany(order::class, 'charitable_organization_id', 'id');
+    }
+
+    public function primaryInfo()
+    {
+        return $this->hasOne(ProfilePrimaryInfo::class, 'charitable_organization_id', 'id');
     }
 }

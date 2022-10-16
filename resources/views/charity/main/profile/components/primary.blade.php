@@ -162,16 +162,16 @@
                                     <select class="form-control select2" name="category" >
                                         <option disabled hidden selected>Select a category</option>
 
-                                        <option value="Community" {{$primaryInfo?($primaryInfo->category=='Community'?'selected':''):(old('category')=='Community'?'selected':'')}}>Community Development</option>
+                                        <option value="Community Development" {{$primaryInfo?($primaryInfo->category=='Community Development'?'selected':''):(old('category')=='Community Development'?'selected':'')}}>Community Development</option>
                                         <option value="Education" {{$primaryInfo?($primaryInfo->category=='Education'?'selected':''):(old('category')=='Education'?'selected':'')}}>Education</option>
-                                        <option value="Human" {{$primaryInfo?($primaryInfo->category=='Human'?'selected':''):(old('category')=='Human'?'selected':'')}}>Human</option>
+                                        <option value="Humanities" {{$primaryInfo?($primaryInfo->category=='Humanities'?'selected':''):(old('category')=='Humanities'?'selected':'')}}>Humanities</option>
                                         <option value="Health" {{$primaryInfo?($primaryInfo->category=='Health'?'selected':''):(old('category')=='Health'?'selected':'')}}>Health</option>
                                         <option value="Environment" {{$primaryInfo?($primaryInfo->category=='Environment'?'selected':''):(old('category')=='Environment'?'selected':'')}}>Environmental</option>
-                                        <option value="SocialWelfare" {{$primaryInfo?($primaryInfo->category=='SocialWelfare'?'selected':''):(old('category')=='SocialWelfare'?'selected':'')}}>Social Welfare</option>
+                                        <option value="Social Welfare" {{$primaryInfo?($primaryInfo->category=='Social Welfare'?'selected':''):(old('category')=='Social Welfare'?'selected':'')}}>Social Welfare</option>
                                         <option value="Corporate" {{$primaryInfo?($primaryInfo->category=='Corporate'?'selected':''):(old('category')=='Corporate'?'selected':'')}}>Corporate</option>
                                         <option value="Church" {{$primaryInfo?($primaryInfo->category=='Church'?'selected':''):(old('category')=='Church'?'selected':'')}}>Church</option>
                                         <option value="Livelihood" {{$primaryInfo?($primaryInfo->category=='Livelihood'?'selected':''):(old('category')=='Livelihood'?'selected':'')}}>Livelihood</option>
-                                        <option value="SportsVolunteerism" {{$primaryInfo?($primaryInfo->category=='SportsVolunteerism'?'selected':''):(old('category')=='SportsVolunteerism'?'selected':'')}}>Sports Volunteerism</option>
+                                        <option value="Sports Volunteerism" {{$primaryInfo?($primaryInfo->category=='Sports Volunteerism'?'selected':''):(old('category')=='Sports Volunteerism'?'selected':'')}}>Sports Volunteerism</option>
 
                                     </select>
                                     @error('category')
