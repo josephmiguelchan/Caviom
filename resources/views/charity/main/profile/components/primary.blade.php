@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body" id="dZUpload">
                 <h4 class="card-title">Upload Cover Photos of your Charitable Organization</h4>
-                <p class="card-title-desc">Please upload at least one (1) cover photo, up to 5 cover photos. Maximum of 2MB in file size only.</p>
+                <p class="card-title-desc">Please upload at least one (1) cover photo, up to 5 cover photos. Maximum of 2MB in file size only. </p>
 
                 <form action="{{route('charity.profile.cover_photos.save')}}" method="POST" class="dropzone" enctype="multipart/form-data"
                     id="myGreatDropzone">
@@ -24,6 +24,8 @@
                         <h4>Drop files here or click to upload.</h4>
                     </div>
                 </form>
+
+                <p class="small text-muted mt-2 float-end mb-0">Recommended image size of 1920x360.</p>
 
                 {{-- <div class="float-end mt-4 p-1">
                     <button type="button" class="btn btn-primary waves-effect waves-light w-lg" id="uploadFile">

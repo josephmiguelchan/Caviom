@@ -45,7 +45,7 @@
 
     <div class="row portfolio-container" data-aos="fade-up">
         @php
-            $defaultPhoto = asset('upload/charitable_org/profile_photo/no_avatar.png');
+            $defaultPhoto = asset('upload/charitable_org/profile_photo/default.png');
         @endphp
 
         @foreach ($charities as $charity)
