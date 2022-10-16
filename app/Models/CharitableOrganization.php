@@ -4,8 +4,10 @@ namespace App\Models;
 
 use App\Models\Admin\FeaturedProject;
 use App\Models\Admin\order;
+use App\Models\Charity\Profile\ProfileAward;
 use App\Models\Charity\Profile\ProfileCoverPhoto;
 use App\Models\Charity\Profile\ProfilePrimaryInfo;
+use App\Models\Charity\Profile\ProfileSecondaryInfo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -61,8 +63,18 @@ class CharitableOrganization extends Model
         return $this->hasOne(ProfilePrimaryInfo::class, 'charitable_organization_id', 'id');
     }
 
+    public function secondaryInfo()
+    {
+        return $this->hasOne(ProfileSecondaryInfo::class, 'charitable_organization_id', 'id');
+    }
+
     public function coverPhotos()
     {
         return $this->hasMany(ProfileCoverPhoto::class, 'charitable_organization_id', 'id');
+    }
+
+    public function awards()
+    {
+        return $this->hasMany(ProfileAward::class, 'charitable_organization_id', 'id');
     }
 }
