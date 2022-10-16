@@ -98,7 +98,7 @@
 
                             <div class="col-lg-3">
                                 <div class="mb-3">
-                                    <button type="button" onclick="location.href='{{route('charities.view', Auth::user()->charity->code)}}'" target="_blank"
+                                    <button type="button" onclick="location.href='{{Auth::user()->charity->profile_status == 'Visible' ? route('charities.view', Auth::user()->charity->code) : '' }}'" target="_blank"
                                         class="btn btn-secondary w-100 waves-effect waves-light" {{Auth::user()->charity->profile_status != 'Visible' ? 'disabled' : ''}}>
                                         <i class="mdi mdi-eye-outline"></i> View Public Profile
                                     </button>

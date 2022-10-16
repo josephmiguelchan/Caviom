@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin\FeaturedProject;
 use App\Models\CharitableOrganization;
 use App\Models\Charity\Public\Lead;
 
@@ -41,6 +42,9 @@ class PublicController extends Controller
     public function viewCharity($code) // Uncomment the $code here
     {
         $charity = CharitableOrganization::where('code', $code)->firstOrfail();
+        $featuredProjects = FeaturedProject::where('charitable_organization_id', $charity->id)
+            ->where('approval_status', 'Approved')->where('visibility_status', 'Visible')
+            ->latest()->get();
 
         if ($charity->profile_status != 'Visible') {
             $notification = array(
@@ -54,11 +58,27 @@ class PublicController extends Controller
         $charity->view_count += 1;
         $charity->save();
 
-        return view('public.charities.view', compact('charity'));
+        return view('public.charities.view', compact(['charity', 'featuredProjects']));
     }
-    public function viewFeaturedProject()
+    public function viewFeaturedProject($code)
     {
-        return view('public.charities.components.feat-projects.view');
+        $fp = FeaturedProject::where('code', $code)->firstOrFail();
+
+        # Status Must be visible and approved, otherwise, throw error toastr
+        if ($fp->visibility_status != 'Visible' and $fp->verification_status != 'Approved') {
+            $notification = array(
+                'message' => 'Sorry, this Featured Project is currently not visible to the public.',
+                'alert-type' => 'error',
+            );
+
+            return redirect()->back()->with($notification);
+        }
+
+        $fps = FeaturedProject::where('approval_status', 'Approved')
+            ->where('visibility_status', 'Visible')
+            ->latest()->take(6)->get();
+
+        return view('public.charities.components.feat-projects.view', compact(['fp', 'fps']));
     }
 
     public function Donate(Request $request, $code)

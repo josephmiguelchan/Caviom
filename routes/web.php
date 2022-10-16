@@ -54,7 +54,7 @@ Route::controller(PublicController::class)->group(function () {
         Route::get('/{code}', 'viewCharity')->name('.view');
 
         # View Specific Featured Project of a Charitable Organization
-        Route::get('/featured-project/f99b68ee-86f6-4f25-9c1f-33523bdd5554', 'viewFeaturedProject')->name('.feat-proj.view');
+        Route::get('/featured-project/{code}', 'viewFeaturedProject')->name('.feat-proj.view');
     });
 });
 

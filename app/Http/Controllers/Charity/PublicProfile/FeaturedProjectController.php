@@ -65,8 +65,8 @@ class FeaturedProjectController extends Controller
             'total_beneficiaries ' => 'nullable|integer|between:1,1000',
             'sponsors' => 'nullable',
             'venue' => 'nullable|max:255',
-            'objective' => 'required',
-            'message' => 'nullable',
+            'objective' => 'required|min:20|max:2000',
+            'message' => 'nullable|min:20|max:2000',
 
             'featured_photo_1' => 'nullable|mimes:jpg,png,jpeg|max:2048|file',
             'featured_photo_2' => 'nullable|mimes:jpg,png,jpeg|max:2048|file',
@@ -212,8 +212,8 @@ class FeaturedProjectController extends Controller
             'total_beneficiaries ' => 'nullable|integer|between:1,1000',
             'sponsors' => 'nullable',
             'venue' => 'nullable|max:255',
-            'objective' => 'required',
-            'message' => 'nullable',
+            'objective' => 'required|min:20|max:2000',
+            'message' => 'nullable|min:20|max:2000',
 
             'featured_photo_1' => 'nullable|mimes:jpg,png,jpeg|max:2048|file',
             'featured_photo_2' => 'nullable|mimes:jpg,png,jpeg|max:2048|file',
