@@ -61,22 +61,28 @@ class PublicController extends Controller
         return view('public.charities.components.feat-projects.view');
     }
 
-    public function Donate(Request $request)
+    public function Donate(Request $request, $code)
     {
+        # Check if the Charitable Organization's UUID Code is Valid
+        $charity = CharitableOrganization::where('code', $code)->firstOrFail();
+
+        # Retrieve the available mode of donations by Charitable Organization for validation later
+        $modesOfDonation = DB::table('profile_mode_of_donations')->where('charitable_organization_id', $charity->id)->pluck('mode')->toArray();
+
         $validator = Validator::make($request->all(), [
             'proof_of_payment_photo' => 'nullable|mimes:jpg,png,jpeg|max:2048|file',
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255'],
             'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
-            'mode_of_donation' => ['required', Rule::in(['BDO', 'GCash'])], // Must be in array of Charitable Organization's mode of payments only.
+            'mode_of_donation' => ['required', Rule::in($modesOfDonation)], // Must be in array of Charitable Organization's mode of payments only.
             'amount' => ['required', 'numeric', 'between:0,999999.99'],
             'paid_at' => ['required', 'date', 'before:' . now()->addDay()->toDateString(), 'after:' . now()->subYears(3)->toDateString()],
             'message' => ['nullable', 'max:500'],
             'g-recaptcha-response' => ['required', 'captcha'],
         ], [
-            'paid_at.before' => 'Earliest date of payment must not be more than one (1) day before tomorrow.',
-            'paid_at.after' => 'Latest date of payment must not be more than three (3) years after today.',
+            'paid_at.before' => 'Earliest date of payment must not be more than one (1) day after today.',
+            'paid_at.after' => 'Latest date of payment must not be more than three (3) years before today.',
             'g-recaptcha-response.captcha' => 'Captcha error! Please try again',
             'g-recaptcha-response.required' => 'Please verify that you are not a robot.',
         ]);
@@ -93,7 +99,7 @@ class PublicController extends Controller
 
         $donate = new Lead;
         $donate->code = Str::uuid()->toString();
-        $donate->charitable_organization_id = 3;    //hardcoded because unfished public profile
+        $donate->charitable_organization_id = $charity->id;
 
         # Insert Proof of Payment photo
         if ($request->file('proof_of_payment_photo')) {

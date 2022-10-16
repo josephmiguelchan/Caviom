@@ -1,24 +1,8 @@
 <h1 class="text-center display-3 my-5">Donate</h1>
 
-<!-- If profile status == 'Declined' -->
-{{-- <div class="row justify-content-center">
-    <div class="col-8">
-        <p class="m-5">
-            Sorry, Caviom prohibits unverified Charitable Organizations from posting their mode of donation(s).
-            This is to ensure that Caviom will be free from fraudulent activities and not by any manner of means be used as a tool to deceive
-            people nor cause any harm.
-        </p>
-        <p class="m-5">
-            You may still reach out to them through their provided contact information.
-            However, Caviom will not be liable for any malicious, fraudulent, or deceitful transactions made outside its platform.
-        </p>
-    </div>
-</div>
-<!-- End if --> --}}
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<!-- If profile status == 'Verified' -->
+@if ($charity->verification_status == 'Verified')
 <div class="row justify-content-center">
     <div class="col-8">
         <div class="table-responsive">
@@ -32,27 +16,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                <!-- if ($charitable_org->mode_of_donations->count() == 0) -->
-                {{-- <tr>
+                @if ($charity->donationModes->count() == 0) -->
+                <tr>
                     <td colspan="4" class="text-center small text-muted">
                         This charitable organization currently has no mode of donation
                     </td>
-                </tr> --}}
-                <!-- end if -->
-                <!-- foreach($charitable_org->mode_of_donations as $key => $item) -->
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>GCash</td>
-                        <td>Juan Dela Cruz</td>
-                        <td>0998-231-5895</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>BDO</td>
-                        <td>Juan Dela Cruz</td>
-                        <td>002434-0159-71</td>
-                    </tr>
-                <!-- endforeach -->
+                </tr>
+                @endif
+                @foreach ($charity->donationModes as $key => $item)
+                <tr>
+                    <th scope="row">{{$key+1}}</th>
+                    <td>{{$item->mode}}</td>
+                    <td>{{$item->account_name}}</td>
+                    <td>{{$item->account_no}}</td>
+                </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>
@@ -68,7 +46,7 @@
         <img class="rounded img-fluid" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" id="showImage" alt="Avatar">
     </div>
     <div class="col-8">
-        <form action="{{route('store.donate')}}" method="POST" class="my-5" enctype="multipart/form-data">
+        <form action="{{route('store.donate', $charity->code)}}" method="POST" class="my-5" enctype="multipart/form-data">
             @csrf
             <div class="form-group mb-3 row">
                 <!-- Profile Photo -->
@@ -142,15 +120,17 @@
             </div>
 
             <div class="form-group mb-3 row">
-                <!-- Account Status -->
+                <!-- Mode of Donation -->
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="mode_of_donation" class="form-label">Mode of Donation Used</label>
-                        <select class="form-select select2-search-disable" name="mode_of_donation" id="mode_of_donation" aria-label="Select method">
-                            <!-- For each mode of donations of Charitable Organization, display each option as item -->
+                        <label for="mode_of_donation" class="form-label">*Mode of Donation Used</label>
+                        <select class="form-select select2-search-disable" name="mode_of_donation" id="mode_of_donation" aria-label="Select method" required>
                             <option selected>Select mode of donation...</option>
-                            <option value="GCash" {{old('mode_of_donation')=='GCash'?'selected':''}}>GCash</option>
-                            <option value="BDO" {{old('mode_of_donation')=='BDO'?'selected':''}}>BDO</option>
+
+                            <!-- For each mode of donations of Charitable Organization, display each option as item -->
+                            @foreach ($charity->donationModes as $donationMode)
+                            <option value="{{$donationMode->mode}}" {{old('mode_of_donation')==$donationMode->mode?'selected':''}}>{{$donationMode->mode}}</option>
+                            @endforeach
                         </select>
                         @error('mode_of_donation')
                             <div class="text-danger small">
@@ -222,6 +202,21 @@
         </form>
     </div>
 </div>
+@else
+<div class="row justify-content-center">
+    <div class="col-8">
+        <p class="mb-3">
+            Sorry, Caviom prohibits unverified Charitable Organizations from posting their mode of donation(s).
+            This is to ensure that Caviom will be free from fraudulent activities and not by any manner of means be used as a tool to deceive
+            people nor cause any harm.
+        </p>
+        <p class="mb-5">
+            You may still reach out to them through their provided contact information.
+            However, Caviom will not be liable for any malicious, fraudulent, or deceitful transactions made outside its platform.
+        </p>
+    </div>
+</div>
+@endif
 
 <script type="text/javascript">
     $(document).ready(function() {

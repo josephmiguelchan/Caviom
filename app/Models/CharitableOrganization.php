@@ -6,6 +6,7 @@ use App\Models\Admin\FeaturedProject;
 use App\Models\Admin\order;
 use App\Models\Charity\Profile\ProfileAward;
 use App\Models\Charity\Profile\ProfileCoverPhoto;
+use App\Models\Charity\Profile\ProfileModeOfDonation;
 use App\Models\Charity\Profile\ProfilePrimaryInfo;
 use App\Models\Charity\Profile\ProfileProgram;
 use App\Models\Charity\Profile\ProfileSecondaryInfo;
@@ -82,5 +83,10 @@ class CharitableOrganization extends Model
     public function programs()
     {
         return $this->hasMany(ProfileProgram::class, 'charitable_organization_id', 'id');
+    }
+
+    public function donationModes()
+    {
+        return $this->hasMany(ProfileModeOfDonation::class, 'charitable_organization_id', 'id');
     }
 }
