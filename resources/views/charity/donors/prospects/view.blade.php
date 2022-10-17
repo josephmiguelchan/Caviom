@@ -69,7 +69,7 @@
                                             </span>
                                         </h4>
                                     </dt>
-                                    <dt class="col-md-8 py-2">{{$prospect->total}}</dt>
+                                    <dt class="col-md-8 py-2">₱ {{number_format($prospect->total, 2)}}</dt>
                                 </dl>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                                 <dt class="col-md-8 py-2">
                                     <form action="{{route('add.remarks',$prospect->code)}}" method="POST">
                                         @csrf
-                                        <textarea name="remarks" class="form-control" rows="5" placeholder="Enter remarks for this prospect..." 
+                                        <textarea name="remarks" class="form-control" rows="5" placeholder="Enter remarks for this prospect..."
                                             id="remarks">{{ $prospect->remarks ?? old('remarks') }}</textarea>
                                         <button type="submit" class="btn btn-info btn-rounded waves-effect waves-light w-md mt-2 float-end">
                                             <i class="ri-edit-line"></i> Save

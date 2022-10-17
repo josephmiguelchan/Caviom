@@ -605,13 +605,13 @@ class ProfileController extends Controller
                 'alert-type' => 'error'
             );
             return redirect()->back()->with($toastr);
-        } elseif ($donationModes->count() < 1) {
+        } elseif ($programs->count() < 1) {
             $toastr = array(
                 'message' => 'At least one (1) program / activity is required. Kindly add one and try again.',
                 'alert-type' => 'error'
             );
             return redirect()->back()->with($toastr);
-        } elseif ($programs->count() < 1) {
+        } elseif ($donationModes->count() < 1) {
             $toastr = array(
                 'message' => 'At least one (1) mode of donation is required. Kindly add one and try again.',
                 'alert-type' => 'error'
