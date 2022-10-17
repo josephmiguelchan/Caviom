@@ -132,9 +132,25 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
 
             Route::get('/prospects/view/{code}', [ProspectController::class, 'ViewProspect'])->name('prospects.view');
             // To add - Route::post() for Moving Prospects back to Leads table and deleting the current record in Prospects table.
-            // Route::get('/leads/move/back/leads/{code}', [ProspectController::class, 'MoveToLeads'])->name('move.back.leads');
+            Route::get('/leads/move/back/leads/{code}', [ProspectController::class, 'MoveToLeads'])->name('move.back.leads');
+
+            # Export Donation Report  with PDF
+            Route::get('/export/DonationReport', [ProspectController::class, 'GenerateDonationReport'])->name('generate.donation.report');
 
             // To add - Route::post() for editing the remarks of Prospects.
+            Route::post('/prospect/add/remarks/{code}', [ProspectController::class, 'AddRemarks'])->name('add.remarks');
+
+
+            # Add to opportunity(volunteer)
+            Route::get('/prospects/add/opportunity/{code}', [ProspectController::class, 'AddasOpportunityBenefactor'])->name('add.to.benefactor');
+
+
+            # Add to opportunity(Benefactor)
+            Route::get('/prospects/add/volunteer/{code}', [ProspectController::class, 'AddasOpportunityVolunteer'])->name('add.to.volunteer');
+
+
+
+
         });
 
         # Our Charitable Organization

@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Models\Admin\FeaturedProject;
 use App\Models\Admin\order;
+use App\Models\Charity\Public\Lead;
+use App\Models\Charity\Public\Prospect;
+use App\Models\Charity\Public\ProspectTrail;
 use App\Models\Charity\Profile\ProfileAward;
 use App\Models\Charity\Profile\ProfileCoverPhoto;
 use App\Models\Charity\Profile\ProfileModeOfDonation;
@@ -58,6 +61,20 @@ class CharitableOrganization extends Model
     public function orders()
     {
         return $this->hasMany(order::class, 'charitable_organization_id', 'id');
+    }
+    public function leads()
+    {
+        return $this->hasMany(Lead::class, 'charitable_organization_id', 'id');
+    }
+
+    public function prospects()
+    {
+        return $this->hasMany(Prospect::class, 'charitable_organization_id', 'id');
+    }
+
+    public function prospectstrail()
+    {
+        return $this->hasMany(ProspectTrail::class, 'charitable_organization_id', 'id');
     }
 
     public function primaryInfo()

@@ -32,13 +32,13 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-download"></i> Export to PDF</a>
+                                <a href="{{route('generate.donation.report')}}" class="dropdown-item"><i class="mdi mdi-download"></i> Export to PDF</a>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
-                            <h2><strong>PHP 5,403.23</strong></h2>
+                            <h2><strong>PHP {{!empty($totaldonation) ? number_format($totaldonation,2) : 0}}</strong></h2> 
                             <p>Total Acknowledge Donations</p>
                         </div>
                         <div class="col-lg-8 mt-2">
@@ -77,20 +77,22 @@
 
 
                         <tbody>
+                            @foreach ($prospects as $key=> $item)
                             <tr>
-                                <td>1</td>
-                                <td>Salumbides</td>
-                                <td>Eveline</td>
-                                <td>Mariano</td>
-                                <td>evelinemsalumbides@gmail.com</td>
-                                <td>GCASH</td>
-                                <td>2022/04/18</td>
+                                <td>{{$key+1}}</td>
+                                <td>{{$item->last_name}}</td>
+                                <td>{{$item->first_name}}</td>
+                                <td>{{$item->middle_name}}</td>
+                                <td>{{$item->email_address}}</td>
+                                <td>{{$item->mode_of_donation}}</td>
+                                <td>{{$item->paid_at}}</td>
                                 <td>
-                                    <a href="{{ route('prospects.view') }}" class="btn btn-outline-primary waves-effect waves-light btn-sm">
+                                    <a href="{{ route('prospects.view',$item->code) }}" class="btn btn-outline-primary waves-effect waves-light btn-sm">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
 
