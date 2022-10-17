@@ -44,20 +44,22 @@
 
 
                         <tbody>
+                            @foreach ($leads as $key => $item)
                             <tr>
-                                <td>1</td>
-                                <td>Salumbides</td>
-                                <td>Eveline</td>
-                                <td>Mariano</td>
-                                <td>evelinemsalumbides@gmail.com</td>
-                                <td>GCASH</td>
-                                <td>2022/04/18</td>
+                                <td>{{$key+1}}</td>
+                                <td>{{$item->last_name}}</td>
+                                <td>{{$item->first_name}}</td>
+                                <td>{{$item->middle_name}}</td>
+                                <td>{{$item->email_address}}</td>
+                                <td>{{$item->mode_of_donation}}</td>
+                                <td>{{$item->paid_at}}</td>
                                 <td>
-                                    <a href="{{ route('leads.view') }}" class="btn btn-outline-primary waves-effect waves-light btn-sm">
+                                    <a href="{{ route('leads.view',$item->code) }}" class="btn btn-outline-primary waves-effect waves-light btn-sm">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
 

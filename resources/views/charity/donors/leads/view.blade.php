@@ -28,7 +28,7 @@
                 <div class="card-body p-5">
                     <div class="row">
                         <div class="col-lg-8">
-                            <h2><strong>Salumbides, Eveline M.</strong></h2>
+                            <h2><strong>{{$lead->last_name.', '.$lead->first_name.' '.$lead->middle_name}}</strong></h2>
                         </div>
                         <div class="col-lg-4 mt-4">
                             <a href="{{route('leads.all')}}" class="text-link float-end">
@@ -44,30 +44,32 @@
                             <div class="row">
                                 <dl class="row col-md-12">
                                     <dt class="col-md-4 py-2"><h4 class="font-size-15"><strong>Amount Donated:</strong></h4></dt>
-                                    <dt class="col-md-8 py-2">PHP 5.40</dt>
+                                    <dt class="col-md-8 py-2">₱ {{number_format($lead->amount,2)}}</dt>
                                     <dt class="col-md-4 py-2"><h4 class="font-size-15"><strong>Mode of Donation:</strong></h4></dt>
-                                    <dt class="col-md-8 py-2">GCASH</dt>
+                                    <dt class="col-md-8 py-2">{{$lead->mode_of_donation}}</dt>
                                     <dt class="col-md-4 py-2"><h4 class="font-size-15"><strong>Message:</strong></h4></dt>
                                     <dt class="col-md-8 py-2">
                                         <em>
-                                            Ang donasyon na ito ay pangdagdag sa project niyo para sa mga victims ng volcanic erruption sa Taal.
-                                            Give ko ang aking contact dahil nais kong mag-share at mag-donate sa gagawin niyong projects para sa
-                                            mga street dwellers.
+                                           {{$lead->message}}
                                         </em>
                                     </dt>
                                     <dt class="col-md-4 py-2"><h4 class="font-size-15"><strong>Date of Payment:</strong></h4></dt>
-                                    <dt class="col-md-8 py-2">June 17, 2021</dt>
+                                    <dt class="col-md-8 py-2">{{Carbon\Carbon::parse($lead->paid_at)->isoFormat('LL (h:mm A)')}}</dt>
                                     <dt class="col-md-4 py-2"><h4 class="font-size-15"><strong>Email Address:</strong></h4></dt>
-                                    <dt class="col-md-8 py-2">evelynsalumbides@gmail.com</dt>
+                                    <dt class="col-md-8 py-2">{{$lead->email_address}}</dt>
                                 </dl>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="text-center">
                                 <h4 class="font-size-15"><strong>Proof of Payment</strong></h4>
-                                <a class="image-popup-no-margins" title="Gcash Receipt of Eveline" href="{{ asset('upload/gcash-sample-receipt.png') }}">
-                                    <img class="img-fluid rounded" alt="Donation Proof" src="{{ asset('upload/gcash-sample-receipt.png') }}" style="max-height: 60vh">
+                                @isset($lead->proof_of_payment_photo)
+                                <a class="image-popup-no-margins" title="{{$lead->mode_of_donation}} Receipt - {{$lead->first_name}}" href="{{ url('upload/charitable_org/donates/'.$lead->proof_of_payment_photo) }}">
+                                    <img class="img-fluid rounded" alt="Donation Proof" src="{{ url('upload/charitable_org/donates/'.$lead->proof_of_payment_photo) }}" style="max-height: 60vh">
                                 </a>
+                                @else
+                                ---
+                                @endisset
                             </div>
                         </div>
                     </div>
@@ -76,7 +78,7 @@
                         <div class="col-lg-8">
                             <dl class="row col-md-12">
                                 <dt class="col-md-4"><h4 class="font-size-15"><strong>Date Added:</strong></h4></dt>
-                                <dt class="col-md-8">May 20, 2022</dt>
+                                <dt class="col-md-8">{{Carbon\Carbon::parse($lead->created_at)->isoFormat('LL (h:mm A)')}}</dt>
                             </dl>
                         </div>
                         <div class="col-lg-4">
@@ -100,12 +102,12 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Delete the selected lead [<strong> Salumbides, Eveline M. </strong>]?
+                                    <p>Delete the selected lead [<strong>{{$lead->last_name.', '.$lead->first_name.' '.$lead->middle_name}} </strong>] ?
                                     </p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                                    <button type="button" class="btn btn-danger waves-effect waves-light w-sm">Yes</button>
+                                    <button type="button"  class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                                    <a type="button" href="{{route('leads.delete',$lead->code)}}" class="btn btn-danger waves-effect waves-light w-sm">Yes</a>
                                 </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
@@ -121,11 +123,11 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>You are about to add the selected lead [<strong> Salumbides, Eveline M. </strong>] to your prospects. Continue?</p>
+                                    <p>You are about to add the selected lead [<strong>{{$lead->last_name.', '.$lead->first_name.' '.$lead->middle_name}}. </strong>] to your prospects. Continue?</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                                    <button type="button" class="btn btn-success waves-effect waves-light w-sm">Yes</button>
+                                    <a type="button" href="{{route('move.to.prospect',$lead->code)}}" class="btn btn-success waves-effect waves-light w-sm">Yes</a>
                                 </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->

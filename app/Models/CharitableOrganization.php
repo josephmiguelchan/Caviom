@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Models\Admin\FeaturedProject;
 use App\Models\Admin\order;
+use App\Models\Charity\Public\Lead;
+use App\Models\Charity\Public\Prospect;
+use App\Models\Charity\Public\ProspectTrail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -53,4 +56,19 @@ class CharitableOrganization extends Model
     {
         return $this->hasMany(order::class, 'charitable_organization_id', 'id');
     }
+    public function leads()
+    {
+        return $this->hasMany(Lead::class, 'charitable_organization_id', 'id');
+    }
+
+    public function prospects()
+    {
+        return $this->hasMany(Prospect::class, 'charitable_organization_id', 'id');
+    }
+
+    public function prospectstrail()
+    {
+        return $this->hasMany(ProspectTrail::class, 'charitable_organization_id', 'id');
+    }
+    
 }
