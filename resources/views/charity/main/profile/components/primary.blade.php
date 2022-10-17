@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body" id="dZUpload">
                 <h4 class="card-title">Upload Cover Photos of your Charitable Organization</h4>
-                <p class="card-title-desc">Please upload at least one (1) cover photo, up to 5 cover photos. Maximum of 2MB in file size only.</p>
+                <p class="card-title-desc">Please upload at least one (1) cover photo, up to 5 cover photos. Maximum of 2MB in file size only. </p>
 
                 <form action="{{route('charity.profile.cover_photos.save')}}" method="POST" class="dropzone" enctype="multipart/form-data"
                     id="myGreatDropzone">
@@ -24,6 +24,8 @@
                         <h4>Drop files here or click to upload.</h4>
                     </div>
                 </form>
+
+                <p class="small text-muted mt-2 float-end mb-0">Recommended image size of 1920x360.</p>
 
                 {{-- <div class="float-end mt-4 p-1">
                     <button type="button" class="btn btn-primary waves-effect waves-light w-lg" id="uploadFile">
@@ -161,16 +163,18 @@
                                     </label>
                                     <select class="form-control select2" name="category" >
                                         <option disabled hidden selected>Select a category</option>
-                                        <option value="Community" {{($primaryInfo->category=='Community'?'selected':'')??(old('category')=='Community'?'selected':'')}}>Community Development</option>
-                                        <option value="Education" {{($primaryInfo->category=='Education'?'selected':'')??(old('category')=='Education'?'selected':'')}}>Education</option>
-                                        <option value="Human" {{($primaryInfo->category=='Human'?'selected':'')??(old('category')=='Human'?'selected':'')}}>Human</option>
-                                        <option value="Health" {{($primaryInfo->category=='Health'?'selected':'')??(old('category')=='Health'?'selected':'')}}>Health</option>
-                                        <option value="Environment" {{($primaryInfo->category=='Environment'?'selected':'')??(old('category')=='Environment'?'selected':'')}}>Environmental</option>
-                                        <option value="SocialWelfare" {{($primaryInfo->category=='SocialWelfare'?'selected':'')??(old('category')=='SocialWelfare'?'selected':'')}}>Social Welfare</option>
-                                        <option value="Corporate" {{($primaryInfo->category=='Corporate'?'selected':'')??(old('category')=='Corporate'?'selected':'')}}>Corporate</option>
-                                        <option value="Church" {{($primaryInfo->category=='Church'?'selected':'')??(old('category')=='Church'?'selected':'')}}>Church</option>
-                                        <option value="Livelihood" {{($primaryInfo->category=='Livelihood'?'selected':'')??(old('category')=='Livelihood'?'selected':'')}}>Livelihood</option>
-                                        <option value="SportsVolunteerism" {{($primaryInfo->category=='SportsVolunteerism'?'selected':'')??(old('category')=='SportsVolunteerism'?'selected':'')}}>Sports Volunteerism</option>
+
+                                        <option value="Community Development" {{$primaryInfo?($primaryInfo->category=='Community Development'?'selected':''):(old('category')=='Community Development'?'selected':'')}}>Community Development</option>
+                                        <option value="Education" {{$primaryInfo?($primaryInfo->category=='Education'?'selected':''):(old('category')=='Education'?'selected':'')}}>Education</option>
+                                        <option value="Humanities" {{$primaryInfo?($primaryInfo->category=='Humanities'?'selected':''):(old('category')=='Humanities'?'selected':'')}}>Humanities</option>
+                                        <option value="Health" {{$primaryInfo?($primaryInfo->category=='Health'?'selected':''):(old('category')=='Health'?'selected':'')}}>Health</option>
+                                        <option value="Environment" {{$primaryInfo?($primaryInfo->category=='Environment'?'selected':''):(old('category')=='Environment'?'selected':'')}}>Environmental</option>
+                                        <option value="Social Welfare" {{$primaryInfo?($primaryInfo->category=='Social Welfare'?'selected':''):(old('category')=='Social Welfare'?'selected':'')}}>Social Welfare</option>
+                                        <option value="Corporate" {{$primaryInfo?($primaryInfo->category=='Corporate'?'selected':''):(old('category')=='Corporate'?'selected':'')}}>Corporate</option>
+                                        <option value="Church" {{$primaryInfo?($primaryInfo->category=='Church'?'selected':''):(old('category')=='Church'?'selected':'')}}>Church</option>
+                                        <option value="Livelihood" {{$primaryInfo?($primaryInfo->category=='Livelihood'?'selected':''):(old('category')=='Livelihood'?'selected':'')}}>Livelihood</option>
+                                        <option value="Sports Volunteerism" {{$primaryInfo?($primaryInfo->category=='Sports Volunteerism'?'selected':''):(old('category')=='Sports Volunteerism'?'selected':'')}}>Sports Volunteerism</option>
+
                                     </select>
                                     @error('category')
                                         <div class="text-danger small">

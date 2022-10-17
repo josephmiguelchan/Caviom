@@ -57,7 +57,7 @@
                                 <h6 class="text-muted">{{$notification->category}}</h6>
                             </div>
                             <div class="col-lg-4 pt-5 pb-0">
-                                <a href="{{route('notifications.all')}}" class="text-link float-end">
+                                <a href="{{url()->previous()}}" class="text-link float-end">
                                     <i class="ri-arrow-left-line"></i> Go Back
                                 </a>
                             </div>

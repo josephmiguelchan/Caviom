@@ -73,7 +73,7 @@
 
                                         <h4 class="font-size-15 mt-4"><strong>Thanksgiving Message:</strong></h4>
                                         <p>
-                                            {!!$fp->message!!}
+                                            {!! $fp->message ?? '---' !!}
                                         </p>
 
                                         <div class="col-6">
@@ -83,39 +83,39 @@
                                                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                                                     <div class="carousel-inner" role="listbox">
                                                         <div class="carousel-item active">
-                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->cover_photo) }}" alt="Cover Photo" 
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->cover_photo) }}" alt="Cover Photo"
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @isset($fp->photos->featured_photo_1)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_1) }}" alt="First Photo" 
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_1) }}" alt="First Photo"
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @endisset
                                                         @isset($fp->photos->featured_photo_2)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_2) }}" alt="Second Photo" 
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_2) }}" alt="Second Photo"
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @endisset
 
                                                         @isset($fp->photos->featured_photo_3)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_3) }}" alt="Third Photo" 
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_3) }}" alt="Third Photo"
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @endisset
 
                                                         @isset($fp->photos->featured_photo_4)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_4) }}" alt="Fourth Photo" 
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_4) }}" alt="Fourth Photo"
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @endisset
 
                                                         @isset($fp->photos->featured_photo_5)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_5) }}" alt="Fifth Photo" 
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_5) }}" alt="Fifth Photo"
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @endisset
@@ -153,10 +153,10 @@
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Approval Status:</strong></h4></dt>
                                 @if ($fp->approval_status == 'Pending')
                                 <dt class="col-md-8 mb-2"><span class="badge bg-warning">{{$fp->approval_status}}</span></dt>
-                                @elseif($fp->approval_status == 'Approved')         
-                                <dt class="col-md-8 mb-2"><span class="badge bg-success">{{$fp->approval_status}}</span></dt>     
-                                @elseif($fp->approval_status == 'Rejected')         
-                                <dt class="col-md-8 mb-2"><span class="badge bg-danger">Rejected</span></dt> 
+                                @elseif($fp->approval_status == 'Approved')
+                                <dt class="col-md-8 mb-2"><span class="badge bg-success">{{$fp->approval_status}}</span></dt>
+                                @elseif($fp->approval_status == 'Rejected')
+                                <dt class="col-md-8 mb-2"><span class="badge bg-danger">Rejected</span></dt>
                                 @endif
 
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>

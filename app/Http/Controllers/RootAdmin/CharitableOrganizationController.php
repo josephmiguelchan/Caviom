@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CharitableOrganization;
 use App\Models\User;
 use App\Models\Address;
+use App\Models\Admin\FeaturedProject;
 use App\Models\Admin\Notifier;
 use App\Models\AuditLog;
 use App\Models\Notification;
@@ -39,7 +40,10 @@ class CharitableOrganizationController extends Controller
         # Get the count of Associates in the Organization
         $countofAssociates =  User::where('charitable_organization_id', $organizationdetail->id)->where('role', 'Charity Associate')->where('status', 'Active')->count();
 
-        return view('admin.charities.view', compact('organizationdetail', 'admins', 'countofAssociates'));
+        # Get the count of Associates in the Organization
+        $featuredProjectsCount = FeaturedProject::where('charitable_organization_id', $organizationdetail->id)->where('approval_status', 'Approved')->count();
+
+        return view('admin.charities.view', compact('organizationdetail', 'admins', 'countofAssociates', 'featuredProjectsCount'));
     }
 
 

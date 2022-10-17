@@ -98,19 +98,15 @@
 
                             <div class="col-lg-3">
                                 <div class="mb-3">
-                                    <button type="button" onclick="location.href='{{route('charities.view')}}'" target="_blank"
-                                        class="btn btn-secondary w-100 waves-effect waves-light" {{Auth::user()->charity->profile_status == 'Locked'?'disabled':''}}>
+                                    <button type="button" onclick="location.href='{{Auth::user()->charity->profile_status == 'Visible' ? route('charities.view', Auth::user()->charity->code) : '' }}'" target="_blank"
+                                        class="btn btn-secondary w-100 waves-effect waves-light" {{Auth::user()->charity->profile_status != 'Visible' ? 'disabled' : ''}}>
                                         <i class="mdi mdi-eye-outline"></i> View Public Profile
                                     </button>
-                                    @if(Auth::user()->charity->profile_status == 'Locked')
+                                    @if(Auth::user()->charity->profile_status != 'Visible')
                                     <p class="text-muted text-center font-size-12">
                                         <em>
                                             <small>
-                                                <span data-bs-toggle="tooltip" data-bs-placement="left"
-                                                    title="If you wish to appeal, send email to support@caviom.org"
-                                                    data-bs-original-title="yes">
-                                                    <i class="mdi mdi-information-outline"></i>
-                                                </span>Public Profile locked due to violation/s.
+                                                Public Profile is {{Auth::user()->charity->profile_status}}
                                             </small>
                                         </em>
                                     </p>
@@ -134,10 +130,12 @@
                                             data-bs-toggle="dropdown" aria-expanded="false" {{Auth::user()->charity->profile_status == 'Locked'?'disabled':''}}>
                                             Set Visibility <i class="mdi mdi-chevron-down"></i>
                                         </button>
+                                        @unless (Auth::user()->charity->profile_status == 'Locked')
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                             <a class="dropdown-item" href="#">Hidden</a>
                                             <a class="dropdown-item" href="#">Visible</a>
                                         </div>
+                                        @endunless
                                     </div>
                                     @if(Auth::user()->charity->profile_status == 'Locked')
                                     <p class="text-muted text-center font-size-12">

@@ -1,7 +1,7 @@
 <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
 
-        <h1 class="logo mr-auto"><a href="{{url('/')}}">
+        <h1 class="logo mr-auto"><a href="{{ Auth::user() ? route('dashboard') : route('home')}}">
             <img src="{{ asset('backend/assets/images/Caviom-dark.png') }}" alt="logo-sm" height="52">
         </h1>
 

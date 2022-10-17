@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
         'admin.only' => \App\Http\Middleware\IsRootAdmin::class,
         'profile.set' => \App\Http\Middleware\IsProfileSet::class,
+        'charity.user' => \App\Http\Middleware\IsCharityUser::class,
     ];
 }

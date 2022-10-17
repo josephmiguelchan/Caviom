@@ -42,7 +42,7 @@ Route::controller(PublicController::class)->group(function () {
     Route::get('/about', 'showAbout')->name('about');
     Route::get('/services', 'showServices')->name('services');
     Route::get('/contact', 'showContact')->name('contact');
-    Route::post('/Donate','Donate')->name('store.donate');
+    Route::post('/Donate/{code}', 'Donate')->name('store.donate');
 
     # Charity Public Profile Pages
     Route::name('charities')->prefix('/charitable-organizations')->middleware(['prevent-back-history'])->group(function () {
@@ -51,10 +51,10 @@ Route::controller(PublicController::class)->group(function () {
         Route::get('/', 'showAllCharities')->name('.all');
 
         # View Specific Charitable Organization
-        Route::get('/5802112d-7751-431d-8caf-5368372f0b1c', 'viewCharity')->name('.view');
+        Route::get('/{code}', 'viewCharity')->name('.view');
 
         # View Specific Featured Project of a Charitable Organization
-        Route::get('/featured-project/f99b68ee-86f6-4f25-9c1f-33523bdd5554', 'viewFeaturedProject')->name('.feat-proj.view');
+        Route::get('/featured-project/{code}', 'viewFeaturedProject')->name('.feat-proj.view');
     });
 });
 
@@ -101,13 +101,11 @@ Route::name('notifications')->middleware(['auth', 'verified', 'prevent-back-hist
 });
 
 # Charity Users Group
-Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function () {
+Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])->group(function () {
 
     Route::prefix('/charity')->group(function () {
         # Donors and Donations Group
         Route::prefix('/donors-and-donations')->group(function () {
-
-            # Leads
 
             # All Leads
             Route::get('/leads', [LeadController::class, 'AllLeads'])->name('leads.all');
@@ -167,14 +165,21 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                     # Show Public Profile Controls
                     Route::get('', 'showProfileIndex');
 
-                    # Setup Public Profile (for the 1st Time)
+                    # Setup Public Profile
                     Route::get('/setup', 'setupProfile')->name('.setup');
 
-                    # Save Public Profile (for the 1st Time)
-                    Route::post('/save', 'storePrimaryInfo')->name('.store_primary');
+                    # Save Public Profile
+                    Route::post('primary-info/save', 'storePrimaryInfo')->name('.store_primary');
                     Route::post('secondary-info/save', 'storeSecondaryInfo')->name('.store_secondary');
                     Route::post('awards/save', 'storeAwards')->name('.store_awards');
                     Route::get('awards/delete/{id}', 'destroyAward')->name('.destroy_awards');
+                    Route::post('programs/save', 'storePrograms')->name('.store_programs');
+                    Route::get('programs/delete/{id}', 'destroyProgram')->name('.destroy_programs');
+                    Route::post('donation-mode/save', 'storeDonationModes')->name('.store_donations');
+                    Route::get('donation-mod/delete/{id}', 'destroyDonationModes')->name('.destroy_donation_mode');
+
+                    # Publish public profile
+                    Route::post('publish', 'publishProfile')->name('.publish');
 
                     # Save Profile Cover Photos using Dropzone
                     Route::get('/cover_photos/gallery', 'getImages')->name('.cover_photos.get');
@@ -187,8 +192,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                     # To add: Re-apply for Verification (for Declined)
                     Route::get('/reapply-for-verification', 'reapplyVerification')->name('.reverify');
 
-                    # To add: Publish public profile and set profile_status to Visible // add validation that must have profile_* existing.
-
 
                     # To add: Set profile_status to Hidden - middleware('profile.set')->
 
@@ -198,29 +201,30 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
 
                 # Featured Projects
+                Route::middleware('profile.set')->name('.feat-project')->prefix('/featured-project')->controller(CharityFeaturedProjectController::class)->group(function () {
 
-                # All Featured Project
-                Route::get('/featured-project/all', [CharityFeaturedProjectController::class, 'AllFeaturedProject'])->name('.feat-project.all');
+                    # All Featured Project
+                    Route::get('/all', 'AllFeaturedProject')->name('.all');
 
-                # View Featured Project 
-                Route::get('/featured-project/view/{code}', [CharityFeaturedProjectController::class, 'ViewFeaturedProject'])->name('.feat-project.view');
+                    # View Featured Project
+                    Route::get('/view/{code}', 'ViewFeaturedProject')->name('.view');
 
-                # Create New Featured Project
-                Route::get('/featured-project/new', [CharityFeaturedProjectController::class, 'NewFeaturedProject'])->name('.feat-project.new');
+                    # Create New Featured Project
+                    Route::get('/new', 'NewFeaturedProject')->name('.new');
 
-                # Store New Freatured Project 
-                Route::post('/featured-project/store/new', [CharityFeaturedProjectController::class, 'StoreNewFeaturedProject'])->name('.feat-project.new.store');
+                    # Store New Freatured Project
+                    Route::post('/store/new', 'StoreNewFeaturedProject')->name('.new.store');
 
-                # Add Featured Project (from Existing Gift Giving Project)
-           
-                Route::get('/featured-project/add/gift/{code}', [CharityFeaturedProjectController::class, 'AddExistedGiftFeaturedProject'])->name('.feat-projects.add.gift');
-                
-                # Store Featured Project (from Existing Gift Giving Project)
-                Route::post('/featured-project/store/add/gift', [CharityFeaturedProjectController::class, 'StoreExistedGiftFeaturedProject'])->name('.feat-project.add.gift.store');
+                    # Add Featured Project (from Existing Gift Giving Project)
+                    Route::get('/add/gift/{code}', 'AddExistedGiftFeaturedProject')->name('.add.gift');
 
-                # Add Featured Project (from Existing Task based Project)
+                    # Store Featured Project (from Existing Gift Giving Project)
+                    Route::post('/store/add/gift', 'StoreExistedGiftFeaturedProject')->name('.add.gift.store');
 
-                # Store Featured Project (from Existing Task based Project)
+                    # Add Featured Project (from Existing Task based Project)
+
+                    # Store Featured Project (from Existing Task based Project)
+                });
             });
 
             # Projects
@@ -545,13 +549,8 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
             Route::post('/edit/{code}', [CharitableOrganizationController::class, 'UpdateCharityUserDetail'])->name('.update');
         });
 
-        // # Send Notification in View Charity
-
+        # Send Notification in View Charity
         Route::post('/send/notification/{id}', [CharitableOrganizationController::class, 'SendNotification'])->name('.send.notifcation');
-
-        // To Add: (POST) Edit Profile Settings (Visibility / Verification Status) in View Charity
-
-
     });
 
     # Star Token Orders

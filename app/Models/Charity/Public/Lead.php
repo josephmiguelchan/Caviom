@@ -16,7 +16,6 @@ class Lead extends Model
         'first_name' => 'encrypted',
         'middle_name' => 'encrypted',
         'last_name' => 'encrypted',
-       
     ];
 
     public function user()

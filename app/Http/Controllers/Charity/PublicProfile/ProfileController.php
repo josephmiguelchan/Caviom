@@ -10,6 +10,9 @@ use App\Models\Charity\Profile\ProfileCoverPhoto;
 use App\Models\Charity\Profile\ProfilePrimaryInfo;
 use App\Models\Charity\Profile\ProfileSecondaryInfo;
 use App\Models\Charity\Profile\ProfileAward;
+use App\Models\Charity\Profile\ProfileModeOfDonation;
+use App\Models\Charity\Profile\ProfileProgram;
+use App\Models\Notification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,21 +29,13 @@ class ProfileController extends Controller
     }
     public function setupProfile()
     {
-        # [No Longer Required] Only users with Unset Public Profile of their Charity can access this function
-        // if (Auth::user()->charity->profile_status != "Unset") {
-        //     $notification = array(
-        //         'message' => 'Sorry, only Public Profiles that have not been set up yet can access this page.',
-        //         'alert-type' => 'error',
-        //     );
-
-        //     return to_route('charity.profile')->with($notification);
-        // }
-
         $primaryInfo = ProfilePrimaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
         $secondaryInfo = ProfileSecondaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
         $awards = ProfileAward::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
+        $programs = ProfileProgram::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
+        $donationModes = ProfileModeOfDonation::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
 
-        return view('charity.main.profile.setup', compact(['primaryInfo', 'secondaryInfo', 'awards']));
+        return view('charity.main.profile.setup', compact(['primaryInfo', 'secondaryInfo', 'awards', 'programs', 'donationModes']));
     }
     public function dropZoneCoverPhotos(Request $request)
     {
@@ -101,7 +96,7 @@ class ProfileController extends Controller
         $validator = Validator::make($request->all(), [
             # Basic Info
             'profile_photo' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file', 'dimensions:ratio=1.0'],
-            'category' => ['required', Rule::in(['Community', 'Education', 'Human', 'Health', 'Environment', 'SocialWelfare', 'Corporate', 'Church', 'Livelihood', 'SportsVolunteerism'])],
+            'category' => ['required', Rule::in(['Community Development', 'Education', 'Humanities', 'Health', 'Environment', 'Social Welfare', 'Corporate', 'Church', 'Livelihood', 'Sports Volunteerism'])],
             'tagline' => ['nullable', 'string', 'max:200'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:100'],
             'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9)
@@ -257,7 +252,7 @@ class ProfileController extends Controller
         }
 
         # Return an error toastr if equal to or more than 5 awards have been added already.
-        $awards = ProfileAward::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
+        $awards = ProfileAward::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
         if ($awards->count() >= 5) {
             $toastr = array(
                 'message' => 'Only a maximum of 5 awards can be added.',
@@ -405,7 +400,266 @@ class ProfileController extends Controller
             'alert-type' => 'success'
         );
 
+        return redirect()->back()->with($toastr);
+    }
+    public function storePrograms(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            # Programs
+            'program_name' => ['required', 'string', 'max:200', 'min:4'],
+            'program_photo' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
+            'program_description' => ['required', 'string', 'max:1300', 'min:10'],
+        ]);
+
+        # Return error toastr if validate request failed
+        if ($validator->fails()) {
+            $toastr = array(
+                'message' => $validator->errors()->first() . ' Please try again.',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
+
+        # Return an error toastr if equal to or more than 5 programs have been added already.
+        $programs = ProfileProgram::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
+        if ($programs->count() >= 5) {
+            $toastr = array(
+                'message' => 'Only a maximum of 5 programs / activities can be added.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
+
+        # Start Creating records in DB
+        $program = new ProfileProgram;
+        $program->charitable_organization_id = Auth::user()->charitable_organization_id;
+        $program->name = $request->program_name;
+        $program->description = $request->program_description;
+
+        # Upload the image only when our_story_photo has value...
+        if ($request->file('program_photo')) {
+
+            # Upload profile photo of the Charitable Organization to the server
+            $file = $request->file('program_photo');
+            $filename = 'program_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('upload/charitable_org/programs/'), $filename);
+
+            # Link the profile photo to the Charity Data by updating DB
+            $program->program_photo = $filename;
+        }
+
+        $program->created_at = Carbon::now();
+        $program->save();
+
+        # Throw success toastr
+        $toastr = array(
+            'message' => 'Program / Activity has been added successfully.',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($toastr);
+    }
+    public function destroyProgram($id)
+    {
+        $program = ProfileProgram::findOrFail($id);
+        if ($program->charitable_organization_id != Auth::user()->charitable_organization_id) {
+            $toastr = array(
+                'message' => 'You can only remove your own Charitable Organization\'s pre-existing program(s).',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->with($toastr);
+        }
+
+        # Prevent the user from deleting the program if only one left is remaining.
+        $programs = ProfileProgram::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
+        if ($programs->count() == 1) {
+            $toastr = array(
+                'message' => 'A minimum of one (1) program / activity is required.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->with($toastr);
+        }
+
+        # Delete old Program photo if exists
+        $oldImg = $program->program_photo;
+        if ($oldImg) unlink(public_path('upload/charitable_org/programs/') . $oldImg);
+
+        $program->delete();
+
+        $toastr = array(
+            'message' => 'Selected program has been removed successfully.',
+            'alert-type' => 'success'
+        );
         return redirect()->back()->withInput()->with($toastr);
+    }
+    public function storeDonationModes(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            # Programs
+            'mode' => ['required', 'string', 'max:100', 'min:3'],
+            'account_name' => ['required', 'string', 'min:5', 'max:120', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
+            'account_no' => ['required', 'regex:/^[0-9-]+$/', 'max:50', 'min:7'],
+        ], [
+            'account_name.regex' => 'Account name must be in valid format. (Ex: Juan Niño Cruz)',
+            'account_no.regex' => 'Account number must only include numbers and/or dash. (Ex: 364-3364-77284)',
+        ]);
+
+        # Return error toastr if validate request failed
+        if ($validator->fails()) {
+            $toastr = array(
+                'message' => $validator->errors()->first() . ' Please try again.',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
+
+        # Return an error toastr if equal to or more than 5 donation modes have been added already.
+        $donationModes = ProfileModeOfDonation::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
+        if ($donationModes->count() >= 5) {
+            $toastr = array(
+                'message' => 'Only a maximum of 5 modes of donation can be added.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
+
+        # Start Creating records in DB
+        ProfileModeOfDonation::create([
+            'charitable_organization_id' => Auth::user()->charitable_organization_id,
+            'mode' => $request->mode,
+            'account_name' => $request->account_name,
+            'account_no' => $request->account_no,
+        ]);
+
+        $toastr = array(
+            'message' => 'Mode of Donation has been added successfully.',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($toastr);
+    }
+    public function destroyDonationModes($id)
+    {
+        $donationMode = ProfileModeOfDonation::findOrFail($id);
+        if ($donationMode->charitable_organization_id != Auth::user()->charitable_organization_id) {
+            $toastr = array(
+                'message' => 'You can only remove your own Charitable Organization\'s pre-existing donation mode(s).',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->with($toastr);
+        }
+
+        # Prevent the user from deleting the mode of donation if only one left is remaining.
+        $donationModes = ProfileModeOfDonation::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
+        if ($donationModes->count() == 1) {
+            $toastr = array(
+                'message' => 'A minimum of one (1) mode of donation is required.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->with($toastr);
+        }
+
+        $donationMode->delete();
+
+        $toastr = array(
+            'message' => 'Selected Mode of Donation has been removed successfully.',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->withInput()->with($toastr);
+    }
+    public function publishProfile(Request $request)
+    {
+        # Retrieve public profile data for validation
+        $primaryInfo = ProfilePrimaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
+        $secondaryInfo = ProfileSecondaryInfo::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
+        $programs = ProfileProgram::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
+        $donationModes = ProfileModeOfDonation::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
+
+        $validator = Validator::make($request->all(), [
+            'is_agreed' => ['required']
+        ], [
+            'is_agreed.required' => 'You must agree first before you can publish your Public Profile.',
+        ]);
+
+        # Return error toastr if validate request failed
+        if ($validator->fails()) {
+            $toastr = array(
+                'message' => $validator->errors()->first() . ' Please try again.',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($toastr);
+        } elseif ($primaryInfo == null) {
+            $toastr = array(
+                'message' => 'You have not yet setup primary information of your Charitable Organization. Kindly complete the forms and try again.',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($toastr);
+        } elseif ($secondaryInfo == null) {
+            $toastr = array(
+                'message' => 'You have not yet setup secondary information of your Charitable Organization. Kindly complete the forms and try again.',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($toastr);
+        } elseif ($donationModes->count() < 1) {
+            $toastr = array(
+                'message' => 'At least one (1) program / activity is required. Kindly add one and try again.',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($toastr);
+        } elseif ($programs->count() < 1) {
+            $toastr = array(
+                'message' => 'At least one (1) mode of donation is required. Kindly add one and try again.',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($toastr);
+        } else {
+
+            # Retrieve the Charity record
+            $charityStatus = Auth::user()->charity;
+
+            # Set status of the Charity to visible
+            $charityStatus->profile_status = 'Visible';
+            $charityStatus->status_updated_at = Carbon::now();
+            $charityStatus->save();
+
+            # Audit Logs
+            AuditLog::create([
+                'user_id' => Auth::user()->id,
+                'action_type' => 'UPDATE',
+                'charitable_organization_id' => $charityStatus->id,
+                'table_name' => 'Charitable Organization',
+                'record_id' => $charityStatus->id,
+                'action' => Auth::user()->role . ' published their Charitable Organization\'s Public Profile [' . $charityStatus->name . ']
+                    and is now visible to the public.',
+                'performed_at' => Carbon::now(),
+            ]);
+
+            # Notifications
+            foreach ($charityStatus->users as $user) {
+                $notif = new Notification;
+                $notif->code = Str::uuid()->toString();
+                $notif->user_id = $user->id;
+                $notif->category = 'Public Profile';
+                $notif->subject = 'Profile Status Published';
+                $notif->message = $charityStatus->name . '\'s Public Profile was updated and published by ' . Auth::user()->role .
+                    ' [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]. It can now be viewed publicly.';
+                $notif->icon = 'mdi mdi-cog';
+                $notif->color = 'success';
+                $notif->created_at = Carbon::now();
+                $notif->save();
+            }
+
+            $toastr = array(
+                'message' => 'Success! Your Charitable Organization\'s Profile is now visible to the public.',
+                'alert-type' => 'success'
+            );
+            return to_route('charity.profile')->with($toastr);
+        }
     }
     public function applyVerification()
     {

@@ -7,6 +7,12 @@ use App\Models\Admin\order;
 use App\Models\Charity\Public\Lead;
 use App\Models\Charity\Public\Prospect;
 use App\Models\Charity\Public\ProspectTrail;
+use App\Models\Charity\Profile\ProfileAward;
+use App\Models\Charity\Profile\ProfileCoverPhoto;
+use App\Models\Charity\Profile\ProfileModeOfDonation;
+use App\Models\Charity\Profile\ProfilePrimaryInfo;
+use App\Models\Charity\Profile\ProfileProgram;
+use App\Models\Charity\Profile\ProfileSecondaryInfo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -70,5 +76,34 @@ class CharitableOrganization extends Model
     {
         return $this->hasMany(ProspectTrail::class, 'charitable_organization_id', 'id');
     }
-    
+
+    public function primaryInfo()
+    {
+        return $this->hasOne(ProfilePrimaryInfo::class, 'charitable_organization_id', 'id');
+    }
+
+    public function secondaryInfo()
+    {
+        return $this->hasOne(ProfileSecondaryInfo::class, 'charitable_organization_id', 'id');
+    }
+
+    public function coverPhotos()
+    {
+        return $this->hasMany(ProfileCoverPhoto::class, 'charitable_organization_id', 'id');
+    }
+
+    public function awards()
+    {
+        return $this->hasMany(ProfileAward::class, 'charitable_organization_id', 'id');
+    }
+
+    public function programs()
+    {
+        return $this->hasMany(ProfileProgram::class, 'charitable_organization_id', 'id');
+    }
+
+    public function donationModes()
+    {
+        return $this->hasMany(ProfileModeOfDonation::class, 'charitable_organization_id', 'id');
+    }
 }

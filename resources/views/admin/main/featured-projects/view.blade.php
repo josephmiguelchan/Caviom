@@ -37,7 +37,7 @@
                                 <div class="m-3">
                                     <!-- Foreach ($notifiers (in featured project category) as $item) -->
                                     @foreach ($FpRemarks as $key => $item)
-                                    
+
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="remarks_subject"
                                             id="remarks_subject_{{$key+1}}" value="{{$item->subject}}" required>
@@ -126,7 +126,7 @@
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Date:</strong></h4></dt>
                                 <dt class="col-md-8 mb-2">{{$fp->started_on}}</dt>
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Sponsors:</strong></h4></dt>
-                                <dt class="col-md-8 mb-2"> {{ ($fp->Sponsors)?$item->Sponsors:'---' }}</dt>
+                                <dt class="col-md-8 mb-2"> {{ ($fp->sponsors)?$fp->sponsors:'---' }}</dt>
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -145,44 +145,44 @@
 
                                         <div class="col-6">
                                             <h4 class="font-size-15 mt-4"><strong>Photos:</strong></h4>
-              
+
                                             <div class="row text-center">
                                                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                                                     <div class="carousel-inner" role="listbox">
                                                         <div class="carousel-item active">
-                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->cover_photo) }}" alt="Cover Photo" 
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->cover_photo) }}" alt="Cover Photo"
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @isset($fp->photos->featured_photo_1)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_1) }}" alt="First Photo" 
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_1) }}" alt="First Photo"
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @endisset
                                                         @isset($fp->photos->featured_photo_2)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_2) }}" alt="Second Photo" 
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_2) }}" alt="Second Photo"
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @endisset
 
                                                         @isset($fp->photos->featured_photo_3)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_3) }}" alt="Third Photo" 
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_3) }}" alt="Third Photo"
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @endisset
 
                                                         @isset($fp->photos->featured_photo_4)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_4) }}" alt="Fourth Photo" 
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_4) }}" alt="Fourth Photo"
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @endisset
 
                                                         @isset($fp->photos->featured_photo_5)
                                                         <div class="carousel-item">
-                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_5) }}" alt="Fifth Photo" 
+                                                            <img class="d-block img-fluid" src="{{ url('upload/featured_project/'.$fp->photos->featured_photo_5) }}" alt="Fifth Photo"
                                                                 style="max-height: 100%; width: 100%;">
                                                         </div>
                                                         @endisset
@@ -197,7 +197,7 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                           
+
                                         </div>
 
                                     </dl>
@@ -223,12 +223,12 @@
 
                                 @if ($fp->approval_status == 'Pending')
                                 <dt class="col-md-8 mb-2"><span class="badge bg-warning">{{$fp->approval_status}}</span></dt>
-                                @elseif($fp->approval_status == 'Approved')         
-                                <dt class="col-md-8 mb-2"><span class="badge bg-success">{{$fp->approval_status}}</span></dt>     
-                                @elseif($fp->approval_status == 'Rejected')         
-                                <dt class="col-md-8 mb-2"><span class="badge bg-danger">Rejected</span></dt> 
+                                @elseif($fp->approval_status == 'Approved')
+                                <dt class="col-md-8 mb-2"><span class="badge bg-success">{{$fp->approval_status}}</span></dt>
+                                @elseif($fp->approval_status == 'Rejected')
+                                <dt class="col-md-8 mb-2"><span class="badge bg-danger">Rejected</span></dt>
                                 @endif
-                                
+
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
                                 <dt class="col-md-8 mb-2"><h6 class="fw-bold">{{ ($fp->remarks_subject)?$fp->remarks_subject:'---' }}</h6></dt>
                                 <dd class="col-md-8 offset-md-4">{{ ($fp->remarks_message)?$fp->remarks_message:'' }}</dt>
@@ -251,7 +251,7 @@
                     <div class="float-end">
                         <div class="row my-3 mx-2">
                             <div class="col-md-12">
-                               
+
                                 <div class="btn-group" role="group" aria-label="Actions">
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#rejectModal" class="btn w-lg btn-outline-danger waves-effect waves-light">
                                         <i class="mdi mdi-close-thick"></i> Reject
@@ -261,8 +261,8 @@
                                         <i class="mdi mdi-check"></i> Approve
                                     </button>
                                 </div>
-                               
-                             
+
+
                             </div>
                         </div>
                     </div>
