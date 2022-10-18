@@ -91,7 +91,7 @@
                                             </div>
                                             <input class="form-control input-mask" data-inputmask="'alias': 'numeric',
                                                 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" name="amount_per_pack"
-                                                id="amount_per_pack" value="{{ old('amount_per_pack') }}">
+                                                id="amount_per_pack" value="{{ old('amount_per_pack') }}" min="0">
                                         </div>
                                         @error('amount_per_pack')
                                             <div class="text-danger">
@@ -113,7 +113,7 @@
                                             </span>
                                         </label>
                                         <input type="number" class="form-control" name="no_of_packs" id="no_of_packs"
-                                            value="{{old('no_of_packs')}}">
+                                            value="{{old('no_of_packs')}}" min="1">
                                         @error('no_of_packs')
                                             <div class="text-danger">
                                                 {{ $message }}

@@ -38,16 +38,16 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
-                            <h2><strong>PHP {{!empty($totaldonation) ? number_format($totaldonation,2) : 0}}</strong></h2> 
-                            <p>Total Acknowledge Donations</p>
+                            <h2><strong>PHP {{!empty($totaldonation) ? number_format($totaldonation,2) : '0.00'}}</strong></h2>
+                            <p>Total Acknowledged Donations</p>
                         </div>
                         <div class="col-lg-8 mt-2">
                             <ul class="list-inline">
                                 <form method="POST" action="#">
                                     @csrf
                                     <li class="list-inline-item col-md-5">
-                                        <!-- min = $charity->created_at  |  max = Carbon::now->month()  -->
-                                        <input class="form-control" min="2022-07" max="2023-12" type="month" value="2022-08">
+                                        <input class="form-control" min="{{Carbon\Carbon::parse(Auth::user()->charity->created_at)->isoFormat('YYYY-M')}}"
+                                            max="{{Carbon\Carbon::now()->isoFormat('YYYY-M')}}" type="month" value="{{Carbon\Carbon::now()->isoFormat('YYYY-M')}}">
                                     </li>
                                     <li class="list-inline-item">
                                         <button type="submit" class="btn btn-outline-secondary">
