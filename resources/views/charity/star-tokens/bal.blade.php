@@ -34,14 +34,21 @@
                             </div>
                             <div class="col-6">
                                 <h2 class="mt-5">
-                                    <a href="{{ route('star.tokens.history') }}" class="btn btn-outline-dark waves-effect waves-light"><i class="mdi mdi-open-in-new"></i> View (0) Pending Orders</a>
+                                    <a href="{{ route('star.tokens.history') }}" class="btn btn-outline-dark waves-effect waves-light"><i class="mdi mdi-open-in-new"></i>View ({{ $orders->count() }}) Pending Order</a>
                                 </h2>
-                                <h2 class="mt-4" style="color: #62896d">NOT SUBSCRIBED</h2>
-                                <p>Your Charitable Organization can work with up to (5) Projects.</p>
+                                <h2 class="mt-4" style="color: #62896d">{{ $subscription }}</h2>
+
+                                <p>{{ Auth::user()->charity->featured_project_credits }} Featured Project Credits</p>
+                                <p>{{ $numberOfProjectCollaborations }} Project Collaborations</p>
+                                <p>{{ $numberOfGiftGivings }} Gift Givings</p>
+                                <h4 class="mt-1">
+                                    <p>Subscription will end on: {{(Auth::user()->charity->subscription_expires_at)?Carbon\Carbon::parse(Auth::user()->charity->subscription_expires_at)->isoFormat('LL'):'---' }}</p>
+                                </h4>
+
                             </div>
                         </div>
                         <div class="row px-5 pb-5">
-                            <a href="{{ route('star.tokens.order') }}" class="btn btn-rounded btn-dark waves-effect waves-light" style="background-color: #62896d">Click here to purchase Star Tokens</a>
+                            <a href="{{ route('star.tokens.order') }}" class="btn btn-rounded btn-dark waves-effect waves-light" style="background-color: #62896d">Click here to Order</a>
                         </div>
                     </div><!-- end cardbody -->
                 </div><!-- end card -->

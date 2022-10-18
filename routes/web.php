@@ -6,6 +6,7 @@ use App\Http\Controllers\Charity\Beneficiary2Controller;
 use App\Http\Controllers\Charity\Beneficiary3Controller;
 use App\Http\Controllers\Charity\BenefactorController;
 use App\Http\Controllers\Charity\VolunteerController;
+use App\Http\Controllers\Charity\StarTokenController;
 use App\Http\Controllers\RootAdmin\AdminController;
 use App\Http\Controllers\Charity\AuditLogController;
 use App\Http\Controllers\Charity\GiftGivingController;
@@ -479,19 +480,24 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
 
         # Star Tokens
         Route::name('star.tokens.')->prefix('/star-tokens')->middleware('charity.admin')->group(function () {
-            Route::get('', function () {
-                return view('charity.star-tokens.bal');
-            })->name('balance');
-            Route::get('/history', function () {
-                return view('charity.star-tokens.all');
-            })->name('history');
-            Route::get('/84d3ad07-fe44-4ba5-9205-e3d68e872fa0', function () {
-                return view('charity.star-tokens.view');
-            })->name('view');
-            Route::get('/order', function () {
-                return view('charity.star-tokens.order');
-            })->name('order');
+
+            # View Balance Page
+            Route::get('/', [StarTokenController::class, 'index'])->name('balance');
+
+            # View Transaction History or Pending Orders
+            Route::get('/history', [StarTokenController::class, 'viewTransactionHistory'])->name('history');
+
+            # View Step-by-step Order Process
+            Route::get('/order', [StarTokenController::class, 'order'])->name('order');
+
+            # About To Store A New Order
+            Route::post('/store', [StarTokenController::class, 'store'])->name('store');
+
+            # View A Specific Transaction Record
+            Route::get('/view/{orders:code}', [StarTokenController::class, 'show'])->name('view');
+
         });
+
     });
 });
 

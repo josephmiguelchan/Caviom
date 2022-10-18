@@ -9,7 +9,17 @@ class order_items extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $guarded = [
+        'order_id',
+    ];
+
+    protected $fillable = [
+        'name',
+        'price',
+        'quantity',
+        'subtotal',
+    ];
+
     public $timestamps = false;
 
 
