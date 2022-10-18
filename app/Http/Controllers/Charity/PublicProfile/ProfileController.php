@@ -182,7 +182,7 @@ class ProfileController extends Controller
                 'charitable_organization_id' => Auth::user()->charitable_organization_id,
                 'table_name' => 'Profile Primary Info, Address',
                 'record_id' => Auth::user()->charity->code,
-                'action' => Auth::user()->role . ' saved ' . Auth::user()->charity->name . '\'s Public Profile primary information.',
+                'action' => Auth::user()->role . ' updated ' . Auth::user()->charity->name . '\'s Public Profile primary information.',
                 'performed_at' => Carbon::now(),
             ]);
         } else {
@@ -219,7 +219,7 @@ class ProfileController extends Controller
                 'charitable_organization_id' => Auth::user()->charitable_organization_id,
                 'table_name' => 'Profile Primary Info, Address',
                 'record_id' => Auth::user()->charity->code,
-                'action' => Auth::user()->role . ' updated ' . Auth::user()->charity->name . '\'s Public Profile primary information.',
+                'action' => Auth::user()->role . ' has set up ' . Auth::user()->charity->name . '\'s Public Profile primary information.',
                 'performed_at' => Carbon::now(),
             ]);
         }
@@ -359,6 +359,17 @@ class ProfileController extends Controller
 
             $profile_secondary_exists->updated_at = Carbon::now();
             $profile_secondary_exists->save();
+
+            # Audit Logs (Update)
+            AuditLog::create([
+                'user_id' => Auth::id(),
+                'action_type' => 'UPDATE',
+                'charitable_organization_id' => Auth::user()->charitable_organization_id,
+                'table_name' => 'Profile Secondary Info',
+                'record_id' => Auth::user()->charity->code,
+                'action' => Auth::user()->role . ' updated ' . Auth::user()->charity->name . '\'s Public Profile secondary information.',
+                'performed_at' => Carbon::now(),
+            ]);
         } else {
 
             # Start Creating New Record in the Database
@@ -391,7 +402,19 @@ class ProfileController extends Controller
                 $secondaryInfo->our_goal_photo = $filename;
             }
 
+            $secondaryInfo->updated_at = Carbon::now();
             $secondaryInfo->save();
+
+            # Audit Logs (Update)
+            AuditLog::create([
+                'user_id' => Auth::id(),
+                'action_type' => 'UPDATE',
+                'charitable_organization_id' => Auth::user()->charitable_organization_id,
+                'table_name' => 'Profile Secondary Info',
+                'record_id' => Auth::user()->charity->code,
+                'action' => Auth::user()->role . ' has set up ' . Auth::user()->charity->name . '\'s Public Profile secondary information.',
+                'performed_at' => Carbon::now(),
+            ]);
         }
 
         # Throw success toastr

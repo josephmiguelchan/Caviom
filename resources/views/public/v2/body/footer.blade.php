@@ -18,7 +18,7 @@
             <div class="col-lg-5 col-md-12 footer-links">
                 <h4>Useful Links</h4>
                 <ul>
-                    <li><i class="bx bx-chevron-right"></i> <a href="{{route('home')}}">Home</a></li>
+                    <li><i class="bx bx-chevron-right"></i> <a href="{{route('admin.login')}}">Admin Portal</a></li>
                     <li><i class="bx bx-chevron-right"></i> <a href="{{route('about')}}">About Us</a></li>
                     <li><i class="bx bx-chevron-right"></i> <a href="{{route('services')}}">Services</a></li>
                     <li><i class="bx bx-chevron-right"></i> <a href="javascript: void(0);">Terms of Service</a></li>

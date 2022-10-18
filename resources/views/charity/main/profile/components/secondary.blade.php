@@ -152,7 +152,7 @@
                                     </div>
                                 @enderror
                             </div>
-                            <img id="showImageStory" class="img-fluid rounded" alt="Our Story's Photo Preview" src="{{ $secondaryInfo ? asset('upload/charitable_org/our_story/'.$secondaryInfo->our_story_photo) : asset('backend/assets/images/placeholder-image.jpg') }}" height="300">
+                            <img id="showImageStory" class="img-fluid rounded" alt="Our Story's Photo Preview" src="{{ $secondaryInfo->our_story_photo ? asset('upload/charitable_org/our_story/'.$secondaryInfo->our_story_photo) : asset('backend/assets/images/placeholder-image.jpg') }}" height="300">
                         </div>
                     </div>
                 </div>
@@ -198,7 +198,7 @@
                                     </div>
                                 @enderror
                             </div>
-                            <img id="showImageGoal" class="img-fluid rounded" alt="Our Story's Photo Preview" src="{{ $secondaryInfo ? asset('upload/charitable_org/our_goal/'.$secondaryInfo->our_goal_photo) : asset('backend/assets/images/placeholder-image.jpg') }}">
+                            <img id="showImageGoal" class="img-fluid rounded" alt="Our Story's Photo Preview" src="{{ $secondaryInfo->our_goal_photo ? asset('upload/charitable_org/our_goal/'.$secondaryInfo->our_goal_photo) : asset('backend/assets/images/placeholder-image.jpg') }}">
                         </div>
                     </div>
                 </div>

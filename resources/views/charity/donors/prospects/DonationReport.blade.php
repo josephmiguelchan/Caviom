@@ -67,7 +67,7 @@
   <table class="orglogo" >
     <tr style="background-color: white">
 
-        {{-- <td style="width:30%"><img src="{{ (Auth::user()->charity->profile_photo)?url('upload/charitable_org/profile_photo/'.Auth::user()->charity->profile_photo):url('upload/charitable_org/profile_photo/no_avatar.png') }}" alt="Charity Organization Profile Photo" width="100px" height="100px"></td> --}}
+        <td style="width:30%"><img src="{{ (Auth::user()->charity->profile_photo)?url('upload/charitable_org/profile_photo/'.Auth::user()->charity->profile_photo):url('upload/charitable_org/profile_photo/no_avatar.png') }}" alt="Charity Organization Profile Photo" width="100px" height="100px"></td>
 
     </tr>
   </table>
@@ -90,10 +90,10 @@
 
     <tr {!! ($item->amount <0) ? 'style="color: red"' : ''!!}>
       <td>{{$key+1}}</td>
-      <td>₱ {{number_format($item->amount,2)}}</td>
+      <td>P {{number_format($item->amount,2)}}</td>
       <td>{{$item->mode_of_payment}}</td>
       <td>{{$item->action}}</td>
-      <td>₱ {{number_format($item->running_balance,2)}}</td>
+      <td>P {{number_format($item->running_balance,2)}}</td>
       <td>{{Carbon\Carbon::parse($item->created_at)->isoFormat('lll')}}</td>
     </tr>
     @endforeach
@@ -116,16 +116,16 @@
     <tr>
       <td>{{$key+1}}</td>
       <td>{{$method}}</td>
-      <td>₱ {{number_format($donations[$key], 2)}}</td>
-      <td>₱ {{number_format($deductions[$key], 2)}}</td>
-      <td>₱ {{number_format($subtotal[$key], 2)}}</td>
+      <td>P {{number_format($donations[$key], 2)}}</td>
+      <td>P {{number_format($deductions[$key], 2)}}</td>
+      <td>P {{number_format($subtotal[$key], 2)}}</td>
     </tr>
     @endforeach
 
     <tr>
       <td style="text-align:end"><strong>TOTAL</strong></td>
       <td colspan="3"></td>
-      <td>₱ {{array_sum($subtotal)}}</td>
+      <td>P {{array_sum($subtotal)}}</td>
     </tr>
   </table>
 
