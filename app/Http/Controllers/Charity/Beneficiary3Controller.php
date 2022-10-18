@@ -210,7 +210,7 @@ class Beneficiary3Controller extends Controller
         $beneficiaries = Beneficiary::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
 
         # Check if atleast one beneficiary exists before attempting to generate.
-        if ($beneficiaries->count() < 1) {
+        if ($beneficiaries->count() == 0) {
 
             $notification = array(
                 'message' => 'Sorry, cannot generate a backup unless one (1) or more beneficiaries exist.',

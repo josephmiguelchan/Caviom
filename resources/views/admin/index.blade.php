@@ -2,6 +2,15 @@
 @section('title', 'Dashboard')
 @section('charity')
 
+@php
+$COcount =  App\Models\CharitableOrganization::get()->count();
+$STcount =  App\Models\Admin\order::where('status','Pending')->get()->count();
+$FPcount =  App\Models\Admin\FeaturedProject::get()->count();
+$UAcount =  App\Models\User::where('role','Root Admin')->where('status','Active')->get()->count();
+$ALcount =  App\Models\AuditLog::get()->count();
+$Nocount =  App\Models\Admin\Notifier::get()->count();
+@endphp
+
 <div class="page-content">
     <div class="container-fluid">
 
@@ -32,7 +41,7 @@
                             <div class="flex-grow-1">
                                 <p class="text-truncate font-size-14 mb-2"><strong>Charitable Organizations</strong>
                                 </p>
-                                <h4 class="mb-2 text-success">1,347</h4>
+                                <h4 class="mb-2 text-success">{{$COcount}}</h4>
                                 <p class="text-muted mb-0">
                                     Registered Charitable Organizations
                                 </p>
@@ -55,7 +64,7 @@
                             <div class="flex-grow-1">
                                 <p class="text-truncate font-size-14 mb-2"><strong>Star Token Orders</strong>
                                 </p>
-                                <h4 class="mb-2 text-success">12</h4>
+                                <h4 class="mb-2 text-success">{{$STcount}}</h4>
                                 <p class="text-muted mb-0">
                                     No. of Pending Orders
                                 </p>
@@ -79,7 +88,7 @@
                             <div class="flex-grow-1">
                                 <p class="text-truncate font-size-14 mb-2"><strong>Featured Projects</strong>
                                 </p>
-                                <h4 class="mb-2 text-success">35</h4>
+                                <h4 class="mb-2 text-success">{{$FPcount}}</h4>
                                 <p class="text-muted mb-0">
                                     Featured Project Requests
                                 </p>
@@ -104,7 +113,7 @@
                         <div class="d-flex">
                             <div class="flex-grow-1">
                                 <p class="text-truncate font-size-14 mb-2"><strong>Admin User Accounts</strong></p>
-                                <h4 class="mb-2 text-success">12</h4>
+                                <h4 class="mb-2 text-success">{{$UAcount}}</h4>
                                 <p class="text-muted mb-0">
                                     Total Active Administrators
                                 </p>
@@ -125,7 +134,7 @@
                         <div class="d-flex">
                             <div class="flex-grow-1">
                                 <p class="text-truncate font-size-14 mb-2"><strong>Audit Logs</strong></p>
-                                <h4 class="mb-2 text-success">30,239</h4>
+                                <h4 class="mb-2 text-success">{{$ALcount}}</h4>
                                 <p class="text-muted mb-0">
                                     Caviom's Audit Logs Count
                                 </p>
@@ -146,7 +155,7 @@
                         <div class="d-flex">
                             <div class="flex-grow-1">
                                 <p class="text-truncate font-size-14 mb-2"><strong>Notifiers</strong></p>
-                                <h4 class="mb-2 text-success">53</h4>
+                                <h4 class="mb-2 text-success">{{$Nocount}}</h4>
                                 <p class="text-muted mb-0">
                                     No. of Notifications and Remarks
                                 </p>
