@@ -30,7 +30,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-8">
-                            <h2><strong>Order ID: 84D3AD</strong></h2>
+                            <h2><strong>Order ID: {{ Str::upper(Str::limit($order->code,6,'')) }}</strong></h2>
                         </div>
                         <div class="col-lg-4 mt-4">
                             <a href="{{ route('star.tokens.history') }}" class="text-link float-end">
@@ -44,17 +44,17 @@
                         <div class="col-lg-6">
                             <div class="row">
                                 <dt class="col-md-4"><h4 class="font-size-15"><strong>Order Date:</strong></h4></dt>
-                                <dt class="col-md-8">Mar 18, 2022</dt>
+                                <dt class="col-md-8">{{Carbon\Carbon::parse($order->created_at)->isoFormat('LL (h:mm A)')}}</dt>
                                 <dt class="col-md-4"><h4 class="font-size-15"><strong>No. of Items:</strong></h4></dt>
-                                <dt class="col-md-8">2</dt>
+                                <dt class="col-md-8">{{$order->order_items->count()}}</dt>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="row">
                                 <dt class="col-md-4"><h4 class="font-size-15"><strong>Payment Method:</strong></h4></dt>
-                                <dt class="col-md-8">GCASH</dt>
+                                <dt class="col-md-8">{{ $order->mode_of_payment }}</dt>
                                 <dt class="col-md-4"><h4 class="font-size-15"><strong>Date of Payment:</strong></h4></dt>
-                                <dt class="col-md-8">Thu, Mar 18, 2022 2:15 PM</dt>
+                                <dt class="col-md-8">{{Carbon\Carbon::parse($order->paid_at)->isoFormat('LL (h:mm A)')}}</dt>
                             </div>
                         </div>
                     </div>
@@ -78,33 +78,21 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <!-- foreach ($order->lineItems as $line) or some such thing here -->
-                                            <tr>
-                                                <td>3000 STAR TOKENS</td>
-                                                <td class="text-center">₱ 109.00</td>
-                                                <td class="text-center">1</td>
-                                                <td class="text-end">₱ 109.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td>CAVIOM PRO</td>
-                                                <td class="text-center">₱ 249.00</td>
-                                                <td class="text-center">1</td>
-                                                <td class="text-end">₱ 249.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="thick-line"></td>
-                                                <td class="thick-line"></td>
-                                                <td class="thick-line text-center">
-                                                    <strong>Total</strong></td>
-                                                <td class="thick-line text-end">₱ 358.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="no-line"></td>
-                                                <td class="no-line"></td>
-                                                <td class="no-line text-center">
-                                                    <strong>Payment Amount</strong></td>
-                                                <td class="no-line text-end"><h4 class="m-0">₱358.00</h4></td>
-                                            </tr>
+                                                @foreach ($orderitems as $orderitem)
+                                                    <tr>
+                                                        <td>{{$orderitem->name}}</td>
+                                                        <td class="text-center">₱{{number_format($orderitem->price,2)}}</td>
+                                                        <td class="text-center">{{$orderitem->quantity}}</td>
+                                                        <td class="text-end">₱{{number_format($orderitem->subtotal,2)}}</td>
+                                                    </tr>
+                                                @endforeach
+                                                <tr>
+                                                    <td class="no-line"></td>
+                                                    <td class="no-line"></td>
+                                                    <td class="no-line text-center">
+                                                        <strong>Payment Amount</strong></td>
+                                                    <td class="no-line text-end"><h4 class="m-0">₱{{number_format($total_price,2)}}</h4></td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -113,8 +101,8 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="text-center">
-                                <a class="image-popup-no-margins" title="Gcash Receipt of Eveline" href="{{ asset('upload/gcash-sample-receipt.png') }}">
-                                    <img class="img-fluid rounded" alt="Donation Proof" src="{{ asset('upload/gcash-sample-receipt.png') }}" style="max-height: 60vh">
+                                <a class="image-popup-no-margins" title="Gcash Receipt" href="{{url('upload/orders/'. $order->proof_of_payment)}}">
+                                    <img class="img-fluid rounded" alt="Donation Proof" src="{{url('upload/orders/'. $order->proof_of_payment)}}" style="max-height: 60vh">
                                 </a>
                             </div>
                         </div>
@@ -128,7 +116,7 @@
                         <div class="col-lg-4">
                             <div class="mb-0 text-center">
                                 <h5><strong>Reference No:</strong></h5>
-                                <u>1234 5678 9</u>
+                                <u>{{$order->reference_no}}</u>
                             </div>
                         </div>
                     </div>
@@ -139,15 +127,23 @@
                         <div class="col-lg-8">
                             <dl class="row col-md-12">
                                 <dt class="col-md-4"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
-                                <dt class="col-md-8">---</dt>
+                                <dt class="col-md-10">{{($order->remarks_subject)?$order->remarks_subject:'---' }}</dt>
+                                <dd class="col-md-10 offset-md-2">{{ ($order->remarks_message)?$order->remarks_message:'' }}</dt>
                             </dl>
                         </div>
                         <div class="col-lg-4">
                             <div class="row">
                                 <dt class="col-md-4"><h4 class="font-size-15"><strong>Order Status:</strong></h4></dt>
-                                <dt class="col-md-8 text-success">COMPLETED</dt>
+                                @if ($order->status == 'Pending')
+                                    <dt class="col-md-8 text-warning">PENDING</dt>
+                                @elseif($order->status == 'Confirmed')
+                                    <dt class="col-md-8 text-success">Confirmed</dt>
+                                @elseif($order->status == 'Rejected')
+                                    <dt class="col-md-8 text-danger">Rejected</dt>
+                                @endif
+
                                 <dt class="col-md-4"><h4 class="font-size-15"><strong>Status Updated at:</strong></h4></dt>
-                                <dt class="col-md-8">2 days ago</dt>
+                                <dt class="col-md-8">{{Carbon\Carbon::parse($order->status_updated_at)->diffForHumans()}}</dt>
                             </div>
                         </div>
                     </div>

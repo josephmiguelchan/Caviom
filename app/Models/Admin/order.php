@@ -12,7 +12,30 @@ class order extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $guarded = [
+        'code',
+        'charitable_organization_id',
+        'submitted_by'
+    ];
+
+    protected $fillable = [
+        'reference_no',
+        'proof_of_payment',
+        'mode_of_payment',
+        'total',
+        'status',
+
+        'remarks_subject',
+        'remarks_message',
+    ];
+
+    protected $casts = [
+        'status_updated_at' => 'datetime',
+        'created_at' => 'datetime',
+        'paid_at' => 'datetime',
+    ];
+
+
     public $timestamps = false;
 
     public function order_items()
