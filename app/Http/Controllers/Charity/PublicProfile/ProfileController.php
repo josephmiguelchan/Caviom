@@ -95,7 +95,7 @@ class ProfileController extends Controller
     {
         $validator = Validator::make($request->all(), [
             # Basic Info
-            'profile_photo' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file', 'dimensions:ratio=1.0'],
+            'profile_photo' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
             'category' => ['required', Rule::in(['Community Development', 'Education', 'Humanities', 'Health', 'Environment', 'Social Welfare', 'Corporate', 'Church', 'Livelihood', 'Sports Volunteerism'])],
             'tagline' => ['nullable', 'string', 'max:200'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:100'],
