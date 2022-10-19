@@ -9,6 +9,8 @@ use App\Models\CharitableOrganization;
 use App\Models\User;
 use App\Models\Admin\oder;
 use App\Models\Admin\order_items;
+use App\Models\Notification;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -35,8 +37,7 @@ class StarTokenController extends Controller
         $numberOfGiftGivings = "";
 
         # Captions based on the subscription
-        switch (Auth::user()->charity->subscription)
-        {
+        switch (Auth::user()->charity->subscription) {
             case 'Free':
                 $subscription = "NOT SUBSCRIBED";
                 //$numberOfProjectCollaborations = 5 - $projects->count() . " left";
@@ -55,15 +56,19 @@ class StarTokenController extends Controller
                 break;
         }
 
-        return view('charity.star-tokens.bal', compact('orders', 'subscription',
-            'numberOfProjectCollaborations', 'numberOfGiftGivings'));
+        return view('charity.star-tokens.bal', compact(
+            'orders',
+            'subscription',
+            'numberOfProjectCollaborations',
+            'numberOfGiftGivings'
+        ));
     }
 
     public function viewTransactionHistory()
     {
         # Retrieve All Transaction Records
         $orders = order::where('charitable_organization_id', Auth::user()->charitable_organization_id)
-            ->orderBy('created_at','DESC')
+            ->orderBy('created_at', 'DESC')
             ->get();
 
         return view('charity.star-tokens.all', compact('orders'));
@@ -78,8 +83,7 @@ class StarTokenController extends Controller
             ->get();
 
         # Check if the charity still has a pending order
-        if($orders->count() >= 1)
-        {
+        if ($orders->count() >= 1) {
             $toastMsg = array(
                 'message' => 'Your charitable organization cannot make an order if it still has a pending order.',
                 'alert-type' => 'error'
@@ -99,8 +103,7 @@ class StarTokenController extends Controller
             ->get();
 
         # Check if the charity still has a pending order
-        if($orders->count() >= 1)
-        {
+        if ($orders->count() >= 1) {
             $toastMsg = array(
                 'message' => 'Your charitable organization cannot make an order if it still has a pending order.',
                 'alert-type' => 'error'
@@ -109,19 +112,20 @@ class StarTokenController extends Controller
         }
 
         # Validation of New Order
-        $validator = Validator::make($request->all(),
+        $validator = Validator::make(
+            $request->all(),
             [
                 # Validate Proof of Payment
                 'proof_of_payment' => ['required', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
 
                 # Validate Order Items
-                'order_form_subscription_type' => ['nullable', Rule::in(['PRO','PREMIUM'])],
+                'order_form_subscription_type' => ['nullable', Rule::in(['PRO', 'PREMIUM'])],
                 'order_form_plan_a_qty' => ['nullable', 'numeric', 'digits:1', 'min:0', 'lte:5'],
                 'order_form_plan_b_qty' => ['nullable', 'numeric', 'digits:1', 'min:0', 'lte:5'],
                 'order_form_plan_c_qty' => ['nullable', 'numeric', 'digits:1', 'min:0', 'lte:5'],
 
                 # Validate Order
-                'mode_of_payment' => ['required', Rule::in(['GCash','Metrobank','Other'])],
+                'mode_of_payment' => ['required', Rule::in(['GCash', 'Metrobank', 'Other'])],
                 'paid_at' => ['required', 'before:' . now()->addDay()->toDateString(), 'after:' . now()->subDays(20)],
                 'reference_no' => ['required', 'numeric', 'digits_between:1,15'],
             ],
@@ -147,8 +151,7 @@ class StarTokenController extends Controller
         }
 
         # Validation to check if there are items in the order
-        if($request->order_form_subscription_type == '' && $request->order_form_plan_a_qty == 0 && $request->order_form_plan_b_qty == 0 && $request->order_form_plan_c_qty == 0)
-        {
+        if ($request->order_form_subscription_type == '' && $request->order_form_plan_a_qty == 0 && $request->order_form_plan_b_qty == 0 && $request->order_form_plan_c_qty == 0) {
             $toastMsg = array(
                 'message' => 'Please make sure your order summary is not empty and try again',
                 'alert-type' => 'error'
@@ -158,8 +161,7 @@ class StarTokenController extends Controller
         }
 
         # Validation to check if the charity wants a subscription while having one
-        if(Auth::user()->charity->subscription != "Free" && $request->order_form_subscription_type != '')
-        {
+        if (Auth::user()->charity->subscription != "Free" && $request->order_form_subscription_type != '') {
 
             $toastMsg = array(
                 'message' => 'You cannot have a subscription order because your charity currently have one.',
@@ -175,13 +177,13 @@ class StarTokenController extends Controller
         $order->charitable_organization_id = Auth::user()->charitable_organization_id;
         $order->reference_no = $request->reference_no;
 
-            # Store proof of payment
-            if ($request->file('proof_of_payment')) {
-                $file = $request->file('proof_of_payment');
-                $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('upload/orders/'), $filename);
-                $order->proof_of_payment = $filename;
-            }
+        # Store proof of payment
+        if ($request->file('proof_of_payment')) {
+            $file = $request->file('proof_of_payment');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('upload/orders/'), $filename);
+            $order->proof_of_payment = $filename;
+        }
 
         $order->mode_of_payment = $request->mode_of_payment;
         $order->total = 0; //Set the Grand Total temporarily to 0
@@ -194,7 +196,7 @@ class StarTokenController extends Controller
         $grandTotal = 0;
 
         # Create New Order Item Record(s)
-        if( $request->order_form_subscription_type == "PRO" ){
+        if ($request->order_form_subscription_type == "PRO") {
 
             $item = new order_items;
             $item->order_id = $order->id;
@@ -206,8 +208,7 @@ class StarTokenController extends Controller
             $grandTotal += 249;
 
             $item->save();
-
-        }elseif( $request->order_form_subscription_type == "PREMIUM" ){
+        } elseif ($request->order_form_subscription_type == "PREMIUM") {
 
             $item = new order_items;
             $item->order_id = $order->id;
@@ -219,11 +220,9 @@ class StarTokenController extends Controller
             $grandTotal += 2399;
 
             $item->save();
-
         }
 
-        if( $request->order_form_plan_a_qty >= 1 )
-        {
+        if ($request->order_form_plan_a_qty >= 1) {
 
             $item = new order_items;
             $item->order_id = $order->id;
@@ -235,11 +234,9 @@ class StarTokenController extends Controller
             $grandTotal += ($request->order_form_plan_a_qty * 29);
 
             $item->save();
-
         }
 
-        if( $request->order_form_plan_b_qty >= 1 )
-        {
+        if ($request->order_form_plan_b_qty >= 1) {
 
             $item = new order_items;
             $item->order_id = $order->id;
@@ -251,11 +248,9 @@ class StarTokenController extends Controller
             $grandTotal += ($request->order_form_plan_b_qty * 59);
 
             $item->save();
-
         }
 
-        if( $request->order_form_plan_c_qty >= 1 )
-        {
+        if ($request->order_form_plan_c_qty >= 1) {
 
             $item = new order_items;
             $item->order_id = $order->id;
@@ -267,7 +262,6 @@ class StarTokenController extends Controller
             $grandTotal += ($request->order_form_plan_c_qty * 109);
 
             $item->save();
-
         }
 
         # Update the TOTAL of the Order based on the computed $grandTotal
@@ -282,10 +276,31 @@ class StarTokenController extends Controller
         );
 
         # Audit Log
-        //TO DO
+        $log = new AuditLog;
+        $log->user_id = Auth::user()->id;
+        $log->action_type = 'INSERT';
+        $log->charitable_organization_id = Auth::user()->charitable_organization_id;
+        $log->table_name = 'Order, Order Items';
+        $log->record_id = $order->code;
+        $log->action = Auth::user()->role . ' created Pending Order.';
+        $log->performed_at = Carbon::now();
+        $log->save();
 
-        # Notification
-        //TO DO -- Send notification to the organization
+        # Send Notification to each user in their Charitable Organizations
+        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+        foreach ($users as $user) {
+            $notif = new Notification;
+            $notif->code = Str::uuid()->toString();
+            $notif->user_id = $user->id;
+            $notif->category = 'Order';
+            $notif->subject = 'Order Created';
+            $notif->message = Auth::user()->role . ' ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' has
+                            created a Pending Order. Please wait for 1-2 working days for Caviom to verify your payment. Thank you.';
+            $notif->icon = 'mdi mdi-cart-arrow-up';
+            $notif->color = 'success';
+            $notif->created_at = Carbon::now();
+            $notif->save();
+        }
 
         return redirect()->route('star.tokens.balance')->with($notification);
     }
@@ -308,12 +323,9 @@ class StarTokenController extends Controller
             );
 
             return redirect()->back()->with($notification);
-
         } else {
 
-            return view('charity.star-tokens.view', compact('order','orderitems','total_price'));
-
+            return view('charity.star-tokens.view', compact('order', 'orderitems', 'total_price'));
         }
     }
-
 }

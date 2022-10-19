@@ -154,7 +154,7 @@ class ProspectController extends Controller
         # Audit Logs
         $log = new AuditLog;
         $log->user_id = Auth::user()->id;
-        $log->action_type = 'Generate  PDF';
+        $log->action_type = 'Generate PDF';
         $log->charitable_organization_id = Auth::user()->charitable_organization_id;
         $log->table_name = 'Prospect Trail';
         $log->record_id = null;
