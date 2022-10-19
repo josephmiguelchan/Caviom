@@ -63,8 +63,8 @@
                                         </button>
                                         <select class="form-control select2-search-disable" name="role" id="role">
                                             <option selected disabled>Select an Account Type</option>
-                                            <option value="Charity Admin">Charity Admin ( 2000 Star Tokens )</option>
-                                            <option value="Charity Associate">Charity Associate ( 1500 Star Tokens )</option>
+                                            <option value="Charity Admin" {{ old('role') == 'Charity Admin' ? 'selected' : ''}}>Charity Admin ( 2000 Star Tokens )</option>
+                                            <option value="Charity Associate" {{ old('role') == 'Charity Associate' ? 'selected' : ''}}>Charity Associate ( 1500 Star Tokens )</option>
                                         </select>
                                         @error('role')
                                             <div class="text-danger">
@@ -129,7 +129,7 @@
                                         </label>
                                         <input class="form-control" name="profile_image" id="profile_image" type="file">
                                         @error('profile_image')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -142,7 +142,7 @@
                                     <input type="email" class="form-control" name="email" id="email"
                                         value="{{old('email')}}" placeholder="@unless($errors->any())Enter the email address where the link will be sent to @endunless">
                                     @error('email')
-                                        <div class="text-danger">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -154,7 +154,7 @@
                                     <input type="text" class="form-control" name="work_position" id="work_position"
                                     value="{{old('work_position')}}" placeholder="@unless($errors->any())Enter your work position @endunless">
                                     @error('work_position')
-                                        <div class="text-danger">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -205,7 +205,7 @@
                                             placeholder="Enter temporary password" value="{{old('password')}}">
 
                                         @error('password')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -218,7 +218,7 @@
                                         <label for="confirm_password" class="form-label">*Confirm Password</label>
                                         <input class="form-control" name="confirm_password" id="confirm_password" type="password" placeholder="Retype password">
                                         @error('confirm_password')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -248,7 +248,7 @@
                                         <input type="text" class="form-control" name="first_name" id="first_name"
                                             value="{{old('first_name')}}" placeholder="@unless($errors->any())Enter first name @endunless">
                                         @error('first_name')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -262,7 +262,7 @@
                                         <input type="text" class="form-control" name="middle_name" id="middle_name"
                                             value="{{old('middle_name')}}" placeholder="@unless($errors->any())Enter middle name @endunless">
                                         @error('middle_name')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -275,7 +275,7 @@
                                     <input type="text" class="form-control" name="last_name" id="last_name"
                                         value="{{old('last_name')}}" placeholder="@unless($errors->any())Enter last name @endunless">
                                     @error('last_name')
-                                        <div class="text-danger">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -290,7 +290,7 @@
                                         <input class="form-control" name="cel_no" id="cel_no" type="tel"
                                             value="{{old('cel_no')}}" placeholder="@unless($errors->any())Enter mobile number @endunless">
                                         @error('cel_no')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -304,7 +304,7 @@
                                         <input class="form-control" name="tel_no" id="tel_no" type="tel"
                                             value="{{old('tel_no')}}" placeholder="@unless($errors->any())Enter telephone number @endunless">
                                         @error('tel_no')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -321,7 +321,7 @@
                                     <input class="form-control" name="address_line_one" id="address_line_one" type="text"
                                         value="{{ old('address_line_one') }}" placeholder="@unless($errors->any())Enter street no, street address, building name, etc.  @endunless">
                                     @error('address_line_one')
-                                        <div class="text-danger">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -335,7 +335,7 @@
                                     <input class="form-control" name="address_line_two" id="address_line_two" type="text"
                                         value="{{old('address_line_two')}}" placeholder="@unless($errors->any())Enter apartment, unit, building, floor no, etc. @endunless">
                                     @error('address_line_two')
-                                        <div class="text-danger">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -350,7 +350,7 @@
                                         <input class="form-control" name="region" id="region" type="text"
                                             value="{{old('region')}}" placeholder="@unless($errors->any())Enter region @endunless">
                                         @error('region')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -364,7 +364,7 @@
                                         <input class="form-control" name="province" id="province" type="text"
                                             value="{{old('province')}}" placeholder="@unless($errors->any())Enter province @endunless">
                                         @error('province')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -378,7 +378,7 @@
                                         <input class="form-control" name="city" id="city" type="text"
                                             value="{{old('city')}}" placeholder="@unless($errors->any())Enter city @endunless">
                                         @error('city')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -394,7 +394,7 @@
                                         <input class="form-control" name="barangay" id="barangay" type="text"
                                             value="{{old('barangay')}}" placeholder="@unless($errors->any())Enter barangay @endunless">
                                         @error('barangay')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -408,7 +408,7 @@
                                         <input class="form-control" name="postal_code" id="postal_code" type="text"
                                             value="{{old('postal_code')}}" placeholder="@unless($errors->any())Enter postal code @endunless">
                                         @error('postal_code')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror

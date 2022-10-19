@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Hash;
 
 # For Generating Excel
 use App\Exports\UsersExport;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -50,10 +51,7 @@ class UserController extends Controller
     public function StoreUser(Request $request)
     {
         $request->validate([
-            'role' => [
-                'required',
-                // 'regex:/^Charity Admin$|^Charity Associate$/',
-            ],
+            'role' => ['required', Rule::in(['Charity Admin', 'Charity Associate'])],
         ], [
             // 'role.regex' => 'The role must only be either Charity Admin or Charity Associate',
         ]);
