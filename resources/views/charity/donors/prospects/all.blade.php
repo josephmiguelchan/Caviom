@@ -21,6 +21,25 @@
         </div>
         <!-- end page title -->
 
+        <!-- Export to PDF Modal -->
+        <div id="exportModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>You are about to attempt to generate a trail report of Donations from Prospects. This action
+                            will notify all other users in your Charitable Organization. Continue?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                        <a type="button" href="{{route('generate.donation.report')}}"  class="btn btn-dark waves-effect waves-light w-sm">Yes</a>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
 
         <div class="col-12">
             <div class="card p-3">
@@ -32,7 +51,9 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->
-                                <a href="{{route('generate.donation.report')}}" class="dropdown-item"><i class="mdi mdi-download"></i> Export to PDF</a>
+                                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exportModal">
+                                    <i class="mdi mdi-download"></i> Export to PDF
+                                </button>
                             </div>
                         </div>
                     </div>

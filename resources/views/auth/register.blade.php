@@ -33,8 +33,28 @@
                             @include('charity.modals.toc.terms-of-service')
                             @include('charity.modals.toc.privacy-policy')
 
+                            <!-- Confirm Modal of Register -->
+                            <div id="registerModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Please double check the provided information as you cannot change
+                                                some information in the future. Continue?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                                            <button type="submit" form="registrationForm" class="btn btn-dark waves-effect waves-light w-sm">Yes</button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div>
+
                             <div class="p-2">
-                                <form class="form-horizontal"
+                                <form class="form-horizontal" id="registrationForm"
                                     action="{{ route('register') }}" method="POST" novalidate enctype='multipart/form-data'>
                                     @csrf
 
@@ -459,7 +479,8 @@
 
                                     <div class="form-group text-center row mt-3 pt-1">
                                         <div class="col-12">
-                                            <button class="btn btn-dark btn-rounded w-100 waves-effect waves-light" type="submit" style="background-color: #62896d">
+                                            <button class="btn btn-dark btn-rounded w-100 waves-effect waves-light" type="button" style="background-color: #62896d"
+                                                data-bs-toggle="modal" data-bs-target="#registerModal">
                                                 Create Account
                                             </button>
                                         </div>
