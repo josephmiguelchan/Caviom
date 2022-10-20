@@ -19,17 +19,17 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProspectController extends Controller
 {
-    Public function AllProspect()
+    public function AllProspect()
     {
         $prospects = Prospect::where('charitable_organization_id', Auth::user()->charitable_organization_id)->latest()->get();
 
-              
+
         $totaldonation = DB::table('prospects')
             ->where('charitable_organization_id', Auth::user()->charitable_organization_id)
             ->sum('amount');
-   
 
-        return view('charity.donors.prospects.all', compact('prospects','totaldonation'));
+
+        return view('charity.donors.prospects.all', compact('prospects', 'totaldonation'));
     }
 
     public function ViewProspect($code)
@@ -37,7 +37,7 @@ class ProspectController extends Controller
 
         $prospect = Prospect::where('code', $code)->firstOrFail();
 
-        return view('charity.donors.prospects.view',compact('prospect'));
+        return view('charity.donors.prospects.view', compact('prospect'));
     }
 
     public function MoveToLeads($code)
@@ -62,33 +62,33 @@ class ProspectController extends Controller
         $lead->last_name = $prospect->last_name;
         $lead->middle_name = $prospect->middle_name;
         $lead->email_address = $prospect->email_address;
-        $lead->paid_at =$prospect->paid_at;
+        $lead->paid_at = $prospect->paid_at;
         $lead->created_at = Carbon::now();
         $lead->save();
 
         $prospectTrail = new ProspectTrail;
         $prospectTrail->charitable_organization_id = $prospect->charitable_organization_id;
-        $prospectTrail->amount = $prospect->amount*-1;
-        $prospectTrail->mode_of_payment =$prospect->mode_of_donation;
+        $prospectTrail->amount = $prospect->amount * -1;
+        $prospectTrail->mode_of_payment = $prospect->mode_of_donation;
         $prospectTrail->action = 'Moved back to Leads';
         $prospectTrail->running_balance = $totalbalance - $prospect->amount;
         $prospectTrail->created_at = Carbon::now();
         $prospectTrail->save();
 
 
-        # Create Audits Logs 
+        # Create Audits Logs
         $log = new AuditLog;
         $log->user_id = Auth::user()->id;
         $log->action_type = 'Update';
         $log->charitable_organization_id = Auth::user()->charitable_organization_id;
         $log->table_name = 'Prospect, Lead';
         $log->record_id = $prospect->id;
-        $log->action = Auth::user()->info->last_name. ' ' .  Auth::user()->info->first_name . ' moved the Prospect 
-        [ '. $prospect->first_name. ' '. $prospect->last_name.' ] back to leads.' ;
+        $log->action = Auth::user()->info->last_name . ' ' .  Auth::user()->info->first_name . ' moved the Prospect
+        [ ' . $prospect->first_name . ' ' . $prospect->last_name . ' ] back to leads.';
         $log->performed_at = Carbon::now();
         $log->save();
 
-   
+
         # Send notification
         $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
 
@@ -98,16 +98,16 @@ class ProspectController extends Controller
             $notif->user_id = $user->id;
             $notif->category = 'Prospect';
             $notif->subject = 'Prospect Moved to Lead';
-            $notif->message = Auth::user()->role.' [ '.Auth::user()->info->last_name.' '.Auth::user()->info->first_name.' ]
-                            has moved back the prospect [ '.$prospect->first_name.' '.$prospect->last_name.' ] to Leads' ;
+            $notif->message = Auth::user()->role . ' [ ' . Auth::user()->info->last_name . ' ' . Auth::user()->info->first_name . ' ]
+                            has moved back the prospect [ ' . $prospect->first_name . ' ' . $prospect->last_name . ' ] to Leads';
             $notif->icon = 'mdi mdi-account-switch';
             $notif->color = 'warning';
             $notif->created_at = Carbon::now();
             $notif->save();
         }
-  
-            # Delete Prospect Record
-            $prospect ->delete();
+
+        # Delete Prospect Record
+        $prospect->delete();
 
         # Send success toastr
         $toastr = array(
@@ -116,7 +116,6 @@ class ProspectController extends Controller
         );
 
         return redirect()->route('prospects.all')->with($toastr);
-
     }
 
 
@@ -140,26 +139,26 @@ class ProspectController extends Controller
                 ->where('mode_of_payment', $mode)
                 ->where('amount', '>', '0')
                 ->orderBy('mode_of_payment', 'ASC')
-                ->sum('amount');    
+                ->sum('amount');
             $deductions[$key] = ProspectTrail::where('charitable_organization_id', Auth::user()->charitable_organization_id)
                 ->where('mode_of_payment', $mode)
                 ->where('amount', '<', '0')
                 ->orderBy('mode_of_payment', 'ASC')
-                ->sum('amount');    
+                ->sum('amount');
             $subtotal[$key] = ProspectTrail::where('charitable_organization_id', Auth::user()->charitable_organization_id)
                 ->where('mode_of_payment', $mode)
                 ->orderBy('mode_of_payment', 'ASC')
-                ->sum('amount');                    
+                ->sum('amount');
         }
 
-        # Audit Logs 
+        # Audit Logs
         $log = new AuditLog;
         $log->user_id = Auth::user()->id;
-        $log->action_type = 'Generate  PDF';
+        $log->action_type = 'Generate PDF';
         $log->charitable_organization_id = Auth::user()->charitable_organization_id;
         $log->table_name = 'Prospect Trail';
         $log->record_id = null;
-        $log->action = Auth::user()->role. ' generated PDF of Donation report from Prospects.';
+        $log->action = Auth::user()->role . ' generated PDF of Donation report from Prospects.';
         $log->performed_at = Carbon::now();
         $log->save();
 
@@ -173,26 +172,25 @@ class ProspectController extends Controller
             $notif->user_id = $user->id;
             $notif->category = 'Prospect';
             $notif->subject = 'Donations Report Generated';
-            $notif->message = Auth::user()->role.' '.Auth::user()->info->first_name.' '.Auth::user()->info->first_name.'
-                             has attempted to generate a report of cash inflow dontation from Prospects into a PDF file.' ;
+            $notif->message = Auth::user()->role . ' ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . '
+                             has attempted to generate a report of cash inflow dontation from Prospects into a PDF file.';
             $notif->icon = 'mdi mdi-file-download';
             $notif->color = 'warning';
             $notif->created_at = Carbon::now();
             $notif->save();
         }
-  
+
         // return view('charity.donors.prospects.DonationReport', compact(['orgimage','mytime','trail', 'cashinflow', 'donations', 'deductions', 'subtotal']));
 
-        $pdf = PDF::loadView('charity.donors.prospects.DonationReport',compact(['orgimage','mytime','trail', 'cashinflow', 'donations', 'deductions', 'subtotal']));
+        $pdf = PDF::loadView('charity.donors.prospects.DonationReport', compact(['orgimage', 'mytime', 'trail', 'cashinflow', 'donations', 'deductions', 'subtotal']));
         return $pdf->download(Auth::user()->charity->name . '- Donation Transparency Report' . '.pdf');
-
     }
 
-    public function AddRemarks(Request $request ,$code)
+    public function AddRemarks(Request $request, $code)
     {
         # Validation Rules
         $request->validate([
-            'remarks' => 'nullable|max:255',           
+            'remarks' => 'nullable|max:255',
         ], [
             //for custom message if need ， just delete it if no need custom message
         ]);
@@ -215,17 +213,14 @@ class ProspectController extends Controller
 
         $prospect = Prospect::where('code', $code)->firstOrFail();
 
-        return view('charity.main.benefactors.add-opportunity',compact('prospect'));
+        return view('charity.main.benefactors.add-opportunity', compact('prospect'));
     }
 
     public function AddasOpportunityVolunteer($code)
     {
-        
+
         $prospect = Prospect::where('code', $code)->firstOrFail();
 
-        return view('charity.main.volunteers.add-opportunity',compact('prospect'));
-
- 
+        return view('charity.main.volunteers.add-opportunity', compact('prospect'));
     }
-
 }

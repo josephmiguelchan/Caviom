@@ -96,7 +96,7 @@
                             <div class="col-lg-4">
                                 @if(Auth::user()->role == "Charity Admin")
                                     <ul class="list-inline mb-0 float-end">
-                                        <a href="{{ route('charity.profile.feat-projects.add.gift',$GiftGivings->code) }}" class="btn btn-primary waves-effect w-xl waves-light mb-2">
+                                        <a href="{{ route('charity.profile.feat-project.add.gift',$GiftGivings->code) }}" class="btn btn-primary waves-effect w-xl waves-light mb-2">
                                             <i class="mdi mdi-star-outline"></i> Feature Project
                                         </a>
                                     </ul>

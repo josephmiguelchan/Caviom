@@ -25,7 +25,7 @@ return new class extends Migration
             $table->timestamp('start_at')->nullable();
             $table->string('venue', 255);
             $table->string('sponsor', 255)->nullable();
-            $table->foreignId('last_downloaded_by')->references('id')->on('users')->nullable()->constrained();
+            $table->foreignId('last_downloaded_by')->nullable()->references('id')->on('users')->constrained();
             $table->unsignedInteger('batch_no')->default('0');
             $table->float('amount_per_pack', 6, 2);
             $table->unsignedInteger('no_of_packs')->nullable();

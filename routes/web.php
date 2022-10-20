@@ -6,6 +6,7 @@ use App\Http\Controllers\Charity\Beneficiary2Controller;
 use App\Http\Controllers\Charity\Beneficiary3Controller;
 use App\Http\Controllers\Charity\BenefactorController;
 use App\Http\Controllers\Charity\VolunteerController;
+use App\Http\Controllers\Charity\StarTokenController;
 use App\Http\Controllers\RootAdmin\AdminController;
 use App\Http\Controllers\Charity\AuditLogController;
 use App\Http\Controllers\Charity\GiftGivingController;
@@ -24,17 +25,6 @@ use App\Http\Controllers\Charity\ProspectController;
 
 use App\Http\Controllers\Charity\PublicProfile\FeaturedProjectController as CharityFeaturedProjectController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 # Public Pages
 Route::controller(PublicController::class)->group(function () {
@@ -113,44 +103,33 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
             # View Leads
             Route::get('/leads/{code}', [LeadController::class, 'ViewLead'])->name('leads.view');
 
-            // To add - Route::get() for Deleting Leads
+            # Deleting Leads
             Route::get('/leads/delete/{code}', [LeadController::class, 'DeleteLead'])->name('leads.delete');
 
-            // To add - Route::post() for Storing Leads to Prospects table and deleting the current record in Leads table.
+            # Add Leads to Prospects
             Route::get('/leads/update/prospect/{code}', [LeadController::class, 'MoveAsProspect'])->name('move.to.prospect');
 
 
-            # Prospects
-            // Route::get('/prospects', function () {
-            //     return view('charity.donors.prospects.all');
-            // })->name('prospects.all');
+            # All Prospects
             Route::get('/prospects', [ProspectController::class, 'AllProspect'])->name('prospects.all');
 
-            // Route::get('/prospects/93e5c76a-2316-46e4-b24f-b33131100457', function () {
-            //     return view('charity.donors.prospects.view');
-            // })->name('prospects.view');
-
+            # View Prospect
             Route::get('/prospects/view/{code}', [ProspectController::class, 'ViewProspect'])->name('prospects.view');
-            // To add - Route::post() for Moving Prospects back to Leads table and deleting the current record in Prospects table.
+
+            # Move Prospects back to Leads
             Route::get('/leads/move/back/leads/{code}', [ProspectController::class, 'MoveToLeads'])->name('move.back.leads');
 
-            # Export Donation Report  with PDF
+            # Export Donation Report with PDF
             Route::get('/export/DonationReport', [ProspectController::class, 'GenerateDonationReport'])->name('generate.donation.report');
 
-            // To add - Route::post() for editing the remarks of Prospects.
+            # Update the remarks of Prospects.
             Route::post('/prospect/add/remarks/{code}', [ProspectController::class, 'AddRemarks'])->name('add.remarks');
 
-
-            # Add to opportunity(volunteer)
+            # Add Prospect to Opportunity (as Volunteer)
             Route::get('/prospects/add/opportunity/{code}', [ProspectController::class, 'AddasOpportunityBenefactor'])->name('add.to.benefactor');
 
-
-            # Add to opportunity(Benefactor)
+            # Add Prospect to Opportunity (as Benefactor)
             Route::get('/prospects/add/volunteer/{code}', [ProspectController::class, 'AddasOpportunityVolunteer'])->name('add.to.volunteer');
-
-
-
-
         });
 
         # Our Charitable Organization
@@ -479,18 +458,21 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
 
         # Star Tokens
         Route::name('star.tokens.')->prefix('/star-tokens')->middleware('charity.admin')->group(function () {
-            Route::get('', function () {
-                return view('charity.star-tokens.bal');
-            })->name('balance');
-            Route::get('/history', function () {
-                return view('charity.star-tokens.all');
-            })->name('history');
-            Route::get('/84d3ad07-fe44-4ba5-9205-e3d68e872fa0', function () {
-                return view('charity.star-tokens.view');
-            })->name('view');
-            Route::get('/order', function () {
-                return view('charity.star-tokens.order');
-            })->name('order');
+
+            # View Balance Page
+            Route::get('/', [StarTokenController::class, 'index'])->name('balance');
+
+            # View Transaction History or Pending Orders
+            Route::get('/history', [StarTokenController::class, 'viewTransactionHistory'])->name('history');
+
+            # View Step-by-step Order Process
+            Route::get('/order', [StarTokenController::class, 'order'])->name('order');
+
+            # About To Store A New Order
+            Route::post('/store', [StarTokenController::class, 'store'])->name('store');
+
+            # View A Specific Transaction Record
+            Route::get('/view/{orders:code}', [StarTokenController::class, 'show'])->name('view');
         });
     });
 });

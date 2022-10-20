@@ -159,7 +159,7 @@ class CharitableOrganizationController extends Controller
         $log_in->action_type = 'UPDATE';
         $log_in->charitable_organization_id = $organization->id;
         $log_in->table_name = 'Charitable Organization';
-        $log_in->record_id = $organization->id;
+        $log_in->record_id = $organization->code;
         $log_in->action = Auth::user()->role . ' updated the User Visibility_status , Verification_status and Remarks For [' . $organization->name . '].';
         $log_in->performed_at = Carbon::now();
         $log_in->save();

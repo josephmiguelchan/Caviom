@@ -152,7 +152,11 @@
                                     </div>
                                 @enderror
                             </div>
-                            <img id="showImageStory" class="img-fluid rounded" alt="Our Story's Photo Preview" src="{{ $secondaryInfo ? asset('upload/charitable_org/our_story/'.$secondaryInfo->our_story_photo) : asset('backend/assets/images/placeholder-image.jpg') }}" height="300">
+                            @isset($secondaryInfo)
+                            <img id="showImageStory" class="img-fluid rounded" alt="Our Story's Photo Preview" src="{{ $secondaryInfo->our_story_photo ? asset('upload/charitable_org/our_story/'.$secondaryInfo->our_story_photo) : asset('backend/assets/images/placeholder-image.jpg') }}" height="300">
+                            @else
+                            <img id="showImageStory" class="img-fluid rounded" alt="Our Story's Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" height="300">
+                            @endisset
                         </div>
                     </div>
                 </div>
@@ -198,7 +202,11 @@
                                     </div>
                                 @enderror
                             </div>
-                            <img id="showImageGoal" class="img-fluid rounded" alt="Our Story's Photo Preview" src="{{ $secondaryInfo ? asset('upload/charitable_org/our_goal/'.$secondaryInfo->our_goal_photo) : asset('backend/assets/images/placeholder-image.jpg') }}">
+                            @isset($secondaryInfo)
+                            <img id="showImageGoal" class="img-fluid rounded" alt="Our Goal's Photo Preview" src="{{ $secondaryInfo->our_goal_photo ? asset('upload/charitable_org/our_goal/'.$secondaryInfo->our_goal_photo) : asset('backend/assets/images/placeholder-image.jpg') }}">
+                            @else
+                            <img id="showImageGoal" class="img-fluid rounded" alt="Our Goal's Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
+                            @endisset
                         </div>
                     </div>
                 </div>

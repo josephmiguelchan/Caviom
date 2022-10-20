@@ -63,10 +63,10 @@ class GiftGivingController extends Controller
 
         $request->validate([
             'name' => 'required|min:5|max:50|unique:App\Models\GiftGiving,name',
-            'amount_per_pack' => 'required|numeric|between:1,999999.99',
+            'amount_per_pack' => 'required|numeric|between:0,999999.99',
             'no_of_packs' => 'required|integer|min:1',
-            'objective' => 'required|max:400',  //pa change nalng dun sa min
-            'venue' => 'required|min:2|max:255', //pa change nalng dun sa min
+            'objective' => 'required|max:400|min:10',
+            'venue' => 'required|min:2|max:255',
             'start_at' => 'required',
             'sponsors' => 'nullable',
         ], [

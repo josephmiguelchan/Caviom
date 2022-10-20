@@ -22,7 +22,7 @@
 <!-- Our Goal -->
 <div class="row align-items-center my-4">
     <div class="col-md-6 text-center">
-        @isset($charity->secondaryInfo->our_story_photo)
+        @isset($charity->secondaryInfo->our_goal_photo)
         <img src="{{ asset('upload/charitable_org/our_goal/'.$charity->secondaryInfo->our_goal_photo) }}" class="img-fluid rounded" alt="Our Goal">
         @else
         <img src="{{ asset('upload/charitable_org/placeholder-3.png') }}" class="img-fluid rounded" alt="Our Goal">
