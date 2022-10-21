@@ -65,13 +65,13 @@ class GiftGivingController extends Controller
             'name' => 'required|min:5|max:50|unique:App\Models\GiftGiving,name',
             'amount_per_pack' => 'required|numeric|between:0,999999.99',
             'no_of_packs' => 'required|integer|min:1',
-            'objective' => 'required|max:400|min:10',
+            'objective' => 'required|max:2000|min:10',
             'venue' => 'required|min:2|max:255',
-            'start_at' => 'required',
+            'start_at' => 'required|after:' . now(),
             'sponsors' => 'nullable',
         ], [
-            //for custom message if need ， just delete it if no need custom message
-
+            // For custom message if need ， just delete it if no need custom message
+            'start_at.after' => 'The datetime of the Gift Giving must be in the future.',
         ]);
 
 

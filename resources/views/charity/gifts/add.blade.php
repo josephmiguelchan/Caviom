@@ -74,7 +74,7 @@
                                         <label for="name" class="form-label">*Name of Gift Giving Event</label>
                                         <input class="form-control" name="name" id="name" type="text" value="{{ old('name') }}">
                                         @error('name')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -94,7 +94,7 @@
                                                 id="amount_per_pack" value="{{ old('amount_per_pack') }}" min="0">
                                         </div>
                                         @error('amount_per_pack')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -115,7 +115,7 @@
                                         <input type="number" class="form-control" name="no_of_packs" id="no_of_packs"
                                             value="{{old('no_of_packs')}}" min="1">
                                         @error('no_of_packs')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -132,7 +132,7 @@
                                             {{old('objective')}}
                                         </textarea>
                                         @error('objective')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
