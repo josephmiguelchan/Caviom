@@ -46,7 +46,7 @@
         <img class="rounded img-fluid" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" id="showImage" alt="Avatar">
     </div>
     <div class="col-8">
-        <form action="{{route('store.donate', $charity->code)}}" method="POST" class="my-5" enctype="multipart/form-data">
+        <form action="{{route('store.donate', $charity->code)}}" method="POST" class="my-5" enctype="multipart/form-data" id="submitDonateForm">
             @csrf
             <div class="form-group mb-3 row">
                 <!-- Profile Photo -->
@@ -197,7 +197,26 @@
             </div>
 
 
-            <button type="submit" class="btn btn-rounded btn-dark waves-effect waves-light w-lg float-end mt-3 mb-5">Submit</button>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#confirmModal" class="btn btn-rounded btn-dark waves-effect waves-light w-lg float-end mt-3 mb-5">Submit</button>
+
+            <!-- Confirm Modal of Submit button -->
+            <div id="confirmModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Please double check the provided information. Continue?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                            <button type="submit" form="submitDonateForm" class="btn btn-dark waves-effect waves-light w-sm">Yes</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
 
         </form>
     </div>
