@@ -88,6 +88,7 @@ class UserController extends Controller
             # For user table fields
             'profile_image' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
+            'username' => ['required', 'alpha_dash', 'string', 'min:6', 'max:20', 'unique:users'],
             'password' => ['required', 'max:20', Rules\Password::defaults()],
             'confirm_password' => ['required', 'same:password'],
 
