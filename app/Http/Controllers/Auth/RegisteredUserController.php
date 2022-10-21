@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Str;
 
@@ -41,7 +42,8 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         # Validate Form Before Creating Records
-        $request->validate(
+        $validator = Validator::make(
+            $request->all(),
             [
                 /*
                 |--------------------------------------------------------------------------
@@ -94,6 +96,16 @@ class RegisteredUserController extends Controller
                 'is_agreed.required' => 'You must first agree before submitting.',
             ]
         );
+
+        # Return error toastr if validate request failed
+        if ($validator->fails()) {
+            $toastr = array(
+                'message' => $validator->errors()->first() . '. Please try again.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
 
 
         // BEGIN CREATING RECORDS TO THE DATABASE
