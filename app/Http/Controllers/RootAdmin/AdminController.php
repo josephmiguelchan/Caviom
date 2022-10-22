@@ -46,17 +46,21 @@ class AdminController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        # Create Audit Log for Login
-        $log_in = new AuditLog();
-        $log_in->user_id = $user->id;
-        $log_in->action_type = 'LOGOUT';
-        $log_in->charitable_organization_id = null;
-        $log_in->table_name = null;
-        $log_in->record_id = null;
-        $log_in->action = $user->role . ' has successfully logged out on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
-            $request->ip();
-        $log_in->performed_at = Carbon::now();
-        $log_in->save();
+
+        if ($user and $user->status == 'Active') {
+            # Create Audit Log for Logout
+            $log_in = new AuditLog();
+            $log_in->user_id = $user->id;
+            $log_in->action_type = 'LOGOUT';
+            $log_in->charitable_organization_id = null;
+            $log_in->table_name = null;
+            $log_in->record_id = null;
+            $log_in->action = $user->role . ' has successfully logged out on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
+                $request->ip();
+            $log_in->performed_at = Carbon::now();
+            $log_in->save();
+        }
+
 
         return redirect('/login');
     }

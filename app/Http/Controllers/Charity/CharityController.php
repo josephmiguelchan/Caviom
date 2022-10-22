@@ -32,23 +32,25 @@ class CharityController extends Controller
     public function destroy(Request $request)
     {
         $user = Auth::user();
-
         Auth::guard('web')->logout();
-
-        # Create Audit Log for Logout
-        $log = new AuditLog;
-        $log->user_id = $user->id;
-        $log->action_type = 'LOGOUT';
-        $log->charitable_organization_id = $user->charitable_organization_id;
-        $log->table_name = null;
-        $log->record_id = null;
-        $log->action = $user->role . ' has successfully logged out on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
-            $request->ip();
-        $log->performed_at = Carbon::now();
-        $log->save();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        if ($user and $user->status == 'Active') {
+
+            # Create Audit Log for Logout
+            $log = new AuditLog;
+            $log->user_id = $user->id;
+            $log->action_type = 'LOGOUT';
+            $log->charitable_organization_id = $user->charitable_organization_id;
+            $log->table_name = null;
+            $log->record_id = null;
+            $log->action = $user->role . ' has successfully logged out on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
+                $request->ip();
+            $log->performed_at = Carbon::now();
+            $log->save();
+        }
 
         return redirect('/login');
     }

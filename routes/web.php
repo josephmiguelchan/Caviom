@@ -71,9 +71,10 @@ Route::controller(CharityController::class)->middleware(['auth', 'verified', 'pr
         Route::get('/change', 'editPassword')->name('user.password.change');
         Route::post('/store', 'storePassword')->name('user.password.store');
     });
-    # Logout
-    Route::get('/user/logout', 'destroy')->name('user.logout');
 });
+
+# Logout
+Route::get('/user/logout', [CharityController::class, 'destroy'])->name('user.logout');
 
 # User Notifications
 Route::name('notifications')->middleware(['auth', 'verified', 'prevent-back-history'])->prefix('/notifications')->group(function () {

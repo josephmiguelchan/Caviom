@@ -49,7 +49,7 @@
                             <input type="submit" class="btn btn-dark btn-rounded w-50 waves-effect list-inline-item float-start"
                                 value="{{Auth::user()->status=='Pending Unlock'?'Send':'Resend'}} Verification Link"></li>
                         <li>
-                            <a class="btn btn-link list-inline-item float-end" href="{{ url('/logout') }}"><i class="mdi mdi-logout"></i> Logout</a>
+                            <a class="btn btn-link list-inline-item float-end" href="{{ route('user.logout') }}"><i class="mdi mdi-logout"></i> Logout</a>
                         </li>
                     </ul>
                 </form>

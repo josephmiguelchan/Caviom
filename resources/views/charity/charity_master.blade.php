@@ -169,6 +169,7 @@
 
     <!--tinymce js-->
     <script src="{{ asset('backend/assets/libs/tinymce/tinymce.min.js') }}"></script>
+    {{-- <script src="https://cdn.tiny.cloud/1/r5uesfryot7t5zxkqxmyahyhtqtns0la592j3cpvd4u7kl47/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> --}}
 
     <!-- init js -->
     <script src="{{ asset('backend/assets/js/pages/form-editor.init.js') }}"></script>
