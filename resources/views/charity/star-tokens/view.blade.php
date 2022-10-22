@@ -126,7 +126,7 @@
                     <div class="row mt-5 px-3">
                         <div class="col-lg-8">
                             <dl class="row col-md-12">
-                                <dt class="col-md-4"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
+                                <dt class="col-md-2"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
                                 <dt class="col-md-10">{{($order->remarks_subject)?$order->remarks_subject:'---' }}</dt>
                                 <dd class="col-md-10 offset-md-2">{{ ($order->remarks_message)?$order->remarks_message:'' }}</dt>
                             </dl>
