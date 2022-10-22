@@ -12,7 +12,7 @@
         <!-- User details -->
         <div class="user-profile text-center mt-4">
             <div>
-                <img src="{{ (!empty(Auth::user()->charity->profile_photo))? url($avatar):url($defaultAvatar) }}"
+                <img src="{{ Auth::user()->profile_image ? url($avatar):url($defaultAvatar) }}"
                     alt="Profile Picture" class="rounded-circle me-2" width="100" data-holder-rendered="true">
             </div>
             <div class="mt-3">
@@ -53,7 +53,7 @@
                         @endunless
                     </a>
                 </li>
-                
+
                 <li class="{{ Request::routeIs('admin.feat-projects*')?'mm-active':'' }}">
                     <a href="{{ route('admin.feat-projects.all') }}" class="waves-effect">
                         <i class="ri-heart-add-line"></i>
