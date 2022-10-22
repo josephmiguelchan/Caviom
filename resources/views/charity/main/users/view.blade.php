@@ -140,24 +140,6 @@
                                                 <i class="mdi mdi-trash-can-outline"></i> Delete Account
                                             </a>
 
-                                            <form method="POST" action="{{ route('charity.users.resend', $User->code) }}" class="form-horizontal">
-                                                @csrf
-                                                @if ($errors->any())
-                                                    <!-- Send Verification Link Failed message -->
-                                                    <div class="text-danger text-center mb-3">
-                                                        {{$errors->first()}}
-                                                    </div>
-                                                @endif
-                                                @if(Session::has('status'))
-                                                    <div class="text-info text-center mb-3">
-                                                        {{ Session::get('status') }}
-                                                    </div>
-                                                @endif
-                                                <button type="submit" class="btn w-lg btn-primary waves-effect waves-light mx-1" title="Resend Verification Link to Email">
-                                                    <i class="mdi mdi-email-send-outline"></i> Resend Link
-                                                </button>
-                                            </form>
-
                                         @endif
 
                                     </div>
