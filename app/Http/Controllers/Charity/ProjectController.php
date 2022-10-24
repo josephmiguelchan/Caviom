@@ -21,12 +21,12 @@ use phpDocumentor\Reflection\ProjectFactory;
 class ProjectController extends Controller
 {
     public function AllProject()
-    
+
     {
         # Retrieve Project
         $projects = Project::where('charitable_organization_id', Auth::user()->charitable_organization_id)
-                                            ->orderBy('name', 'ASC')
-                                            ->get();
+            ->orderBy('name', 'ASC')
+            ->get();
 
         return view('charity.main.projects.all', compact('projects'));
     }
@@ -34,32 +34,37 @@ class ProjectController extends Controller
     public function ViewProject($code)
     {
         $project = Project::where('code', $code)->firstOrFail();
+
+        # Users can only access their own charity's records
+        if ($project->charitable_organization_id != Auth::user()->charitable_organization_id) {
+
+            $notification = array(
+                'message' => 'Users can only access their own charity records.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($notification);
+        }
+
         $tasks = ProjectTask::where('project_id', $project->id)->orderBy('status', 'ASC')->latest()->get();
 
-        $users = User::where('charitable_organization_id',Auth::user()->charitable_organization_id)->where('status','Active')->get();
-        return view('charity.main.projects.view', compact('project','users','tasks'));
-        
+        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+        return view('charity.main.projects.view', compact('project', 'users', 'tasks'));
     }
 
     public function AddProject() // Charity admin only
     {
-        // Max of 5 projects for Free subscriptioon
-
-        If (Auth::user()->charity->projects->count() >= 5 and Auth::user()->charity->subscription == 'Free')
-        {
+        // Max of 5 projects for Free subscription
+        if (Auth::user()->charity->projects->count() >= 5 and Auth::user()->charity->subscription == 'Free') {
             $toastr = array(
                 'message' => 'Sorry, Your Organization has already reached the limit of five (5) Projects. Subscribe to Caviom Pro / Premium to unlock more projects.',
                 'alert-type' => 'error'
             );
 
             return redirect()->back()->with($toastr);
-        }
-        else
-        {
+        } else {
             return view('charity.main.projects.add');
         }
-
-
     }
 
     public function StoreProject(Request $request)
@@ -78,11 +83,11 @@ class ProjectController extends Controller
         # Store Data to database
         $project = new Project;
         $project->name = $request->name;
-        $project->code =Str::uuid()->toString();
+        $project->code = Str::uuid()->toString();
         $project->charitable_organization_id = Auth::user()->charitable_organization_id;
 
-          # Insert Cover Photo to database
-          if ($request->file('cover_photo')) {
+        # Insert Cover Photo to database
+        if ($request->file('cover_photo')) {
             $file = $request->file('cover_photo');
             $filename = date('YmdHi') . '.' . $file->getClientOriginalExtension();
 
@@ -104,32 +109,31 @@ class ProjectController extends Controller
         $log_in->charitable_organization_id = $project->charitable_organization_id;
         $log_in->table_name = 'Project';
         $log_in->record_id = $project->code;
-        $log_in->action = Auth::user()->role.'[ '.Auth::user()->info->first_name.' '.Auth::user()->info->last_name.' ] 
-                            created a new Project called [ '.$request->name.' ].';
+        $log_in->action = Auth::user()->role . ' [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
+                            created a new Project titled [ ' . $request->name . ' ].';
         $log_in->performed_at = Carbon::now();
         $log_in->save();
 
         # Send notification to all user
         $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)
-        ->where('status', 'Active')
-        ->get();
+            ->where('status', 'Active')
+            ->get();
 
         foreach ($users as $user) {
-        $notif = new Notification;
-        $notif->code = Str::uuid()->toString();
-        $notif->user_id = $user->id;
-        $notif->category = 'Project';
-        $notif->subject = 'New Project Created';
-        $notif->message = Auth::user()->role.'[ '.Auth::user()->info->first_name.' '.Auth::user()->info->last_name.' ] 
-                            created a new Project called [ '.$request->name.' ].';
-        $notif->icon = 'mdi mdi-clipboard-check-multiple-outline';
-        $notif->color = 'success';
-        $notif->created_at = Carbon::now();
-        $notif->save();
-    }
+            $notif = new Notification;
+            $notif->code = Str::uuid()->toString();
+            $notif->user_id = $user->id;
+            $notif->category = 'Project';
+            $notif->subject = 'New Project Created';
+            $notif->message = Auth::user()->role . '[ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
+                            created a new Project called [ ' . $request->name . ' ].';
+            $notif->icon = 'mdi mdi-clipboard-check-multiple-outline';
+            $notif->color = 'success';
+            $notif->created_at = Carbon::now();
+            $notif->save();
+        }
 
-
-        # send success toastr
+        # Send success toastr
         $toastr = array(
             'message' => 'Project Added Successfully',
             'alert-type' => 'success'
@@ -139,11 +143,9 @@ class ProjectController extends Controller
     }
 
     public function EditProject($code) // Charity admin only
-
     {
-
-        if(Auth::user()->charity->subscription == 'Free' and Auth::user()->charity->projects->count() >5)
-        {
+        # Users can only access their own charity's records
+        if (Auth::user()->charity->subscription == 'Free' and Auth::user()->charity->projects->count() > 5) {
             # send error  toastr
             $toastr = array(
                 'message' => 'Sorry, you cannot edit projects if your Organization has already reached more than five (5) free projects.',
@@ -155,36 +157,39 @@ class ProjectController extends Controller
 
         $project = Project::where('code', $code)->firstOrFail();
 
-        return view('charity.main.projects.edit',compact('project'));
-
-
-
+        return view('charity.main.projects.edit', compact('project'));
     }
-    public function UpdateProject(Request $request,$code)
+    public function UpdateProject(Request $request, $code)
     {
-         # Validation Rules
-         $request->validate([
-            'name' => 'required|min:5|max:255',
+        # Users can only access their own charity's records
+        $project = Project::where('code', $code)->firstOrFail();
+        if ($project->charitable_organization_id != Auth::user()->charitable_organization_id) {
+
+            $notification = array(
+                'message' => 'Users can only access their own charity records.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($notification);
+        }
+
+        # Validation Rules
+        $request->validate([
+            'name' => 'required|min:5|max:255|' . Rule::unique('projects')->ignore($project),
             'cover_photo' => 'nullable|mimes:jpg,png,jpeg|max:2048|file',
             'objective' => 'required|min:5',
         ], [
-            //for custom message if need ， just delete it if no need custom message
+            // For custom message if need ， just delete it if no need custom message
 
         ]);
 
-        $project = Project::where('code', $code)->firstOrFail();
         # Update Data to Database
-        if($project->name)
-        {
-            Rule::unique('projects')->ignore($project);
-            $project->name = $request->name;
-        }
-     
-        $project->code =Str::uuid()->toString();
+        $project->name = $request->name;
+        $project->code = Str::uuid()->toString();
         $project->charitable_organization_id = Auth::user()->charitable_organization_id;
 
-          # Insert Cover Photo to database
-          if ($request->file('cover_photo')) {
+        # Insert Cover Photo to database
+        if ($request->file('cover_photo')) {
             $file = $request->file('cover_photo');
             $filename = date('YmdHi') . '.' . $file->getClientOriginalExtension();
 
@@ -206,15 +211,13 @@ class ProjectController extends Controller
         $log_in->charitable_organization_id = $project->charitable_organization_id;
         $log_in->table_name = 'Project';
         $log_in->record_id = $project->code;
-        $log_in->action = Auth::user()->role.'[ '.Auth::user()->info->first_name.' '.Auth::user()->info->last_name.' ] 
-                            updated the Project called [ '.$project->name.' ].';
+        $log_in->action = Auth::user()->role . '[ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
+                            updated the Project called [ ' . $project->name . ' ].';
         $log_in->performed_at = Carbon::now();
         $log_in->save();
 
         # Send notification to all user
-        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)
-        ->where('status', 'Active')
-        ->get();
+        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
 
         foreach ($users as $user) {
             $notif = new Notification;
@@ -222,40 +225,44 @@ class ProjectController extends Controller
             $notif->user_id = $user->id;
             $notif->category = 'Project';
             $notif->subject = 'Project Updated';
-            $notif->message = Auth::user()->role.'[ '.Auth::user()->info->first_name.' '.Auth::user()->info->last_name.' ] 
-                                updated the Project called [ '.$project->name.' ].';
+            $notif->message = Auth::user()->role . '[ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
+                                updated the Project called [ ' . $project->name . ' ].';
             $notif->icon = 'mdi mdi-clipboard-check-multiple-outline';
             $notif->color = 'warning';
             $notif->created_at = Carbon::now();
             $notif->save();
         }
 
-
-        
         # Send success toastr
         $toastr = array(
             'message' => 'Selected Project has been updated successfully.',
             'alert-type' => 'success'
         );
-        
-        return redirect()->route('charity.projects.all')->with($toastr);
 
-    
+        return redirect()->route('charity.projects.all')->with($toastr);
     }
 
     public function DeleteProject($code) // Charity admin Only
     {
-
-
+        # Users can only access their own charity's records
         $project = Project::where('code', $code)->firstOrFail();
 
-        // # Delete old coverphoto of payment photo if exists
+        if ($project->charitable_organization_id != Auth::user()->charitable_organization_id) {
+
+            $notification = array(
+                'message' => 'Users can only access their own charity records.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($notification);
+        }
+
+        # Delete old coverphoto of payment photo if exists
         $oldImg = $project->cover_photo;
         if ($oldImg) unlink(public_path('upload/charitable_org/project_photo/') . $oldImg);
-
         $project->delete();
 
-      
+
         # Create Audit Logs
         $log_in = new AuditLog;
         $log_in->user_id = Auth::user()->id;
@@ -263,16 +270,16 @@ class ProjectController extends Controller
         $log_in->charitable_organization_id = $project->charitable_organization_id;
         $log_in->table_name = 'Project, Project Task';
         $log_in->record_id = $project->code;
-        $log_in->action = Auth::user()->role.'[ '.Auth::user()->info->first_name.' '.Auth::user()->info->last_name.' ] 
-                            deleted the  Project  [ '.$project->name.' ] including all of its task';
+        $log_in->action = Auth::user()->role . '[ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
+                            deleted the  Project  [ ' . $project->name . ' ] including all of its task';
         $log_in->performed_at = Carbon::now();
         $log_in->save();
 
 
         # Send notification to all user
         $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)
-        ->where('status', 'Active')
-        ->get();
+            ->where('status', 'Active')
+            ->get();
 
         foreach ($users as $user) {
             $notif = new Notification;
@@ -280,51 +287,35 @@ class ProjectController extends Controller
             $notif->user_id = $user->id;
             $notif->category = 'Project';
             $notif->subject = 'Project Deleted';
-            $notif->message = Auth::user()->role.'[ '.Auth::user()->info->first_name.' '.Auth::user()->info->last_name.' ] 
-                                has deleted the entire Project: [ '.$project->name.' ]. All task Associated to this project are automatically deleted';
+            $notif->message = Auth::user()->role . '[ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
+                                has deleted the entire Project: [ ' . $project->name . ' ]. All task Associated to this project are automatically deleted';
             $notif->icon = 'mdi mdi-clipboard-alert-outline';
             $notif->color = 'danger';
             $notif->created_at = Carbon::now();
             $notif->save();
         }
 
-          # Send success toastr
-          $toastr = array(
+        # Send success toastr
+        $toastr = array(
             'message' => 'Selected Project has been removed successfully.',
             'alert-type' => 'success'
         );
 
-        
-
         return redirect()->route('charity.projects.all')->with($toastr);
-
     }
-
-    // public function Alltask($code)
-    // {
-
-    //     $project = Project::where('code', $code)->firstOrFail();
-
-    //     # Retrieve Project task
-    //     $task = ProjectTask::where('charitable_organization_id', Auth::user()->charitable_organization_id)
-    //     ->where('project_id',$project->id)
-    //     ->orderBy('title', 'ASC')
-    //     ->get();
-
-    //     return view('charity.main.projects.tasks.all', compact('task'));
-    // }
 
     public function ViewTask($code)
     {
 
         $task = ProjectTask::where('code', $code)->firstOrFail();
 
-        return view('charity.main.projects.tasks.view',compact('task'));
+        return view('charity.main.projects.tasks.view', compact('task'));
 
-        // Save button will only appear if you are the task creator and task assigned to 
+        // Save button will only appear if you are the task creator and task assigned to
         // delete is only for task creator and charity admin
 
     }
+
     public function StoreTask(Request $request, $code)  //Both Charity admin and associate can do
     {
         # Validation Rules
@@ -349,15 +340,14 @@ class ProjectController extends Controller
 
         $project = Project::where('code', $code)->firstOrFail();
 
-        if($project->project_task->count()>=100)
-        {
+        if ($project->project_task->count() >= 100) {
             # Send success toastr
             $toastr = array(
                 'message' => 'Sorry, you have already reached the limit of (100) tasks for this project.',
                 'alert-type' => 'warning'
-        );
+            );
 
-             return redirect()->back()->with($toastr);
+            return redirect()->back()->with($toastr);
         }
 
         $task = new ProjectTask;
@@ -372,14 +362,14 @@ class ProjectController extends Controller
         $task->save();
 
 
-        #  Send notification to task assigned to 
+        #  Send notification to task assigned to
         $notif = new Notification;
         $notif->code = Str::uuid()->toString();
         $notif->user_id = $task->assigned_to;
         $notif->category = 'Project Task';
         $notif->subject = 'New Task Assignment';
-        $notif->message = Auth::user()->role.' [ '.Auth::user()->info->first_name.' '.Auth::user()->info->last_name.' ] 
-                            assigned: [ '.$task->AssignedTo->info->first_name.' '.$task->AssignedTo->info->last_name.' ] to a new task [ '.$task->title.' ] in Project [ ' .$task->project->name. ' ]. Please navigate to projects tab to view your task.';
+        $notif->message = Auth::user()->role . ' [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
+                            assigned: [ ' . $task->AssignedTo->info->first_name . ' ' . $task->AssignedTo->info->last_name . ' ] to a new task [ ' . $task->title . ' ] in Project [ ' . $task->project->name . ' ]. Please navigate to projects tab to view your task.';
         $notif->icon = 'mdi mdi-clipboard-account-outline';
         $notif->color = 'info';
         $notif->created_at = Carbon::now();
@@ -392,11 +382,11 @@ class ProjectController extends Controller
         $log_in->charitable_organization_id = Auth::user()->charitable_organization_id;
         $log_in->table_name = 'Project Task';
         $log_in->record_id = $task->code;
-        $log_in->action = $task->AssignedBy->info->first_name.' '.$task->AssignedBy->info->last_name.' assigned '.$task->AssignedTo->info->first_name. ' '.$task->AssignedTo->info->last_name.' to a new Task [ '.$task->title.' ] in Project: '.$task->project->name . '.';
+        $log_in->action = $task->AssignedBy->info->first_name . ' ' . $task->AssignedBy->info->last_name . ' assigned ' . $task->AssignedTo->info->first_name . ' ' . $task->AssignedTo->info->last_name . ' to a new Task [ ' . $task->title . ' ] in Project: ' . $task->project->name . '.';
         $log_in->performed_at = Carbon::now();
         $log_in->save();
 
-        
+
         # Send success toastr
         $toastr = array(
             'message' => 'A new task has been added successfully.',
@@ -404,10 +394,8 @@ class ProjectController extends Controller
         );
 
         return redirect()->back()->with($toastr);
-
-
     }
-    public function UpdateTask(Request $request,$code )
+    public function UpdateTask(Request $request, $code)
     {
         # Validation Rules
         $validator = Validator::make($request->all(), [
@@ -436,43 +424,43 @@ class ProjectController extends Controller
             return redirect()->back()->with($toastr);
         }
 
+        # Update Task details in DB
         $task->note = $request->note;
-        $task->status = $request->task_status;  
+        $task->status = $request->task_status;
         $task->updated_at = Carbon::now();
         $task->save();
 
-            
         # Send success toastr
         $toastr = array(
             'message' => 'Selected Task Updated successfully.',
             'alert-type' => 'success'
         );
 
-    
+
         return redirect()->back()->with($toastr);
     }
 
-    public function DeleteTask($code) 
+    public function DeleteTask($code)
     {
-        # Retrieve task record
+        # Retrieve task record and delete
         $task = ProjectTask::where('code', $code)->firstOrFail();
-         
+        $task->delete();
+
         # Send notification to task assigned to if the task is not yet finished
-        if($task->status != 'Completed'){
+        if ($task->status != 'Completed') {
             $notif = new Notification;
             $notif->code = Str::uuid()->toString();
             $notif->user_id = $task->assigned_to;
             $notif->category = 'Project Task';
             $notif->subject = 'Task Deleted';
-            $notif->message = Auth::user()->role.' [ '.Auth::user()->info->first_name.' '.Auth::user()->info->last_name.' ] 
-                                deleted the Task: [ '.$task->title.' ].  You are being notified because this task was previously assigned to you.';
+            $notif->message = Auth::user()->role . ' [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
+                                deleted the Task: [ ' . $task->title . ' ].  You are being notified because this task was previously assigned to you.';
             $notif->icon = 'mdi mdi-clipboard-alert-outline';
             $notif->color = 'danger';
             $notif->created_at = Carbon::now();
             $notif->save();
-
         }
- 
+
         # Create Audit Logs
         $log_in = new AuditLog;
         $log_in->user_id = Auth::user()->id;
@@ -480,14 +468,12 @@ class ProjectController extends Controller
         $log_in->charitable_organization_id = Auth::user()->charitable_organization_id;
         $log_in->table_name = 'Project Task';
         $log_in->record_id = $task->code;
-        $log_in->action = Auth::user()->role.'[ '.Auth::user()->info->first_name.' '.Auth::user()->info->last_name.' ] 
-                            deleted the task [ '.$task->title.' ] in Project ['.$task->project->name .' ].' ;
+        $log_in->action = Auth::user()->role . '[ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
+                            deleted the task [ ' . $task->title . ' ] in Project [' . $task->project->name . ' ].';
         $log_in->performed_at = Carbon::now();
         $log_in->save();
 
 
-
-        $task->delete();
         $toastr = array(
             'message' => 'Selected Task has been removed successfully.',
             'alert-type' => 'success'
@@ -495,5 +481,4 @@ class ProjectController extends Controller
 
         return redirect()->route('charity.projects.view', $task->project->code)->with($toastr);
     }
-
 }

@@ -197,7 +197,7 @@ class CharitableOrganizationController extends Controller
 
             # For Account fields
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255',  Rule::unique('users')->ignore($User)],
-            'username' => ['required_unless:account_status,Pending Unlock'],
+            // 'username' => ['required_unless:account_status,Pending Unlock'],
 
             # For Personal Information
             'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],

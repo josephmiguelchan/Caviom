@@ -43,15 +43,29 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="row" data-masonry='{"percentPosition": true }'>
+                        @if ($projects->count() == 0)
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <div class="text-center" style="padding-top: 20vh">
+                                    <blockquote class="card-blockquote font-size-14 mb-0">
+                                        <p class="fst-italic">This space looks empty. Create a new Project to get started.</p>
+                                        <footer class="blockquote-footer font-size-12 m-0">
+                                            Caviom
+                                        </footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                         @foreach ($projects as $item)
                         <div class="col-sm-6 col-lg-4 px-3">
-                 
+
                             <div class="card">
-                          
+
                                 <img class="card-img-top img-fluid" src="{{ ($item->cover_photo) ?url('upload/charitable_org/project_photo/'.$item->cover_photo):url('upload/charitable_org/placeholder.png') }}" alt="Project Cover Photo">
                                 <div class="card-body">
                                     <h4 class="card-title">{{$item->name}}</h4>
-                             
+
                                     <div class="mx-3">
                                         <p class="card-text my-0 mt-3">
                                             <i class="ri-checkbox-blank-circle-fill font-size-10 text-warning align-middle me-2"></i> {{DB::table('project_tasks')->where('project_id',$item->id)->where('status','Pending')->count()}} Pending Tasks
@@ -70,9 +84,9 @@
                                             <i class="mdi mdi-open-in-new"></i> View Project
                                     </a>
                                 </div>
-                             
+
                             </div>
-                       
+
                         </div>
                         @endforeach
 
