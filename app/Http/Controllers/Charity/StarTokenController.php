@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Admin\oder;
 use App\Models\Admin\order_items;
 use App\Models\Notification;
+use App\Models\Project;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -29,10 +30,9 @@ class StarTokenController extends Controller
             ->where('status', 'Pending')
             ->get();
 
-        // TO DO
         # Getting the number of project collaboration left for FREE Subscribers
-        //$projects = Project::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
-        //$projects->count();
+        $projects = Project::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
+        $projects->count();
 
         $numberOfGiftGivings = "";
 
@@ -40,8 +40,7 @@ class StarTokenController extends Controller
         switch (Auth::user()->charity->subscription) {
             case 'Free':
                 $subscription = "NOT SUBSCRIBED";
-                //$numberOfProjectCollaborations = 5 - $projects->count() . " left";
-                $numberOfProjectCollaborations = "?";
+                $numberOfProjectCollaborations = 5 - $projects->count();
                 $numberOfGiftGivings = "NO";
                 break;
             case 'Caviom Pro':

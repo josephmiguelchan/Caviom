@@ -18,7 +18,7 @@ $notifications = App\Models\Notification::where('user_id',Auth::user()->id)->lat
             <div class="flex-1">
                 <h6 class="mb-1">{{$notif->subject}} @if($notif->read_status == 'unread')<span class="badge bg-danger">NEW</span>@endif</h6>
                 <div class="font-size-12 text-muted">
-                    <p class="mb-1">{{Str::limit($notif->message, 75)}}</p>
+                    <p class="mb-1">{{Str::limit($notif->message, 100)}}</p>
                     <p class="mb-0"><i class="mdi mdi-clock-outline"></i> {{Carbon\Carbon::parse($notif->created_at)->diffForHumans()}}</p>
                 </div>
             </div>

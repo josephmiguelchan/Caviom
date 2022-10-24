@@ -3,6 +3,7 @@
 @section('charity')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
 
+
 <div class="page-content">
     <div class="container-fluid">
 
@@ -44,7 +45,7 @@
 
                         <hr class="my-3">
 
-                        <form action="" id="add_form" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('charity.profile.feat-project.add.project.store',$project->code)}}" id="add_form" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group mb-3 row">
@@ -52,7 +53,7 @@
                                 <div class="col-md-9">
                                     <label for="name" class="form-label">*Featured Project Name:</label>
                                     <input type="text" class="form-control" name="name" id="name"
-                                        value="Lugaw for a Cause" placeholder="Enter name of the project">
+                                        value="{{ $project->name}}" placeholder="Enter name of the project">
                                     @error('name')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -64,7 +65,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="cover_photo" class="form-label">
-                                            Cover Photo
+                                            *Cover Photo
                                             <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Must not exceed 2mb." data-bs-original-title="yes">
                                                 <i class="mdi mdi-information-outline"></i>
                                             </span>
@@ -134,9 +135,7 @@
 
                                 <!-- Preview of Cover Photo -->
                                 <div class="col-md-3">
-                                    <a class="image-popup-no-margins" title="Cover Photo Preview" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                        <img class="img-fluid rounded" alt="Cover Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                    </a>
+                                    <img class="img-fluid rounded" id="show_cover_photo" alt="Cover Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
                                 </div>
                             </div>
 
@@ -146,26 +145,9 @@
                                     <label for="objective" class="form-label">*Objective:</label>
                                     <textarea id="elm1" rows="7" name="objective" placeholder="Enter your project's objective/s..."
                                         maxlength="500">
-                                        <p class="mt-4">
-                                            Bottom-up, volunteer-led movement feeding program with a cause. The organization had
-                                            the opportunity to make a partnership with Public Employment Service Office of the
-                                            local government of Pasay. Hence this partnership allowed the organization to train 30
-                                            single partents. The aim is to teach the beneficiaries how to do dressmaking and other
-                                            marketable sewing crafts.
-                                        </p>
-                                        <p>
-                                            <strong>Ace company and J&K Co.</strong> are both garments company that reached out to
-                                            the organization. They need 15 workers for their factory and they see the trainees as good
-                                            fit for the vacancies. Thus, the organization want to take this opportunity to provice
-                                            employment for their beneficiaries.
-                                        </p>
-                                        <p>
-                                            The unchosen trainees for the factory vacancies will have to undergo paid weekly seminar
-                                            for 1 month entitle <strong>Kumit at Home</strong> by Tytan Student Entrepreneurs group of
-                                            Manila Tytana Colleges.
-                                        </p>
+                                        {{  $project->objective}}
                                     </textarea>
-                                    @error('name')
+                                    @error('objective')
                                         <div class="text-danger">
                                             {{ $message }}
                                         </div>
@@ -179,7 +161,7 @@
                                         maxlength="500">
 
                                     </textarea>
-                                    @error('name')
+                                    @error('message')
                                         <div class="text-danger">
                                             {{ $message }}
                                         </div>
@@ -200,77 +182,67 @@
                                         @enderror
                                         <!-- Preview -->
                                         <div>
-                                            <a class="image-popup-no-margins" title="Featured Project Photo Preview" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                                <img id="featured_photo_1_preview" class="img-fluid rounded" alt="Featured Project Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                            </a>
+                                            <img id="showImage1" class="img-fluid rounded" alt="Featured Project Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
                                         </div>
                                     </div>
 
                                     <!-- Featured Photo 2 -->
                                     <div class="col-md-2">
-                                        <label for="featured_photo_1" class="form-label">Featured Photo 2</label>
-                                        <input type="file" name="featured_photo_1" id="featured_photo_1" class="form-control">
-                                        @error('featured_photo_1')
+                                        <label for="featured_photo_2" class="form-label">Featured Photo 2</label>
+                                        <input type="file" name="featured_photo_2" id="featured_photo_2" class="form-control">
+                                        @error('featured_photo_2')
                                             <div class="text-danger">
                                                 {{ $message }}
                                             </div>
                                         @enderror
                                         <!-- Preview -->
                                         <div>
-                                            <a class="image-popup-no-margins" title="Featured Project Photo Preview" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                                <img id="featured_photo_2_preview" class="img-fluid rounded" alt="Featured Project Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                            </a>
+                                                <img id="showImage2" class="img-fluid rounded" alt="Featured Project Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
                                         </div>
                                     </div>
 
                                     <!-- Featured Photo 3 -->
                                     <div class="col-md-2">
-                                        <label for="featured_photo_1" class="form-label">Featured Photo 3</label>
-                                        <input type="file" name="featured_photo_1" id="featured_photo_1" class="form-control">
-                                        @error('featured_photo_1')
+                                        <label for="featured_photo_3" class="form-label">Featured Photo 3</label>
+                                        <input type="file" name="featured_photo_3" id="featured_photo_3" class="form-control">
+                                        @error('featured_photo_3')
                                             <div class="text-danger">
                                                 {{ $message }}
                                             </div>
                                         @enderror
                                         <!-- Preview -->
                                         <div>
-                                            <a class="image-popup-no-margins" title="Featured Project Photo Preview" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                                <img id="featured_photo_3_preview" class="img-fluid rounded" alt="Featured Project Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                            </a>
+                                             <img id="showImage3" class="img-fluid rounded" alt="Featured Project Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
                                         </div>
                                     </div>
 
                                     <!-- Featured Photo 4 -->
                                     <div class="col-md-2">
-                                        <label for="featured_photo_1" class="form-label">Featured Photo 4</label>
-                                        <input type="file" name="featured_photo_1" id="featured_photo_1" class="form-control">
-                                        @error('featured_photo_1')
+                                        <label for="featured_photo_4" class="form-label">Featured Photo 4</label>
+                                        <input type="file" name="featured_photo_4" id="featured_photo_4" class="form-control">
+                                        @error('featured_photo_4')
                                             <div class="text-danger">
                                                 {{ $message }}
                                             </div>
                                         @enderror
                                         <!-- Preview -->
                                         <div>
-                                            <a class="image-popup-no-margins" title="Featured Project Photo Preview" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                                <img id="featured_photo_4_preview" class="img-fluid rounded" alt="Featured Project Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                            </a>
+                                            <img id="showImage4" class="img-fluid rounded" alt="Featured Project Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
                                         </div>
                                     </div>
 
                                     <!-- Featured Photo 5 -->
                                     <div class="col-md-2">
-                                        <label for="featured_photo_1" class="form-label">Featured Photo 5</label>
-                                        <input type="file" name="featured_photo_1" id="featured_photo_1" class="form-control">
-                                        @error('featured_photo_1')
+                                        <label for="featured_photo_5" class="form-label">Featured Photo 5</label>
+                                        <input type="file" name="featured_photo_5" id="featured_photo_5" class="form-control">
+                                        @error('featured_photo_5')
                                             <div class="text-danger">
                                                 {{ $message }}
                                             </div>
                                         @enderror
                                         <!-- Preview -->
                                         <div>
-                                            <a class="image-popup-no-margins" title="Featured Project Photo Preview" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                                <img id="featured_photo_5_preview" class="img-fluid rounded" alt="Featured Project Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                            </a>
+                                         <img id="showImage5" class="img-fluid rounded" alt="Featured Project Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -305,4 +277,68 @@
     </div>
 </div>
 
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#featured_photo_1').change(function(e){
+            var reader = new FileReader();
+            reader.onload = function(e){
+                $('#showImage1').attr('src',e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+
+    $(document).ready(function(){
+        $('#featured_photo_2').change(function(e){
+            var reader = new FileReader();
+            reader.onload = function(e){
+                $('#showImage2').attr('src',e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+
+
+    $(document).ready(function(){
+        $('#featured_photo_3').change(function(e){
+            var reader = new FileReader();
+            reader.onload = function(e){
+                $('#showImage3').attr('src',e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+
+    $(document).ready(function(){
+        $('#featured_photo_4').change(function(e){
+            var reader = new FileReader();
+            reader.onload = function(e){
+                $('#showImage4').attr('src',e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+
+    $(document).ready(function(){
+        $('#featured_photo_5').change(function(e){
+            var reader = new FileReader();
+            reader.onload = function(e){
+                $('#showImage5').attr('src',e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+
+    
+    $(document).ready(function(){
+        $('#cover_photo').change(function(e){
+            var reader = new FileReader();
+            reader.onload = function(e){
+                $('#show_cover_photo').attr('src',e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+</script>
 @endsection

@@ -65,7 +65,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="cover_photo" class="form-label">
-                                            Cover Photo
+                                            *Cover Photo
                                             <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Must not exceed 2mb." data-bs-original-title="yes">
                                                 <i class="mdi mdi-information-outline"></i>
                                             </span>

@@ -1,3 +1,4 @@
+
 <div class="card-body p-0 mt-5">
     <h1><strong>Tasks</strong></h1>
     <button type="button" class="btn btn-rounded btn-sm w-lg btn-success waves-effect waves-light mb-3" data-bs-toggle="modal" data-bs-target="#addTaskModal">
@@ -20,54 +21,33 @@
         </thead>
 
         <tbody>
+            @foreach ($tasks as $key => $item)
             <tr>
-                <td>1</td>
+                <td>{{$key+1}}</td>
+            
                 <td>
-                    <span class="badge badge-soft-warning">Pending</span> Prepare the program flow for..
+                    @if ($item->status == 'Pending')
+                    <span class="badge badge-soft-warning">Pending</span> {{ Str::limit($item->title,20)}}
+                    @elseif($item->status == 'Completed')         
+                    <span class="badge badge-soft-success">Completed</span> {{Str::limit($item->title,20)}}
+                    @elseif($item->status == 'In-Progress')         
+                    <span class="badge badge-soft-primary">In-Progress</span> {{Str::limit($item->title,20)}}
+                    @endif
+            
                 </td>
-                <td>Prioritize this task as this will be..</td>
-                <td><a href="#">Pangilinan, J.</a></td>
-                <td><a href="#">Galleno, J.</a></td>
-                <td>Thu, Dec 25, 2022 2:15 PM</td>
-                <td>2 days</td>
+                <td>{{(!empty($item->note))? Str::limit($item->note, 10):'---'}}    
+                </td>
+                <td><a target="_blank" href="{{route('charity.users.view',$item->AssignedBy->code)}}">{{$item->AssignedBy->username}}</a></td>
+                <td><a target="_blank" href="{{route('charity.users.view',$item->AssignedTo->code)}}">{{$item->AssignedTo->username}}</a></td>
+                <td>{{$item->deadline}}</td>
+                <td>{{(!empty($item->updated_at))? Carbon\Carbon::parse($item->updated_at)->isoFormat('LL (h:mm A)'):'---'}}</td>
                 <td>
-                    <a href="{{ route('charity.projects.tasks.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                    <a href="{{ route('charity.projects.tasks.view',$item->code) }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                         <i class="mdi mdi-open-in-new"></i> View
                     </a>
                 </td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>
-                    <span class="badge badge-soft-primary">In-Progress</span> End the generational tra..
-                </td>
-                <td>---</td>
-                <td><a href="#">Pangilinan, J.</a></td>
-                <td><a href="#">Jojo, D.</a></td>
-                <td>Thu, Dec 25, 2022 2:15 PM</td>
-                <td>14 hours ago</td>
-                <td>
-                    <a href="" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                        <i class="mdi mdi-open-in-new"></i> View
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>
-                    <span class="badge badge-soft-success">Completed</span> Prepare the financial plan for..
-                </td>
-                <td>---</td>
-                <td><a href="#">Pangilinan, J.</a></td>
-                <td><strong>You</strong></td>
-                <td>Thu, Dec 25, 2022 2:15 PM</td>
-                <td>Just now</td>
-                <td>
-                    <a href="" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                        <i class="mdi mdi-open-in-new"></i> View
-                    </a>
-                </td>
-            </tr>
+            @endforeach
         </tbody>
     </table>
 

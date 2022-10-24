@@ -39,7 +39,7 @@
                                 <h2 class="mt-4" style="color: #62896d">{{ $subscription }}</h2>
 
                                 <p>{{ Auth::user()->charity->featured_project_credits }} Featured Project Credits</p>
-                                <p>{{ $numberOfProjectCollaborations }} Project Collaborations</p>
+                                <p>{{ $numberOfProjectCollaborations }} / 5 Project Collaborations</p>
                                 <p>{{ $numberOfGiftGivings }} Gift Givings</p>
                                 <h4 class="mt-1">
                                     <p>Subscription will end on: {{(Auth::user()->charity->subscription_expires_at)?Carbon\Carbon::parse(Auth::user()->charity->subscription_expires_at)->isoFormat('LL'):'---' }}</p>
