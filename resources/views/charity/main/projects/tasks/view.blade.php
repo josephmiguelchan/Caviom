@@ -12,7 +12,7 @@
                     <h1 class="mb-0" style="color: #62896d"><strong>PROJECT</strong></h1>
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">Our Charitable Organization</li>
-                        <li class="breadcrumb-item"><a href="{{ route('charity.projects') }}">Projects</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('charity.projects.all') }}">Projects</a></li>
                         <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Tasks</a></li>
                         <li class="breadcrumb-item active">View</li>
                     </ol>
@@ -29,7 +29,7 @@
                     <div class="card-body p-5">
                         <div class="row">
                             <div class="col-lg-8">
-                                <h2><strong>Project: Lugaw for a Cause</strong></h2>
+                                <h2><strong>Project: {{$task->project->name}}</strong></h2>
                             </div>
                             <div class="col-lg-4 mt-4">
                                 <a href="{{ url()->previous() }}" class="text-link float-end">
@@ -43,44 +43,47 @@
                         <div class="row mt-5">
                             <div class="col-lg-12">
                                 <div class="row">
-                                    <form action="" method="POST" id="edit_form">
+                                    <form action="{{route('charity.projects.tasks.update',$task->code)}}" method="POST" id="edit_form">
                                         @csrf
                                         <dl class="row col-md-12">
                                             <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Task:</strong></h4></dt>
                                             <dt class="col-md-10 py-2">
-                                                Prepare the program flow for the opening of Dress Making Training 2022.
+                                               {{$task->title}}
                                             </dt>
 
                                             <!-- Edit note textarea should only be visible to whom the task is assigned to; otherwise, read only. -->
                                             <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Note:</strong></h4></dt>
+                                           
                                             <dt class="col-md-10 py-2">
                                                 <textarea class="form-control" placeholder="Enter notes for this task (optional)..."
-                                                    maxlength="280" name="note" id="textarea" rows="5" readonly>Prioritize this task as this will be urgent.</textarea>
+                                                    maxlength="280" name="note" id="textarea" rows="5" {{ (Auth::user()->id != $task->assigned_to ) ? 'readonly' : '' }}>{{$task->note}}</textarea>
                                             </dt>
+                                     
 
+                                         
                                             <!-- Edit status dropdown should only be visible to whom the task is assigned to; otherwise, read only. -->
                                             <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Status:</strong></h4></dt>
                                             <dt class="col-md-10 py-2">
                                                 {{-- <span class="badge bg-warning">Pending</span> --}}
-                                                <select class="form-control select2-search-disable" name="status" disabled required>
+                                                <select class="form-control select2-search-disable" name="task_status" id="task_status" {{ (Auth::user()->id != $task->assigned_to) ? 'disabled' : '' }} required>
                                                     <option disabled>Select status...</option>
-                                                    <option value="Pending" selected>Pending</option>
-                                                    <option value="In-Progress">In-Progress</option>
-                                                    <option value="Completed">Completed</option>
+                                                    <option value="Pending" {{$task->status == 'Pending' ?'selected':''}}>Pending</option>
+                                                    <option value="In-Progress" {{$task->status == 'In-Progress' ?'selected':''}}>In-Progress</option>
+                                                    <option value="Completed"{{$task->status == 'Completed' ?'selected':''}}>Completed</option>
                                                 </select>
                                             </dt>
 
                                             <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Assigned by:</strong></h4></dt>
                                             <dt class="col-md-10 py-2">
-                                                <a href="{{ route('charity.users.view') }}">Pangilinan, J.</a>
+                                                <a target="_blank" href="{{route('charity.users.view',$task->AssignedBy->code)}}">{{$task->AssignedBy->username}}</a>
                                             </dt>
                                             <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Assigned To:</strong></h4></dt>
                                             <dt class="col-md-10 py-2">
-                                                <a href="{{ route('charity.users.view') }}">Galleno, J.</a>
+                                                <a target="_blank" href="{{route('charity.users.view',$task->AssignedTo->code)}}">{{$task->AssignedTo->username}}</a>
                                             </dt>
                                             <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Deadline Set:</strong></h4></dt>
                                             <dt class="col-md-10 py-2">
-                                                <span class="badge rounded-pill bg-danger">LATE</span> Thu, Dec 25, 2022 2:15 PM
+                                                {!! (Carbon\Carbon::today() > $task->deadline) ? '<span class="badge rounded-pill bg-danger"> Late' : '' !!}</span> {{Carbon\Carbon::parse($task->deadline)->isoFormat('LL')}}
                                             </dt>
 
                                         </dl>
@@ -93,11 +96,11 @@
                         <div class="row">
                             <dl class="row mb-0 col-lg-6 my-5">
                                 <dt class="col-md-6"><h4 class="font-size-15 float-end"><strong>Date Assigned</strong></h4></dt>
-                                <dt class="col-md-6">May 20, 2022</dt>
+                                <dt class="col-md-6">{{Carbon\Carbon::parse($task->created_at)->isoFormat('LL')}}</dt>
                             </dl>
                             <dl class="row mb-0 col-lg-6 mt-5">
                                 <dt class="col-md-6"><h4 class="font-size-15 float-end"><strong>Last Updated at</strong></h4></dt>
-                                <dt class="col-md-6">2 days ago</dt>
+                                <dt class="col-md-6">{{Carbon\Carbon::parse($task->updated_at)->diffForHumans()}}</dt>
                             </dl>
                         </div>
 
@@ -107,14 +110,18 @@
                             <div class="col-lg-4">
                                 <ul class="list-inline mb-0 float-end">
                                     <!-- Delete button should only appear if the task is creator or a Charity Admin-->
+                                    @if (   Auth::user()->id == $task->assigned_by || Auth::user()->role =='Charity Admin')
                                     <button type="button" class="btn btn-outline-danger waves-effect waves-light w-xl mb-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                         <i class="ri-delete-bin-line"></i> Delete
                                     </button>
-
+                                    @endif
+                                  
+                                    @if (  Auth::user()->id == $task->assigned_to )
                                     <!-- Edit/Save action should only be accessible to whom the task is assigned to -->
                                     <button type="submit" form="edit_form" class="btn btn-dark waves-effect waves-light w-xl mb-2">
                                         <i class="ri-edit-line"></i> Save
                                     </button>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -135,7 +142,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                                        <button type="button" class="btn btn-danger waves-effect waves-light w-sm">Yes</button>
+                                        <a type="button" href="{{route('charity.projects.tasks.delete',$task->code)}}" class="btn btn-danger waves-effect waves-light w-sm">Yes</a>
                                     </div>
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->

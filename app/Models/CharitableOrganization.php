@@ -106,4 +106,10 @@ class CharitableOrganization extends Model
     {
         return $this->hasMany(ProfileModeOfDonation::class, 'charitable_organization_id', 'id');
     }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'charitable_organization_id', 'id');
+    }
+
 }

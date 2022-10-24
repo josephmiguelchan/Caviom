@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST">
+                <form action="{{route('charity.projects.tasks.store',$project->code)}}" method="POST">
                     @csrf
 
                     <!-- Task -->
@@ -49,9 +49,9 @@
                                 <label for="assigned_to" class="form-label">*Assigned To:</label>
                                 <select class="form-select" aria-label="Default select example" name="assigned_to" id="assigned_to" required>
                                     <option disabled selected hidden>Select User</option>
-                                    <option value="0">Mira Buenom</option>
-                                    <option value="1">Suki Toka</option>
-                                    <option value="2">Jans Pork</option>
+                                    @foreach ($users as $item)
+                                    <option value="{{$item->id}}">{{$item->info->first_name .' '. $item->info->last_name}}</option>
+                                    @endforeach
                                 </select>
                                 @error('assigned_to')
                                     <div class="text-danger">
@@ -74,13 +74,13 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light btn-rounded w-md waves-effect" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success btn-rounded w-md waves-effect waves-light">Add</button>
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light btn-rounded w-md waves-effect" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success btn-rounded w-md waves-effect waves-light">Add</button>
-            </div>
+       
         </div>
     </div>
 </div>
