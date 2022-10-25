@@ -3,6 +3,7 @@
     $defaultAvatar = 'upload/avatar_img/no_avatar.png';
     $pending_orders = App\Models\Admin\order::where('status', 'Pending')->count();
     $pending_projects = App\Models\Admin\FeaturedProject::where('approval_status', 'Pending')->count();
+    $pending_orgs = App\Models\CharitableOrganization::where('verification_status', 'Pending')->count();
 @endphp
 
 <div class="vertical-menu" style="background-color: #3c4661;">
@@ -40,7 +41,10 @@
                 <li class="{{ Request::routeIs('admin.charities*')?'mm-active':'' }}">
                     <a href="{{route('admin.charities.all')}}" class="waves-effect">
                         <i class="ri-bank-line"></i>
-                        <span>Charitable Organizations</span>
+                        <span>Charitable Orgs</span>
+                        @unless($pending_orgs == 0)
+                        <span class="badge rounded-pill bg-warning float-end">{{$pending_orgs>99?'99+':$pending_orgs}}</span>
+                        @endunless
                     </a>
                 </li>
 

@@ -105,42 +105,47 @@
         </div>
     </div>
     <div class="col-lg-6 text-center">
-        <label class="my-3">Requirements Submitted <i class="mdi mdi-file-document"></i></label>
+        <label class="mt-5 mb-3">Requirements Submitted <i class="mdi mdi-file-document"></i></label>
         <div class="row">
+            @if ($requirements == null or $requirements->valid_id == null)
+            <p class="text-muted small mb-5">
+                This Charitable Organization has not yet applied for verification.
+            </p>
+            @else
             <div class="col-sm-3">
-                <a class="image-popup-vertical-fit" href="{{ asset('upload/test_files/dswd.jpg') }}" title="DSWD Certificate">
-                    <img class="img-fluid rounded" alt="DSWD Certificate" src="{{ asset('upload/test_files/dswd.jpg') }}"  width="145">
+                <a class="image-popup-vertical-fit" href="{{ asset('upload/charitable_org/requirements/' . $requirements->dswd_certificate) }}" title="DSWD Certificate">
+                    <img class="img-fluid rounded" alt="DSWD Certificate" src="{{ asset('upload/charitable_org/requirements/' . $requirements->dswd_certificate) }}" width="145">
                 </a>
             </div>
             <div class="col-sm-3">
-                <a class="image-popup-vertical-fit" href="{{ asset('upload/test_files/valid_id.jpg') }}" title="Valid ID">
-                    <img class="img-fluid rounded" alt="Valid ID" src="{{ asset('upload/test_files/valid_id.jpg') }}"  width="145">
+                <a class="image-popup-vertical-fit" href="{{ asset('upload/charitable_org/requirements/' . $requirements->valid_id) }}" title="Valid ID">
+                    <img class="img-fluid rounded" alt="Valid ID" src="{{ asset('upload/charitable_org/requirements/' . $requirements->valid_id) }}" width="145">
                 </a>
             </div>
             <div class="col-sm-3">
-                <a class="image-popup-vertical-fit" href="{{ asset('upload/test_files/sec.jpg') }}" title="SEC Registration">
-                    <img class="img-fluid rounded" alt="SEC Registration" src="{{ asset('upload/test_files/sec.jpg') }}"  width="145">
+                <a class="image-popup-vertical-fit" href="{{ asset('upload/charitable_org/requirements/' . $requirements->sec_registration) }}" title="SEC Registration">
+                    <img class="img-fluid rounded" alt="SEC Registration" src="{{ asset('upload/charitable_org/requirements/' . $requirements->sec_registration) }}" width="145">
                 </a>
             </div>
             <div class="col-sm-3">
-                <a class="image-popup-vertical-fit" href="{{ asset('upload/test_files/photo-id.jpg') }}" title="Photo Holding Valid ID">
-                    <img class="img-fluid rounded" alt="Photo Holding Valid ID" src="{{ asset('upload/test_files/photo-id.jpg') }}"  width="145">
+                <a class="image-popup-vertical-fit" href="{{ asset('upload/charitable_org/requirements/' . $requirements->photo_holding_id) }}" title="Photo Holding Valid ID">
+                    <img class="img-fluid rounded" alt="Photo Holding Valid ID" src="{{ asset('upload/charitable_org/requirements/' . $requirements->photo_holding_id) }}" width="145">
                 </a>
             </div>
+            @endif
         </div>
-        <p class="text-muted small mt-3">
-            <strong>Note:</strong> No Photo will be shown here if the Charitable Organization have not applied for verification.
-        </p>
 
+        @unless ($requirements == null or $requirements->valid_id == null)
         <div class="row">
             <dl class="row mb-0 col-lg-6 my-5">
                 <dt class="col-md-6"><h4 class="font-size-15 fw-bold float-end">Date Added:</h4></dt>
-                <dt class="col-md-6">Mar 20, 2022</dt>
+                <dt class="col-md-6">{{ Carbon\Carbon::parse($requirements->created_at)->isoFormat('ll') }}</dt>
             </dl>
             <dl class="row mb-0 col-lg-6 mt-5">
                 <dt class="col-md-6"><h4 class="font-size-15 fw-bold float-end">Last Modified:</h4></dt>
-                <dt class="col-md-6">6 days ago</dt>
+                <dt class="col-md-6">{{ Carbon\Carbon::parse($requirements->created_at)->diffForHumans() }}</dt>
             </dl>
         </div>
+        @endunless
     </div>
 </div>

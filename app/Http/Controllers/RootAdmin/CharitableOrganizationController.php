@@ -9,6 +9,7 @@ use App\Models\Address;
 use App\Models\Admin\FeaturedProject;
 use App\Models\Admin\Notifier;
 use App\Models\AuditLog;
+use App\Models\Charity\Profile\ProfileRequirement;
 use App\Models\Notification;
 use App\Models\UserInfo;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +44,10 @@ class CharitableOrganizationController extends Controller
         # Get the count of Associates in the Organization
         $featuredProjectsCount = FeaturedProject::where('charitable_organization_id', $organizationdetail->id)->where('approval_status', 'Approved')->count();
 
-        return view('admin.charities.view', compact('organizationdetail', 'admins', 'countofAssociates', 'featuredProjectsCount'));
+        # Get the requirements submitted by their Charity Admin (If any)
+        $requirements = ProfileRequirement::where('charitable_organization_id', $organizationdetail->id)->first();
+
+        return view('admin.charities.view', compact('organizationdetail', 'admins', 'countofAssociates', 'featuredProjectsCount', 'requirements'));
     }
 
 

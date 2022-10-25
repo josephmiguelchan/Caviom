@@ -697,7 +697,9 @@ class ProfileController extends Controller
             return to_route('charity.profile')->with($notification);
         }
 
-        return view('charity.main.profile.verify');
+        $requirements = ProfileRequirement::where('charitable_organization_id', Auth::user()->charitable_organization_id)->first();
+
+        return view('charity.main.profile.verify', compact('requirements'));
     }
     public function submitRequirements(Request $request)
     {
@@ -738,24 +740,32 @@ class ProfileController extends Controller
         ]);
 
         # Upload SEC Registration
+        $oldSEC = $requirements->sec_registration;
+        if ($oldSEC) unlink(public_path('upload/charitable_org/requirements/') . $oldSEC);
         $sec = $request->file('sec_registration');
         $sec_filename = Str::uuid() . '.' . $sec->getClientOriginalExtension();
         $sec->move(public_path('upload/charitable_org/requirements/'), $sec_filename);
         $requirements->sec_registration = $sec_filename;
 
         # Upload DSWD Certificate
+        $oldDWSD = $requirements->dswd_certificate;
+        if ($oldDWSD) unlink(public_path('upload/charitable_org/requirements/') . $oldDWSD);
         $dswd = $request->file('dswd_certificate');
         $dswd_filename = Str::uuid() . '.' . $dswd->getClientOriginalExtension();
         $dswd->move(public_path('upload/charitable_org/requirements/'), $dswd_filename);
         $requirements->dswd_certificate = $dswd_filename;
 
         # Upload Valid ID
+        $oldValidID = $requirements->valid_id;
+        if ($oldValidID) unlink(public_path('upload/charitable_org/requirements/') . $oldValidID);
         $valid_id = $request->file('valid_id');
         $valid_id_filename = Str::uuid() . '.' . $valid_id->getClientOriginalExtension();
         $valid_id->move(public_path('upload/charitable_org/requirements/'), $valid_id_filename);
         $requirements->valid_id = $valid_id_filename;
 
         # Upload User's Photo Holding Valid ID
+        $oldPhotoID = $requirements->photo_holding_id;
+        if ($oldPhotoID) unlink(public_path('upload/charitable_org/requirements/') . $oldPhotoID);
         $photo_holding_id = $request->file('photo_holding_id');
         $photo_holding_id_filename = Str::uuid() . '.' . $photo_holding_id->getClientOriginalExtension();
         $photo_holding_id->move(public_path('upload/charitable_org/requirements/'), $photo_holding_id_filename);
@@ -777,7 +787,7 @@ class ProfileController extends Controller
             $notif->code = Str::uuid()->toString();
             $notif->user_id = $user->id;
             $notif->category = 'Public Profile';
-            $notif->subject = 'Verification Requirements Submitted';
+            $notif->subject = 'Verification Request Sent';
             $notif->message = Auth::user()->role . ' [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ] has successfully
                 applied for ' . $charityStatus->name . '\'s Verification Status. Please wait for Caviom to process and verify these documents.';
             $notif->icon = 'mdi mdi-check-decagram';
@@ -817,12 +827,24 @@ class ProfileController extends Controller
         }
 
         # Clear profile_requirements table where charity == Auth::user()->charity
+        $requirements = ProfileRequirement::where('charitable_organization_id', Auth::user()->charitable_organization_id)->firstOrFail();
+        unlink(public_path('upload/charitable_org/requirements/') . $requirements->sec_registration);
+        unlink(public_path('upload/charitable_org/requirements/') . $requirements->dswd_certificate);
+        unlink(public_path('upload/charitable_org/requirements/') . $requirements->valid_id);
+        unlink(public_path('upload/charitable_org/requirements/') . $requirements->photo_holding_id);
 
+        # Update DB
+        $requirements->sec_registration = null;
+        $requirements->dswd_certificate = null;
+        $requirements->valid_id = null;
+        $requirements->photo_holding_id = null;
+        $requirements->save();
 
-        # Set visibility_status from Declined to Unverified
-        $charity = CharitableOrganization::findOrFail(Auth::user()->charity->id);
-        $charity->verification_status = 'Unverified';
-        $charity->save();
+        # Update status of Charitable Organization from Declined back to Unverified
+        $charityStatus = Auth::user()->charity;
+        $charityStatus->verification_status = 'Unverified';
+        $charityStatus->status_updated_at = Carbon::now();
+        $charityStatus->save();
 
         # redirect to applyVerification function
         return to_route('charity.profile.verify');

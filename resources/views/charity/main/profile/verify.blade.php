@@ -39,6 +39,11 @@
 
                             </div>
 
+                            @php
+                                $default = 'backend/assets/images/placeholder-image.jpg';
+                                $path = 'upload/charitable_org/requirements/';
+                            @endphp
+
                             <form action="{{ route('charity.profile.apply')}}" class="form-horizontal" method="POST" enctype="multipart/form-data">
                                 @csrf
 
@@ -46,7 +51,7 @@
 
                                     <!-- SEC Registration -->
                                     <div class="col-lg-3">
-                                        <label class="form-label" for="sec_registration">SEC Registration</label>
+                                        <label class="form-label" for="sec_registration">*SEC Registration</label>
                                         <input class="form-control" name="sec_registration" id="sec_registration" type="file">
                                         @error('sec_registration')
                                             <div class="text-danger">
@@ -55,13 +60,14 @@
                                                 </small>
                                             </div>
                                         @enderror
-                                        <img class="img-fluid rounded mt-2" id="showSECImage" alt="SEC Registration Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="290">
+                                        <img class="img-fluid rounded mt-2" id="showSECImage" alt="SEC Registration Photo Preview" width="290"
+                                            src="{{ asset($default) }}">
                                     </div>
 
 
                                     <!-- Certificate of Registration -->
                                     <div class="col-lg-3">
-                                        <label class="form-label" for="dswd_certificate">DSWD Registration</label>
+                                        <label class="form-label" for="dswd_certificate">*DSWD Registration</label>
                                         <input class="form-control" name="dswd_certificate" id="dswd_certificate" type="file">
                                         @error('dswd_certificate')
                                             <div class="text-danger">
@@ -70,12 +76,13 @@
                                                 </small>
                                             </div>
                                         @enderror
-                                            <img class="img-fluid rounded mt-2" id="showDSWDImage" alt="DSWD Registration Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="290">
+                                            <img class="img-fluid rounded mt-2" id="showDSWDImage" alt="DSWD Registration Photo Preview" width="290"
+                                                src="{{ asset($default) }}">
                                     </div>
 
                                     <!-- Valid Government ID -->
                                     <div class="col-lg-3">
-                                        <label class="form-label" for="valid_id">Valid Government ID</label>
+                                        <label class="form-label" for="valid_id">*Valid Government ID</label>
                                         <input class="form-control" name="valid_id" id="valid_id" type="file">
                                         @error('valid_id')
                                             <div class="text-danger">
@@ -84,12 +91,13 @@
                                                 </small>
                                             </div>
                                         @enderror
-                                        <img class="img-fluid rounded mt-2" id="showIDImage" alt="Valid Government ID Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="290">
+                                        <img class="img-fluid rounded mt-2" id="showIDImage" alt="Valid Government ID Photo Preview" width="290"
+                                            src="{{ asset($default) }}">
                                     </div>
 
                                     <!-- Person Holding ID -->
                                     <div class="col-lg-3">
-                                        <label class="form-label" for="photo_holding_id">Photo of you holding your ID</label>
+                                        <label class="form-label" for="photo_holding_id">*Photo of you holding your ID</label>
                                         <input class="form-control" name="photo_holding_id" id="photo_holding_id" type="file">
                                         @error('photo_holding_id')
                                             <div class="text-danger">
@@ -98,7 +106,8 @@
                                                 </small>
                                             </div>
                                         @enderror
-                                        <img class="img-fluid rounded mt-2" id="showHoldingIDImage" alt="Person Holding ID Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="290">
+                                        <img class="img-fluid rounded mt-2" id="showHoldingIDImage" alt="Person Holding ID Photo Preview" width="290"
+                                            src="{{ asset($default) }}">
                                     </div>
 
                                 </div>
