@@ -126,7 +126,7 @@ class ProjectController extends Controller
             $notif->category = 'Project';
             $notif->subject = 'New Project Created';
             $notif->message = Auth::user()->role . '[ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
-                            created a new Project called [ ' . $request->name . ' ].';
+                created a new Project called [ ' . $request->name . ' ].';
             $notif->icon = 'mdi mdi-clipboard-check-multiple-outline';
             $notif->color = 'success';
             $notif->created_at = Carbon::now();
@@ -226,7 +226,7 @@ class ProjectController extends Controller
             $notif->category = 'Project';
             $notif->subject = 'Project Updated';
             $notif->message = Auth::user()->role . '[ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
-                                updated the Project called [ ' . $project->name . ' ].';
+                updated the Project called [ ' . $project->name . ' ].';
             $notif->icon = 'mdi mdi-clipboard-check-multiple-outline';
             $notif->color = 'warning';
             $notif->created_at = Carbon::now();
@@ -288,7 +288,7 @@ class ProjectController extends Controller
             $notif->category = 'Project';
             $notif->subject = 'Project Deleted';
             $notif->message = Auth::user()->role . '[ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
-                                has deleted the entire Project: [ ' . $project->name . ' ]. All task Associated to this project are automatically deleted';
+                has deleted the entire Project: [ ' . $project->name . ' ]. All task Associated to this project are automatically deleted';
             $notif->icon = 'mdi mdi-clipboard-alert-outline';
             $notif->color = 'danger';
             $notif->created_at = Carbon::now();
@@ -369,7 +369,7 @@ class ProjectController extends Controller
         $notif->category = 'Project Task';
         $notif->subject = 'New Task Assignment';
         $notif->message = Auth::user()->role . ' [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
-                            assigned: [ ' . $task->AssignedTo->info->first_name . ' ' . $task->AssignedTo->info->last_name . ' ] to a new task [ ' . $task->title . ' ] in Project [ ' . $task->project->name . ' ]. Please navigate to projects tab to view your task.';
+            assigned: [ ' . $task->AssignedTo->info->first_name . ' ' . $task->AssignedTo->info->last_name . ' ] to a new task [ ' . $task->title . ' ] in Project [ ' . $task->project->name . ' ]. Please navigate to projects tab to view your task.';
         $notif->icon = 'mdi mdi-clipboard-account-outline';
         $notif->color = 'info';
         $notif->created_at = Carbon::now();
@@ -454,7 +454,7 @@ class ProjectController extends Controller
             $notif->category = 'Project Task';
             $notif->subject = 'Task Deleted';
             $notif->message = Auth::user()->role . ' [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
-                                deleted the Task: [ ' . $task->title . ' ].  You are being notified because this task was previously assigned to you.';
+                deleted the Task: [ ' . $task->title . ' ].  You are being notified because this task was previously assigned to you.';
             $notif->icon = 'mdi mdi-clipboard-alert-outline';
             $notif->color = 'danger';
             $notif->created_at = Carbon::now();
