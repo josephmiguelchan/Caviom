@@ -39,7 +39,7 @@
 
                             </div>
 
-                            <form action="" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('charity.profile.apply')}}" class="form-horizontal" method="POST" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="row">
@@ -55,9 +55,7 @@
                                                 </small>
                                             </div>
                                         @enderror
-                                        <a class="image-popup-no-margins" title="SEC Registration" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                            <img class="img-fluid rounded" alt="SEC Registration Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="230">
-                                        </a>
+                                        <img class="img-fluid rounded mt-2" id="showSECImage" alt="SEC Registration Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="290">
                                     </div>
 
 
@@ -72,9 +70,7 @@
                                                 </small>
                                             </div>
                                         @enderror
-                                        <a class="image-popup-no-margins" title="DSWD Registration" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                            <img class="img-fluid rounded" alt="DSWD Registration Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="230">
-                                        </a>
+                                            <img class="img-fluid rounded mt-2" id="showDSWDImage" alt="DSWD Registration Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="290">
                                     </div>
 
                                     <!-- Valid Government ID -->
@@ -88,32 +84,28 @@
                                                 </small>
                                             </div>
                                         @enderror
-                                        <a class="image-popup-no-margins" title="Valid Government ID" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                            <img class="img-fluid rounded" alt="Valid Government ID Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="230">
-                                        </a>
+                                        <img class="img-fluid rounded mt-2" id="showIDImage" alt="Valid Government ID Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="290">
                                     </div>
 
                                     <!-- Person Holding ID -->
                                     <div class="col-lg-3">
-                                        <label class="form-label" for="photo_holdind_id">Photo of you holding your ID</label>
-                                        <input class="form-control" name="photo_holdind_id" id="photo_holdind_id" type="file">
-                                        @error('photo_holdind_id')
+                                        <label class="form-label" for="photo_holding_id">Photo of you holding your ID</label>
+                                        <input class="form-control" name="photo_holding_id" id="photo_holding_id" type="file">
+                                        @error('photo_holding_id')
                                             <div class="text-danger">
                                                 <small>
                                                     {{ $message }}
                                                 </small>
                                             </div>
                                         @enderror
-                                        <a class="image-popup-no-margins" title="Person Holding ID" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                            <img class="img-fluid rounded" alt="Person Holding ID Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="230">
-                                        </a>
+                                        <img class="img-fluid rounded mt-2" id="showHoldingIDImage" alt="Person Holding ID Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}" width="290">
                                     </div>
 
                                 </div>
 
                                 <p class="text-muted font-size-12 mt-2">
                                     <em>
-                                        <strong>Note:</strong> File size must not exceed 2mb. Only allowed file types are: PNG and JPG.
+                                        <strong>Note:</strong> File size must not exceed 2mb per file. Only allowed file types are: JPEG, PNG and JPG.
                                     </em>
                                 </p>
 
@@ -133,5 +125,38 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#sec_registration').change(function(e) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#showSECImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+        $('#dswd_certificate').change(function(e) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#showDSWDImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+        $('#valid_id').change(function(e) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#showIDImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+        $('#photo_holding_id').change(function(e) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#showHoldingIDImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+</script>
 
 @endsection

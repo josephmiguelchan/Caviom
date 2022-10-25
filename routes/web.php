@@ -169,6 +169,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
 
                     # Apply for Verification (for Unverified)
                     Route::get('/apply-for-verification', 'applyVerification')->name('.verify');
+                    Route::post('/submit-requirements', 'submitRequirements')->name('.apply');
 
                     # To add: Re-apply for Verification (for Declined)
                     Route::get('/reapply-for-verification', 'reapplyVerification')->name('.reverify');
@@ -207,7 +208,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
 
                     # Store Featured Project (from Existing Task based Project)
                     Route::post('/store/add/project/{code}', 'StoreExistedProjectFeaturedProject')->name('.add.project.store');
-
                 });
             });
 
@@ -222,7 +222,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
 
                 # Charity Admin only
                 Route::middleware('charity.admin')->group(function () {
-                    # Add new Project 
+                    # Add new Project
                     Route::get('/add', [ProjectController::class, 'AddProject'])->name('.add');
 
                     # Store new project
@@ -241,7 +241,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
 
                     # Delete Project
                     Route::get('/delete/{code}', [ProjectController::class, 'DeleteProject'])->name('.delete');
-
                 });
 
                 # Tasks
@@ -251,16 +250,15 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                     // Route::get('/c6e9df80-22c6-4829-a2f1-bad342699e7b', function () {
                     //     return view('charity.main.projects.tasks.view');
                     // })->name('.view');
-                     Route::get('/view/{code}', [ProjectController::class, 'ViewTask'])->name('.view');
+                    Route::get('/view/{code}', [ProjectController::class, 'ViewTask'])->name('.view');
 
-                     Route::post('/store/task/{code}', [ProjectController::class, 'StoreTask'])->name('.store');
+                    Route::post('/store/task/{code}', [ProjectController::class, 'StoreTask'])->name('.store');
 
-                     # Delete Task
-                     Route::get('/delete/{code}', [ProjectController::class, 'DeleteTask'])->name('.delete');
+                    # Delete Task
+                    Route::get('/delete/{code}', [ProjectController::class, 'DeleteTask'])->name('.delete');
 
-                     # Update Task
-                     Route::post('/update/task/{code}', [ProjectController::class, 'UpdateTask'])->name('.update');
-
+                    # Update Task
+                    Route::post('/update/task/{code}', [ProjectController::class, 'UpdateTask'])->name('.update');
                 });
                 // Add Task
                 // Edit Task (Assigned_to Only)

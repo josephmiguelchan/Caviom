@@ -12,6 +12,7 @@ use App\Models\Charity\Profile\ProfileSecondaryInfo;
 use App\Models\Charity\Profile\ProfileAward;
 use App\Models\Charity\Profile\ProfileModeOfDonation;
 use App\Models\Charity\Profile\ProfileProgram;
+use App\Models\Charity\Profile\ProfileRequirement;
 use App\Models\Notification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -697,6 +698,111 @@ class ProfileController extends Controller
         }
 
         return view('charity.main.profile.verify');
+    }
+    public function submitRequirements(Request $request)
+    {
+        # Only with unverified status can access this function
+        if (Auth::user()->charity->verification_status != "Unverified") {
+            $notification = array(
+                'message' => 'Only unverified charitable organizations can apply for verification.',
+                'alert-type' => 'error',
+            );
+
+            return to_route('charity.profile')->with($notification);
+        }
+
+        # Validate request
+        $validator = Validator::make($request->all(), [
+            'sec_registration' => ['required', 'max:2048', 'mimes:jpg,png,jpeg', 'file'],
+            'dswd_certificate' => ['required', 'max:2048', 'mimes:jpg,png,jpeg', 'file'],
+            'valid_id' => ['required', 'max:2048', 'mimes:jpg,png,jpeg', 'file'],
+            'photo_holding_id' => ['required', 'max:2048', 'mimes:jpg,png,jpeg', 'file'],
+        ], [
+            // Custom error messages...
+
+        ]);
+
+        # Return error toastr if validate request failed
+        if ($validator->fails()) {
+            $toastr = array(
+                'message' => $validator->errors()->first() . ' Please try again.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
+
+        # Create profile requirements table if not exists
+        $requirements = ProfileRequirement::firstOrNew([
+            'charitable_organization_id' => Auth::user()->charitable_organization_id
+        ]);
+
+        # Upload SEC Registration
+        $sec = $request->file('sec_registration');
+        $sec_filename = Str::uuid() . '.' . $sec->getClientOriginalExtension();
+        $sec->move(public_path('upload/charitable_org/requirements/'), $sec_filename);
+        $requirements->sec_registration = $sec_filename;
+
+        # Upload DSWD Certificate
+        $dswd = $request->file('dswd_certificate');
+        $dswd_filename = Str::uuid() . '.' . $dswd->getClientOriginalExtension();
+        $dswd->move(public_path('upload/charitable_org/requirements/'), $dswd_filename);
+        $requirements->dswd_certificate = $dswd_filename;
+
+        # Upload Valid ID
+        $valid_id = $request->file('valid_id');
+        $valid_id_filename = Str::uuid() . '.' . $valid_id->getClientOriginalExtension();
+        $valid_id->move(public_path('upload/charitable_org/requirements/'), $valid_id_filename);
+        $requirements->valid_id = $valid_id_filename;
+
+        # Upload User's Photo Holding Valid ID
+        $photo_holding_id = $request->file('photo_holding_id');
+        $photo_holding_id_filename = Str::uuid() . '.' . $photo_holding_id->getClientOriginalExtension();
+        $photo_holding_id->move(public_path('upload/charitable_org/requirements/'), $photo_holding_id_filename);
+        $requirements->photo_holding_id = $photo_holding_id_filename;
+
+        # Update DB
+        $requirements->submitted_by = Auth::id();
+        $requirements->save();
+
+        # Set verification_status of Charity from Unverified to Pending
+        $charityStatus = Auth::user()->charity;
+        $charityStatus->verification_status = 'Pending';
+        $charityStatus->status_updated_at = Carbon::now();
+        $charityStatus->save();
+
+        # Send Notifications to all active Charity Users
+        foreach ($charityStatus->users as $user) {
+            $notif = new Notification;
+            $notif->code = Str::uuid()->toString();
+            $notif->user_id = $user->id;
+            $notif->category = 'Public Profile';
+            $notif->subject = 'Verification Requirements Submitted';
+            $notif->message = Auth::user()->role . ' [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ] has successfully
+                applied for ' . $charityStatus->name . '\'s Verification Status. Please wait for Caviom to process and verify these documents.';
+            $notif->icon = 'mdi mdi-check-decagram';
+            $notif->color = 'info';
+            $notif->created_at = Carbon::now();
+            $notif->save();
+        }
+
+        # Audit Logs (Insert)
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action_type' => 'UPDATE',
+            'charitable_organization_id' => Auth::user()->charitable_organization_id,
+            'table_name' => 'Profile Requirement',
+            'record_id' => Auth::user()->charity->code,
+            'action' => Auth::user()->role . ' [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
+                submitted Profile Requirements for their Verification Status.',
+            'performed_at' => Carbon::now(),
+        ]);
+
+        $successToastr = array(
+            'message' => 'Success! Please wait for the Caviom team to verify your submitted documents.',
+            'alert-type' => 'success'
+        );
+        return to_route('charity.profile')->with($successToastr);
     }
     public function reapplyVerification()
     {
