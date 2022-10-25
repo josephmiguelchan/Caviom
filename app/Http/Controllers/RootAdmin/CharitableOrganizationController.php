@@ -105,10 +105,12 @@ class CharitableOrganizationController extends Controller
             return redirect()->back()->with($toastr);
         }
 
+        $remarks = Notifier::where('category', 'Public Profile')->pluck('subject')->toArray();
+
         $request->validate([
-            'visibility_status' => 'required',
-            'verification_status' => 'required',
-            'remarks' => 'nullable',
+            'visibility_status' => ['required', Rule::in(['Hidden', 'Visible', 'Locked'])],
+            'verification_status' => ['required', Rule::in(['Verified', 'Declined'])],
+            'remarks' => ['nullable', Rule::in($remarks)]
         ]);
 
         # Set the remarks MESSAGE based on the value of profile's remarks from Notifiers dropdown table.

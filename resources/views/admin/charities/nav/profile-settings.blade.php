@@ -26,7 +26,7 @@
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
-        </div>            
+        </div>
         @endif
 
         <div class="card-body mt-3">
@@ -71,7 +71,6 @@
                             <option value="Pending" {{$organizationdetail->verification_status == 'Pending'?'selected':''}} hidden>Pending</option>
                             <option value="Verified" {{$organizationdetail->verification_status == 'Verified'?'selected':''}}>Verified</option>
                             <option value="Declined" {{$organizationdetail->verification_status == 'Declined'?'selected':''}}>Declined</option>
-                            <option value="Unverified" {{$organizationdetail->verification_status == 'Unverified'?'selected':''}}>Unverified</option>
                         </select>
                         @error('verification_status')
                             <div class="text-danger">
