@@ -97,13 +97,13 @@ class PublicController extends Controller
             'middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'mode_of_donation' => ['required', Rule::in($modesOfDonation)], // Must be in array of Charitable Organization's mode of payments only.
             'amount' => ['required', 'numeric', 'between:0,999999.99'],
-            'paid_at' => ['required', 'date', 'before:' . now()->addDay()->toDateString(), 'after:' . now()->subYears(3)->toDateString()],
+            'paid_at' => ['required', 'date', 'before_or_equal:' . now()->endOfDay()->toDateString(), 'after_or_equal:' . $charity->created_at->startOfDay()->toDateString()],
             'message' => ['nullable', 'max:500'],
             'g-recaptcha-response' => ['required', 'captcha'],
         ], [
-            'paid_at.before' => 'Earliest date of payment must not be more than one (1) day after today.',
-            'paid_at.after' => 'Latest date of payment must not be more than three (3) years before today.',
-            'g-recaptcha-response.captcha' => 'Captcha error! Please try again',
+            'paid_at.before_or_equal' => 'Latest date of payment should be by the end of today only.',
+            'paid_at.after_or_equal' => 'Earliest date of payment must not be before this organization\'s registration date.',
+            'g-recaptcha-response.captcha' => 'Captcha error! Please try again.',
             'g-recaptcha-response.required' => 'Please verify that you are not a robot.',
         ]);
 

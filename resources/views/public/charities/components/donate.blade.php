@@ -125,7 +125,7 @@
                     <div class="form-group">
                         <label for="mode_of_donation" class="form-label">*Mode of Donation Used</label>
                         <select class="form-select select2-search-disable" name="mode_of_donation" id="mode_of_donation" aria-label="Select method" required>
-                            <option selected>Select mode of donation...</option>
+                            <option value="" selected>Select mode of donation...</option>
 
                             <!-- For each mode of donations of Charitable Organization, display each option as item -->
                             @foreach ($charity->donationModes as $donationMode)
@@ -165,7 +165,7 @@
                     <div class="form-group">
                         <label for="paid_at" class="form-label">Date of Payment</label>
                         <input type="datetime-local" class="form-control" name="paid_at" id="paid_at" value="{{ old('paid_at') }}"
-                            min="{{Carbon\Carbon::now()->subYears(3)->startOfYear()}}" max="{{Carbon\Carbon::now()}}">
+                            min="{{Carbon\Carbon::parse($charity->created_at)->startOfDay()}}" max="{{Carbon\Carbon::now()->endOfDay()}}">
                         @error('paid_at')
                         <div class="text-danger small">
                             {{ $message }}
