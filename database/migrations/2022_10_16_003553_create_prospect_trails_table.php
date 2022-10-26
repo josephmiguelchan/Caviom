@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('mode_of_payment', 128);
             $table->string('action', 255);
             $table->float('running_balance', 10, 2);
-            $table->timestamp('created_at');
+            $table->timestamp('paid_at');
+            $table->timestamp('created_at')->nullable();
         });
     }
 
