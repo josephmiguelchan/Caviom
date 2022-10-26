@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use Illuminate\Support\Facades\Validator;
 
 class ProspectController extends Controller
 {
@@ -119,33 +119,62 @@ class ProspectController extends Controller
     }
 
 
-    public function GenerateDonationReport()
+    public function GenerateDonationReport(Request $request)
     {
-        $mytime = Carbon::now();
-        $trail = ProspectTrail::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
-        $orgimage = Auth::user()->charity->profile_photo;
+        $min_date = Carbon::parse(Auth::user()->charity->created_at)->isoFormat('YYYY-M');
+        $max_date = Carbon::now()->isoFormat('YYYY-M');
 
+        $validator = Validator::make($request->all(), [
+            'monthFilter' => [
+                'required', 'date_format:Y-m',
+                'after_or_equal:' . $min_date, 'before_or_equal:' . $max_date,
+            ],
+        ], [
+            # Custom Error Messages
+            'monthFilter.date_format' => 'The month filter does not follow a valid date format.',
+            'monthFilter.after_or_equal' => 'Your organization has not yet been registered on this chosen month filter.',
+            'monthFilter.before_or_equal' => 'The month filter should not be in the future.',
+        ]);
+
+        # Return error toastr if validate request failed
+        if ($validator->fails()) {
+            $toastr = array(
+                'message' => $validator->errors()->first() . ' Please try again.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
+
+        $date_start = Carbon::parse($request->monthFilter)->firstOfMonth();
+        $date_end = Carbon::parse($request->monthFilter)->lastOfMonth();
+
+        $mytime = Carbon::now();
+        $trail = ProspectTrail::where('charitable_organization_id', Auth::user()->charitable_organization_id)
+            ->where('paid_at', '>=', $date_start)->where('paid_at', '<=', $date_end)
+            ->get();
+        $orgimage = Auth::user()->charity->profile_photo;
         $cashinflow = ProspectTrail::where('charitable_organization_id', Auth::user()->charitable_organization_id)
-            ->groupBy('mode_of_payment')
-            ->orderBy('mode_of_payment', 'ASC')
-            ->pluck('mode_of_payment')
-            ->toArray();
+            ->where('paid_at', '>=', $date_start)->where('paid_at', '<=', $date_end)
+            ->groupBy('mode_of_payment')->orderBy('mode_of_payment', 'ASC')
+            ->pluck('mode_of_payment')->toArray();
 
         $donations = array();
         $deductions = array();
         $subtotal = array();
         foreach ($cashinflow as $key => $mode) {
             $donations[$key] = ProspectTrail::where('charitable_organization_id', Auth::user()->charitable_organization_id)
-                ->where('mode_of_payment', $mode)
-                ->where('amount', '>', '0')
+                ->where('paid_at', '>=', $date_start)->where('paid_at', '<=', $date_end)
+                ->where('mode_of_payment', $mode)->where('amount', '>', '0')
                 ->orderBy('mode_of_payment', 'ASC')
                 ->sum('amount');
             $deductions[$key] = ProspectTrail::where('charitable_organization_id', Auth::user()->charitable_organization_id)
-                ->where('mode_of_payment', $mode)
-                ->where('amount', '<', '0')
+                ->where('paid_at', '>=', $date_start)->where('paid_at', '<=', $date_end)
+                ->where('mode_of_payment', $mode)->where('amount', '<', '0')
                 ->orderBy('mode_of_payment', 'ASC')
                 ->sum('amount');
             $subtotal[$key] = ProspectTrail::where('charitable_organization_id', Auth::user()->charitable_organization_id)
+                ->where('paid_at', '>=', $date_start)->where('paid_at', '<=', $date_end)
                 ->where('mode_of_payment', $mode)
                 ->orderBy('mode_of_payment', 'ASC')
                 ->sum('amount');
@@ -173,17 +202,17 @@ class ProspectController extends Controller
             $notif->category = 'Prospect';
             $notif->subject = 'Donations Report Generated';
             $notif->message = Auth::user()->role . ' ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . '
-                             has attempted to generate a report of cash inflow dontation from Prospects into a PDF file.';
+                has attempted to generate a report of cash inflow dontation from Prospects into a PDF.';
             $notif->icon = 'mdi mdi-file-download';
             $notif->color = 'warning';
             $notif->created_at = Carbon::now();
             $notif->save();
         }
 
-        // return view('charity.donors.prospects.DonationReport', compact(['orgimage','mytime','trail', 'cashinflow', 'donations', 'deductions', 'subtotal']));
+        // return view('charity.donors.prospects.DonationReport', compact(['orgimage', 'mytime', 'trail', 'cashinflow', 'donations', 'deductions', 'subtotal', 'date_start', 'date_end']));
 
-        $pdf = PDF::loadView('charity.donors.prospects.DonationReport', compact(['orgimage', 'mytime', 'trail', 'cashinflow', 'donations', 'deductions', 'subtotal']));
-        return $pdf->download(Auth::user()->charity->name . '- Donation Transparency Report' . '.pdf');
+        $pdf = PDF::loadView('charity.donors.prospects.DonationReport', compact(['orgimage', 'mytime', 'trail', 'cashinflow', 'donations', 'deductions', 'subtotal', 'date_start', 'date_end']));
+        return $pdf->download(Auth::user()->charity->name . ' - Donation Transparency Report' . '.pdf');
     }
 
     public function AddRemarks(Request $request, $code)
@@ -201,7 +230,7 @@ class ProspectController extends Controller
         $prospect->remarks = $request->remarks;
         $prospect->save();
         $toastr = array(
-            'message' => 'Selected Prospect has been added a Remark successfully.',
+            'message' => 'Selected Prospect\'s remark has been updated successfully.',
             'alert-type' => 'success'
         );
 

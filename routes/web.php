@@ -122,7 +122,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
             Route::get('/leads/move/back/leads/{code}', [ProspectController::class, 'MoveToLeads'])->name('move.back.leads');
 
             # Export Donation Report with PDF
-            Route::get('/export/DonationReport', [ProspectController::class, 'GenerateDonationReport'])->name('generate.donation.report');
+            Route::post('/export/DonationReport', [ProspectController::class, 'GenerateDonationReport'])->name('generate.donation.report');
 
             # Update the remarks of Prospects.
             Route::post('/prospect/add/remarks/{code}', [ProspectController::class, 'AddRemarks'])->name('add.remarks');
@@ -228,10 +228,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                     # Store new project
                     Route::post('/store', [ProjectController::class, 'StoreProject'])->name('.store');
 
-                    // Route::get('/edit/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () {
-                    //     return view('charity.main.projects.edit');
-                    // })->name('.edit');
-
                     # Edit Project
                     Route::get('/edit/{code}', [ProjectController::class, 'EditProject'])->name('.edit');
 
@@ -245,11 +241,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
 
                 # Tasks
                 Route::name('.tasks')->prefix('/tasks')->group(function () {
-                    // Route::get('/all/{code}', [ProjectController::class, 'Alltask'])->name('.all');
 
-                    // Route::get('/c6e9df80-22c6-4829-a2f1-bad342699e7b', function () {
-                    //     return view('charity.main.projects.tasks.view');
-                    // })->name('.view');
                     Route::get('/view/{code}', [ProjectController::class, 'ViewTask'])->name('.view');
 
                     Route::post('/store/task/{code}', [ProjectController::class, 'StoreTask'])->name('.store');
@@ -260,9 +252,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                     # Update Task
                     Route::post('/update/task/{code}', [ProjectController::class, 'UpdateTask'])->name('.update');
                 });
-                // Add Task
-                // Edit Task (Assigned_to Only)
-                // Delete Task (Charity admin / Assigned_by Only)
             });
 
 
@@ -290,11 +279,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
 
                     # Delete (Pending Only) User
                     Route::get('/delete/{code}', [UserController::class, 'DeleteUser'])->name('.delete');
-                });
-
-
-                Route::middleware('charity.admin')->group(function () { // Add middleware: Selected account must be pending (account not yet setup)
-                    // To add - Route::get() for deleting pending user accounts permanently (non-refundable).
                 });
 
                 # View User Detail
@@ -470,7 +454,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                 # Store new Gift Giving Project
                 Route::post('/store', [GiftGivingController::class, 'StoreGiftGiving'])->name('store');
 
-                # (TO DO) Feature Gift Giving
+                # Feature Gift Giving
                 Route::get('/featured/new/4d4666bb-554d-40b0-9b23-48f653c21e1e', function () { // Add middleware that star tokens must be sufficient
                     return view('charity.main.projects.featured.add');
                 })->name('.feature');

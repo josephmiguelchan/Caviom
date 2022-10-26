@@ -102,8 +102,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Delete the selected lead [ <strong>{{$lead->last_name.', '.$lead->first_name.}} </strong> ]?
-                                    </p>
+                                    <p>Delete the selected lead [ <strong>{{$lead->last_name.', '.$lead->first_name}} </strong> ]?</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button"  class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
@@ -123,7 +122,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>You are about to add the selected lead [ <strong>{{$lead->last_name.', '.$lead->first_name.}} </strong> ] to your prospects. Continue?</p>
+                                    <p>You are about to add the selected lead [ <strong>{{$lead->last_name.', '.$lead->first_name}} </strong> ] to your prospects. Continue?</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>

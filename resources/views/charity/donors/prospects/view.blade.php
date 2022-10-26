@@ -128,7 +128,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>You are about to move the selected prospect [ <strong>{{$prospect->last_name.', '.$prospect->first_name.}} </strong> ] back to leads. Continue?</p>
+                                    <p>You are about to move the selected prospect [ <strong>{{$prospect->last_name.', '.$prospect->first_name}} </strong> ] back to leads. Continue?</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
@@ -149,7 +149,7 @@
                                 </div>
                                 <div class="modal-body text-center">
                                     <p class="text-dark">You are about to create a new opportunity for your nonprofit.</p>
-                                    <h1 class="mb-0" style="color: #62896d"><strong>{{$prospect->last_name.', '.$prospect->first_name}}.</strong></h1>
+                                    <h1 class="mb-0" style="color: #62896d"><strong>{{$prospect->last_name.', '.$prospect->first_name}}</strong></h1>
                                     <p class="mt-5 text-muted">
                                         Kindly select one from these:
                                     </p>

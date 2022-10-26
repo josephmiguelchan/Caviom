@@ -30,12 +30,12 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>You are about to attempt to generate a trail report of Donations from Prospects. This action
+                        <p>You are about to attempt to generate a trail report of Donations from Prospects for this chosen month. This action
                             will notify all other users in your Charitable Organization. Continue?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
-                        <a type="button" href="{{route('generate.donation.report')}}"  class="btn btn-dark waves-effect waves-light w-sm">Yes</a>
+                        <button type="submit" form="generateReportbyMonth" class="btn btn-dark waves-effect waves-light w-sm">Yes</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -44,37 +44,31 @@
         <div class="col-12">
             <div class="card p-3">
                 <div class="card-body">
-                    <div class="float-end">
-                        <div class="dropdown mt-3 mx-0">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="mdi mdi-dots-vertical"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <!-- item-->
-                                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exportModal">
-                                    <i class="mdi mdi-download"></i> Export to PDF
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <h2><strong>PHP {{!empty($totaldonation) ? number_format($totaldonation,2) : '0.00'}}</strong></h2>
-                            <p>Total Acknowledged Donations</p>
+                            <p>All Time Total Acknowledged Donations</p>
                         </div>
                         <div class="col-lg-8 mt-2">
                             <ul class="list-inline">
-                                <form method="POST" action="#">
+                                <form method="POST" action="{{route('generate.donation.report')}}" id="generateReportbyMonth">
                                     @csrf
                                     <li class="list-inline-item col-md-5">
-                                        <input class="form-control" min="{{Carbon\Carbon::parse(Auth::user()->charity->created_at)->isoFormat('YYYY-M')}}"
-                                            max="{{Carbon\Carbon::now()->isoFormat('YYYY-M')}}" type="month" value="{{Carbon\Carbon::now()->isoFormat('YYYY-M')}}">
+                                        <input class="form-control" min="{{Carbon\Carbon::parse(Auth::user()->charity->created_at)->isoFormat('YYYY-M')}}" required
+                                            max="{{Carbon\Carbon::now()->isoFormat('YYYY-M')}}" type="month" value="{{Carbon\Carbon::now()->isoFormat('YYYY-M')}}"
+                                            name="monthFilter">
                                     </li>
                                     <li class="list-inline-item">
-                                        <button type="submit" class="btn btn-outline-secondary">
-                                            <i class="mdi mdi-magnify"></i></a>
-                                        </button>
+                                        {{-- <button type="submit" class="btn btn-outline-dark">
+                                                <i class="mdi mdi-magnify"></i></a>
+                                            </button> --}}
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#exportModal" class="btn btn-outline-secondary">
+                                                <i class="mdi mdi-download"></i></a> Generate Report
+                                            </button>
                                     </li>
+                                    @error('monthFilter')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
                                 </form>
                             </ul>
                         </div>
