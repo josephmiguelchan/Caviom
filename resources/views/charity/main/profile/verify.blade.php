@@ -60,7 +60,7 @@
                                                 </small>
                                             </div>
                                         @enderror
-                                        <img class="img-fluid rounded mt-2" id="showSECImage" alt="SEC Registration Photo Preview" width="290"
+                                        <img class="img-fluid rounded mt-2" id="showSECImage" alt="SEC Registration Photo Preview" width="100%"
                                             src="{{ asset($default) }}">
                                     </div>
 
@@ -76,7 +76,7 @@
                                                 </small>
                                             </div>
                                         @enderror
-                                            <img class="img-fluid rounded mt-2" id="showDSWDImage" alt="DSWD Registration Photo Preview" width="290"
+                                            <img class="img-fluid rounded mt-2" id="showDSWDImage" alt="DSWD Registration Photo Preview" width="100%"
                                                 src="{{ asset($default) }}">
                                     </div>
 
@@ -91,7 +91,7 @@
                                                 </small>
                                             </div>
                                         @enderror
-                                        <img class="img-fluid rounded mt-2" id="showIDImage" alt="Valid Government ID Photo Preview" width="290"
+                                        <img class="img-fluid rounded mt-2" id="showIDImage" alt="Valid Government ID Photo Preview" width="100%"
                                             src="{{ asset($default) }}">
                                     </div>
 
@@ -106,7 +106,7 @@
                                                 </small>
                                             </div>
                                         @enderror
-                                        <img class="img-fluid rounded mt-2" id="showHoldingIDImage" alt="Person Holding ID Photo Preview" width="290"
+                                        <img class="img-fluid rounded mt-2" id="showHoldingIDImage" alt="Person Holding ID Photo Preview" width="100%"
                                             src="{{ asset($default) }}">
                                     </div>
 
@@ -114,7 +114,7 @@
 
                                 <p class="text-muted font-size-12 mt-2">
                                     <em>
-                                        <strong>Note:</strong> File size must not exceed 2mb per file. Only allowed file types are: JPEG, PNG and JPG.
+                                        <i class="mdi mdi-information-outline"></i>  File size must not exceed 2MB per file. Only allowed file types are: <strong>JPEG, PNG, and JPG</strong>.
                                     </em>
                                 </p>
 

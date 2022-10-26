@@ -146,6 +146,16 @@
                 <dt class="col-md-6">{{ Carbon\Carbon::parse($requirements->created_at)->diffForHumans() }}</dt>
             </dl>
         </div>
+        <div class="row">
+            <dl class="row mb-0 col-lg-6">
+                <dt class="col-md-6"><h4 class="font-size-15 fw-bold float-end">Submitted by:</h4></dt>
+                <dt class="col-md-6">
+                    <a target="_blank" href="{{ route('admin.charities.users.view', $requirements->submittedBy->code) }}">
+                        {{ $requirements->submittedBy->username }}
+                    </a>
+                </dt>
+            </dl>
+        </div>
         @endunless
     </div>
 </div>
