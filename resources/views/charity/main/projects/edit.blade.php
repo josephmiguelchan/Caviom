@@ -79,12 +79,7 @@
                                     <!-- Project Objective / Description -->
                                     <label for="objective" class="form-label">*Objective</label>
                                     <textarea id="elm1" rows="15" name="objective" placeholder="Enter your project's objective/s..."
-                                        maxlength="500">
-                           
-                                        {{$project->objective}}
-                                   
-                                     
-                                    </textarea>
+                                        maxlength="500">{{$project->objective}}</textarea>
                                     @error('objective')
                                         <div class="text-danger">
                                             {{ $message }}
