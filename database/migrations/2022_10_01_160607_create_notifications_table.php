@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('message');
             $table->string('icon', 64)->nullable();
             $table->char('color', 20)->nullable();
-            $table->timestamp('created_at');
+            $table->timestamp('created_at'); // ALTER TABLE notifications CHANGE created_at created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         });
     }
 
