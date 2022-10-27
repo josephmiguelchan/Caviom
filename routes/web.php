@@ -166,18 +166,23 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                     Route::post('/cover_photos/gallery', 'destroy')->name('.cover_photo.delete');
                     Route::post('/cover_photos/save', 'dropZoneCoverPhotos')->name('.cover_photos.save');
 
-                    # Apply for Verification (for Unverified)
-                    Route::get('/apply-for-verification', 'applyVerification')->name('.verify');
-                    Route::post('/submit-requirements', 'submitRequirements')->name('.apply');
+                    Route::middleware('profile.set')->group(function () {
 
-                    # To add: Re-apply for Verification (for Declined)
-                    Route::get('/reapply-for-verification', 'reapplyVerification')->name('.reverify');
+                        # Apply for Verification (for Unverified)
+                        Route::get('/apply-for-verification', 'applyVerification')->name('.verify');
 
+                        # Submit Verification Documents
+                        Route::post('/submit-requirements', 'submitRequirements')->name('.apply');
 
-                    # To add: Set profile_status to Hidden - middleware('profile.set')->
+                        # Re-apply for Verification (for Declined)
+                        Route::get('/reapply-for-verification', 'reapplyVerification')->name('.reverify');
 
+                        # Set profile_status to Hidden
+                        Route::get('/set-to-hidden', 'hideProfile')->name('.hide');
 
-                    # To add: Set profile_status to Visible - middleware('profile.set')-> and $charity->profile_status != 'Locked' only.
+                        # Set profile_status to Visible
+                        Route::get('/set-to-visible', 'showProfile')->name('.show');
+                    });
                 });
 
 

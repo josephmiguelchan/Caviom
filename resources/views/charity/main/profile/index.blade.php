@@ -132,8 +132,8 @@
                                         </button>
                                         @unless (Auth::user()->charity->profile_status == 'Locked')
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">Hidden</a>
-                                            <a class="dropdown-item" href="#">Visible</a>
+                                            <a class="dropdown-item" href="{{route('charity.profile.hide')}}">Hidden</a>
+                                            <a class="dropdown-item" href="{{route('charity.profile.show')}}">Visible</a>
                                         </div>
                                         @endunless
                                     </div>

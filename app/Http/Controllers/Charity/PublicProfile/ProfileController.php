@@ -849,4 +849,90 @@ class ProfileController extends Controller
         # redirect to applyVerification function
         return to_route('charity.profile.verify');
     }
+    public function hideProfile()
+    {
+        # Only with declined applications can access this function
+        if (Auth::user()->charity->profile_status == "Locked") {
+            $notification = array(
+                'message' => 'Sorry, your Public Profile was locked by Caviom. Please contact us at support@caviom.org.',
+                'alert-type' => 'error',
+            );
+
+            return to_route('charity.profile')->with($notification);
+        } else if (Auth::user()->charity->profile_status == "Hidden") {
+            $notification = array(
+                'message' => 'Your Public Profile is already set to Hidden.',
+                'alert-type' => 'info',
+            );
+
+            return to_route('charity.profile')->with($notification);
+        }
+
+        # Set to Hidden
+        $charityStatus = Auth::user()->charity;
+        $charityStatus->profile_status = 'Hidden';
+        $charityStatus->save();
+
+        # Create Audit Logs
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action_type' => 'UPDATE',
+            'charitable_organization_id' => Auth::user()->charitable_organization_id,
+            'table_name' => 'Charitable Organization',
+            'record_id' => Auth::user()->charity->code,
+            'action' => Auth::user()->role . ' [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
+                has set Visibility Status of their Charitable Organization\'s Public Profile to Hidden.',
+            'performed_at' => Carbon::now(),
+        ]);
+
+        $notification = array(
+            'message' => 'Your Public Profile has been successfully set to Hidden.',
+            'alert-type' => 'success',
+        );
+
+        return to_route('charity.profile')->with($notification);
+    }
+    public function showProfile()
+    {
+        # Only with declined applications can access this function
+        if (Auth::user()->charity->profile_status == "Locked") {
+            $notification = array(
+                'message' => 'Sorry, your Public Profile was locked by Caviom. Please contact us at support@caviom.org.',
+                'alert-type' => 'error',
+            );
+
+            return to_route('charity.profile')->with($notification);
+        } else if (Auth::user()->charity->profile_status == "Visible") {
+            $notification = array(
+                'message' => 'Your Public Profile is already set to Visible.',
+                'alert-type' => 'info',
+            );
+
+            return to_route('charity.profile')->with($notification);
+        }
+
+        # Set to Hidden
+        $charityStatus = Auth::user()->charity;
+        $charityStatus->profile_status = 'Visible';
+        $charityStatus->save();
+
+        # Create Audit Logs
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action_type' => 'UPDATE',
+            'charitable_organization_id' => Auth::user()->charitable_organization_id,
+            'table_name' => 'Charitable Organization',
+            'record_id' => Auth::user()->charity->code,
+            'action' => Auth::user()->role . ' [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ]
+                has set Visibility Status of their Charitable Organization\'s Public Profile to Visible.',
+            'performed_at' => Carbon::now(),
+        ]);
+
+        $notification = array(
+            'message' => 'Your Public Profile has been successfully set to Visible.',
+            'alert-type' => 'success',
+        );
+
+        return to_route('charity.profile')->with($notification);
+    }
 }
