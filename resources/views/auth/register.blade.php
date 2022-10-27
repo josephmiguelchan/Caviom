@@ -21,7 +21,6 @@
                     Charity Admin has the <b>highest level of access on CAVIOM</b> compared to the latter. Hence,
                     <b>capable of using all the features</b> available in the platform.
                 </p>
-                <a href="#" class="text-link float-end">READ MORE HERE <i class="mb-5 ri-arrow-right-line"></i></a>
             </div>
         </div>
         <div class="col-sm-7">
