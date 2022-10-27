@@ -74,15 +74,12 @@
                 <button type="button" class="btn header-item noti-icon waves-effect"
                     id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="ri-notification-3-line"></i>
-
-                    {{-- @if (Auth::user()->notifications->has('notification', 'unread')->get()->count() > 0)
-                    <span class="noti-dot"></span>
-                    @endif --}}
-
-
+                    @if (App\Models\Notification::where('user_id', Auth::id())->where('read_status', 'unread')->count() > 0)
+                        <span class="noti-dot"></span>
+                    @endif
                 </button>
 
-                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
                     aria-labelledby="page-header-notifications-dropdown">
                     <div class="p-3">
                         <div class="row align-items-center">
