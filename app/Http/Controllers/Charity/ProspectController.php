@@ -72,8 +72,12 @@ class ProspectController extends Controller
         $prospectTrail->mode_of_payment = $prospect->mode_of_donation;
         $prospectTrail->action = 'Moved back to Leads';
         $prospectTrail->running_balance = $totalbalance - $prospect->amount;
+        $prospectTrail->paid_at = $prospect->paid_at;
         $prospectTrail->created_at = Carbon::now();
         $prospectTrail->save();
+
+        # Delete Prospect Record
+        $prospect->delete();
 
 
         # Create Audits Logs
@@ -105,9 +109,6 @@ class ProspectController extends Controller
             $notif->created_at = Carbon::now();
             $notif->save();
         }
-
-        # Delete Prospect Record
-        $prospect->delete();
 
         # Send success toastr
         $toastr = array(

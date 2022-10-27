@@ -69,6 +69,16 @@ class ProjectController extends Controller
 
     public function StoreProject(Request $request)
     {
+        // Max of 5 projects for Free subscription
+        if (Auth::user()->charity->projects->count() >= 5 and Auth::user()->charity->subscription == 'Free') {
+            $toastr = array(
+                'message' => 'Sorry, Your Organization has already reached the limit of five (5) Projects. Subscribe to Caviom Pro / Premium to unlock more projects.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($toastr);
+        }
+
         # Validation Rules
         $request->validate([
             'name' => 'required|unique:projects|min:5|max:255',
