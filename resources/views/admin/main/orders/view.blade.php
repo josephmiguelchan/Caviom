@@ -35,23 +35,21 @@
 
                                 <h4 class="fw-bold">Remarks for Rejection</h4>
                                 <div class="m-3">
-                                   @foreach ($stRemarks as $key => $item)
-                                       
-                                 
+                                    @foreach ($stRemarks as $key => $item)
                                     <!-- Foreach ($notifiers (in Star Token Order category) as $item) -->
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="remarks_subject"
                                             id="remarks_subject_{{$key+1}}" value="{{$item->subject}}" checked>
                                         <label class="form-check-label" for="remarks_subject_{{$key+1}}">
                                             <!-- $notifier->subject -->
-                                           {{$item->subject}}
+                                            {{$item->subject}}
                                         </label>
                                         <p>
                                             {{$item->message}}
                                         </p>
                                     </div>
                                     <!-- End iF -->
-                                    @endforeach 
+                                    @endforeach
                                 </div>
 
                                 <p class="m-1">
@@ -91,7 +89,7 @@
             </div>
         @endif
 
-            
+
 
         <div class="col-12">
             <div class="card p-4">
@@ -108,8 +106,6 @@
 
                     </div>
                     <hr>
-                    
-                   
                     <div class="row mt-5 px-2">
                         <div class="col-lg-6">
                             <div class="row">
@@ -131,15 +127,13 @@
                                 <dt class="col-md-8">{{$order->mode_of_payment}}</dt>
                                 <dt class="col-md-4"><h4 class="font-size-15"><strong>Date of Payment:</strong></h4></dt>
                                 <dt class="col-md-8">{{Carbon\Carbon::parse($order->paid_at)->isoFormat('LL (h:mm A)')}}</dt>
-
-
+                                <dt class="col-md-4"><h4 class="font-size-15"><strong>Submitted by:</strong></h4></dt>
+                                <dt class="col-md-8"><a target="_blank" href="{{route('admin.charities.users.view', $order->user->code)}}">
+                                    {{$order->user->username}}
+                                </a></dt>
                             </div>
                         </div>
                     </div>
-          
-                  
-                        
-             
                     <div class="row mt-5">
                         <div class="col-lg-8">
                             <div class="row">
@@ -189,7 +183,6 @@
                             </div>
                         </div>
                     </div>
-             
 
                     <div class="row mt-3">
                         <div class="col-lg-8">
@@ -233,7 +226,6 @@
                                 <dt class="col-md-2"><h4 class="font-size-15"><strong>Remarks:</strong></h4></dt>
                                 <dt class="col-md-10">{{($order->remarks_subject)?$order->remarks_subject:'---' }}</dt>
                                 <dd class="col-md-10 offset-md-2">{{ ($order->remarks_message)?$order->remarks_message:'' }}</dt>
-
                             </dl>
                         </div>
                         <div class="col-lg-4">
@@ -241,12 +233,11 @@
                                 <dt class="col-md-4"><h4 class="font-size-15"><strong>Order Status:</strong></h4></dt>
                                 @if ($order->status == 'Pending')
                                 <dt class="col-md-8 text-warning">PENDING</dt>
-                                @elseif($order->status == 'Confirmed')         
+                                @elseif($order->status == 'Confirmed')
                                 <dt class="col-md-8 text-success">Confirmed</dt>
-                                @elseif($order->status == 'Rejected')         
+                                @elseif($order->status == 'Rejected')
                                 <dt class="col-md-8 text-danger">Rejected</dt>
                                 @endif
-                      
                                 <dt class="col-md-4"><h4 class="font-size-15"><strong>Status Updated at:</strong></h4></dt>
                                 <dt class="col-md-8">{{Carbon\Carbon::parse($order->status_updated_at)->diffForHumans()}}</dt>
                             </div>
