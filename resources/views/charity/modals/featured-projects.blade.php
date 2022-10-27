@@ -12,15 +12,22 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Featured Projects are eme eme</p>
-                <p>Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Vivamus sagittis lacus vel
-                    augue laoreet rutrum faucibus dolor auctor.</p>
-                <p class="mb-0">Aenean lacinia bibendum nulla sed consectetur.
-                    Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Donec sed odio dui. Donec
-                    ullamcorper nulla non metus auctor
-                    fringilla.</p>
+                <p>
+                    Featured Projects is a feature added to Caviom platform to keep the public profile updated
+                    based on the recent projects conducted by the Charitable Organization. Here are some benefits
+                    of having an updated public profile:
+                </p>
+                <ul>
+                    <li>
+                        Public donors or sponsors are kept posted and informed about how their donations are
+                        being used.
+                    </li>
+                    <li>
+                        The charitable organization that updates their public profile by posting featured projects
+                        inspires and gives ideas to other charitable organization of what project they may
+                        conduct next.
+                    </li>
+                </ul>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

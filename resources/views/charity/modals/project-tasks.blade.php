@@ -12,15 +12,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Project Task is your eme eme.</p>
-                <p>Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Vivamus sagittis lacus vel
-                    augue laoreet rutrum faucibus dolor auctor.</p>
-                <p class="mb-0">Aenean lacinia bibendum nulla sed consectetur.
-                    Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Donec sed odio dui. Donec
-                    ullamcorper nulla non metus auctor
-                    fringilla.</p>
+                <p>
+                    <strong>Project Tasks</strong> is a feature added to Caviom platform to help collaborations happen for Charitable
+                    Organization's members. Users can assign tasks to individual users from the same organization and be notified of
+                    their assigned task.
+                </p>
+                <p>
+                    Remember:
+                </p>
+                <ul>
+                    <li>Tasks are project-based. You must select the appropriate project first before you assign someone a task.</li>
+                    <li>Each project only has a maximum no. of tasks (100 Tasks per Project).</li>
+                    <li>Once the task assigned to you is done, make sure to tag it as complete.</li>
+                </ul>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

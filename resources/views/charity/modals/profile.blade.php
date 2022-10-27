@@ -12,15 +12,15 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Public profile is your eme eme.</p>
-                <p>Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Vivamus sagittis lacus vel
-                    augue laoreet rutrum faucibus dolor auctor.</p>
-                <p class="mb-0">Aenean lacinia bibendum nulla sed consectetur.
-                    Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Donec sed odio dui. Donec
-                    ullamcorper nulla non metus auctor
-                    fringilla.</p>
+                <p>Public Profile is a feature added to Caviom platform mainly to help Charitable Organizations
+                    have an inexpensive alternative to costly custom-made website to display their information. This
+                    feature is also very useful for:
+                </p>
+                <ul>
+                    <li>Public donors who want to browse through the Charitable Organization they wish to support.</li>
+                    <li>Marketing the charitable organization by sharing its link to social media platforms.</li>
+                    <li>Increase awareness about the Charitable Organization.</li>
+                </ul>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
