@@ -221,6 +221,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
 
                 # Charity Admin only
                 Route::middleware('charity.admin')->group(function () {
+
                     # Add new Project
                     Route::get('/add', [ProjectController::class, 'AddProject'])->name('.add');
 
@@ -232,7 +233,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
 
                     # Update
                     Route::post('/update/{code}', [ProjectController::class, 'UpdateProject'])->name('.update');
-
 
                     # Delete Project
                     Route::get('/delete/{code}', [ProjectController::class, 'DeleteProject'])->name('.delete');
@@ -263,7 +263,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                 # Backup  User
                 Route::get('/export', [UserController::class, 'BackupUser'])->name('.export');
 
-
                 # Charity Admins Only
                 Route::middleware(['charity.admin'])->group(function () {
 
@@ -293,11 +292,15 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                 # View A Specific Record from Beneficiaries
                 Route::get('/view/{beneficiaries:code}', [BeneficiaryController::class, 'show'])->name('.show');
 
-                # Create A Beneficiary Record
-                Route::get('/create', [BeneficiaryController::class, 'create'])->name('.create');
+                # (Beneficiaries count should not exceed the maximum allowed no. of Beneficiaries)
+                Route::middleware('max.beneficiaries')->group(function () {
 
-                # About to Store the New Beneficiary Record
-                Route::post('/store', [BeneficiaryController::class, 'store'])->name('.store');
+                    # Create A Beneficiary Record
+                    Route::get('/create', [BeneficiaryController::class, 'create'])->name('.create');
+
+                    # About to Store the New Beneficiary Record
+                    Route::post('/store', [BeneficiaryController::class, 'store'])->name('.store');
+                });
 
                 # Delete A Beneficiary Record
                 Route::get('/delete/{beneficiaries:code}', [BeneficiaryController::class, 'delete'])->name('.delete');
@@ -355,7 +358,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                 # About to Update the Edit Beneficiary Record
                 Route::post('/update-part3/{beneficiary:code}', [Beneficiary3Controller::class, 'update'])->name('.update');
 
-
                 # Backup Beneficiaries
                 Route::get('/export', [Beneficiary3Controller::class, 'BackupBeneficiary'])->name('.export');
 
@@ -376,10 +378,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                 Route::get('/view/{benefactors:code}', [BenefactorController::class, 'show'])->name('.view');
 
                 # Create A Benefactor Record
-                Route::get('/create', [BenefactorController::class, 'create'])->name('.create');
+                Route::get('/create', [BenefactorController::class, 'create'])->middleware('max.benefactors')->name('.create');
 
                 # About to Store the New Benefactor Record
-                Route::post('/store', [BenefactorController::class, 'store'])->name('.store');
+                Route::post('/store', [BenefactorController::class, 'store'])->middleware('max.benefactors')->name('.store');
 
                 # Delete A Benefactor Record
                 Route::get('/delete/{benefactors:code}', [BenefactorController::class, 'delete'])->name('.delete');
@@ -404,10 +406,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
                 Route::get('/view/{volunteers:code}', [VolunteerController::class, 'show'])->name('.view');
 
                 # Create A Volunteer Record
-                Route::get('/create', [VolunteerController::class, 'create'])->name('.create');
+                Route::get('/create', [VolunteerController::class, 'create'])->middleware('max.volunteers')->name('.create');
 
                 # About to Store the New Volunteer Record
-                Route::post('/store', [VolunteerController::class, 'store'])->name('.store');
+                Route::post('/store', [VolunteerController::class, 'store'])->middleware('max.volunteers')->name('.store');
 
                 # Delete A Volunteer Record
                 Route::get('/delete/{volunteers:code}', [VolunteerController::class, 'delete'])->name('.delete');

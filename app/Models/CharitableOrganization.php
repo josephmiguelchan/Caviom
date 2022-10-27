@@ -48,6 +48,16 @@ class CharitableOrganization extends Model
         return $this->hasMany(Beneficiary::class, 'charitable_organization_id', 'id');
     }
 
+    public function volunters()
+    {
+        return $this->hasMany(Volunteer::class, 'charitable_organization_id', 'id');
+    }
+
+    public function benefactors()
+    {
+        return $this->hasMany(Benefactor::class, 'charitable_organization_id', 'id');
+    }
+
     public function giftgiving()
     {
         return $this->hasMany(GiftGiving::class, 'charitable_organization_id', 'id');
@@ -111,5 +121,4 @@ class CharitableOrganization extends Model
     {
         return $this->hasMany(Project::class, 'charitable_organization_id', 'id');
     }
-
 }

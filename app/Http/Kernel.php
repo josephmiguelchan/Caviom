@@ -70,5 +70,8 @@ class Kernel extends HttpKernel
         'admin.only' => \App\Http\Middleware\IsRootAdmin::class,
         'profile.set' => \App\Http\Middleware\IsProfileSet::class,
         'charity.user' => \App\Http\Middleware\IsCharityUser::class,
+        'max.beneficiaries' => \App\Http\Middleware\LimitBeneficiaries::class,
+        'max.benefactors' => \App\Http\Middleware\LimitBenefactors::class,
+        'max.volunteers' => \App\Http\Middleware\LimitVolunteers::class,
     ];
 }

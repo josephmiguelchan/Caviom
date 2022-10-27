@@ -26,6 +26,13 @@ class Beneficiary2Controller extends Controller
             );
 
             return redirect()->back()->with($notification);
+        } elseif ($beneficiary->families->count() >= 20) {
+            $notification = array(
+                'message' => 'Sorry, this Beneficiary has reached the maximum no. of (20) Family Members.',
+                'alert-type' => 'error',
+            );
+
+            return redirect()->back()->with($notification);
         } else {
 
             $familyInfo = BeneficiaryFamilyInfo::where('beneficiary_id', $beneficiary->id)->get();
@@ -63,6 +70,13 @@ class Beneficiary2Controller extends Controller
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
                 'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($notification);
+        } elseif ($beneficiary->families->count() >= 20) {
+            $notification = array(
+                'message' => 'Sorry, this Beneficiary has reached the maximum no. of (20) Family Members.',
+                'alert-type' => 'error',
             );
 
             return redirect()->back()->with($notification);
