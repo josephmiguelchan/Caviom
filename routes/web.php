@@ -111,7 +111,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])-
             # Add Leads to Prospects
             Route::get('/leads/update/prospect/{code}', [LeadController::class, 'MoveAsProspect'])->name('move.to.prospect');
 
-
             # All Prospects
             Route::get('/prospects', [ProspectController::class, 'AllProspect'])->name('prospects.all');
 

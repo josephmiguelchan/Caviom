@@ -119,7 +119,7 @@ class FeaturedProjectController extends Controller
 
         # Send Success toastr
         $toastr = array(
-            'message' => 'The Featured Project has been succesfully Rejected.',
+            'message' => 'The Featured Project has been successfully rejected.',
             'alert-type' => 'success'
         );
 
@@ -177,7 +177,7 @@ class FeaturedProjectController extends Controller
 
         # Send Success Toastr
         $toastr = array(
-            'message' => ' The Featured Project  has been succesfully Approved.',
+            'message' => ' The Featured Project has been successfully approved.',
             'alert-type' => 'success'
         );
 

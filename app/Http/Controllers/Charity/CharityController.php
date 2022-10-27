@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Charity;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\Admin\FeaturedProject;
 use App\Models\AuditLog;
-use App\Models\CharitableOrganization;
+use App\Models\Benefactor;
+use App\Models\Beneficiary;
 use App\Models\Notification;
+use App\Models\ProjectTask;
 use App\Models\User;
 use App\Models\UserInfo;
+use App\Models\Volunteer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +29,23 @@ class CharityController extends Controller
             return to_route('admin.panel');
         }
 
-        return view('charity.index');
+        $admin_count = User::where('charitable_organization_id', Auth::user()->charity->id)->where('status', 'Active')->where('role', 'Charity Admin')->count();
+        $assoc_count = User::where('charitable_organization_id', Auth::user()->charity->id)->where('status', 'Active')->where('role', 'Charity Associate')->count();
+        $benefic_count = Beneficiary::where('charitable_organization_id', Auth::user()->charity->id)->count();
+        $users_count = User::where('charitable_organization_id', Auth::user()->charity->id)->where('status', 'Active')->count();
+        $feat_count = FeaturedProject::where('charitable_organization_id', Auth::user()->charity->id)->where('approval_status', 'Approved')->count();
+
+        $pending_tasks = ProjectTask::whereRelation('project', 'charitable_organization_id', Auth::user()->charity->id)->where('status', 'Pending')->count();
+        $in_progress_tasks = ProjectTask::whereRelation('project', 'charitable_organization_id', Auth::user()->charity->id)->where('status', 'In-Progress')->count();
+        $completed_tasks = ProjectTask::whereRelation('project', 'charitable_organization_id', Auth::user()->charity->id)->where('status', 'Completed')->count();
+
+        $opportunities = (Volunteer::where('charitable_organization_id', Auth::user()->charity->id)->count()) + (Benefactor::where('charitable_organization_id', Auth::user()->charity->id)->count());
+
+        return view('charity.index', compact([
+            'admin_count', 'assoc_count', 'benefic_count', 'users_count', 'feat_count',
+            'pending_tasks', 'in_progress_tasks', 'completed_tasks',
+            'opportunities'
+        ]));
     }
 
     // Logout User

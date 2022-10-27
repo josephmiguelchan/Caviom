@@ -149,8 +149,8 @@
     <script src="{{ asset('backend/assets/js/pages/datatables.init.js') }}"></script>
 
     <!-- Dashboard init js -->
-    <script src="{{ asset('backend/assets/js/pages/dashboard.init.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/pages/caviom-dashboard.init.js') }}"></script>
+    {{-- <script src="{{ asset('backend/assets/js/pages/dashboard.init.js') }}"></script> --}}
+    {{-- <script src="{{ asset('backend/assets/js/pages/caviom-dashboard.init.js') }}"></script> --}}
 
     <!-- App js -->
     <script src="{{ asset('backend/assets/js/app.js') }}"></script>
