@@ -33,10 +33,8 @@ class GiftGivingController extends Controller
 
     public function AddGiftGiving()
     {
-
         # Check if Charity has sufficient Star Tokens with the chosen role
-        if (Auth::user()->charity->star_tokens < 300) {
-            $toastr = array();
+        if (Auth::user()->charity->star_tokens < 300 and Auth::user()->charity->subscription == 'Free') {
             $toastr = array(
                 'message' => 'Sorry, your Charitable Organization does not have sufficient Star Tokens.',
                 'alert-type' => 'error'
@@ -51,8 +49,7 @@ class GiftGivingController extends Controller
     public function StoreGiftGiving(Request $request)
     {
         # Check first if Charitable Organization has sufficient Star Tokens
-        if (Auth::user()->charity->star_tokens < 300) {
-            $toastr = array();
+        if (Auth::user()->charity->star_tokens < 300 and Auth::user()->charity->subscription == 'Free') {
             $toastr = array(
                 'message' => 'Sorry, your Charitable Organization does not have sufficient Star Tokens.',
                 'alert-type' => 'error'
@@ -74,11 +71,6 @@ class GiftGivingController extends Controller
             'start_at.after' => 'The datetime of the Gift Giving must be in the future.',
         ]);
 
-
-
-        # Generate the uuid
-        $uuid = Str::uuid()->toString();
-
         # Get the value of the total budget for the event
         $numberofpack = $request->no_of_packs;
 
@@ -87,8 +79,8 @@ class GiftGivingController extends Controller
         $totalbuget = $amountperpack * $numberofpack;
 
         # Insert data to database
-        GiftGiving::insert([
-            'code' => $uuid,
+        $gift = GiftGiving::insert([
+            'code' => Str::uuid()->toString(),
             'name' => $request->name,
             'charitable_organization_id' => Auth::user()->charity->id,
             'amount_per_pack' => $request->amount_per_pack,
@@ -99,14 +91,14 @@ class GiftGivingController extends Controller
             'sponsor' => $request->sponsors,
             'total_budget' => $totalbuget,
             'created_at' => Carbon::now(),
-
         ]);
 
-        # Deduct the total star tokens
-        $current_bal = CharitableOrganization::findOrFail(Auth::user()->charitable_organization_id);
-        $current_bal->star_tokens = $current_bal->star_tokens - 300;
-        $current_bal->save();
-
+        # Deduct the total star tokens if subscription is Free
+        if (Auth::user()->charity->subscription == 'Free') {
+            $current_bal = CharitableOrganization::findOrFail(Auth::user()->charitable_organization_id);
+            $current_bal->star_tokens = $current_bal->star_tokens - 300;
+            $current_bal->save();
+        }
 
         # Create Audit Logs
         $log = new AuditLog;
@@ -114,8 +106,8 @@ class GiftGivingController extends Controller
         $log->action_type = 'INSERT';
         $log->charitable_organization_id = Auth::user()->charitable_organization_id;
         $log->table_name = 'Gift Giving';
-        $log->record_id = $uuid;
-        $log->action = 'Charity Admin created Gift Giving [' . $request->name . '] using 300 Star Tokens.';
+        $log->record_id = $gift->code;
+        $log->action = 'Charity Admin created Gift Giving [' . $gift->name . '].';
         $log->performed_at = Carbon::now();
         $log->save();
 
@@ -137,7 +129,7 @@ class GiftGivingController extends Controller
             $notif->category = 'Gift Giving';
             $notif->subject = 'Gift Giving Created';
             $notif->message = 'A new Gift Giving project has been created by ' . Auth::user()->role . ' [' . Auth::user()->info->first_name .
-                ' ' . Auth::user()->info->last_name . '] named [' . $request->name . '] using 300 Star Tokens. ';
+                ' ' . Auth::user()->info->last_name . '] named [' . $request->name . '].';
             $notif->icon = 'mdi mdi-gift';
             $notif->color = 'success';
             $notif->created_at = Carbon::now();

@@ -41,7 +41,9 @@
                                     <i class="mdi mdi-plus"></i> Add New
                                 </a>
                             </div>
+                            @if (Auth::user()->charity->subscription == 'Free')
                             <small class="text-center"><em>(450 Star Tokens)</em></small>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -64,18 +66,18 @@
 
                         <tbody>
                             @foreach ($fps as $key => $item)
-                          
-                           
+
+
                             <tr>
                                 <td>{{$key+1}}</td>
 
                                 <td>
                                     @if ($item->approval_status == 'Pending')
-                                    <span class="badge bg-warning">PENDING</span> 
-                                    @elseif($item->approval_status == 'Approved')         
-                                    <span class="badge bg-success">APPROVED</span>     
-                                    @elseif($item->approval_status == 'Rejected')         
-                                    <span class="badge bg-danger">REJECTED</span>   
+                                    <span class="badge bg-warning">PENDING</span>
+                                    @elseif($item->approval_status == 'Approved')
+                                    <span class="badge bg-success">APPROVED</span>
+                                    @elseif($item->approval_status == 'Rejected')
+                                    <span class="badge bg-danger">REJECTED</span>
                                     @endif
                                     {{$item->name}}</a></td>
 
@@ -87,7 +89,7 @@
                                 <td><i class="ri-eye-line"></i> {{$item->visibility_status}}</td>
                                 @endif
                                 <td>  {{ (!empty($item->remarks_subject))? $item->remarks_subject:'---' }}</td>
-                        
+
                                 <td>{{$item->created_at}}</td>
                                 <td>
                                     <a href="{{ route('charity.profile.feat-project.view',$item->code) }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">

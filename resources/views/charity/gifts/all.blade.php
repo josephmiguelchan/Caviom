@@ -37,7 +37,9 @@
                                         <i class="mdi mdi-plus"></i> Add New
                                     </a>
                                 </div>
+                                @if (Auth::user()->charity->subscription == 'Free')
                                 <small class="text-center"><em>(300 Star Tokens)</em></small>
+                                @endif
                             </div>
                         @endif
                     </div>
