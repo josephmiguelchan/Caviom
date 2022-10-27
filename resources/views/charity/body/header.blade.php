@@ -75,11 +75,9 @@
                     id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="ri-notification-3-line"></i>
 
-                    @foreach(Auth::user()->notifications as $item)
-                        @if ($item->read_status=='unread')
-                        <span class="noti-dot"></span>
-                        @endif
-                    @endforeach
+                    {{-- @if (Auth::user()->notifications->has('notification', 'unread')->get()->count() > 0)
+                    <span class="noti-dot"></span>
+                    @endif --}}
 
 
                 </button>
