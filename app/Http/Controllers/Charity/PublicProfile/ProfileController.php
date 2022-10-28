@@ -773,6 +773,7 @@ class ProfileController extends Controller
 
         # Update DB
         $requirements->submitted_by = Auth::id();
+        $requirements->updated_at = Carbon::now();
         $requirements->save();
 
         # Set verification_status of Charity from Unverified to Pending
@@ -838,6 +839,7 @@ class ProfileController extends Controller
         $requirements->dswd_certificate = null;
         $requirements->valid_id = null;
         $requirements->photo_holding_id = null;
+        $requirements->updated_at = Carbon::now();
         $requirements->save();
 
         # Update status of Charitable Organization from Declined back to Unverified

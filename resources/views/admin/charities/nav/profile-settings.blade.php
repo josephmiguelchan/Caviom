@@ -143,7 +143,7 @@
             </dl>
             <dl class="row mb-0 col-lg-6 mt-5">
                 <dt class="col-md-6"><h4 class="font-size-15 fw-bold float-end">Last Modified:</h4></dt>
-                <dt class="col-md-6">{{ Carbon\Carbon::parse($requirements->created_at)->diffForHumans() }}</dt>
+                <dt class="col-md-6">{{ Carbon\Carbon::parse($requirements->updated_at)->diffForHumans() }}</dt>
             </dl>
         </div>
         <div class="row">
