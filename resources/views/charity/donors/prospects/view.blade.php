@@ -51,9 +51,13 @@
                                     <dt class="col-md-8 py-2">{{$prospect->mode_of_donation}}</dt>
                                     <dt class="col-md-4 py-2"><h4 class="font-size-15"><strong>Message:</strong></h4></dt>
                                     <dt class="col-md-8 py-2">
+                                        @if ($prospect->message)
                                         <em>
                                             {{$prospect->message}}
                                         </em>
+                                        @else
+                                        ---
+                                        @endif
                                     </dt>
                                     <dt class="col-md-4 py-2"><h4 class="font-size-15"><strong>Date of Payment:</strong></h4></dt>
                                     <dt class="col-md-8 py-2">{{Carbon\Carbon::parse($prospect->paid_at)->isoFormat('LL (h:mm A)')}}</dt>
