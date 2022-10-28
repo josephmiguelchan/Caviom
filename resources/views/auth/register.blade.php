@@ -265,7 +265,7 @@
                                         <!-- City -->
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="city" class="form-label">City / Municipality</label>
+                                                <label for="city" class="form-label">*City / Municipality</label>
                                                 <input class="form-control" name="city" id="city" type="text"
                                                     placeholder="@unless($errors->any())Ex. Manila City @endunless"
                                                     value="{{ old('city') }}">
@@ -284,7 +284,7 @@
                                         <!-- Barangay -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="barangay" class="form-label">Barangay</label>
+                                                <label for="barangay" class="form-label">*Barangay</label>
                                                 <input class="form-control" name="barangay" id="barangay" type="text"
                                                     placeholder="@unless($errors->any())Ex. Brgy. 204 @endunless"
                                                     value="{{ old('barangay') }}">
