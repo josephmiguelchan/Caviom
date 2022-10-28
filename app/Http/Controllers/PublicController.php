@@ -97,7 +97,7 @@ class PublicController extends Controller
             'middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'mode_of_donation' => ['required', Rule::in($modesOfDonation)], // Must be in array of Charitable Organization's mode of payments only.
             'amount' => ['required', 'numeric', 'between:0,999999.99'],
-            'paid_at' => ['required', 'date', 'before_or_equal:' . now()->endOfDay()->toDateString(), 'after_or_equal:' . $charity->created_at->startOfDay()->toDateString()],
+            'paid_at' => ['required', 'date', 'before_or_equal:' . now()->endOfDay()->toDateTimeString(), 'after_or_equal:' . $charity->created_at->startOfDay()->toDateTimeString()],
             'message' => ['nullable', 'max:500'],
             'g-recaptcha-response' => ['required', 'captcha'],
         ], [
