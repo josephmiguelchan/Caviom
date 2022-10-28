@@ -72,6 +72,7 @@ class GiftGivingController extends Controller
         ]);
 
         # Get the value of the total budget for the event
+        $code = Str::uuid()->toString();
         $numberofpack = $request->no_of_packs;
 
         # Convert amount_per_pack to decimal
@@ -79,8 +80,8 @@ class GiftGivingController extends Controller
         $totalbuget = $amountperpack * $numberofpack;
 
         # Insert data to database
-        $gift = GiftGiving::insert([
-            'code' => Str::uuid()->toString(),
+        GiftGiving::insert([
+            'code' => $code,
             'name' => $request->name,
             'charitable_organization_id' => Auth::user()->charity->id,
             'amount_per_pack' => $request->amount_per_pack,
@@ -106,8 +107,8 @@ class GiftGivingController extends Controller
         $log->action_type = 'INSERT';
         $log->charitable_organization_id = Auth::user()->charitable_organization_id;
         $log->table_name = 'Gift Giving';
-        $log->record_id = $gift->code;
-        $log->action = 'Charity Admin created Gift Giving [' . $gift->name . '].';
+        $log->record_id = $code;
+        $log->action = 'Charity Admin created Gift Giving [' . $request->name . '].';
         $log->performed_at = Carbon::now();
         $log->save();
 
