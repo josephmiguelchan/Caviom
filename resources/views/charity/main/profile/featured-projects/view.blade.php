@@ -58,7 +58,7 @@
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Date:</strong></h4></dt>
                                 <dt class="col-md-8 mb-2">{{$fp->started_on}}</dt>
                                 <dt class="col-md-4 mb-2"><h4 class="font-size-15"><strong>Sponsors:</strong></h4></dt>
-                                <dt class="col-md-8 mb-2">{{ ($fp->Sponsors)?$item->Sponsors:'---' }}</dt>
+                                <dt class="col-md-8 mb-2">{{ $fp->sponsors ?? '---' }}</dt>
                             </div>
                         </div>
                         <div class="row mt-4">
