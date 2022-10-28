@@ -237,7 +237,7 @@
                                     <!-- City -->
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <label for="city" class="form-label">City</label>
+                                            <label for="city" class="form-label">*City</label>
                                             <input class="form-control" name="city" id="city" type="text" value="{{ old('city') }}">
                                             @error('city')
                                             <div class="text-danger">
@@ -250,7 +250,7 @@
                                     <!-- Barangay -->
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <label for="barangay" class="form-label">Barangay</label>
+                                            <label for="barangay" class="form-label">*Barangay</label>
                                             <input class="form-control" name="barangay" id="barangay" type="text" value="{{ old('barangay') }}">
                                             @error('barangay')
                                             <div class="text-danger">
