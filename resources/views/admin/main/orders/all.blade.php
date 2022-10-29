@@ -19,8 +19,8 @@
         </div>
         <!-- end page title -->
 
-    
-        
+
+
         <div class="col-12">
             <div class="card p-3">
                 <div class="card-body">
@@ -46,7 +46,7 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        
+
                         <tbody>
                             @foreach ($orders as $key =>$item)
                             <tr>
@@ -57,9 +57,9 @@
 
                                 @if ($item->status == 'Pending')
                                 <td class="text-warning">Pending</td>
-                                @elseif($item->status == 'Confirmed')         
+                                @elseif($item->status == 'Confirmed')
                                 <td class="text-success">Confirmed</td>
-                                @elseif($item->status == 'Rejected')         
+                                @elseif($item->status == 'Rejected')
                                 <td class="text-danger">Rejected</td>
                                 @endif
                                 <td>{{$item->remarks_subject ?? '---'}}</td>
@@ -69,7 +69,7 @@
                                     </a>
                                     @if ($item->status != 'Pending')
 
-                                    <a class="btn btn-sm btn-outline-danger waves-effect waves-light" data-bs-target="#deleteModal_1" data-bs-toggle="modal">
+                                    <a class="btn btn-sm btn-outline-danger waves-effect waves-light" data-bs-target="#deleteModal_{{$key+1}}" data-bs-toggle="modal">
                                         <i class="mdi mdi-trash-can"></i> Delete
                                     </a>
                                 </td>
@@ -94,12 +94,12 @@
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div>
-                            
+
                             @endif
                             </tr>
 
                             @endforeach
-                           
+
                         </tbody>
                     </table>
 
