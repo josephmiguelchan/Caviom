@@ -299,8 +299,8 @@ class CharitableOrganizationController extends Controller
         $log_in->action_type = 'UPDATE';
         $log_in->charitable_organization_id =  null;
         $log_in->table_name = 'User, User Info, Address';
-        $log_in->record_id = $User->id;
-        $log_in->action = Auth::user()->role . ' updated the User profile with ID ' . $User->code;
+        $log_in->record_id = $User->code;
+        $log_in->action = Auth::user()->role . ' updated the User profile of [ ' . $User->username . ' ] with ID: ' . $User->code;
         $log_in->performed_at = Carbon::now();
         $log_in->save();
 
