@@ -71,7 +71,7 @@
                                     <!-- Email Address -->
                                     <div class="col-md-6">
                                         <label for="email" class="form-label">*Email Address</label>
-                                        <input class="form-control" name="email" id="email" value="{{$prospect->email_address}}{{ old('email') }}" required>
+                                        <input class="form-control" name="email" id="email" value="{{ old('email') ?? $prospect->email_address }}" required>
                                         @error('email')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -85,7 +85,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="first_name" class="form-label">*First Name</label>
-                                            <input type="text" class="form-control" name="first_name" id="first_name" value="{{$prospect->first_name}}{{ old('first_name') }}" required>
+                                            <input type="text" class="form-control" name="first_name" id="first_name" value="{{ old('first_name') ?? $prospect->first_name }}" required>
                                             @error('first_name')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -98,7 +98,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="middle_name" class="form-label">Middle Name</label>
-                                            <input type="text" class="form-control" name="middle_name" id="middle_name" value="{{$prospect->middle_name}}{{ old('middle_name') }}">
+                                            <input type="text" class="form-control" name="middle_name" id="middle_name" value="{{ old('middle_name') ?? $prospect->middle_name }}">
                                             @error('middle_name')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -110,7 +110,7 @@
                                     <!-- Last Name -->
                                     <div class="col-md-4">
                                         <label for="last_name" class="form-label">*Last Name</label>
-                                        <input type="text" class="form-control" name="last_name" id="last_name" value="{{$prospect->last_name}}{{ old('last_name') }}" required>
+                                        <input type="text" class="form-control" name="last_name" id="last_name" value="{{ old('last_name') ?? $prospect->last_name }}" required>
                                         @error('last_name')
                                         <div class="text-danger">
                                             {{ $message }}
