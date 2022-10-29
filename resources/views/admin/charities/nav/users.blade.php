@@ -24,7 +24,7 @@
         </thead>
 
         <tbody>
-            @foreach ($organizationdetail->users as $key => $item)            
+            @foreach ($organizationdetail->users as $key => $item)
             <tr>
                 <td>{{$key+1}}</td>
                 <td><span class="badge bg-light">{{$item->info->organizational_id_no}}</span></td>
@@ -33,9 +33,9 @@
                 <td>
                     <a href="mailto: {{$item->email}}">{{$item->email}}</a>
                 </td>
-                <td><i class="ri-checkbox-blank-circle-fill font-size-10 align-middle me-2 {{($item->status == 'Active')?'text-success':'text-warning'}}"></i>{{($item->status == 'Active')?'Active':'Pending'}}</td>  <!--change color based on status-->
+                <td><i class="ri-checkbox-blank-circle-fill font-size-10 align-middle me-2 {{($item->status == 'Active')?'text-success':'text-warning'}}"></i> {{ $item->status }}</td>  <!--change color based on status-->
                 <td>{{$item->role}}</td>
-                <td>{{(!empty($item->remakrs))? $item->remarks:'---'}}</td>
+                <td>{{($item->remarks) ? $item->remarks : '---'}}</td>
                 <td>
                     <a href="{{route('admin.charities.users.view',$item->code )}}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                         <i class="mdi mdi-open-in-new"></i> View
