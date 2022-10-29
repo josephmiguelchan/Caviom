@@ -43,9 +43,9 @@
                                     </h4>
                                     <div class="card-text">
                                         <ul>
-                                            <li>{{ Auth::user()->charity->featured_project_credits }} Featured Project Credits</li>
-                                            <li>{{ $numberOfProjectCollaborations }} Project Collaborations</li>
-                                            <li>{{ $numberOfGiftGivings }} Gift Givings</li>
+                                            <li><strong>{{ Auth::user()->charity->featured_project_credits }}</strong> Featured Project Credits</li>
+                                            <li><strong>{{ $numberOfProjectCollaborations }}</strong> Project Collaborations</li>
+                                            <li><strong>{{ $numberOfGiftGivings }}</strong> Gift Givings</li>
                                             @if (Auth::user()->charity->subscription_expires_at)
                                             <li>
                                                 Subscription ends on {{Carbon\Carbon::parse(Auth::user()->charity->subscription_expires_at)->isoFormat('LL')}}
