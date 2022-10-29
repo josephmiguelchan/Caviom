@@ -8,7 +8,7 @@
 
     $userremarks = App\Models\Admin\Notifier::where('category', 'Charity User')->get();
 
- 
+
 @endphp
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -192,11 +192,10 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="account_status" class="form-label">*Account Status</label>
-                                            <select class="form-select select2-search-disable" name="account_status" id="account_status" aria-label="Select status">
+                                            <select class="form-select" name="account_status" id="account_status" aria-label="Select status">
                                                 <option value="Pending Unlock" {{ ($User->status == 'Pending Unlock')? 'selected' : ''}} hidden>Pending Unlock</option>
                                                 <option value="Active" {{ ($User->status == 'Active')? 'selected' : ''}}>Active</option>
                                                 <option value="Inactive" {{ ($User->status == 'Inactive')? 'selected' : ''}}>Inactive</option>
-                                                <option value="Suspended" {{ ($User->status == 'Suspended')? 'selected' : ''}}>Suspended</option>
                                             </select>
                                             @error('account_status')
                                                 <div class="text-danger">

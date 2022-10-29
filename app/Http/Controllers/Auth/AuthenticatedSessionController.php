@@ -48,6 +48,19 @@ class AuthenticatedSessionController extends Controller
                 $request->ip();
             $log_in->performed_at = Carbon::now();
             $log_in->save();
+        } elseif (Auth::user()->status == 'Inactive') {
+
+            # Log out the user
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            $notification = array(
+                'message' => 'Sorry, you account has been put on hold and is currently inactive.  Please email us at support@caviom.org',
+                'alert-type' => 'error',
+            );
+
+            return redirect()->back()->with($notification);
         }
 
         if (Auth::user()->role == "Root Admin") {
