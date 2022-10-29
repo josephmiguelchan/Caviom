@@ -18,13 +18,7 @@ use App\Models\User;
 // use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 // use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Maatwebsite\Excel\Facades\Excel;
-
 use Barryvdh\DomPDF\Facade\Pdf;
-
-
-
-
-
 
 class Beneficiary3Controller extends Controller
 {
@@ -32,7 +26,7 @@ class Beneficiary3Controller extends Controller
     public function createPart3($id)
     {
         # Retrieve the beneficiary record with background info using foreign key
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstorFail();
 
         if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
@@ -51,7 +45,7 @@ class Beneficiary3Controller extends Controller
     public function storePart3(Request $request, $id)
     {
         # Retrieve the beneficiary record with background info using foreign key
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstorFail();
 
         if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
@@ -120,7 +114,7 @@ class Beneficiary3Controller extends Controller
     public function editPart3($id)
     {
         # Retrieve the beneficiary record with background info using foreign key
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstorFail();
 
         if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
@@ -140,7 +134,7 @@ class Beneficiary3Controller extends Controller
     public function update(Request $request, $id)
     {
         # Retrieve the beneficiary record with background info using foreign key
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstorFail();
         $beneficiaryBgInfoId = BeneficiaryBgInfo::where('beneficiary_id', $beneficiary->id)->firstorFail();
 
         if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {

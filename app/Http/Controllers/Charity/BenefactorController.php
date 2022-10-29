@@ -29,7 +29,7 @@ class BenefactorController extends Controller
 
     public function show($id)
     {
-        $benefactor = Benefactor::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $benefactor = Benefactor::where('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
         if ($benefactor->charitable_organization_id != Auth::user()->charitable_organization_id) {
@@ -149,7 +149,7 @@ class BenefactorController extends Controller
 
     public function edit($id)
     {
-        $benefactor = Benefactor::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $benefactor = Benefactor::where('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
         if ($benefactor->charitable_organization_id != Auth::user()->charitable_organization_id) {
@@ -168,7 +168,7 @@ class BenefactorController extends Controller
 
     public function update(Request $request, $id)
     {
-        $benefactor = Benefactor::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $benefactor = Benefactor::where('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
         if ($benefactor->charitable_organization_id != Auth::user()->charitable_organization_id) {
@@ -283,7 +283,7 @@ class BenefactorController extends Controller
     public function delete($id)
     {
         # Retrieve the benefactor record using Id
-        $benefactor = Benefactor::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $benefactor = Benefactor::where('code', $id)->firstOrFail();
         $last_name = $benefactor->last_name;
         $first_name = $benefactor->first_name;
         $code = $benefactor->code;

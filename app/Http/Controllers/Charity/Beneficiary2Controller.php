@@ -16,7 +16,7 @@ class Beneficiary2Controller extends Controller
     public function createPart2($id)
     {
         # Retrieve the beneficiary record with family info using foreign key
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstorFail();
 
         if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
@@ -43,7 +43,7 @@ class Beneficiary2Controller extends Controller
     public function editPart2($id)
     {
         # Retrieve the beneficiary record with family info using foreign key
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstorFail();
 
         if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
@@ -63,7 +63,7 @@ class Beneficiary2Controller extends Controller
     public function storePart2(Request $request, $id)
     {
         # Retrieve the beneficiary record with family info using foreign key
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstorFail();
 
         if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
@@ -171,8 +171,7 @@ class Beneficiary2Controller extends Controller
     public function updatePart2(Request $request)
     {
         # Retrieve the beneficiary record with family info using foreign key (another approach)
-        $beneficiary = Beneficiary::where('id', $request->beneficiary_code)
-            ->orWhere('code', $request->beneficiary_code)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $request->beneficiary_code)->firstorFail();
         $familyInfoId = $request->id;
 
         # This is working!
@@ -276,8 +275,7 @@ class Beneficiary2Controller extends Controller
     public function destroyPart2(Request $request)
     {
         # Retrieve the beneficiary record with family info using foreign key (another approach)
-        $beneficiary = Beneficiary::where('id', $request->beneficiary_code)
-            ->orWhere('code', $request->beneficiary_code)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $request->beneficiary_code)->firstorFail();
 
         if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 

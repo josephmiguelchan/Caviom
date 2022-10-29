@@ -28,7 +28,7 @@ class VolunteerController extends Controller
 
     public function show($id)
     {
-        $volunteer = Volunteer::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $volunteer = Volunteer::where('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
         if ($volunteer->charitable_organization_id != Auth::user()->charitable_organization_id) {
@@ -148,7 +148,7 @@ class VolunteerController extends Controller
 
     public function edit($id)
     {
-        $volunteer = Volunteer::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $volunteer = Volunteer::where('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
         if ($volunteer->charitable_organization_id != Auth::user()->charitable_organization_id) {
@@ -167,7 +167,7 @@ class VolunteerController extends Controller
 
     public function update(Request $request, $id)
     {
-        $volunteer = Volunteer::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $volunteer = Volunteer::where('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
         if ($volunteer->charitable_organization_id != Auth::user()->charitable_organization_id) {
@@ -282,7 +282,7 @@ class VolunteerController extends Controller
     public function delete($id)
     {
         # Retrieve the volunteer record using Id
-        $volunteer = Volunteer::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $volunteer = Volunteer::where('code', $id)->firstOrFail();
         $last_name = $volunteer->last_name;
         $first_name = $volunteer->first_name;
         $code = $volunteer->code;

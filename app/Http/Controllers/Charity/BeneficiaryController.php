@@ -245,7 +245,7 @@ class BeneficiaryController extends Controller
 
     public function show($id)
     {
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
         if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
@@ -276,7 +276,7 @@ class BeneficiaryController extends Controller
 
     public function edit($id)
     {
-        $beneficiaryEdit = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
+        $beneficiaryEdit = Beneficiary::where('code', $id)->firstorFail();
 
         if ($beneficiaryEdit->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
@@ -303,7 +303,7 @@ class BeneficiaryController extends Controller
     public function update(Request $request, $id)
     {
 
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstOrFail();
 
         if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
@@ -523,7 +523,7 @@ class BeneficiaryController extends Controller
     public function delete($id)
     {
         # Retrieve the beneficiary record using Id
-        $beneficiaryDelete = Beneficiary::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $beneficiaryDelete = Beneficiary::where('code', $id)->firstOrFail();
         $firstname = $beneficiaryDelete->first_name;
         $lastname = $beneficiaryDelete->last_name;
 
@@ -591,7 +591,7 @@ class BeneficiaryController extends Controller
     public function editPart(Request $request, $id)
     {
         # Retrieve the beneficiary record using Id
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstOrFail();
 
         if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
