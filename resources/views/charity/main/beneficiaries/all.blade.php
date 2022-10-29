@@ -97,8 +97,8 @@
                                 <td>{{ $beneficiary->nick_name }}</td>
                                 <td>{{ $beneficiary->birth_date }}</td>
                                 <td>{{ Carbon\Carbon::parse($beneficiary->birth_date)->diff(Carbon\Carbon::now())->y }}</td>
-                                <td>{{ $beneficiary->category }}</td>
-                                <td>{{ $beneficiary->label }}</td>
+                                <td>{{ $beneficiary->category ?? '---' }}</td>
+                                <td>{{ $beneficiary->label ?? '---' }}</td>
                                 <td>
                                     <a href="{{ route('charity.beneficiaries.show', $beneficiary->code) }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
