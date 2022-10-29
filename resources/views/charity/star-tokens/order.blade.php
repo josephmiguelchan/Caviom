@@ -157,8 +157,8 @@
                                                             <select name="order_form_subscription_type" id="order_form_subscription_type" class="form-select select2-search-disable" aria-label="Default select example"
                                                                     onchange="selectedSubscriptionType(this)">
                                                                 <option value="" selected>Select a Subscription...</option>
-                                                                <option value="PRO">Caviom PRO </option>
-                                                                <option value="PREMIUM">Caviom PREMIUM</option>
+                                                                <option value="PRO" {{ Auth::user()->charity->subscription != 'Free' ? 'disabled' : '' }}>Caviom PRO </option>
+                                                                <option value="PREMIUM" {{ Auth::user()->charity->subscription != 'Free' ? 'disabled' : '' }}>Caviom PREMIUM</option>
                                                             </select>
                                                             @error('order_form_subscription_type')
                                                                 <div class="text-danger">
