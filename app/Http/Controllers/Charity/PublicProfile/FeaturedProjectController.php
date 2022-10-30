@@ -144,14 +144,13 @@ class FeaturedProjectController extends Controller
         $fphoto->created_at = Carbon::now();
 
         # Insert feature_photos
-        for ($i = 1; $i < 6; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $fileInputName = 'featured_photo_' . $i;
             if ($request->$fileInputName) {
                 $file = $request->file($fileInputName);
-                $filename = $fileInputName . '.' . $file->getClientOriginalExtension();
+                $filename = $fileInputName  . '_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path('upload/featured_project/'), $filename);
                 $fphoto->$fileInputName = $filename;
-                $fphoto->save();
             }
         }
         $fphoto->save();
@@ -293,18 +292,15 @@ class FeaturedProjectController extends Controller
         $fphoto->created_at = Carbon::now();
 
         # Insert feature_photos
-        for ($i = 1; $i < 6; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $fileInputName = 'featured_photo_' . $i;
             if ($request->$fileInputName) {
                 $file = $request->file($fileInputName);
-                $filename = $fileInputName . '.' . $file->getClientOriginalExtension();
+                $filename = $fileInputName  . '_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path('upload/featured_project/'), $filename);
                 $fphoto->$fileInputName = $filename;
-                $fphoto->save();
             }
         }
-
-
         $fphoto->save();
 
         # Create Audit Logs
@@ -445,14 +441,13 @@ class FeaturedProjectController extends Controller
         $fphoto->created_at = Carbon::now();
 
         # Insert feature_photos
-        for ($i = 1; $i < 6; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $fileInputName = 'featured_photo_' . $i;
             if ($request->$fileInputName) {
                 $file = $request->file($fileInputName);
-                $filename = $fileInputName . '.' . $file->getClientOriginalExtension();
+                $filename = $fileInputName  . '_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path('upload/featured_project/'), $filename);
                 $fphoto->$fileInputName = $filename;
-                $fphoto->save();
             }
         }
         $fphoto->save();
