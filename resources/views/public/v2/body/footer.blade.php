@@ -60,12 +60,10 @@
                 Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
             </div>
         </div>
-        {{-- <div class="social-links text-center text-md-right pt-3 pt-md-0">
-            <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-            <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-            <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-            <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-            <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
-        </div> --}}
+        <div class="social-links text-center text-md-right pt-3 pt-md-0">
+            <a href="mailto:caviom.cms@gmail.com" class="twitter"><i class="bx bx-envelope"></i></a>
+            <a target="_blank" href="https://www.youtube.com/channel/UCWOX5tnMreLTVv1yzW8Ziyw" class="facebook"><i class="bx bxl-youtube"></i></a>
+            <a target="_blank" href="https://www.linkedin.com/in/caviom-platform-5a3a87220/" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        </div>
     </div>
 </footer><!-- End Footer -->
