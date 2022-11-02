@@ -157,7 +157,7 @@ class RegisteredUserController extends Controller
 
         # Auto-generate an organizational_id_no if it was not provided in the form
         if (!$request->organizational_id_no) {
-            $user_info->organizational_id_no = $this->generateIdNo();
+            $user_info->organizational_id_no = Carbon::now()->format('Y') . substr(hexdec(uniqid()), 0, 6);
         } else {
             $user_info->organizational_id_no = $request->organizational_id_no;
         }
