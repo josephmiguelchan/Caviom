@@ -146,4 +146,12 @@ class PublicController extends Controller
 
         return redirect()->back()->with($notification);
     }
+    public function showTermsOfService()
+    {
+        return view('public.v2.pages.tos');
+    }
+    public function showPrivacyPolicy()
+    {
+        return view('public.v2.pages.privacy');
+    }
 }

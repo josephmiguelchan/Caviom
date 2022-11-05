@@ -34,6 +34,8 @@ Route::controller(PublicController::class)->group(function () {
     Route::get('/services', 'showServices')->name('services');
     Route::get('/contact', 'showContact')->name('contact');
     Route::post('/Donate/{code}', 'Donate')->name('store.donate');
+    Route::get('/terms-of-service', 'showTermsOfService')->name('terms');
+    Route::get('/privacy-policy', 'showPrivacyPolicy')->name('privacy');
 
     # Charity Public Profile Pages
     Route::name('charities')->prefix('/charitable-organizations')->middleware(['prevent-back-history'])->group(function () {

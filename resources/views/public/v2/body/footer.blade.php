@@ -21,8 +21,8 @@
                     <li><i class="bx bx-chevron-right"></i> <a href="{{route('admin.login')}}">Admin Portal</a></li>
                     <li><i class="bx bx-chevron-right"></i> <a href="{{route('about')}}">About Us</a></li>
                     <li><i class="bx bx-chevron-right"></i> <a href="{{route('services')}}">Services</a></li>
-                    <li><i class="bx bx-chevron-right"></i> <a href="javascript: void(0);">Terms of Service</a></li>
-                    <li><i class="bx bx-chevron-right"></i> <a href="javascript: void(0);">Privacy Policy</a></li>
+                    <li><i class="bx bx-chevron-right"></i> <a href="{{route('terms')}}">Terms of Service</a></li>
+                    <li><i class="bx bx-chevron-right"></i> <a href="{{route('privacy')}}">Privacy Policy</a></li>
                 </ul>
             </div>
 
