@@ -202,6 +202,7 @@ class RegisteredUserController extends Controller
             if (!$user_found) {
                 return $id_no;
                 $id_no_exist = false; // Ends the loop if the Generated ID No. is already unique.
+                break;
             }
         }
     }
