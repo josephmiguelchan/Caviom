@@ -352,6 +352,7 @@
     <h6><li class="fw-bold">Contact Us</h6></li>
     <p>
         If you have any questions about this Privacy Policy, please contact us by email:
-        <a href="mailto:support@caviom.org">support@caviom.org</a>.
+        <a href="mailto:support@caviom.org">support@caviom.org</a>. This disclaimer was created for https://caviom.org by a free
+        tool PolicyMaker.io on 2022-08-10.
     </p>
 </ol>
