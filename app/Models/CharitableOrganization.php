@@ -24,7 +24,7 @@ class CharitableOrganization extends Model
         'star_tokens',
         'featured_project_credits',
         'subscription',
-        'view_count'
+        'view_count',
     ];
     protected $fillable = [
         'name',
@@ -36,6 +36,7 @@ class CharitableOrganization extends Model
     ];
     protected $casts = [
         'subscribed_at' => 'datetime',
+        'subscription_expires_at' => 'datetime',
         'status_updated_at' => 'datetime',
     ];
     public function users()
