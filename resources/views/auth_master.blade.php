@@ -105,6 +105,12 @@
     <!-- toastr init -->
     <script src="{{ asset('backend/assets/js/pages/toastr.init.js') }}"></script>
 
+    <!-- form mask -->
+    <script src="{{ asset('backend/assets/libs/inputmask/jquery.inputmask.min.js') }}"></script>
+
+    <!-- form mask init -->
+    <script src="{{ asset('backend/assets/js/pages/form-mask.init.js') }}"></script>
+
     <script>
         @if (Session::has('message'))
             var type = "{{ Session::get('alert-type', 'info') }}"
