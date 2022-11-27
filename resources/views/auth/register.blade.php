@@ -143,7 +143,7 @@
                                                         title="Ex. +632 8123 6789">
                                                         <i class="mdi mdi-information-outline"></i>
                                                     </span>
-                                                    <input class="form-control input-mask" name="tel_no" id="tel_no" type="tel" required
+                                                    <input class="form-control input-mask" name="tel_no" id="tel_no" type="tel"
                                                         placeholder="Ex. +632 8123 6789" value="{{ old('tel_no') }}"
                                                         data-inputmask="'mask': '+632 8999 9999'">
                                                     @error('tel_no')
