@@ -66,7 +66,7 @@
                                         alt="Profile Picture" class="avatar-xl rounded-circle">
                                 </div>
                                 <div class="mt-3">
-                                    <p class="text-muted mb-1"><span class="badge bg-light">{{$User->info->organizational_id_no}}</span></p>
+                                    <p class="text-muted mb-1"><span class="badge bg-light">ID No. {{$User->info->organizational_id_no}}</span></p>
                                     <h4 class="font-size-12">{{$User->role}}</h4>
                                     <h1 class="py-3" style="color: #62896d">
                                         <strong>

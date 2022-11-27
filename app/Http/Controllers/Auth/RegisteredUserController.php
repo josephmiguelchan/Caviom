@@ -62,9 +62,7 @@ class RegisteredUserController extends Controller
                 'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
 
                 # Contact and Occupation
-                // 'cel_no' => ['required', 'regex:/(09)[0-9]{9}/', 'unique:user_infos'], // without Country Code
                 'cel_no' => ['required', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/', 'unique:user_infos'], // Unique won't work since it is encrypted
-                // 'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'], // without Country Code
                 'tel_no' => ['nullable', 'regex:/(632)\s(8)[0-9]{3}\s[0-9]{4}/'],
                 'work_position' => ['required', 'string', 'min:4', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'organizational_id_no' => ['nullable', 'regex:/[0-9]{10}/'],
