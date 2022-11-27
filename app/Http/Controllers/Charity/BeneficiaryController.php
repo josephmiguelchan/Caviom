@@ -51,7 +51,7 @@ class BeneficiaryController extends Controller
                 'religion' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'educational_attainment' => ['nullable', 'string', 'min:1', 'max:64'],
                 'last_school_year_attended' => ['nullable', 'string', 'min:1', 'max:64'],
-                'contact_no' => ['nullable', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9)
+                'contact_no' => ['nullable', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/'],
 
                 # Permanent Address
                 'permanent_address_line_one' => ['required', 'string', 'min:5', 'max:128'],
@@ -69,7 +69,7 @@ class BeneficiaryController extends Controller
                 'last_name.regex' => 'The last name field must not include number/s.',
                 'middle_name.regex' => 'The middle name field must not include number/s.',
                 'birth_date.before' => 'The age must be realistic.',
-                'contact_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
+                'contact_no.regex' => 'The contact no format must be followed. Ex. +63 998 123 4567',
                 'permanent_postal_code.digits' => 'The postal code must have 4 numbers.',
             ]
         );
@@ -332,7 +332,7 @@ class BeneficiaryController extends Controller
                     'religion' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                     'educational_attainment' => ['nullable', 'string', 'min:1', 'max:64'],
                     'last_school_year_attended' => ['nullable', 'string', 'min:1', 'max:64'],
-                    'contact_no' => ['nullable', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9)
+                    'contact_no' => ['nullable', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/'],
 
                     # Permanent Address
                     'permanent_address_line_one' => ['required', 'string', 'min:5', 'max:128'],
@@ -350,7 +350,7 @@ class BeneficiaryController extends Controller
                     'last_name.regex' => 'The last name field must not include number/s.',
                     'middle_name.regex' => 'The middle name field must not include number/s.',
                     'birth_date.before' => 'The age must be realistic.',
-                    'contact_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
+                    'contact_no.regex' => 'The contact no format must be followed. Ex. +63 998 123 4567',
                     'permanent_postal_code.digits' => 'The postal code must have 4 numbers.',
                 ]
             );

@@ -83,7 +83,7 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="birth_date" class="form-label">*Date of Birth</label>
-            <input type="date" class="form-control" name="birth_date" id="birth_date" value="{{ old('birth_date') }}" min="1910-12-30" required>
+            <input type="date" class="form-control" name="birth_date" id="birth_date" value="{{ old('birth_date') }}" min="{{ Carbon\Carbon::now()->subYears(110)->toDateString() }}" required>
             @error('birth_date')
                 <div class="text-danger"><small>
                     {{ $message }}
