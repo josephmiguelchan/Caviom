@@ -63,8 +63,8 @@ class VolunteerController extends Controller
                 'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'middle_name' => ['nullable', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
-                'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9),
-                'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'], // 8 + (Any 7-digit number from 1-9)
+                'cel_no' => ['required', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/'],
+                'tel_no' => ['nullable', 'regex:/(632)\s(8)[0-9]{3}\s[0-9]{4}/'],
 
                 'category' => ['nullable', 'string', 'min:1', 'max:64'],
                 'label' => ['nullable', 'string', 'min:1', 'max:64'],
@@ -81,10 +81,9 @@ class VolunteerController extends Controller
             [
                 # Custom Error Messages
                 'profile_photo.max' => 'Your profile picture must not exceed the file size of 2mb.',
-                'contact_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
-                'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+                'cel_no.regex' => 'The cel no format must be followed. Ex. +63 998 123 4567',
+                'tel_no.regex' => 'The tel no format must be followed. Ex. +632 8123 6789',
                 'postal_code.digits' => 'The postal code must have 4 numbers.',
-
             ]
         );
 
@@ -191,8 +190,8 @@ class VolunteerController extends Controller
                     'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                     'middle_name' => ['nullable', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                     'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
-                    'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9),
-                    'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'], // 8 + (Any 7-digit number from 1-9)
+                    'cel_no' => ['required', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/'],
+                    'tel_no' => ['nullable', 'regex:/(632)\s(8)[0-9]{3}\s[0-9]{4}/'],
 
                     'category' => ['nullable', 'string', 'min:1', 'max:64'],
                     'label' => ['nullable', 'string', 'min:1', 'max:64'],
@@ -209,8 +208,8 @@ class VolunteerController extends Controller
                 [
                     # Custom Error Messages
                     'profile_photo.max' => 'Your profile picture must not exceed the file size of 2mb.',
-                    'contact_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
-                    'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+                    'cel_no.regex' => 'The cel no format must be followed. Ex. +63 998 123 4567',
+                    'tel_no.regex' => 'The tel no format must be followed. Ex. +632 8123 6789',
                     'postal_code.digits' => 'The postal code must have 4 numbers.',
 
                 ]

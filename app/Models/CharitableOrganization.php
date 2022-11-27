@@ -49,7 +49,7 @@ class CharitableOrganization extends Model
         return $this->hasMany(Beneficiary::class, 'charitable_organization_id', 'id');
     }
 
-    public function volunters()
+    public function volunteers()
     {
         return $this->hasMany(Volunteer::class, 'charitable_organization_id', 'id');
     }
