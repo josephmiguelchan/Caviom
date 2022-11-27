@@ -168,7 +168,11 @@
                                         <div class="form-group mb-3 row">
                                             <div class="col-12">
                                                 <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                                <input class="form-control" name="cel_no" id="cel_no" type="tel" required
+                                                <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes" title="Ex. +63 998 123 4567">
+                                                    <i class="mdi mdi-information-outline"></i>
+                                                </span>
+                                                <input class="form-control input-mask" name="cel_no" id="cel_no" type="tel"
+                                                    placeholder="Ex. +63 998 123 4567" required data-inputmask="'mask': '+63 \\999 999 9999'"
                                                     value="{{ (empty($errors->has('cel_no')))?old('cel_no',Auth::user()->info->cel_no):Auth::user()->info->cel_no}}">
                                                 @error('cel_no')
                                                     <div class="text-danger">
@@ -184,7 +188,12 @@
                                         <div class="form-group mb-3 row">
                                             <div class="col-12">
                                                 <label for="tel_no" class="form-label">Telephone No.</label>
-                                                <input class="form-control" name="tel_no" id="tel_no" type="tel"
+                                                <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes"
+                                                    title="Ex. +632 8123 6789">
+                                                    <i class="mdi mdi-information-outline"></i>
+                                                </span>
+                                                <input class="form-control input-mask" name="tel_no" id="tel_no" type="tel"
+                                                    placeholder="Ex. +632 8123 6789" data-inputmask="'mask': '+632 8999 9999'"
                                                     value="{{ (empty($errors->has('tel_no')))?old('tel_no',Auth::user()->info->tel_no):Auth::user()->info->tel_no}}">
                                                 @error('tel_no')
                                                     <div class="text-danger">
@@ -296,14 +305,18 @@
                                                     {{ $message }}
                                                 </div>
                                             @enderror
-                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- Postal Code -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="postal_code" class="form-label">*Postal Code</label>
-                                            <input class="form-control" name="postal_code" id="postal_code" type="text" required
+                                            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ex. 1013" data-bs-original-title="yes">
+                                                <i class="mdi mdi-information-outline"></i>
+                                            </span>
+                                            <input class="form-control input-mask" name="postal_code" id="postal_code" type="tel" required
+                                                placeholder="@unless($errors->any())Ex. 1013 @endunless" data-inputmask="'mask': '9999'"
                                                 value="{{ (empty($errors->has('postal_code')))?old('postal_code',Auth::user()->info->address->postal_code):Auth::user()->info->address->postal_code}}">
                                             @error('postal_code')
                                                 <div class="text-danger">

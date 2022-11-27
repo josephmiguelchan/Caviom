@@ -92,8 +92,8 @@ class AdminController extends Controller
                 'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
 
                 # Contact and Occupation
-                'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9)
-                'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'], // 8 + (Any 7-digit number from 1-9)
+                'cel_no' => ['required', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/', 'unique:user_infos'], // Unique won't work since it is encrypted
+                'tel_no' => ['nullable', 'regex:/(632)\s(8)[0-9]{3}\s[0-9]{4}/'],
                 'work_position' => ['required', 'string', 'min:4', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'organizational_id_no' => ['nullable', 'integer', 'numeric', 'min:100', 'max:9999999999', 'unique:user_infos'], // !! Must be unique only to their charitable organization only.
 
@@ -104,7 +104,7 @@ class AdminController extends Controller
                 'province' => ['required', 'string', 'min:3', 'max:64'],
                 'city' => ['required', 'string', 'min:3', 'max:64'],
                 'barangay' => ['required', 'string', 'min:3', 'max:64'],
-                'postal_code' => ['required', 'string', 'min:4', 'max:10'],
+                'postal_code' => ['required', 'string', 'digits: 4'],
             ],
             [
                 # Custom Error Messages
@@ -113,8 +113,8 @@ class AdminController extends Controller
                 'middle_name.regex' => 'The middle name field must not include number/s.',
                 'work_position.regex' => 'Work position must not include number(s) or must be a valid format.',
                 'last_name.regex' => 'The last name field must not include number/s.',
-                'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
-                'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+                'cel_no.regex' => 'The cel no format must be followed. Ex. +63 998 123 4567',
+                'tel_no.regex' => 'The tel no format must be followed. Ex. +632 8123 6789',
                 'is_agreed.required' => 'You must first agree before submitting.',
             ]
         );

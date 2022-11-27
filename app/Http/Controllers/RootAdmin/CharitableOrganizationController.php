@@ -210,8 +210,8 @@ class CharitableOrganizationController extends Controller
             'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'work_position' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
-            'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'],
-            'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'],
+            'cel_no' => ['required', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/', 'unique:user_infos'], // Unique won't work since it is encrypted
+            'tel_no' => ['nullable', 'regex:/(632)\s(8)[0-9]{3}\s[0-9]{4}/'],
 
             # Current Address
             'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
@@ -220,15 +220,15 @@ class CharitableOrganizationController extends Controller
             'province' => ['required', 'string', 'min:3', 'max:64'],
             'city' => ['required', 'string', 'min:3', 'max:64'],
             'barangay' => ['required', 'string', 'min:3', 'max:64'],
-            'postal_code' =>  ['required', 'integer', 'digits:4'],
+            'postal_code' =>  ['required', 'digits:4'],
         ], [
 
             'first_name.regex' => 'The first name field must not include number/s.',
             'middle_name.regex' => 'The middle name field must not include number/s.',
             'work_position.regex' => 'Work position must not include number(s) or must be a valid format.',
             'last_name.regex' => 'The last name field must not include number/s.',
-            'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
-            'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+            'cel_no.regex' => 'The cel no format must be followed. Ex. +63 998 123 4567',
+            'tel_no.regex' => 'The tel no format must be followed. Ex. +632 8123 6789',
         ]);
 
         # Update Record
