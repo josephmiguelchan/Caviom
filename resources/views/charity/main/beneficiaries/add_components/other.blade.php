@@ -55,7 +55,6 @@
     <!-- Contact and Interview Datetime Form Group -->
     <div class="form-group mb-3 row">
         <!-- Contact No -->
-        <!-- TO DO: For some reason, mask-input does not work here... -->
         <div class="col-md-6">
             <div class="form-group">
                 <label for="contact_no" class="form-label">Contact No.</label>

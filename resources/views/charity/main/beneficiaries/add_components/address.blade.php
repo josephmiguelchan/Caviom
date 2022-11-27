@@ -355,6 +355,11 @@
     <script type="text/javascript" src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js"></script>
 
     <script type="text/javascript">
+        var selector = document.getElementById("contact_no");
+
+        var im = new Inputmask("+63 \\999 999 9999");
+        im.mask(selector);
+
         function EnableDisableTextBox(use_permanent_address){
             var present_address_line_one = document.getElementById("present_address_line_one");
             var present_address_line_two = document.getElementById("present_address_line_two");
