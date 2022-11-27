@@ -100,8 +100,8 @@ class ProfileController extends Controller
             'category' => ['required', Rule::in(['Community Development', 'Education', 'Humanities', 'Health', 'Environment', 'Social Welfare', 'Corporate', 'Church', 'Livelihood', 'Sports Volunteerism'])],
             'tagline' => ['nullable', 'string', 'max:200'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:100'],
-            'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9)
-            'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'], // 8 + (Any 7-digit number from 1-9)
+            'cel_no' => ['required', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/', 'unique:user_infos'], // Unique won't work since it is encrypted
+            'tel_no' => ['nullable', 'regex:/(632)\s(8)[0-9]{3}\s[0-9]{4}/'],
 
             # Address
             'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
@@ -114,8 +114,8 @@ class ProfileController extends Controller
         ], [
             'profile_photo.dimensions' => 'Profile photo of the Organization must be 1x1 in ratio.',
             'category.array' => 'Invalid category.',
-            'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
-            'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+            'cel_no.regex' => 'The cel no format must be followed. Ex. +63 998 123 4567',
+            'tel_no.regex' => 'The tel no format must be followed. Ex. +632 8123 6789',
         ]);
 
         # Return error toastr if validate request failed
