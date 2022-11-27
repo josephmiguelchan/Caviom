@@ -181,7 +181,7 @@
                                             <label for="organizational_id_no" class="form-label">
                                                 Your 10-Digit Organizational ID No. (Permanent)
                                                 <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="It must consist of numbers only and should
-                                                    only be exactly 10 digits. Ex. 0000123456." data-bs-original-title="yes">
+                                                    be exactly 10 digits. Ex. 0000123456." data-bs-original-title="yes">
                                                     <i class="mdi mdi-information-outline"></i>
                                                 </span>
                                             </label>

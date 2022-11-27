@@ -296,7 +296,9 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="postal_code" class="form-label">*Postal Code</label>
-                                            <input class="form-control" name="postal_code" id="postal_code" type="text" value="{{ old('postal_code', $benefactor->Address->postal_code) }}" required>
+                                            <input class="form-control input-mask" name="postal_code" id="postal_code" type="text"
+                                                value="{{ old('postal_code', $benefactor->Address->postal_code) }}" required
+                                                data-inputmask="'mask': '9999'">
                                             @error('postal_code')
                                             <div class="text-danger">
                                                 {{ $message }}

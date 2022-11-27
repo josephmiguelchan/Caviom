@@ -88,15 +88,14 @@
                                     <div class="form-group">
                                         <label for="organizational_id_no" class="form-label">
                                             Organizational ID Number (Permanent)
-                                            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Leave blank if you wish to autogenerate a 10-digit ID No.
-                                                It must consist of numbers only (No character / Special Symbols).
-                                                Maximum length of ID must be up to 10 digits only. Each ID no. must be unique in the Charitable Organization." data-bs-original-title="yes">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="It must consist of numbers only and should
+                                                be exactly 10 digits. Ex. 0000123456." data-bs-original-title="yes">
                                                 <i class="mdi mdi-information-outline"></i>
                                             </span>
                                         </label>
-                                        <input class="form-control" name="organizational_id_no" id="organizational_id_no" type="text"
-                                            placeholder="@unless($errors->any())(Leave blank if you wish to auto-generate your ID no.) @endunless"
-                                            value="{{ old('organizational_id_no') }}">
+                                        <input class="form-control input-mask" name="organizational_id_no" id="organizational_id_no" type="tel"
+                                            placeholder="(Leave blank if you wish to auto-generate your ID no.)"
+                                            value="{{ old('organizational_id_no') }}" data-inputmask="'mask': '9999999999'">
                                         @error('organizational_id_no')
                                             <div class="text-danger">
                                                 <small>
@@ -287,8 +286,12 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                        <input class="form-control" name="cel_no" id="cel_no" type="tel"
-                                            value="{{old('cel_no')}}" placeholder="@unless($errors->any())Enter mobile number @endunless">
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes" title="Ex. +63 998 123 4567">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                        <input class="form-control input-mask" name="cel_no" id="cel_no" type="tel"
+                                            placeholder="Ex. +63 998 123 4567" required
+                                            value="{{ old('cel_no') }}" data-inputmask="'mask': '+63 \\999 999 9999'">
                                         @error('cel_no')
                                             <div class="text-danger small">
                                                 {{ $message }}
@@ -301,8 +304,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="tel_no" class="form-label">Telephone No.</label>
-                                        <input class="form-control" name="tel_no" id="tel_no" type="tel"
-                                            value="{{old('tel_no')}}" placeholder="@unless($errors->any())Enter telephone number @endunless">
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes"
+                                            title="Ex. +632 8123 6789">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                        <input class="form-control input-mask" name="tel_no" id="tel_no" type="tel"
+                                            placeholder="Ex. +632 8123 6789" value="{{ old('tel_no') }}"
+                                            data-inputmask="'mask': '+632 8999 9999'">
                                         @error('tel_no')
                                             <div class="text-danger small">
                                                 {{ $message }}
@@ -405,8 +413,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="postal_code" class="form-label">*Postal Code</label>
-                                        <input class="form-control" name="postal_code" id="postal_code" type="text"
-                                            value="{{old('postal_code')}}" placeholder="@unless($errors->any())Enter postal code @endunless">
+                                        <input class="form-control input-mask" name="postal_code" id="postal_code" type="tel"
+                                            value="{{old('postal_code')}}" placeholder="@unless($errors->any())Enter postal code @endunless"
+                                            data-inputmask="'mask': '9999'">
                                         @error('postal_code')
                                             <div class="text-danger small">
                                                 {{ $message }}
