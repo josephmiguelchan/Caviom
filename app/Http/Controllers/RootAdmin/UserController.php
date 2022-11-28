@@ -41,6 +41,7 @@ class UserController extends Controller
             # For user table fields
             'profile_image' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
+            'username' => ['required', 'alpha_dash', 'string', 'min:6', 'max:20', 'unique:users'],
             'password' => ['required', 'max:20', Rules\Password::defaults()],
             'confirm_password' => ['required', 'same:password'],
 
@@ -49,8 +50,8 @@ class UserController extends Controller
             'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'work_position' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
-            'cel_no' => ['required', 'regex:/(09)[0-9]{9}/', 'unique:user_infos'],
-            'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'],
+            'cel_no' => ['required', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/', 'unique:user_infos'], // Unique won't work since it is encrypted
+            'tel_no' => ['nullable', 'regex:/(632)\s(8)[0-9]{3}\s[0-9]{4}/'],
 
             # For address table fields
             'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
@@ -67,8 +68,8 @@ class UserController extends Controller
             'middle_name.regex' => 'The middle name field must not include number/s.',
             'work_position.regex' => 'Work position must not include number(s) or must be a valid format.',
             'last_name.regex' => 'The last name field must not include number/s.',
-            'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
-            'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+            'cel_no.regex' => 'The cel no format must be followed. Ex. +63 998 123 4567',
+            'tel_no.regex' => 'The tel no format must be followed. Ex. +632 8123 6789',
         ]);
 
         # Store Data to address table
@@ -88,6 +89,7 @@ class UserController extends Controller
         $user = new User;
         $user->code = Str::uuid()->toString();
         $user->email = $request->email;
+        $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->role = 'Root Admin';
         $user->charitable_organization_id = null;
@@ -118,7 +120,7 @@ class UserController extends Controller
         $user_info->save();
 
         # Create a New Event (registration) where an email verification will be sent.
-        event(new Registered($user));
+        // event(new Registered($user));
 
         # Create Audit Logs
         $log = new AuditLog();
@@ -133,7 +135,7 @@ class UserController extends Controller
 
         # Success Toastr Message display
         $notification = array(
-            'message' => 'Pending Root Admin added successfully. A link has been sent to their email.',
+            'message' => 'Pending Root Admin added successfully.',
             'alert-type' => 'success'
         );
 

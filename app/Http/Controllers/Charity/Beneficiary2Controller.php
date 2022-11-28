@@ -9,19 +9,27 @@ use App\Models\BeneficiaryFamilyInfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class Beneficiary2Controller extends Controller
 {
     public function createPart2($id)
     {
         # Retrieve the beneficiary record with family info using foreign key
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstorFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
                 'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($notification);
+        } elseif ($beneficiary->families->count() >= 20) {
+            $notification = array(
+                'message' => 'Sorry, this Beneficiary has reached the maximum no. of (20) Family Members.',
+                'alert-type' => 'error',
             );
 
             return redirect()->back()->with($notification);
@@ -35,9 +43,9 @@ class Beneficiary2Controller extends Controller
     public function editPart2($id)
     {
         # Retrieve the beneficiary record with family info using foreign key
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstorFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -55,9 +63,9 @@ class Beneficiary2Controller extends Controller
     public function storePart2(Request $request, $id)
     {
         # Retrieve the beneficiary record with family info using foreign key
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstorFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -65,10 +73,17 @@ class Beneficiary2Controller extends Controller
             );
 
             return redirect()->back()->with($notification);
+        } elseif ($beneficiary->families->count() >= 20) {
+            $notification = array(
+                'message' => 'Sorry, this Beneficiary has reached the maximum no. of (20) Family Members.',
+                'alert-type' => 'error',
+            );
+
+            return redirect()->back()->with($notification);
         } else {
 
             # Validation of New Beneficiary
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 'fam_first_name' => ['required', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'fam_last_name' => ['required', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'fam_middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
@@ -100,6 +115,16 @@ class Beneficiary2Controller extends Controller
                 'fam_relationship.regex' => 'Relationship format is invalid',
                 'fam_relationship.string' => 'Relationship format is invalid',
             ]);
+
+            # Return error toastr if validate request failed
+            if ($validator->fails()) {
+                $toastr = array(
+                    'message' => $validator->errors()->first() . '. Please try again.',
+                    'alert-type' => 'error'
+                );
+
+                return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+            }
 
             # Creating New Beneficiary Record Part 2 - Family Economic Background
             $familyInfo = new BeneficiaryFamilyInfo;
@@ -146,14 +171,13 @@ class Beneficiary2Controller extends Controller
     public function updatePart2(Request $request)
     {
         # Retrieve the beneficiary record with family info using foreign key (another approach)
-        $beneficiary = Beneficiary::where('id', $request->beneficiary_code)
-            ->orWhere('code', $request->beneficiary_code)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $request->beneficiary_code)->firstorFail();
         $familyInfoId = $request->id;
 
         # This is working!
         //        return $request->edit_fam_first_name;
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -164,7 +188,7 @@ class Beneficiary2Controller extends Controller
         } else {
 
             # Validation of Edit Beneficiary
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 'edit_fam_first_name' => ['required', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'edit_fam_last_name' => ['required', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'edit_fam_middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
@@ -196,6 +220,16 @@ class Beneficiary2Controller extends Controller
                 'edit_fam_relationship.regex' => 'Relationship format is invalid',
                 'edit_fam_relationship.string' => 'Relationship format is invalid',
             ]);
+
+            # Return error toastr if validate request failed
+            if ($validator->fails()) {
+                $toastr = array(
+                    'message' => $validator->errors()->first() . '. Please try again.',
+                    'alert-type' => 'error'
+                );
+
+                return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+            }
 
             # Begin updating the family info of the retrieved beneficiary.
             BeneficiaryFamilyInfo::findOrFail($familyInfoId)->update([
@@ -241,10 +275,9 @@ class Beneficiary2Controller extends Controller
     public function destroyPart2(Request $request)
     {
         # Retrieve the beneficiary record with family info using foreign key (another approach)
-        $beneficiary = Beneficiary::where('id', $request->beneficiary_code)
-            ->orWhere('code', $request->beneficiary_code)->firstorFail();
+        $beneficiary = Beneficiary::where('code', $request->beneficiary_code)->firstorFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',

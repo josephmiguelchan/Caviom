@@ -6,11 +6,12 @@
                 <h5 class="modal-title" id="myLargeModalLabel">Cover Photos</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="dZUpload">
                 <h4 class="card-title">Upload Cover Photos of your Charitable Organization</h4>
-                <p class="card-title-desc">At least one photo is required, up to a maximum of 5 cover photos.</p>
+                <p class="card-title-desc">Please upload at least one (1) cover photo, up to 5 cover photos. Maximum of 2MB in file size only. </p>
 
-                <form action="#" method="POST" class="dropzone" enctype="multipart/form-data">
+                <form action="{{route('charity.profile.cover_photos.save')}}" method="POST" class="dropzone" enctype="multipart/form-data"
+                    id="myGreatDropzone">
                     @csrf
                     <div class="fallback">
                         <input name="file" type="file" multiple="multiple">
@@ -24,17 +25,20 @@
                     </div>
                 </form>
 
-                <div class="float-end mt-4 p-1">
-                    <button type="button" class="btn btn-primary waves-effect waves-light w-lg">
+                <p class="small text-muted mt-2 float-end mb-0">Recommended image size of 1920x360.</p>
+
+                {{-- <div class="float-end mt-4 p-1">
+                    <button type="button" class="btn btn-primary waves-effect waves-light w-lg" id="uploadFile">
                         <i class="mdi mdi-upload"></i> Upload image(s)
                     </button>
-                </div>
+                </div> --}}
+
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<form method="POST" action="" class="form-horizontal">
+<form method="POST" action="{{route('charity.profile.store_primary')}}" class="form-horizontal" id="primary_info_save" enctype="multipart/form-data">
     @csrf
     <div id="accordion" class="custom-accordion">
         <div class="card mb-1 shadow-none">
@@ -63,48 +67,44 @@
                                         <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Must not exceed 2mb." data-bs-original-title="yes">
                                             <i class="mdi mdi-information-outline"></i>
                                         </span>
-                                        <input type="file" class="form-control" id="profile_photo" required>
+                                        <input type="file" class="form-control" id="profile_photo" name="profile_photo">
                                         @error('profile_photo')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-10">
-                                    <a class="image-popup-no-margins" title="Charitable Organization Profile Photo Preview" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                        <img class="img-fluid rounded" alt="Charitable Organization Profile Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                    </a>
+                                    @php
+                                        $avatar = 'upload/charitable_org/profile_photo/'.Auth::user()->charity->profile_photo;
+                                        $defaultAvatar = 'upload/charitable_org/profile_photo/no_avatar.png';
+                                    @endphp
+
+                                    <img class="img-fluid rounded" alt="Charitable Organization Profile Photo Preview" src="{{ Auth::user()->charity->profile_photo? url($avatar):url($defaultAvatar) }}" id="showImage">
                                 </div>
                             </div>
+
+                            @php
+                                $cover_photos = App\Models\Charity\Profile\ProfileCoverPhoto::where('charitable_organization_id', Auth::user()->charitable_organization_id)->take(5)->get();
+                            @endphp
+
                             <div class="col-6">
                                 <h5>Cover Photos</h5>
-                                <p class="mt-0 mb-3">(Up to a max of 5 pictures only)</p>
+                                <p class="mt-0 mb-3">(Cover photos will be updated after uploading and refreshing this page)</p>
                                 <div class="row text-center">
                                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                                         <ol class="carousel-indicators">
-                                            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
-                                            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
-                                            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
-                                            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"></li>
-                                            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4"></li>
+                                            @foreach ($cover_photos as $key => $photo)
+                                                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{$key}}" {!! $key == 0?'class="active"':'' !!}></li>
+                                            @endforeach
                                         </ol>
                                         <div class="carousel-inner" role="listbox">
-                                            <div class="carousel-item active">
-                                                <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-1.jpg') }}" alt="First slide">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-2.jpg') }}" alt="Second slide">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-3.jpg') }}" alt="Third slide">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-4.jpg') }}" alt="Fourth slide">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img class="d-block img-fluid" src="{{ asset('backend/assets/images/small/img-5.jpg') }}" alt="Fifth slide">
-                                            </div>
+                                            @foreach ($cover_photos as $key => $photo)
+                                                <div class="carousel-item {{ $key == 0?'active':'' }}">
+                                                    <img class="d-block img-fluid" src="{{ url('upload/charitable_org/cover_photos/'. $photo->file_name) }}" alt="Slide {{$key+1}}">
+                                                </div>
+                                            @endforeach
                                         </div>
                                         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -161,21 +161,23 @@
                                             <i class="mdi mdi-information-outline"></i>
                                         </span>
                                     </label>
-                                    <select class="form-control select2" name="category" required>
+                                    <select class="form-control select2" name="category" >
                                         <option disabled hidden selected>Select a category</option>
-                                        <optgroup label="International Charity Groups">
-                                            <option value="AK">Community Development Charities</option>
-                                            <option value="HI">Education Charities</option>
-                                        </optgroup>
-                                        <optgroup label="Local Charity Groups">
-                                            <option value="CA">Health Charities</option>
-                                            <option value="NV">Human Services</option>
-                                            <option value="OR">Environmental Charities</option>
-                                            <option value="WA">Human Service Charities</option>
-                                        </optgroup>
+
+                                        <option value="Community Development" {{$primaryInfo?($primaryInfo->category=='Community Development'?'selected':''):(old('category')=='Community Development'?'selected':'')}}>Community Development</option>
+                                        <option value="Education" {{$primaryInfo?($primaryInfo->category=='Education'?'selected':''):(old('category')=='Education'?'selected':'')}}>Education</option>
+                                        <option value="Humanities" {{$primaryInfo?($primaryInfo->category=='Humanities'?'selected':''):(old('category')=='Humanities'?'selected':'')}}>Humanities</option>
+                                        <option value="Health" {{$primaryInfo?($primaryInfo->category=='Health'?'selected':''):(old('category')=='Health'?'selected':'')}}>Health</option>
+                                        <option value="Environment" {{$primaryInfo?($primaryInfo->category=='Environment'?'selected':''):(old('category')=='Environment'?'selected':'')}}>Environmental</option>
+                                        <option value="Social Welfare" {{$primaryInfo?($primaryInfo->category=='Social Welfare'?'selected':''):(old('category')=='Social Welfare'?'selected':'')}}>Social Welfare</option>
+                                        <option value="Corporate" {{$primaryInfo?($primaryInfo->category=='Corporate'?'selected':''):(old('category')=='Corporate'?'selected':'')}}>Corporate</option>
+                                        <option value="Church" {{$primaryInfo?($primaryInfo->category=='Church'?'selected':''):(old('category')=='Church'?'selected':'')}}>Church</option>
+                                        <option value="Livelihood" {{$primaryInfo?($primaryInfo->category=='Livelihood'?'selected':''):(old('category')=='Livelihood'?'selected':'')}}>Livelihood</option>
+                                        <option value="Sports Volunteerism" {{$primaryInfo?($primaryInfo->category=='Sports Volunteerism'?'selected':''):(old('category')=='Sports Volunteerism'?'selected':'')}}>Sports Volunteerism</option>
+
                                     </select>
                                     @error('category')
-                                        <div class="text-danger my-2">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -186,9 +188,10 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="tagline" class="form-label">Tagline (Optional)</label>
-                                    <input class="form-control" name="tagline" id="tagline" type="text" placeholder="Enter tagline" value="{{ old('tagline') }}">
+                                    <input class="form-control" name="tagline" id="thresholdconfig" type="text" placeholder="Enter tagline"
+                                        maxlength="200" value="{{ $primaryInfo->tagline ?? old('tagline') }}">
                                     @error('tagline')
-                                        <div class="text-danger my-2">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -200,10 +203,10 @@
                         <h4 class="mt-4" style="color: #62896d">Primary Information & Address</h4>
 
                         <!-- Dev note: Might delete this checkbox below -->
-                        <div class="form-check form-switch mb-4" dir="ltr">
+                        {{-- <div class="form-check form-switch mb-4" dir="ltr">
                             <input type="checkbox" name="use_own_info" class="form-check-input" id="use_own_info">
                             <label class="form-check-label" for="use_own_info">Use my own information</label>
-                        </div>
+                        </div> --}}
 
                         <!-- Email Address -->
                         <div class="form-group mb-3 row">
@@ -217,7 +220,7 @@
                                 </label>
                                 <input class="form-control" name="email" id="email" type="email"
                                     placeholder="@unless($errors->any())Ex. info@mycharity.org @endunless"
-                                    value="{{ old('email') }}" required>
+                                    value="{{ $primaryInfo->email_address ?? old('email') }}" >
                                 @error('email')
                                     <div class="text-danger">
                                         <small>
@@ -234,9 +237,12 @@
                                 <div class="form-group mb-3 row">
                                     <div class="col-12">
                                         <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                        <input class="form-control" name="cel_no" id="cel_no" type="tel"
-                                            placeholder="@unless($errors->any())Ex. 09981234567 @endunless" required
-                                            value="{{ old('cel_no') }}">
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes" title="Ex. +63 998 123 4567">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                        <input class="form-control input-mask" name="cel_no" id="cel_no" type="tel"
+                                            placeholder="Ex. +63 998 123 4567" required data-inputmask="'mask': '+63 \\999 999 9999'"
+                                            value="{{ $primaryInfo->cel_no ?? old('cel_no') }}">
                                         @error('cel_no')
                                             <div class="text-danger">
                                                 <small>
@@ -253,8 +259,13 @@
                                 <div class="form-group mb-3 row">
                                     <div class="col-12">
                                         <label for="tel_no" class="form-label">Telephone No.</label>
-                                        <input class="form-control" name="tel_no" id="tel_no" type="tel" required
-                                            placeholder="@unless($errors->any())Ex. 82531234 @endunless" value="{{ old('tel_no') }}">
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes"
+                                            title="Ex. +632 8123 6789">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                        <input class="form-control input-mask" name="tel_no" id="tel_no" type="tel"
+                                            placeholder="Ex. +632 8123 6789" data-inputmask="'mask': '+632 8999 9999'"
+                                            value="{{ $primaryInfo->tel_no ?? old('tel_no') }}">
                                         @error('tel_no')
                                             <div class="text-danger">
                                                 <small>
@@ -271,9 +282,9 @@
                         <div class="form-group mb-3 row">
                             <div class="col-12">
                                 <label for="address_line_one" class="form-label">*Address Line 1</label>
-                                <input class="form-control" name="address_line_one" id="address_line_one" type="text" required
+                                <input class="form-control" name="address_line_one" id="address_line_one" type="text"
                                     placeholder="@unless($errors->any())Ex. 1123 Kahoy St. @endunless"
-                                    value="{{ old('address_line_one') }}">
+                                    value="{{ $primaryInfo->address->address_line_one ?? old('address_line_one') }}">
                                 @error('address_line_one')
                                     <div class="text-danger">
                                         <small>
@@ -290,7 +301,7 @@
                                 <label for="address_line_two" class="form-label">Address Line 2 (Optional)</label>
                                 <input class="form-control" name="address_line_two" id="address_line_two" type="text"
                                     placeholder="@unless($errors->any())Ex. Unit 34B 4th Floor @endunless"
-                                    value="{{ old('address_line_two') }}">
+                                    value="{{ $primaryInfo->address->address_line_two ?? old('address_line_two') }}">
                                 @error('address_line_two')
                                     <div class="text-danger">
                                         <small>
@@ -302,13 +313,30 @@
                         </div>
 
                         <div class="form-group mb-3 row">
+                            <!-- Region -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="region" class="form-label">*Region</label>
+                                    <input class="form-control" name="region" id="region" type="text"
+                                        placeholder="@unless($errors->any())Ex. NCR @endunless"
+                                        value="{{ $primaryInfo->address->region ?? old('region') }}">
+                                    @error('region')
+                                        <div class="text-danger">
+                                            <small>
+                                                {{ $message }}
+                                            </small>
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <!-- Province -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="province" class="form-label">*Province</label>
-                                    <input class="form-control" name="province" id="province" type="text" required
+                                    <input class="form-control" name="province" id="province" type="text"
                                         placeholder="@unless($errors->any())Ex. Metro Manila @endunless"
-                                        value="{{ old('province') }}">
+                                        value="{{ $primaryInfo->address->province ?? old('province') }}">
                                     @error('province')
                                         <div class="text-danger">
                                             <small>
@@ -320,12 +348,12 @@
                             </div>
 
                             <!-- City -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="city" class="form-label">*City / Municipality</label>
-                                    <input class="form-control" name="city" id="city" type="text" required
+                                    <input class="form-control" name="city" id="city" type="text"
                                         placeholder="@unless($errors->any())Ex. Manila City @endunless"
-                                        value="{{ old('city') }}">
+                                        value="{{ $primaryInfo->address->city ?? old('city') }}">
                                     @error('city')
                                         <div class="text-danger">
                                             <small>
@@ -342,9 +370,9 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="barangay" class="form-label">*Barangay</label>
-                                    <input class="form-control" name="barangay" id="barangay" type="text" required
+                                    <input class="form-control" name="barangay" id="barangay" type="text"
                                         placeholder="@unless($errors->any())Ex. Brgy. 204 @endunless"
-                                        value="{{ old('barangay') }}">
+                                        value="{{ $primaryInfo->address->barangay ?? old('barangay') }}">
                                     @error('barangay')
                                         <div class="text-danger">
                                             <small>
@@ -359,9 +387,12 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="postal_code" class="form-label">*Postal Code</label>
-                                    <input class="form-control" name="postal_code" id="postal_code" type="text" required
-                                        placeholder="@unless($errors->any())Ex. 1013 @endunless"
-                                        value="{{ old('postal_code') }}">
+                                    <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ex. 1013" data-bs-original-title="yes">
+                                        <i class="mdi mdi-information-outline"></i>
+                                    </span>
+                                    <input class="form-control input-mask" name="postal_code" id="postal_code" type="tel" required
+                                        placeholder="@unless($errors->any())Ex. 1013 @endunless" data-inputmask="'mask': '9999'"
+                                        value="{{ $primaryInfo->address->postal_code ?? old('postal_code') }}">
                                     @error('postal_code')
                                         <div class="text-danger">
                                             <small>
@@ -380,8 +411,8 @@
 
     <div class="row px-3">
         <ul class="list-inline mb-0 mt-4 text-center">
-            <input type="submit" class="btn btn-dark btn-rounded w-xl waves-effect waves-light w-100"
-                style="background-color: #62896d;" value="Save Primary Information">
+            <button type="submit" form="primary_info_save" class="btn btn-dark btn-rounded w-xl waves-effect waves-light w-100"
+                style="background-color: #62896d;">Save Primary Information</button>
         </ul>
     </div>
 
@@ -393,4 +424,15 @@
 </form>
 
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#profile_photo').change(function(e) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#showImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+</script>
 

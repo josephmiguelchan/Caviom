@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\CharitableOrganization;
 use App\Models\User;
 use App\Models\Address;
+use App\Models\Admin\FeaturedProject;
 use App\Models\Admin\Notifier;
 use App\Models\AuditLog;
+use App\Models\Charity\Profile\ProfileRequirement;
 use App\Models\Notification;
 use App\Models\UserInfo;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +17,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\Rule;
 
@@ -38,16 +41,31 @@ class CharitableOrganizationController extends Controller
         # Get the count of Associates in the Organization
         $countofAssociates =  User::where('charitable_organization_id', $organizationdetail->id)->where('role', 'Charity Associate')->where('status', 'Active')->count();
 
-        return view('admin.charities.view', compact('organizationdetail', 'admins', 'countofAssociates'));
+        # Get the count of Associates in the Organization
+        $featuredProjectsCount = FeaturedProject::where('charitable_organization_id', $organizationdetail->id)->where('approval_status', 'Approved')->count();
+
+        # Get the requirements submitted by their Charity Admin (If any)
+        $requirements = ProfileRequirement::where('charitable_organization_id', $organizationdetail->id)->first();
+
+        return view('admin.charities.view', compact('organizationdetail', 'admins', 'countofAssociates', 'featuredProjectsCount', 'requirements'));
     }
 
 
     public function SendNotification(Request $request, $id)
     {
         # Validation Rules
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'content_message' => 'required|min:5|max:350'
         ]);
+
+        if ($validator->fails()) {
+            $toastr = array(
+                'message' => $validator->errors()->first() . '. Please try again.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
 
         # Send Notification to each user in their Charitable Organizations
         $users = User::where('charitable_organization_id', $id)->where('status', 'Active')->get();
@@ -91,10 +109,12 @@ class CharitableOrganizationController extends Controller
             return redirect()->back()->with($toastr);
         }
 
+        $remarks = Notifier::where('category', 'Public Profile')->pluck('subject')->toArray();
+
         $request->validate([
-            'visibility_status' => 'required',
-            'verification_status' => 'required',
-            'remarks' => 'nullable',
+            'visibility_status' => ['required', Rule::in(['Hidden', 'Visible', 'Locked'])],
+            'verification_status' => ['required', Rule::in(['Verified', 'Declined'])],
+            'remarks' => ['nullable', Rule::in($remarks)]
         ]);
 
         # Set the remarks MESSAGE based on the value of profile's remarks from Notifiers dropdown table.
@@ -145,7 +165,7 @@ class CharitableOrganizationController extends Controller
         $log_in->action_type = 'UPDATE';
         $log_in->charitable_organization_id = $organization->id;
         $log_in->table_name = 'Charitable Organization';
-        $log_in->record_id = $organization->id;
+        $log_in->record_id = $organization->code;
         $log_in->action = Auth::user()->role . ' updated the User Visibility_status , Verification_status and Remarks For [' . $organization->name . '].';
         $log_in->performed_at = Carbon::now();
         $log_in->save();
@@ -183,15 +203,15 @@ class CharitableOrganizationController extends Controller
 
             # For Account fields
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255',  Rule::unique('users')->ignore($User)],
-            'username' => ['required_unless:account_status,Pending Unlock'],
+            // 'username' => ['required_unless:account_status,Pending Unlock'],
 
             # For Personal Information
             'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'work_position' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
-            'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'],
-            'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'],
+            'cel_no' => ['required', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/', 'unique:user_infos'], // Unique won't work since it is encrypted
+            'tel_no' => ['nullable', 'regex:/(632)\s(8)[0-9]{3}\s[0-9]{4}/'],
 
             # Current Address
             'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
@@ -200,15 +220,15 @@ class CharitableOrganizationController extends Controller
             'province' => ['required', 'string', 'min:3', 'max:64'],
             'city' => ['required', 'string', 'min:3', 'max:64'],
             'barangay' => ['required', 'string', 'min:3', 'max:64'],
-            'postal_code' =>  ['required', 'integer', 'digits:4'],
+            'postal_code' =>  ['required', 'digits:4'],
         ], [
 
             'first_name.regex' => 'The first name field must not include number/s.',
             'middle_name.regex' => 'The middle name field must not include number/s.',
             'work_position.regex' => 'Work position must not include number(s) or must be a valid format.',
             'last_name.regex' => 'The last name field must not include number/s.',
-            'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
-            'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+            'cel_no.regex' => 'The cel no format must be followed. Ex. +63 998 123 4567',
+            'tel_no.regex' => 'The tel no format must be followed. Ex. +632 8123 6789',
         ]);
 
         # Update Record
@@ -279,8 +299,8 @@ class CharitableOrganizationController extends Controller
         $log_in->action_type = 'UPDATE';
         $log_in->charitable_organization_id =  null;
         $log_in->table_name = 'User, User Info, Address';
-        $log_in->record_id = $User->id;
-        $log_in->action = Auth::user()->role . ' updated the User profile with ID ' . $User->code;
+        $log_in->record_id = $User->code;
+        $log_in->action = Auth::user()->role . ' updated the User profile of [ ' . $User->username . ' ] with ID: ' . $User->code;
         $log_in->performed_at = Carbon::now();
         $log_in->save();
 

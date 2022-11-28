@@ -66,7 +66,7 @@
                                         alt="Profile Picture" class="avatar-xl rounded-circle">
                                 </div>
                                 <div class="mt-3">
-                                    <p class="text-muted mb-1"><span class="badge bg-light">{{$User->info->organizational_id_no}}</span></p>
+                                    <p class="text-muted mb-1"><span class="badge bg-light">ID No. {{$User->info->organizational_id_no}}</span></p>
                                     <h4 class="font-size-12">{{$User->role}}</h4>
                                     <h1 class="py-3" style="color: #62896d">
                                         <strong>
@@ -139,24 +139,6 @@
                                             <a type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn w-lg btn-outline-danger waves-effect waves-light">
                                                 <i class="mdi mdi-trash-can-outline"></i> Delete Account
                                             </a>
-
-                                            <form method="POST" action="{{ route('charity.users.resend', $User->code) }}" class="form-horizontal">
-                                                @csrf
-                                                @if ($errors->any())
-                                                    <!-- Send Verification Link Failed message -->
-                                                    <div class="text-danger text-center mb-3">
-                                                        {{$errors->first()}}
-                                                    </div>
-                                                @endif
-                                                @if(Session::has('status'))
-                                                    <div class="text-info text-center mb-3">
-                                                        {{ Session::get('status') }}
-                                                    </div>
-                                                @endif
-                                                <button type="submit" class="btn w-lg btn-primary waves-effect waves-light mx-1" title="Resend Verification Link to Email">
-                                                    <i class="mdi mdi-email-send-outline"></i> Resend Link
-                                                </button>
-                                            </form>
 
                                         @endif
 

@@ -63,7 +63,9 @@
                                     <dt class="col-md-6">{{ Carbon\Carbon::parse($volunteer->updated_at)->diffForHumans() }}</dt>
                                     <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated by:</strong></h4></dt>
                                     <dt class="col-md-6">
-                                        {{ $userInfo->last_name . ', ' . $userInfo->first_name .' ' . $userInfo->middle_name}}
+                                        <a href="{{ ($volunteer->last_modified_by_id)?route('charity.users.view', $volunteer->lastModifiedBy->code):'#' }}">
+                                            {{ ($volunteer->lastModifiedBy)? $volunteer->lastModifiedBy->username:'---' }}
+                                        </a>
                                     </dt>
                                 </dl>
                                 <hr class="my-3">
@@ -147,8 +149,12 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                                <input class="form-control" name="cel_no" id="cel_no" type="tel" value="{{ old('cel_no', $volunteer->cel_no) }}" required
-                                                       placeholder="Ex. 09191234567">
+                                                <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes" title="Ex. +63 998 123 4567">
+                                                    <i class="mdi mdi-information-outline"></i>
+                                                </span>
+                                                <input class="form-control input-mask" name="cel_no" id="cel_no" type="tel"
+                                                    placeholder="Ex. +63 998 123 4567" required
+                                                    value="{{ old('cel_no', $volunteer->cel_no) }}" data-inputmask="'mask': '+63 \\999 999 9999'">
                                                 @error('cel_no')
                                                 <div class="text-danger">
                                                     {{ $message }}
@@ -161,8 +167,13 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="tel_no" class="form-label">Telephone No.</label>
-                                                <input class="form-control" name="tel_no" id="tel_no" type="tel" value="{{ old('tel_no', $volunteer->tel_no) }}"
-                                                       placeholder="Ex. 82531234">
+                                                <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes"
+                                                    title="Ex. +632 8123 6789">
+                                                    <i class="mdi mdi-information-outline"></i>
+                                                </span>
+                                                <input class="form-control input-mask" name="tel_no" id="tel_no" type="tel"
+                                                    placeholder="Ex. +632 8123 6789" value="{{ old('tel_no', $volunteer->tel_no) }}"
+                                                    data-inputmask="'mask': '+632 8999 9999'">
                                                 @error('tel_no')
                                                 <div class="text-danger">
                                                     {{ $message }}

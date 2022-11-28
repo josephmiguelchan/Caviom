@@ -96,7 +96,7 @@
                             <div class="col-lg-4">
                                 @if(Auth::user()->role == "Charity Admin")
                                     <ul class="list-inline mb-0 float-end">
-                                        <a href="{{ route('charity.profile.feat-projects.add') }}" class="btn btn-primary waves-effect w-xl waves-light mb-2">
+                                        <a href="{{ route('charity.profile.feat-project.add.gift',$GiftGivings->code) }}" class="btn btn-primary waves-effect w-xl waves-light mb-2">
                                             <i class="mdi mdi-star-outline"></i> Feature Project
                                         </a>
                                     </ul>
@@ -146,7 +146,7 @@
                                             @csrf
                                             <label for="custom_name" class="form-label">Enter a New Beneficiary</label>
                                             <div class="input-group col-md-8">
-                                                <input type="text" name="custom_name" id="custom_name" placeholder="Ex: Lastname, Firstname M." class="form-control">
+                                                <input type="text" name="custom_name" id="custom_name" placeholder="Ex: Firstname Lastname" class="form-control">
                                                 <button type="submit" class="btn btn-success waves-effect w-md btn-sm" title="Add New Beneficiary">
                                                     <i class="mdi mdi-plus"></i> Add
                                                 </button>

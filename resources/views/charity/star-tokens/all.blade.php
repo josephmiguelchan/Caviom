@@ -49,35 +49,30 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-
-
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td><a href="#">Liwanag, C.</a></td>
-                                <td>March 16, 2022</td>
-                                <td>2</td>
-                                <td class="text-danger">Failed</td>
-                                <td>Total amount is incorrect from the specifie...</td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                        <i class="mdi mdi-open-in-new"></i> View
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td><a href="#">Pangilinan, J.</a></td>
-                                <td>March 18, 2022</td>
-                                <td>2</td>
-                                <td class="text-success">Completed</td>
-                                <td></td>
-                                <td>
-                                    <a href="{{ route('star.tokens.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                        <i class="mdi mdi-open-in-new"></i> View
-                                    </a>
-                                </td>
-                            </tr>
+                            @foreach ($orders as $key => $item)
+                                <tr>
+                                    <td>{{$key+1}}</td>
+                                    <td><a href="">{{$item->User->username}}</a></td>
+                                    <td>{{ Carbon\Carbon::parse($item->created_at)->toDayDateTimeString() }}</td>
+                                    <td>{{$item->order_items->count()}}</td>
+
+                                    @if ($item->status == 'Pending')
+                                        <td class="text-warning">Pending</td>
+                                    @elseif($item->status == 'Confirmed')
+                                        <td class="text-success">Confirmed</td>
+                                    @elseif($item->status == 'Rejected')
+                                        <td class="text-danger">Rejected</td>
+                                    @endif
+                                    <td>{{$item->remarks_subject ?? '---'}}</td>
+                                    <td>
+                                        <a href="{{ route('star.tokens.view', $item->code) }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                            <i class="mdi mdi-open-in-new"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
 

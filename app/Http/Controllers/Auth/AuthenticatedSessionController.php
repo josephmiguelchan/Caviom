@@ -34,17 +34,34 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        # Create Audit Logs record for User Login
-        $log_in = new AuditLog();
-        $log_in->user_id = Auth::user()->id;
-        $log_in->action_type = 'LOGIN';
-        $log_in->charitable_organization_id = Auth::user()->charitable_organization_id;
-        $log_in->table_name = null;
-        $log_in->record_id = null;
-        $log_in->action = Auth::user()->role . ' has successfully logged in on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
-            $request->ip();
-        $log_in->performed_at = Carbon::now();
-        $log_in->save();
+        # Create Audit Log only if the user's status is active
+        if (Auth::user()->status == 'Active') {
+
+            # Create Audit Logs record for User Login
+            $log_in = new AuditLog();
+            $log_in->user_id = Auth::user()->id;
+            $log_in->action_type = 'LOGIN';
+            $log_in->charitable_organization_id = Auth::user()->charitable_organization_id;
+            $log_in->table_name = null;
+            $log_in->record_id = null;
+            $log_in->action = Auth::user()->role . ' has successfully logged in on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
+                $request->ip();
+            $log_in->performed_at = Carbon::now();
+            $log_in->save();
+        } elseif (Auth::user()->status == 'Inactive') {
+
+            # Log out the user
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            $notification = array(
+                'message' => 'Sorry, you account has been put on hold and is currently inactive.  Please email us at support@caviom.org',
+                'alert-type' => 'error',
+            );
+
+            return redirect()->back()->with($notification);
+        }
 
         if (Auth::user()->role == "Root Admin") {
             return to_route('admin.panel');

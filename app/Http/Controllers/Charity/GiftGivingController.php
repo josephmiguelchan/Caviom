@@ -33,10 +33,8 @@ class GiftGivingController extends Controller
 
     public function AddGiftGiving()
     {
-
         # Check if Charity has sufficient Star Tokens with the chosen role
-        if (Auth::user()->charity->star_tokens < 300) {
-            $toastr = array();
+        if (Auth::user()->charity->star_tokens < 300 and Auth::user()->charity->subscription == 'Free') {
             $toastr = array(
                 'message' => 'Sorry, your Charitable Organization does not have sufficient Star Tokens.',
                 'alert-type' => 'error'
@@ -51,8 +49,7 @@ class GiftGivingController extends Controller
     public function StoreGiftGiving(Request $request)
     {
         # Check first if Charitable Organization has sufficient Star Tokens
-        if (Auth::user()->charity->star_tokens < 300) {
-            $toastr = array();
+        if (Auth::user()->charity->star_tokens < 300 and Auth::user()->charity->subscription == 'Free') {
             $toastr = array(
                 'message' => 'Sorry, your Charitable Organization does not have sufficient Star Tokens.',
                 'alert-type' => 'error'
@@ -63,23 +60,19 @@ class GiftGivingController extends Controller
 
         $request->validate([
             'name' => 'required|min:5|max:50|unique:App\Models\GiftGiving,name',
-            'amount_per_pack' => 'required|numeric|between:1,999999.99',
+            'amount_per_pack' => 'required|numeric|between:0,999999.99',
             'no_of_packs' => 'required|integer|min:1',
-            'objective' => 'required|max:400',  //pa change nalng dun sa min
-            'venue' => 'required|min:2|max:255', //pa change nalng dun sa min
-            'start_at' => 'required',
+            'objective' => 'required|max:2000|min:10',
+            'venue' => 'required|min:2|max:255',
+            'start_at' => 'required|after:' . now(),
             'sponsors' => 'nullable',
         ], [
-            //for custom message if need ， just delete it if no need custom message
-
+            // For custom message if need ， just delete it if no need custom message
+            'start_at.after' => 'The datetime of the Gift Giving must be in the future.',
         ]);
 
-
-
-        # Generate the uuid
-        $uuid = Str::uuid()->toString();
-
         # Get the value of the total budget for the event
+        $code = Str::uuid()->toString();
         $numberofpack = $request->no_of_packs;
 
         # Convert amount_per_pack to decimal
@@ -88,7 +81,7 @@ class GiftGivingController extends Controller
 
         # Insert data to database
         GiftGiving::insert([
-            'code' => $uuid,
+            'code' => $code,
             'name' => $request->name,
             'charitable_organization_id' => Auth::user()->charity->id,
             'amount_per_pack' => $request->amount_per_pack,
@@ -99,14 +92,14 @@ class GiftGivingController extends Controller
             'sponsor' => $request->sponsors,
             'total_budget' => $totalbuget,
             'created_at' => Carbon::now(),
-
         ]);
 
-        # Deduct the total star tokens
-        $current_bal = CharitableOrganization::findOrFail(Auth::user()->charitable_organization_id);
-        $current_bal->star_tokens = $current_bal->star_tokens - 300;
-        $current_bal->save();
-
+        # Deduct the total star tokens if subscription is Free
+        if (Auth::user()->charity->subscription == 'Free') {
+            $current_bal = CharitableOrganization::findOrFail(Auth::user()->charitable_organization_id);
+            $current_bal->star_tokens = $current_bal->star_tokens - 300;
+            $current_bal->save();
+        }
 
         # Create Audit Logs
         $log = new AuditLog;
@@ -114,8 +107,8 @@ class GiftGivingController extends Controller
         $log->action_type = 'INSERT';
         $log->charitable_organization_id = Auth::user()->charitable_organization_id;
         $log->table_name = 'Gift Giving';
-        $log->record_id = $uuid;
-        $log->action = 'Charity Admin created Gift Giving [' . $request->name . '] using 300 Star Tokens.';
+        $log->record_id = $code;
+        $log->action = 'Charity Admin created Gift Giving [' . $request->name . '].';
         $log->performed_at = Carbon::now();
         $log->save();
 
@@ -137,7 +130,7 @@ class GiftGivingController extends Controller
             $notif->category = 'Gift Giving';
             $notif->subject = 'Gift Giving Created';
             $notif->message = 'A new Gift Giving project has been created by ' . Auth::user()->role . ' [' . Auth::user()->info->first_name .
-                ' ' . Auth::user()->info->last_name . '] named [' . $request->name . '] using 300 Star Tokens. ';
+                ' ' . Auth::user()->info->last_name . '] named [' . $request->name . '].';
             $notif->icon = 'mdi mdi-gift';
             $notif->color = 'success';
             $notif->created_at = Carbon::now();
@@ -374,7 +367,7 @@ class GiftGivingController extends Controller
             $log->charitable_organization_id = Auth::user()->charitable_organization_id;
             $log->table_name = 'Gift Giving';
             $log->record_id = $GiftGiving->code;
-            $log->action = 'Charity Admin generated tickets for the Gift Giving [' . $GiftGiving->name . '] with batch no. ' . $GiftGiving->batch_no . '.';
+            $log->action =  Auth::user()->role . ' generated tickets for the Gift Giving [' . $GiftGiving->name . '] with batch no. ' . $GiftGiving->batch_no . '.';
             $log->performed_at = Carbon::now();
             $log->save();
 

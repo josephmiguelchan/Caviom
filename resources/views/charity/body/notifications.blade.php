@@ -1,5 +1,5 @@
 @php
-$notifications = App\Models\Notification::where('user_id',Auth::user()->id)->latest()->limit(3)->get();
+$notifications = App\Models\Notification::where('user_id',Auth::user()->id)->latest()->limit(5)->get();
 
 @endphp
 

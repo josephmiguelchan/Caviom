@@ -78,7 +78,7 @@
                                     <a href="mailto: {{$item->email}}">{{$item->email}}</a>
                                 </td>
                                 <td>{{$item->role}}</td>
-                                <td><i class="ri-checkbox-blank-circle-fill font-size-10 align-middle me-2 {{($item->status == 'Active')?'text-success':'text-warning'}}"></i>{{($item->status == 'Active')?'Active':'Pending'}}</td>  <!--change color based on status-->
+                                <td><i class="ri-checkbox-blank-circle-fill font-size-10 align-middle me-2 {{($item->status == 'Active')?'text-success':'text-warning'}}"></i> {{ $item->status }}</td>  <!--change color based on status-->
                                 <td>
                                     <a href="{{ route('charity.users.view',$item->code) }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View

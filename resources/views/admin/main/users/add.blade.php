@@ -72,14 +72,14 @@
                             <div class="form-group mb-3 row">
                                 <!-- Profile Photo Preview -->
                                 <div class="col-md-1">
-                                    <label for="example-text-input" class="col-sm-2 col-form-label">  </label>
-                                   <div class="col-sm-10">
-                                       <img id="showImage" class="rounded avatar-lg" src="{{ asset('upload/avatar_img/no_avatar.png') }}" alt="Profile picture preview">
-                                   </div>
+                                    <label for="showImage" class="form-label text-center">Preview</label>
+                                    <div class="col-sm-10">
+                                        <img id="showImage" class="rounded-circle avatar-lg" src="{{ asset('upload/avatar_img/no_avatar.png') }}" alt="Profile picture preview">
+                                    </div>
                                 </div>
 
                                 <!-- Profile Photo -->
-                                <div class="col-md-5">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="profile_image" class="form-label">
                                             Profile Photo (Optional)
@@ -97,8 +97,36 @@
                                     </div>
                                 </div>
 
+                                <!-- Username -->
+                                <div class="col-md-4">
+                                    <label for="username" class="form-label">
+                                        *Username (Permanent)
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                            title="You cannot change their username once you create one. Make sure it is appropriate."
+                                            data-bs-original-title="yes">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="username">@</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="username" id="username"
+                                            placeholder="@unless($errors->any())Enter permanent username @endunless"
+                                            aria-describedby="validationTooltipUsernamePrepend"
+                                            value="{{ old('username') }}">
+                                    </div>
+                                    @error('username')
+                                        <div class="text-danger">
+                                            <small>
+                                                {{ $message }}
+                                            </small>
+                                        </div>
+                                    @enderror
+                                </div>
+
                                 <!-- Email Address -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label for="email" class="form-label">*Email Address (Permanent)</label>
                                     <input type="email" class="form-control" name="email" id="email"
                                     value="{{old('email')}}" placeholder="@unless($errors->any())Enter the email address where the link will be sent to @endunless">
@@ -209,8 +237,12 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                        <input class="form-control" name="cel_no" id="cel_no" type="tel"
-                                            value="{{old('cel_no')}}" placeholder="@unless($errors->any())Enter mobile number @endunless">
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes" title="Ex. +63 998 123 4567">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                        <input class="form-control input-mask" name="cel_no" id="cel_no" type="tel"
+                                            placeholder="Ex. +63 998 123 4567" required
+                                            value="{{ old('cel_no') }}" data-inputmask="'mask': '+63 \\999 999 9999'">
                                         @error('cel_no')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -223,8 +255,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="tel_no" class="form-label">Telephone No.</label>
-                                        <input class="form-control" name="tel_no" id="tel_no" type="tel"
-                                            value="{{old('tel_no')}}" placeholder="@unless($errors->any())Enter telephone number @endunless">
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes"
+                                            title="Ex. +632 8123 6789">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                        <input class="form-control input-mask" name="tel_no" id="tel_no" type="tel"
+                                            placeholder="Ex. +632 8123 6789" value="{{ old('tel_no') }}"
+                                            data-inputmask="'mask': '+632 8999 9999'">
                                         @error('tel_no')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -341,8 +378,12 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="postal_code" class="form-label">*Postal Code</label>
-                                        <input class="form-control" name="postal_code" id="postal_code" type="text"
-                                            value="{{old('postal_code')}}" placeholder="@unless($errors->any())Enter postal code @endunless">
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ex. 1013" data-bs-original-title="yes">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                        <input class="form-control input-mask" name="postal_code" id="postal_code" type="tel" required
+                                            placeholder="@unless($errors->any())Ex. 1013 @endunless" data-inputmask="'mask': '9999'"
+                                            value="{{old('postal_code')}}">
                                         @error('postal_code')
                                             <div class="text-danger">
                                                 {{ $message }}

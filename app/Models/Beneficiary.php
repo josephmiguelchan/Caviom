@@ -92,4 +92,9 @@ class Beneficiary extends Model
     {
         return $this->hasOne(UserInfo::class, 'last_modified_by_id', 'id');
     }
+
+    public function bg_info()
+    {
+        return $this->hasOne(BeneficiaryBgInfo::class, 'beneficiary_id', 'id');
+    }
 }

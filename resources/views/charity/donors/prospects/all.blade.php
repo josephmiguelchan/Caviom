@@ -21,39 +21,54 @@
         </div>
         <!-- end page title -->
 
+        <!-- Export to PDF Modal -->
+        <div id="exportModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>You are about to attempt to generate a trail report of Donations from Prospects for this chosen month. This action
+                            will notify all other users in your Charitable Organization. Continue?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                        <button type="submit" form="generateReportbyMonth" class="btn btn-dark waves-effect waves-light w-sm">Yes</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
 
         <div class="col-12">
             <div class="card p-3">
                 <div class="card-body">
-                    <div class="float-end">
-                        <div class="dropdown mt-3 mx-0">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="mdi mdi-dots-vertical"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-download"></i> Export to PDF</a>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-lg-4">
-                            <h2><strong>PHP 5,403.23</strong></h2>
-                            <p>Total Acknowledge Donations</p>
+                            <h2><strong>PHP {{!empty($totaldonation) ? number_format($totaldonation,2) : '0.00'}}</strong></h2>
+                            <p>All Time Total Acknowledged Donations</p>
                         </div>
                         <div class="col-lg-8 mt-2">
                             <ul class="list-inline">
-                                <form method="POST" action="#">
+                                <form method="POST" action="{{route('generate.donation.report')}}" id="generateReportbyMonth">
                                     @csrf
                                     <li class="list-inline-item col-md-5">
-                                        <!-- min = $charity->created_at  |  max = Carbon::now->month()  -->
-                                        <input class="form-control" min="2022-07" max="2023-12" type="month" value="2022-08">
+                                        <input class="form-control" min="{{Carbon\Carbon::parse(Auth::user()->charity->created_at)->isoFormat('YYYY-M')}}" required
+                                            max="{{Carbon\Carbon::now()->isoFormat('YYYY-M')}}" type="month" value="{{Carbon\Carbon::now()->isoFormat('YYYY-M')}}"
+                                            name="monthFilter">
                                     </li>
                                     <li class="list-inline-item">
-                                        <button type="submit" class="btn btn-outline-secondary">
-                                            <i class="mdi mdi-magnify"></i></a>
-                                        </button>
+                                        {{-- <button type="submit" class="btn btn-outline-dark">
+                                                <i class="mdi mdi-magnify"></i></a>
+                                            </button> --}}
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#exportModal" class="btn btn-outline-secondary">
+                                                <i class="mdi mdi-download"></i></a> Generate Report
+                                            </button>
                                     </li>
+                                    @error('monthFilter')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
                                 </form>
                             </ul>
                         </div>
@@ -77,20 +92,22 @@
 
 
                         <tbody>
+                            @foreach ($prospects as $key=> $item)
                             <tr>
-                                <td>1</td>
-                                <td>Salumbides</td>
-                                <td>Eveline</td>
-                                <td>Mariano</td>
-                                <td>evelinemsalumbides@gmail.com</td>
-                                <td>GCASH</td>
-                                <td>2022/04/18</td>
+                                <td>{{$key+1}}</td>
+                                <td>{{$item->last_name}}</td>
+                                <td>{{$item->first_name}}</td>
+                                <td>{{$item->middle_name}}</td>
+                                <td>{{$item->email_address}}</td>
+                                <td>{{$item->mode_of_donation}}</td>
+                                <td>{{$item->paid_at}}</td>
                                 <td>
-                                    <a href="{{ route('prospects.view') }}" class="btn btn-outline-primary waves-effect waves-light btn-sm">
+                                    <a href="{{ route('prospects.view',$item->code) }}" class="btn btn-outline-primary waves-effect waves-light btn-sm">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
 

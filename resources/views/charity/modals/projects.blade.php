@@ -12,15 +12,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Projects are eme eme</p>
-                <p>Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Vivamus sagittis lacus vel
-                    augue laoreet rutrum faucibus dolor auctor.</p>
-                <p class="mb-0">Aenean lacinia bibendum nulla sed consectetur.
-                    Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Donec sed odio dui. Donec
-                    ullamcorper nulla non metus auctor
-                    fringilla.</p>
+                <p>
+                    <strong>Projects</strong> is a feature added to Caviom platform to help collaborators from working remotely and
+                    have organized task assignments for their charitable activities such as feeding program,
+                    charitable party, fundraising events, etc.
+                </p>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

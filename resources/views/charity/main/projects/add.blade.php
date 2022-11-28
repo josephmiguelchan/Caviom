@@ -14,7 +14,7 @@
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">Our Charitable Organization</li>
                         <li class="breadcrumb-item">
-                            <a href="{{ route('charity.projects') }}">Projects</a>
+                            <a href="{{ route('charity.projects.all') }}">Projects</a>
                         </li>
                         <li class="breadcrumb-item active">Add</li>
                     </ol>
@@ -33,7 +33,7 @@
                                 <h2><strong>Add New Project</strong></h2>
                             </div>
                             <div class="col-lg-4 mt-4">
-                                <a href="{{route('charity.projects')}}" class="text-link float-end">
+                                <a href="{{route('charity.projects.all')}}" class="text-link float-end">
                                     <i class="ri-arrow-left-line"></i> Go Back
                                 </a>
                             </div>
@@ -41,7 +41,7 @@
 
                         <hr class="my-3">
 
-                        <form action="" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('charity.projects.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group mb-3 row">
@@ -49,7 +49,7 @@
                                 <div class="col-md-9">
                                     <label for="name" class="form-label">*Project Name</label>
                                     <input type="text" class="form-control" name="name" id="name"
-                                        value="" placeholder="@unless($errors->any())Enter name of the project @endunless">
+                                        value="{{ old('name') }}" placeholder="@unless($errors->any())Enter name of the project @endunless">
                                     @error('name')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -80,10 +80,8 @@
                                     <!-- Project Objective / Description -->
                                     <label for="objective" class="form-label">*Objective</label>
                                     <textarea id="elm1" rows="7" name="objective" placeholder="Enter your project's objective/s..."
-                                        maxlength="500">
-                                        {{ old('objective') }}
-                                    </textarea>
-                                    @error('name')
+                                        maxlength="500">{{ old('objective') }}</textarea>
+                                    @error('objective')
                                         <div class="text-danger">
                                             {{ $message }}
                                         </div>
@@ -91,7 +89,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <a class="image-popup-no-margins" title="Cover Photo Preview" href="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
-                                        <img class="img-fluid rounded" alt="Cover Photo Preview" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
+                                        <img class="img-fluid rounded" alt="Cover Photo Preview" id="show_cover_photo" src="{{ asset('backend/assets/images/placeholder-image.jpg') }}">
                                     </a>
                                 </div>
                             </div>
@@ -101,7 +99,7 @@
                             <div class="row p-5">
                                 <ul class="list-inline mb-0 mt-4 float-end">
                                     <button type="submit" class="btn btn-dark btn-rounded w-lg waves-effect waves-light float-end"><i class="ri-edit-2-line"></i> Save</button>
-                                    <a class="btn list-inline-item float-end mx-4" href="{{ route('charity.projects') }}">Cancel</a>
+                                    <a class="btn list-inline-item float-end mx-4" href="{{ route('charity.projects.all') }}">Cancel</a>
                                 </ul>
                             </div>
 
@@ -134,5 +132,19 @@
         }
     });
 </script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#cover_photo').change(function(e){
+            var reader = new FileReader();
+            reader.onload = function(e){
+                $('#show_cover_photo').attr('src',e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+
+</script>
+
 
 @endsection

@@ -12,8 +12,21 @@
                     @csrf
 
                     <h1 style="color: #62896d" class="text-center mt-3"><strong>EMAIL VERIFICATION</strong></h1>
+
+                    @if (Auth::user()->status == 'Pending Unlock' and Auth::user()->role != 'Root Admin')
+                    <div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
+                        <strong><i class="mdi mdi-alert-circle-outline me-2"></i> Confirm Your Email Address</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <hr />
+                        <span>
+                            You have been invited to join <strong>{{ Auth::user()->charity->name }}</strong>. Kindly confirm your email address by
+                            clicking on Send Verification Link button.
+                        </span>
+                    </div>
+                    @endif
+
                     <p class="p-3">
-                        Before getting started, please verify your email address by clicking on the link we just emailed to you.
+                        Before getting started, please verify your email address by clicking on the link sent to your email.
                     </p>
 
                     <div class="@unless($errors->any() || Session::has('status'))mt-5 @endunless">
@@ -33,9 +46,10 @@
                     <hr />
                     <ul class="list-inline mt-3">
                         <li>
-                            <input type="submit" class="btn btn-dark btn-rounded w-50 waves-effect list-inline-item float-start" value="Resend Verification Link"></li>
+                            <input type="submit" class="btn btn-dark btn-rounded w-50 waves-effect list-inline-item float-start"
+                                value="{{Auth::user()->status=='Pending Unlock'?'Send':'Resend'}} Verification Link"></li>
                         <li>
-                            <a class="btn btn-link list-inline-item float-end" href="{{ url('/logout') }}"><i class="mdi mdi-logout"></i> Logout</a>
+                            <a class="btn btn-link list-inline-item float-end" href="{{ route('user.logout') }}"><i class="mdi mdi-logout"></i> Logout</a>
                         </li>
                     </ul>
                 </form>

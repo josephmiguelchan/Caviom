@@ -90,7 +90,11 @@
                                 </tbody>
                             </table>
 
-                            <button type="button" class="my-2 btn w-xl btn-success waves-effect waves-light float-end" data-bs-toggle="modal" data-bs-target="#addFamilyModal">
+                            @if($beneficiary->families->count() >= 20)
+                                <p class="text-danger text-center small mt-2">You have already reached a maximum of 20 family members for this Beneficiary.</p>
+                            @endif
+                            <button type="button" class="my-2 btn w-xl btn-success waves-effect waves-light float-end" data-bs-toggle="modal" data-bs-target="#addFamilyModal"
+                                {{$beneficiary->families->count() >= 20 ? 'disabled' : ''}}>
                                 <i class="ri-user-add-line"></i> Add New
                             </button>
 

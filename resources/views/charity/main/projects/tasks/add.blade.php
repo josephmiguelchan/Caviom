@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST">
+                <form action="{{route('charity.projects.tasks.store',$project->code)}}" method="POST">
                     @csrf
 
                     <!-- Task -->
@@ -16,7 +16,7 @@
                             <div class="form-group">
                                 <label for="title" class="form-label">*Task:</label>
                                 <textarea class="form-control" name="title" id="title" rows="4" maxlength="100"
-                                    placeholder="Max. of 100 Characters only..." required></textarea>
+                                    placeholder="Max. of 100 Characters only..." required>{{ old('title') }}</textarea>
                                 @error('title')
                                     <div class="text-danger">
                                         {{ $message }}
@@ -32,7 +32,7 @@
                             <div class="form-group">
                                 <label for="note" class="form-label">Note (Optional):</label>
                                 <textarea class="form-control" name="note" id="note" rows="4" maxlength="280"
-                                    placeholder="Max. of 280 Characters only..."></textarea>
+                                    placeholder="Max. of 280 Characters only...">{{ old('note') }}</textarea>
                                 @error('note')
                                     <div class="text-danger">
                                         {{ $message }}
@@ -47,11 +47,14 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="assigned_to" class="form-label">*Assigned To:</label>
-                                <select class="form-select" aria-label="Default select example" name="assigned_to" id="assigned_to" required>
+                                <select class="form-select" name="assigned_to" id="assigned_to" required>
                                     <option disabled selected hidden>Select User</option>
-                                    <option value="0">Mira Buenom</option>
-                                    <option value="1">Suki Toka</option>
-                                    <option value="2">Jans Pork</option>
+                                    @foreach ($users as $item)
+                                    <option value="{{$item->id}}" {{ old('assigned_to') == $item->id ? 'selected' : '' }}>
+                                        {{$item->info->first_name .' '. $item->info->last_name}}
+                                        {{$item->id == Auth::id() ? '(You)' : ''}}
+                                    </option>
+                                    @endforeach
                                 </select>
                                 @error('assigned_to')
                                     <div class="text-danger">
@@ -65,7 +68,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="deadline" class="form-label">*Deadline:</label>
-                                <input class="form-control" name="deadline" id="deadline" type="datetime-local">
+                                <input class="form-control" name="deadline" id="deadline" type="datetime-local"
+                                    min="{{ Carbon\Carbon::now()->startOfDay() }}" value="{{ old('deadline') }}">
                                 @error('deadline')
                                     <div class="text-danger">
                                         {{ $message }}
@@ -74,13 +78,13 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light btn-rounded w-md waves-effect" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success btn-rounded w-md waves-effect waves-light">Add</button>
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light btn-rounded w-md waves-effect" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success btn-rounded w-md waves-effect waves-light">Add</button>
-            </div>
+
         </div>
     </div>
 </div>

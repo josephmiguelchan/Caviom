@@ -7,7 +7,6 @@
     $defaultAvatar = 'upload/charitable_org/benefactor_photos/no_avatar.png';
 @endphp
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <div class="page-content">
     <div class="container-fluid">
 
@@ -63,7 +62,9 @@
                                 <dt class="col-md-6">{{ Carbon\Carbon::parse($benefactor->updated_at)->diffForHumans() }}</dt>
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated by:</strong></h4></dt>
                                 <dt class="col-md-6">
-                                    {{ $userInfo->last_name . ', ' . $userInfo->first_name .' ' . $userInfo->middle_name}}
+                                    <a href="{{ ($benefactor->last_modified_by_id)?route('charity.users.view', $benefactor->lastModifiedBy->code):'#' }}">
+                                        {{ ($benefactor->lastModifiedBy)? $benefactor->lastModifiedBy->username:'---' }}
+                                    </a>
                                 </dt>
                             </dl>
                             <hr class="my-3">
@@ -147,8 +148,11 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                            <input class="form-control" name="cel_no" id="cel_no" type="tel" value="{{ old('cel_no', $benefactor->cel_no) }}" required
-                                                   placeholder="Ex. 09191234567">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes" title="Ex. +63 998 123 4567">
+                                                <i class="mdi mdi-information-outline"></i>
+                                            </span>
+                                            <input class="form-control input-mask" name="cel_no" id="cel_no" type="tel" placeholder="Ex. +63 998 123 4567" required
+                                                value="{{ old('cel_no', $benefactor->cel_no) }}" data-inputmask="'mask': '+63 \\999 999 9999'">
                                             @error('cel_no')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -161,8 +165,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="tel_no" class="form-label">Telephone No.</label>
-                                            <input class="form-control" name="tel_no" id="tel_no" type="tel" value="{{ old('tel_no', $benefactor->tel_no) }}"
-                                                   placeholder="Ex. 82531234">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes"
+                                                title="Ex. +632 8123 6789">
+                                                <i class="mdi mdi-information-outline"></i>
+                                            </span>
+                                            <input class="form-control input-mask" name="tel_no" id="tel_no" type="tel"
+                                                placeholder="Ex. +632 8123 6789" value="{{ old('tel_no', $benefactor->tel_no) }}"
+                                                data-inputmask="'mask': '+632 8999 9999'">
                                             @error('tel_no')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -287,7 +296,9 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="postal_code" class="form-label">*Postal Code</label>
-                                            <input class="form-control" name="postal_code" id="postal_code" type="text" value="{{ old('postal_code', $benefactor->Address->postal_code) }}" required>
+                                            <input class="form-control input-mask" name="postal_code" id="postal_code" type="text"
+                                                value="{{ old('postal_code', $benefactor->Address->postal_code) }}" required
+                                                data-inputmask="'mask': '9999'">
                                             @error('postal_code')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -313,15 +324,9 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#profile_image').change(function(e) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#showImage').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(e.target.files['0']);
-        })
-    })
-</script>
+{{-- <script type="text/javascript">
+    window.onbeforeunload = function(){
+        return 'Are you sure you want to leave?';
+    };
+</script> --}}
 @endsection

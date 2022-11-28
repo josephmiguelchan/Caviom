@@ -13,13 +13,9 @@ class NotificationController extends Controller
 
     public function AllNotification()
     {
-        // $notifications = Auth::user()->notifications;
-
-        $notifications = Notification::where('user_id', Auth::user()->id)->latest()->get();
-
+        $notifications = Notification::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
         return view('charity.user.notifications.all', compact('notifications'));
-    } // End Method
-
+    }
 
     public function ViewNotification($code)
     {
@@ -64,11 +60,4 @@ class NotificationController extends Controller
 
         return to_route('notifications.all')->with($toastr);
     }
-
-    /*public function NotificationsData()
-    {
-        $notifications = Notification::latest()->limit(3)->get();
-
-        $jsonntifcaiton = json_encode($notifications);
-    }*/
 }

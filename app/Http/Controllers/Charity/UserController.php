@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Hash;
 
 # For Generating Excel
 use App\Exports\UsersExport;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -50,10 +51,7 @@ class UserController extends Controller
     public function StoreUser(Request $request)
     {
         $request->validate([
-            'role' => [
-                'required',
-                // 'regex:/^Charity Admin$|^Charity Associate$/',
-            ],
+            'role' => ['required', Rule::in(['Charity Admin', 'Charity Associate'])],
         ], [
             // 'role.regex' => 'The role must only be either Charity Admin or Charity Associate',
         ]);
@@ -90,17 +88,18 @@ class UserController extends Controller
             # For user table fields
             'profile_image' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048', 'file'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
+            'username' => ['required', 'alpha_dash', 'string', 'min:6', 'max:20', 'unique:users'],
             'password' => ['required', 'max:20', Rules\Password::defaults()],
             'confirm_password' => ['required', 'same:password'],
 
             # For user info table fields
-            'organizational_id_no' =>  ['nullable', 'integer', 'numeric', 'min:100', 'max:9999999999', 'unique:user_infos'],
+            'organizational_id_no' =>  ['nullable', 'regex:/[0-9]{10}/'],
             'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'middle_name' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
             'work_position' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
-            'cel_no' => ['required', 'regex:/(09)[0-9]{9}/'],
-            'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'],
+            'cel_no' => ['required', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/'],
+            'tel_no' => ['nullable', 'regex:/(632)\s(8)[0-9]{3}\s[0-9]{4}/'],
 
             # For address table fields
             'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
@@ -115,9 +114,10 @@ class UserController extends Controller
             'first_name.regex' => 'The first name field must not include number/s.',
             'middle_name.regex' => 'The middle name field must not include number/s.',
             'work_position.regex' => 'Work position must not include number(s) or must be a valid format.',
+            'organizational_id_no.regex' => 'Organizational ID No. should be exactly 10 digits and must include numbers only. Ex. 0011812456',
             'last_name.regex' => 'The last name field must not include number/s.',
-            'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
-            'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+            'cel_no.regex' => 'The cel no format must be followed. Ex. +63 998 123 4567',
+            'tel_no.regex' => 'The tel no format must be followed. Ex. +632 8123 6789',
         ]);
 
         # Store Data to address table
@@ -125,6 +125,7 @@ class UserController extends Controller
         $address->type = 'Present';
         $address->address_line_one = $request->address_line_one;
         $address->address_line_two = $request->address_line_two;
+        $address->region = $request->region;
         $address->province = $request->province;
         $address->city = $request->city;
         $address->postal_code = $request->postal_code;
@@ -137,6 +138,7 @@ class UserController extends Controller
         $user = new User;
         $user->code = Str::uuid()->toString();
         $user->email = $request->email;
+        $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->role = $request->role;
         $user->charitable_organization_id = Auth::user()->charitable_organization_id;
@@ -182,8 +184,8 @@ class UserController extends Controller
         $current_bal->star_tokens = $current_bal->star_tokens - $cost;
         $current_bal->save();
 
-        # Create a New Event (registration) where an email verification will be sent.
-        event(new Registered($user));
+        # Create a New Event (registration) where an email verification will be sent. (TEMPORARILY REMOVED)
+        // event(new Registered($user));
 
         # Send Notification
         $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
@@ -215,7 +217,7 @@ class UserController extends Controller
 
         # Success Toastr Message display
         $toastr = array(
-            'message' => 'The pending user has been successfully created. An invitation link has been sent to their email.',
+            'message' => 'The Pending User has been successfully created.',
             'alert-type' => 'success'
         );
 
@@ -354,7 +356,7 @@ class UserController extends Controller
         $log->charitable_organization_id = Auth::user()->charitable_organization_id;
         $log->table_name = 'User, UserInfo, Address';
         $log->record_id = null;
-        $log->action = 'Charity Admin generated Excel to backup all Users in ' . Auth::user()->charity->name;
+        $log->action = Auth::user()->role . ' generated Excel to backup all Users in ' . Auth::user()->charity->name;
         $log->performed_at = Carbon::now();
         $log->save();
 

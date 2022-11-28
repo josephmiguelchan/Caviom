@@ -28,6 +28,8 @@ class Volunteer extends Model
 
         'category',
         'label',
+
+        'last_modified_by_id',
     ];
 
     protected $casts = [
@@ -41,16 +43,16 @@ class Volunteer extends Model
 
     public function charitableOrganization()
     {
-        return $this->belongsTo(CharitableOrganization::class,'charitable_organization_id', 'id');
+        return $this->belongsTo(CharitableOrganization::class, 'charitable_organization_id', 'id');
     }
 
     public function Address()
     {
-        return $this->belongsTo(Address::class,'address_id','id');
+        return $this->belongsTo(Address::class, 'address_id', 'id');
     }
 
     public function lastModifiedBy()
     {
-        return $this->hasOne(User::class, 'last_modified_by_id', 'id');
+        return $this->belongsTo(User::class, 'last_modified_by_id', 'id');
     }
 }

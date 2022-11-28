@@ -16,7 +16,7 @@
                             <a href="{{ route('charity.profile') }}">Public Profile</a>
                         </li>
                         <li class="breadcrumb-item active">
-                            <a href="{{ route('charity.profile.feat-projects') }}">Featured Projects</a>
+                            <a href="{{ route('charity.profile.feat-project.all') }}">Featured Projects</a>
                         </li>
                     </ol>
 
@@ -37,11 +37,13 @@
                         </div>
                         <div class="col-lg-1 mt-4">
                             <div class="row justify-content-end">
-                                <a type="button" href="{{ route('charity.profile.feat-projects.new') }}" class="btn btn-sm w-lg btn-success waves-effect waves-light mx-1">
+                                <a type="button" href="{{ route('charity.profile.feat-project.new') }}" class="btn btn-sm w-lg btn-success waves-effect waves-light mx-1">
                                     <i class="mdi mdi-plus"></i> Add New
                                 </a>
                             </div>
+                            @if (Auth::user()->charity->subscription == 'Free')
                             <small class="text-center"><em>(450 Star Tokens)</em></small>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -63,45 +65,39 @@
 
 
                         <tbody>
+                            @foreach ($fps as $key => $item)
+
+
                             <tr>
-                                <td>1</td>
-                                <td><span class="badge bg-warning">PENDING</span> Medical Mission 2022</a></td>
-                                <td>June 12, 2022</td>
-                                <td><i class="ri-eye-off-line"></i> Hidden</td>
-                                <td>---</td>
-                                <td>2015-04-21 22:32:05</td>
+                                <td>{{$key+1}}</td>
+
                                 <td>
-                                    <a href="{{ route('charity.profile.feat-projects.view') }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                    @if ($item->approval_status == 'Pending')
+                                    <span class="badge bg-warning">PENDING</span>
+                                    @elseif($item->approval_status == 'Approved')
+                                    <span class="badge bg-success">APPROVED</span>
+                                    @elseif($item->approval_status == 'Rejected')
+                                    <span class="badge bg-danger">REJECTED</span>
+                                    @endif
+                                    {{$item->name}}</a></td>
+
+                                <td>{{$item->started_on}}</td>
+
+                                @if ($item->visibility_status == "Hidden")
+                                <td><i class="ri-eye-off-line"></i> {{$item->visibility_status}}</td>
+                                @elseif($item->visibility_status == "Visible")
+                                <td><i class="ri-eye-line"></i> {{$item->visibility_status}}</td>
+                                @endif
+                                <td>  {{ (!empty($item->remarks_subject))? $item->remarks_subject:'---' }}</td>
+
+                                <td>{{$item->created_at}}</td>
+                                <td>
+                                    <a href="{{ route('charity.profile.feat-project.view',$item->code) }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td><span class="badge bg-success">APPROVED</span> Lugaw for a Cause</a></td>
-                                <td>June 2, 2022</td>
-                                <td><i class="ri-eye-line"></i> Visible</td>
-                                <td>---</td>
-                                <td>2015-04-21 22:32:05</td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                        <i class="mdi mdi-open-in-new"></i> View
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td><span class="badge bg-danger">REJECTED</span> Spanish Inquisition</a></td>
-                                <td>June 1, 1672</td>
-                                <td><i class="ri-eye-off-line"></i> Hidden</td>
-                                <td>Inappropriate Project / Invalid date</td>
-                                <td>2015-04-21 22:32:05</td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                        <i class="mdi mdi-open-in-new"></i> View
-                                    </a>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
 

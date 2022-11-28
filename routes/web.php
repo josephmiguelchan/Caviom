@@ -6,36 +6,50 @@ use App\Http\Controllers\Charity\Beneficiary2Controller;
 use App\Http\Controllers\Charity\Beneficiary3Controller;
 use App\Http\Controllers\Charity\BenefactorController;
 use App\Http\Controllers\Charity\VolunteerController;
+use App\Http\Controllers\Charity\StarTokenController;
 use App\Http\Controllers\RootAdmin\AdminController;
 use App\Http\Controllers\Charity\AuditLogController;
 use App\Http\Controllers\Charity\GiftGivingController;
 use App\Http\Controllers\Charity\NotificationController;
 use App\Http\Controllers\Charity\UserController;
+use App\Http\Controllers\Charity\PublicProfile\ProfileController;
+use App\Http\Controllers\PublicController;
 use App\Http\Controllers\RootAdmin\AuditLogController as RootAdminAuditLogController;
 use App\Http\Controllers\RootAdmin\CharitableOrganizationController;
+use App\Http\Controllers\RootAdmin\FeaturedProjectController;
 use App\Http\Controllers\RootAdmin\NotifierController;
+use App\Http\Controllers\RootAdmin\OrderController;
 use App\Http\Controllers\RootAdmin\UserController as RootAdminUserController;
+use App\Http\Controllers\Charity\LeadController;
+use App\Http\Controllers\Charity\ProspectController;
+use App\Http\Controllers\Charity\ProjectController;
+
+use App\Http\Controllers\Charity\PublicProfile\FeaturedProjectController as CharityFeaturedProjectController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+# Public Pages
+Route::controller(PublicController::class)->group(function () {
+    Route::get('/', 'showHome')->name('home');
+    Route::get('/about', 'showAbout')->name('about');
+    Route::get('/services', 'showServices')->name('services');
+    Route::get('/contact', 'showContact')->name('contact');
+    Route::post('/Donate/{code}', 'Donate')->name('store.donate');
+    Route::get('/terms-of-service', 'showTermsOfService')->name('terms');
+    Route::get('/privacy-policy', 'showPrivacyPolicy')->name('privacy');
 
-Route::get('/', function () {
-    return view('welcome');
+    # Charity Public Profile Pages
+    Route::name('charities')->prefix('/charitable-organizations')->middleware(['prevent-back-history'])->group(function () {
+
+        # Show All Charitable Organizations
+        Route::get('/', 'showAllCharities')->name('.all');
+
+        # View Specific Charitable Organization
+        Route::get('/{code}', 'viewCharity')->name('.view');
+
+        # View Specific Featured Project of a Charitable Organization
+        Route::get('/featured-project/{code}', 'viewFeaturedProject')->name('.feat-proj.view');
+    });
 });
-
-// Route::get('/charity/dashboard', function () {
-//     return view('charity.index');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
 
 # Charity Group Controller
 Route::controller(CharityController::class)->middleware(['auth', 'verified', 'prevent-back-history'])->group(function () {
@@ -60,9 +74,10 @@ Route::controller(CharityController::class)->middleware(['auth', 'verified', 'pr
         Route::get('/change', 'editPassword')->name('user.password.change');
         Route::post('/store', 'storePassword')->name('user.password.store');
     });
-    # Logout
-    Route::get('/user/logout', 'destroy')->name('user.logout');
 });
+
+# Logout
+Route::get('/user/logout', [CharityController::class, 'destroy'])->name('user.logout');
 
 # User Notifications
 Route::name('notifications')->middleware(['auth', 'verified', 'prevent-back-history'])->prefix('/notifications')->group(function () {
@@ -80,31 +95,44 @@ Route::name('notifications')->middleware(['auth', 'verified', 'prevent-back-hist
 });
 
 # Charity Users Group
-Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function () {
+Route::middleware(['auth', 'verified', 'prevent-back-history', 'charity.user'])->group(function () {
 
     Route::prefix('/charity')->group(function () {
         # Donors and Donations Group
         Route::prefix('/donors-and-donations')->group(function () {
 
-            # Leads
-            Route::get('/leads', function () {
-                return view('charity.donors.leads.all');
-            })->name('leads.all');
-            Route::get('/leads/9a7445e2-07eb-11ed-861d-0242ac120002', function () {
-                return view('charity.donors.leads.view');
-            })->name('leads.view');
-            // To add - Route::get() for Deleting Leads
-            // To add - Route::post() for Storing Leads to Prospects table and deleting the current record in Leads table.
+            # All Leads
+            Route::get('/leads', [LeadController::class, 'AllLeads'])->name('leads.all');
 
-            # Prospects
-            Route::get('/prospects', function () {
-                return view('charity.donors.prospects.all');
-            })->name('prospects.all');
-            Route::get('/prospects/93e5c76a-2316-46e4-b24f-b33131100457', function () {
-                return view('charity.donors.prospects.view');
-            })->name('prospects.view');
-            // To add - Route::post() for Moving Prospects back to Leads table and deleting the current record in Prospects table.
-            // To add - Route::post() for editing the remarks of Prospects.
+            # View Leads
+            Route::get('/leads/{code}', [LeadController::class, 'ViewLead'])->name('leads.view');
+
+            # Deleting Leads
+            Route::get('/leads/delete/{code}', [LeadController::class, 'DeleteLead'])->name('leads.delete');
+
+            # Add Leads to Prospects
+            Route::get('/leads/update/prospect/{code}', [LeadController::class, 'MoveAsProspect'])->name('move.to.prospect');
+
+            # All Prospects
+            Route::get('/prospects', [ProspectController::class, 'AllProspect'])->name('prospects.all');
+
+            # View Prospect
+            Route::get('/prospects/view/{code}', [ProspectController::class, 'ViewProspect'])->name('prospects.view');
+
+            # Move Prospects back to Leads
+            Route::get('/leads/move/back/leads/{code}', [ProspectController::class, 'MoveToLeads'])->name('move.back.leads');
+
+            # Export Donation Report with PDF
+            Route::post('/export/DonationReport', [ProspectController::class, 'GenerateDonationReport'])->name('generate.donation.report');
+
+            # Update the remarks of Prospects.
+            Route::post('/prospect/add/remarks/{code}', [ProspectController::class, 'AddRemarks'])->name('add.remarks');
+
+            # Add Prospect to Opportunity (as Volunteer)
+            Route::get('/prospects/add/opportunity/{code}', [ProspectController::class, 'AddasOpportunityBenefactor'])->name('add.to.benefactor');
+
+            # Add Prospect to Opportunity (as Benefactor)
+            Route::get('/prospects/add/volunteer/{code}', [ProspectController::class, 'AddasOpportunityVolunteer'])->name('add.to.volunteer');
         });
 
         # Our Charitable Organization
@@ -114,62 +142,122 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
             Route::name('profile')->prefix('/profile')->middleware(['charity.admin'])->group(function () {
 
                 # Public Profile
-                Route::get('', function () {
-                    return view('charity.main.profile.index');
+                Route::controller(ProfileController::class)->group(function () {
+
+                    # Show Public Profile Controls
+                    Route::get('', 'showProfileIndex');
+
+                    # Setup Public Profile
+                    Route::get('/setup', 'setupProfile')->name('.setup');
+
+                    # Save Public Profile
+                    Route::post('primary-info/save', 'storePrimaryInfo')->name('.store_primary');
+                    Route::post('secondary-info/save', 'storeSecondaryInfo')->name('.store_secondary');
+                    Route::post('awards/save', 'storeAwards')->name('.store_awards');
+                    Route::get('awards/delete/{id}', 'destroyAward')->name('.destroy_awards');
+                    Route::post('programs/save', 'storePrograms')->name('.store_programs');
+                    Route::get('programs/delete/{id}', 'destroyProgram')->name('.destroy_programs');
+                    Route::post('donation-mode/save', 'storeDonationModes')->name('.store_donations');
+                    Route::get('donation-mod/delete/{id}', 'destroyDonationModes')->name('.destroy_donation_mode');
+
+                    # Publish public profile
+                    Route::post('publish', 'publishProfile')->name('.publish');
+
+                    # Save Profile Cover Photos using Dropzone
+                    Route::get('/cover_photos/gallery', 'getImages')->name('.cover_photos.get');
+                    Route::post('/cover_photos/gallery', 'destroy')->name('.cover_photo.delete');
+                    Route::post('/cover_photos/save', 'dropZoneCoverPhotos')->name('.cover_photos.save');
+
+                    Route::middleware('profile.set')->group(function () {
+
+                        # Apply for Verification (for Unverified)
+                        Route::get('/apply-for-verification', 'applyVerification')->name('.verify');
+
+                        # Submit Verification Documents
+                        Route::post('/submit-requirements', 'submitRequirements')->name('.apply');
+
+                        # Re-apply for Verification (for Declined)
+                        Route::get('/reapply-for-verification', 'reapplyVerification')->name('.reverify');
+
+                        # Set profile_status to Hidden
+                        Route::get('/set-to-hidden', 'hideProfile')->name('.hide');
+
+                        # Set profile_status to Visible
+                        Route::get('/set-to-visible', 'showProfile')->name('.show');
+                    });
                 });
-                Route::get('/setup', function () {
-                    return view('charity.main.profile.setup');
-                })->name('.setup');
-                Route::get('/apply-for-verification', function () {
-                    return view('charity.main.profile.verify');
-                })->name('.verify');
 
 
                 # Featured Projects
-                Route::get('/featured-projects', function () {
-                    return view('charity.main.profile.featured-projects.all');
-                })->name('.feat-projects');
-                Route::get('/featured-projects/6e216252-0443-4326-81a0-3722050bf571', function () {
-                    return view('charity.main.profile.featured-projects.view');
-                })->name('.feat-projects.view');
-                # Add Featured Project (from Existing)
-                Route::get('/featured-projects/add', function () { // Add middleware that star tokens must be sufficient
-                    return view('charity.main.profile.featured-projects.add');
-                })->name('.feat-projects.add');
-                # Create New Featured Project
-                Route::get('/featured-projects/new', function () { // Add middleware that star tokens must be sufficient
-                    return view('charity.main.profile.featured-projects.new');
-                })->name('.feat-projects.new');
+                Route::middleware('profile.set')->name('.feat-project')->prefix('/featured-project')->controller(CharityFeaturedProjectController::class)->group(function () {
+
+                    # All Featured Project
+                    Route::get('/all', 'AllFeaturedProject')->name('.all');
+
+                    # View Featured Project
+                    Route::get('/view/{code}', 'ViewFeaturedProject')->name('.view');
+
+                    # Create New Featured Project
+                    Route::get('/new', 'NewFeaturedProject')->name('.new');
+
+                    # Store New Freatured Project
+                    Route::post('/store/new', 'StoreNewFeaturedProject')->name('.new.store');
+
+                    # Add Featured Project (from Existing Gift Giving Project)
+                    Route::get('/add/gift/{code}', 'AddExistedGiftFeaturedProject')->name('.add.gift');
+
+                    # Store Featured Project (from Existing Gift Giving Project)
+                    Route::post('/store/add/gift', 'StoreExistedGiftFeaturedProject')->name('.add.gift.store');
+
+                    # Add Featured Project (from Existing Task based Project)
+                    Route::get('/add/project/{code}', 'AddExistedTaskFeaturedProject')->name('.add.project');
+
+                    # Store Featured Project (from Existing Task based Project)
+                    Route::post('/store/add/project/{code}', 'StoreExistedProjectFeaturedProject')->name('.add.project.store');
+                });
             });
 
             # Projects
             Route::name('projects')->prefix('/projects')->group(function () {
-                Route::get('', function () {
-                    return view('charity.main.projects.all');
-                });
-                Route::get('/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () {
-                    return view('charity.main.projects.view');
-                })->name('.view');
+
+                # All Projects
+                Route::get('/', [ProjectController::class, 'AllProject'])->name('.all');
+
+                # View Project
+                Route::get('/view/{code}', [ProjectController::class, 'ViewProject'])->name('.view');
 
                 # Charity Admin only
                 Route::middleware('charity.admin')->group(function () {
-                    Route::get('/add', function () {
-                        return view('charity.main.projects.add');
-                    })->name('.add');
-                    Route::get('/edit/1a2267d9-3f39-4ef7-b6aa-5884f6b8e606', function () {
-                        return view('charity.main.projects.edit');
-                    })->name('.edit');
+
+                    # Add new Project
+                    Route::get('/add', [ProjectController::class, 'AddProject'])->name('.add');
+
+                    # Store new project
+                    Route::post('/store', [ProjectController::class, 'StoreProject'])->name('.store');
+
+                    # Edit Project
+                    Route::get('/edit/{code}', [ProjectController::class, 'EditProject'])->name('.edit');
+
+                    # Update
+                    Route::post('/update/{code}', [ProjectController::class, 'UpdateProject'])->name('.update');
+
+                    # Delete Project
+                    Route::get('/delete/{code}', [ProjectController::class, 'DeleteProject'])->name('.delete');
                 });
 
                 # Tasks
                 Route::name('.tasks')->prefix('/tasks')->group(function () {
-                    Route::get('/c6e9df80-22c6-4829-a2f1-bad342699e7b', function () {
-                        return view('charity.main.projects.tasks.view');
-                    })->name('.view');
+
+                    Route::get('/view/{code}', [ProjectController::class, 'ViewTask'])->name('.view');
+
+                    Route::post('/store/task/{code}', [ProjectController::class, 'StoreTask'])->name('.store');
+
+                    # Delete Task
+                    Route::get('/delete/{code}', [ProjectController::class, 'DeleteTask'])->name('.delete');
+
+                    # Update Task
+                    Route::post('/update/task/{code}', [ProjectController::class, 'UpdateTask'])->name('.update');
                 });
-                // Add Task
-                // Edit Task (Assigned_to Only)
-                // Delete Task (Charity admin / Assigned_by Only)
             });
 
 
@@ -181,7 +269,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
                 # Backup  User
                 Route::get('/export', [UserController::class, 'BackupUser'])->name('.export');
-
 
                 # Charity Admins Only
                 Route::middleware(['charity.admin'])->group(function () {
@@ -199,11 +286,6 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                     Route::get('/delete/{code}', [UserController::class, 'DeleteUser'])->name('.delete');
                 });
 
-
-                Route::middleware('charity.admin')->group(function () { // Add middleware: Selected account must be pending (account not yet setup)
-                    // To add - Route::get() for deleting pending user accounts permanently (non-refundable).
-                });
-
                 # View User Detail
                 Route::get('/{code}', [UserController::class, 'ViewUserDetail'])->name('.view');
             });
@@ -217,11 +299,15 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 # View A Specific Record from Beneficiaries
                 Route::get('/view/{beneficiaries:code}', [BeneficiaryController::class, 'show'])->name('.show');
 
-                # Create A Beneficiary Record
-                Route::get('/create', [BeneficiaryController::class, 'create'])->name('.create');
+                # (Beneficiaries count should not exceed the maximum allowed no. of Beneficiaries)
+                Route::middleware('max.beneficiaries')->group(function () {
 
-                # About to Store the New Beneficiary Record
-                Route::post('/store', [BeneficiaryController::class, 'store'])->name('.store');
+                    # Create A Beneficiary Record
+                    Route::get('/create', [BeneficiaryController::class, 'create'])->name('.create');
+
+                    # About to Store the New Beneficiary Record
+                    Route::post('/store', [BeneficiaryController::class, 'store'])->name('.store');
+                });
 
                 # Delete A Beneficiary Record
                 Route::get('/delete/{beneficiaries:code}', [BeneficiaryController::class, 'delete'])->name('.delete');
@@ -278,6 +364,15 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
                 # About to Update the Edit Beneficiary Record
                 Route::post('/update-part3/{beneficiary:code}', [Beneficiary3Controller::class, 'update'])->name('.update');
+
+                # Backup Beneficiaries
+                Route::get('/export', [Beneficiary3Controller::class, 'BackupBeneficiary'])->name('.export');
+
+                # Export Beneficiaries with PDF
+                Route::get('/export/pdf/{code}', [Beneficiary3Controller::class, 'GeneratePDF'])->name('generate.pdf');
+
+                # Export Beneficiaries with PDF (with blank page)
+                Route::get('/export/pdf/blank/{code}', [Beneficiary3Controller::class, 'GeneratePDFblank'])->name('generate.pdf.blank');
             });
 
             # Benefactors
@@ -290,10 +385,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::get('/view/{benefactors:code}', [BenefactorController::class, 'show'])->name('.view');
 
                 # Create A Benefactor Record
-                Route::get('/create', [BenefactorController::class, 'create'])->name('.create');
+                Route::get('/create', [BenefactorController::class, 'create'])->middleware('max.benefactors')->name('.create');
 
                 # About to Store the New Benefactor Record
-                Route::post('/store', [BenefactorController::class, 'store'])->name('.store');
+                Route::post('/store', [BenefactorController::class, 'store'])->middleware('max.benefactors')->name('.store');
 
                 # Delete A Benefactor Record
                 Route::get('/delete/{benefactors:code}', [BenefactorController::class, 'delete'])->name('.delete');
@@ -304,6 +399,8 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 # About to Update the Edit Benefactor Record
                 Route::post('/update/{benefactors:code}', [BenefactorController::class, 'update'])->name('.update');
 
+                # Backup Benefactor
+                Route::get('/export', [BenefactorController::class, 'BackupBenefactor'])->name('.export');
             });
 
             # Volunteers
@@ -316,10 +413,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 Route::get('/view/{volunteers:code}', [VolunteerController::class, 'show'])->name('.view');
 
                 # Create A Volunteer Record
-                Route::get('/create', [VolunteerController::class, 'create'])->name('.create');
+                Route::get('/create', [VolunteerController::class, 'create'])->middleware('max.volunteers')->name('.create');
 
                 # About to Store the New Volunteer Record
-                Route::post('/store', [VolunteerController::class, 'store'])->name('.store');
+                Route::post('/store', [VolunteerController::class, 'store'])->middleware('max.volunteers')->name('.store');
 
                 # Delete A Volunteer Record
                 Route::get('/delete/{volunteers:code}', [VolunteerController::class, 'delete'])->name('.delete');
@@ -330,8 +427,9 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 # About to Update the Edit Volunteer Record
                 Route::post('/update/{volunteers:code}', [VolunteerController::class, 'update'])->name('.update');
 
+                # Backup Volunteer
+                Route::get('/export', [VolunteerController::class, 'BackupVolunteer'])->name('.export');
             });
-
         });
 
         # Gift Givings
@@ -364,7 +462,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
                 # Store new Gift Giving Project
                 Route::post('/store', [GiftGivingController::class, 'StoreGiftGiving'])->name('store');
 
-                # (TO DO) Feature Gift Giving
+                # Feature Gift Giving
                 Route::get('/featured/new/4d4666bb-554d-40b0-9b23-48f653c21e1e', function () { // Add middleware that star tokens must be sufficient
                     return view('charity.main.projects.featured.add');
                 })->name('.feature');
@@ -373,7 +471,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
         # Audit Logs
         Route::name('audits.')->prefix('/audit-logs')->middleware('charity.admin')->group(function () {
-            Route::get('/auditlogs/all', [AuditLogController::class, 'AllAuditLogs'])->name('all');
+            Route::get('/', [AuditLogController::class, 'AllAuditLogs'])->name('all');
             // Route::get('/139e93ef-7823-406c-8c4f-00294d1e3b64', function () {
             //     return view('charity.audits.view');
             // })->name('view');
@@ -381,18 +479,21 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function 
 
         # Star Tokens
         Route::name('star.tokens.')->prefix('/star-tokens')->middleware('charity.admin')->group(function () {
-            Route::get('', function () {
-                return view('charity.star-tokens.bal');
-            })->name('balance');
-            Route::get('/history', function () {
-                return view('charity.star-tokens.all');
-            })->name('history');
-            Route::get('/84d3ad07-fe44-4ba5-9205-e3d68e872fa0', function () {
-                return view('charity.star-tokens.view');
-            })->name('view');
-            Route::get('/order', function () {
-                return view('charity.star-tokens.order');
-            })->name('order');
+
+            # View Balance Page
+            Route::get('/', [StarTokenController::class, 'index'])->name('balance');
+
+            # View Transaction History or Pending Orders
+            Route::get('/history', [StarTokenController::class, 'viewTransactionHistory'])->name('history');
+
+            # View Step-by-step Order Process
+            Route::get('/order', [StarTokenController::class, 'order'])->name('order');
+
+            # About To Store A New Order
+            Route::post('/store', [StarTokenController::class, 'store'])->name('store');
+
+            # View A Specific Transaction Record
+            Route::get('/view/{orders:code}', [StarTokenController::class, 'show'])->name('view');
         });
     });
 });
@@ -451,37 +552,41 @@ Route::controller(AdminController::class)->prefix('/admin')->name('admin.')->mid
             Route::post('/edit/{code}', [CharitableOrganizationController::class, 'UpdateCharityUserDetail'])->name('.update');
         });
 
-        // # Send Notification in View Charity
-
+        # Send Notification in View Charity
         Route::post('/send/notification/{id}', [CharitableOrganizationController::class, 'SendNotification'])->name('.send.notifcation');
-
-        // To Add: (POST) Edit Profile Settings (Visibility / Verification Status) in View Charity
-
-
     });
 
     # Star Token Orders
     Route::name('orders')->prefix('/orders')->group(function () {
-        Route::get('/', function () {
-            return view('admin.main.orders.all');
-        });
-        Route::get('/4de11f39-87b4-433e-a427-b5e214dc42ce', function () {
-            return view('admin.main.orders.view');
-        })->name('.view');
 
-        // To Add: Delete COMPLETED/REJECTED orders (Optional: Processed Orders that exceeded 15 days)
+        # All  Order
+        Route::get('/all', [OrderController::class, 'AllOrders'])->name('.all');
+
+        # View Order
+        Route::get('/view/{code}', [OrderController::class, 'ViewOrder'])->name('.view');
+
+        # Reject Star Token/Subscription Order
+        Route::post('/Reject/{code}', [OrderController::class, 'RejectOrder'])->name('.reject');
+
+        # Approve Star Token/Subscription Order
+        Route::get('/Approved/{code}', [OrderController::class, 'ApprovedOrder'])->name('.approved');
+
+        # Delete Confirmed/Rejected Order
+        Route::get('/Delete/{code}', [OrderController::class, 'DeleteOrder'])->name('.delete');
     });
 
     # Featured Projects
     Route::name('feat-projects')->prefix('/featured-projects')->group(function () {
-        Route::get('/', function () {
-            return view('admin.main.featured-projects.all');
-        });
-        Route::get('/6e216252-0443-4326-81a0-3722050bf571', function () {
-            return view('admin.main.featured-projects.view');
-        })->name('.view');
-        // To Add: Approve
-        // To Add: Reject
+
+        Route::get('/', [FeaturedProjectController::class, 'AllFeaturedProject'])->name('.all');
+
+        Route::get('/view/{code}', [FeaturedProjectController::class, 'ViewFeaturedProject'])->name('.view');
+
+        # Approve
+        Route::get('/Approved/{code}', [FeaturedProjectController::class, 'ApproveFeaturedProject'])->name('.approve');
+
+        # Reject
+        Route::post('/Reject/{code}', [FeaturedProjectController::class, 'RejectFeaturedProject'])->name('.reject');
     });
 
     # Admin User Accounts
@@ -523,14 +628,5 @@ Route::controller(NotifierController::class)->prefix('/admin/notifiers')->middle
         # Delete Notifier
         Route::get('/delete/{id}}', 'DeleteNotifier')->name('admin.notifiers.delete');
     });
-
-Route::name('charities')->prefix('/charitable-organizations')->group(function () {
-    Route::get('/', function () {
-    })->name('.all');
-
-    Route::get('/5802112d-7751-431d-8caf-5368372f0b1c', function () {
-        return view('public.charities.view');
-    })->name('.view');
-});
 
 require __DIR__ . '/auth.php';

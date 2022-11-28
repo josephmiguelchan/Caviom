@@ -28,7 +28,7 @@
         <div class="col-12">
             <div class="card p-3">
                 <div class="card-body">
-                    <h2 class="mb-1 text-center" style="color: #62896d"><strong>SAN ROQUE UNITED, INC.</strong></h2>
+                    <h2 class="mb-1 text-center" style="color: #62896d"><strong>{{ Auth::user()->charity->name }}</strong></h2>
                     <p class="text-muted text-center font-size-12 mb-3">
                         <em>
                             Setup your Charitable Organization's public profile so it can be published and featured publicly.

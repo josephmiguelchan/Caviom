@@ -29,7 +29,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                    
+
                             <div class="m-2">
                                 <form action="{{route('admin.charities.send.notifcation',$organizationdetail->id)}}" method="POST" id="submit_notification_form">
                                     @csrf
@@ -45,7 +45,7 @@
 
                                 <p class="mt-3">Are you sure you want to send this notification to active users of this Charitable Organization?</p>
                             </div>
-                    
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">Cancel</button>
@@ -70,17 +70,18 @@
                     </div>
 
                     <div class="bg-secondary rounded mt-3">
-                        <a class="image-popup-vertical-fit" title="Our Lady of Sorrows Outreach Foundation, Inc." href="{{ asset('upload/charitable_org/profile_photo/OLSOFI.jpg') }}">
+                        <a class="image-popup-vertical-fit" title="{{$organizationdetail->name}}" href="{{ $organizationdetail->profile_photo?asset('upload/charitable_org/profile_photo/'.$organizationdetail->profile_photo):'#' }}">
                             <div id="carouselExampleCaption" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-inner" role="listbox">
                                     <div class="carousel-item active">
-                     
-                                        <img src="{{(!empty($organizationdetail->profile_photo))?$organizationdetail->profile_photo: asset('upload/charitable_org/profile_photo/no_avatar.png') }}" class="rounded"
+
+                                        <!-- This must display the correct profile photo of the org. -->
+                                        <img src="{{$organizationdetail->profile_photo?asset('upload/charitable_org/profile_photo/'.$organizationdetail->profile_photo): asset('upload/charitable_org/profile_photo/no_avatar.png') }}" class="rounded"
                                             style="width: 100%; height: 30vh; object-fit: cover; opacity:.4;"
                                             alt="Profile Photo of Our Lady of Sorrows Outreach Foundation, Inc.">
                                         <div class="carousel-caption d-none d-md-block text-white-50 my-4">
                                             <h1 class="text-white fw-bold">{{$organizationdetail->name}}</h1>
-                                            <p>{{$organizationdetail->created_at->format('F d Y')}}</p>   
+                                            <p>{{$organizationdetail->created_at->isoFormat('MMMM d, YYYY')}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -93,7 +94,7 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <p class="text-truncate font-size-14 fw-bold mb-2">Charity Admins</p>
-                                        <h4 class="mb-2 text-success">{{(!empty($admins->count()))? $admins->count():'0'}}</h4>
+                                        <h4 class="mb-2 text-success">{{ $admins->count() }}</h4>
                                         <p class="text-muted mb-0">
                                             Active Charity Admin Accounts
                                         </p>
@@ -111,8 +112,8 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <p class="text-truncate font-size-14 fw-bold mb-2">Charity Associates</p>
-                                        <h4 class="mb-2 text-success">{{(!empty($countofAssociates))? $countofAssociates:'0'}}</h4>
-                                             
+                                        <h4 class="mb-2 text-success">{{ $countofAssociates }}</h4>
+
                                         <p class="text-muted mb-0">
                                             Active Charity Associates
                                         </p>
@@ -130,7 +131,7 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <p class="text-truncate font-size-14 fw-bold mb-2">Featured Projects</p>
-                                        <h4 class="mb-2 text-success">6</h4>
+                                        <h4 class="mb-2 text-success">{{ $featuredProjectsCount }}</h4>
                                         <p class="text-muted mb-0">
                                             Posted Projects on Public Profile
                                         </p>

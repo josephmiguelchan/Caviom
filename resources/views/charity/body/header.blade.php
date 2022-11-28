@@ -29,36 +29,40 @@
                 </a>
             </div>
 
+            <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect" id="vertical-menu-btn">
+                <i class="ri-menu-2-line align-middle"></i>
+            </button>
+
         </div>
 
         <div class="d-flex">
 
             <div class="dropdown d-none d-lg-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" value="#">
+                <button type="button" onclick="location.href='{{route('home')}}'" class="btn header-item noti-icon waves-effect">
                     Home
                 </button>
             </div>
 
             <div class="dropdown d-none d-lg-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" value="#">
+                <button type="button" onclick="location.href='{{route('about')}}'" class="btn header-item noti-icon waves-effect" value="#">
                     About
                 </button>
             </div>
 
             <div class="dropdown d-none d-lg-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" value="#">
-                    Blog
-                </button>
-            </div>
-
-            <div class="dropdown d-none d-lg-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" value="#">
+                <button type="button" onclick="location.href='{{route('contact')}}'" class="btn header-item noti-icon waves-effect" value="#">
                     Contact
                 </button>
             </div>
 
             <div class="dropdown d-none d-lg-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" value="#">
+                <button type="button" onclick="location.href='{{route('services')}}'" class="btn header-item noti-icon waves-effect" value="#">
+                    Services
+                </button>
+            </div>
+
+            <div class="dropdown d-none d-lg-inline-block ms-1">
+                <button type="button" onclick="location.href='{{route('charities.all')}}'" class="btn header-item noti-icon waves-effect">
                     Charitable Organizations
                 </button>
             </div>
@@ -70,17 +74,12 @@
                 <button type="button" class="btn header-item noti-icon waves-effect"
                     id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="ri-notification-3-line"></i>
-
-                    @foreach(Auth::user()->notifications as $item)
-                        @if ($item->read_status=='unread')
+                    @if (App\Models\Notification::where('user_id', Auth::id())->where('read_status', 'unread')->count() > 0)
                         <span class="noti-dot"></span>
-                        @endif
-                    @endforeach
-
-
+                    @endif
                 </button>
 
-                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
                     aria-labelledby="page-header-notifications-dropdown">
                     <div class="p-3">
                         <div class="row align-items-center">

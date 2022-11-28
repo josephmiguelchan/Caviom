@@ -62,7 +62,9 @@
                                 <dt class="col-md-6">{{ Carbon\Carbon::parse($benefactor->updated_at)->diffForHumans() }}</dt>
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated by:</strong></h4></dt>
                                 <dt class="col-md-6">
-                                    {{ $userInfo->last_name . ', ' . $userInfo->first_name .' ' . $userInfo->middle_name}}
+                                    <a href="{{ ($benefactor->last_modified_by_id)?route('charity.users.view', $benefactor->lastModifiedBy->code):'#' }}">
+                                        {{ ($benefactor->lastModifiedBy)? $benefactor->lastModifiedBy->username:'---' }}
+                                    </a>
                                 </dt>
                             </dl>
                             <hr class="my-3">

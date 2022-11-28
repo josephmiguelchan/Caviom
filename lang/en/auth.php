@@ -15,6 +15,6 @@ return [
 
     'failed' => 'Invalid username and/or password.',
     'password' => 'You have entered an incorrect password.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'throttle' => 'Too many login attempts. Please try again in :timeframe minutes.',
 
 ];

@@ -51,7 +51,7 @@ class BeneficiaryController extends Controller
                 'religion' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'educational_attainment' => ['nullable', 'string', 'min:1', 'max:64'],
                 'last_school_year_attended' => ['nullable', 'string', 'min:1', 'max:64'],
-                'contact_no' => ['nullable', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9)
+                'contact_no' => ['nullable', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/'],
 
                 # Permanent Address
                 'permanent_address_line_one' => ['required', 'string', 'min:5', 'max:128'],
@@ -69,7 +69,7 @@ class BeneficiaryController extends Controller
                 'last_name.regex' => 'The last name field must not include number/s.',
                 'middle_name.regex' => 'The middle name field must not include number/s.',
                 'birth_date.before' => 'The age must be realistic.',
-                'contact_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
+                'contact_no.regex' => 'The contact no format must be followed. Ex. +63 998 123 4567',
                 'permanent_postal_code.digits' => 'The postal code must have 4 numbers.',
             ]
         );
@@ -240,34 +240,15 @@ class BeneficiaryController extends Controller
         $log->performed_at = Carbon::now();
         $log->save();
 
-        # (Not needed according to Docs) Send Notification to each user in their Charitable Organizations
-        /*
-        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
-
-        foreach ($users as $user) {
-            Notification::create([
-                'code' => Str::uuid()->toString(),
-                'user_id' => $user->id,
-                'category' => 'Beneficiary',
-                'Subject' => 'Added Beneficiary',
-                'message' => 'The Beneficiary record of [ ' . $request->first_name . ' ' . $request->last_name .
-                    ' ] has been added by [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ].',
-                'icon' => 'mdi mdi-account-plus',
-                'color' => 'success',
-                'created_at' => Carbon::now(),
-            ]);
-        }
-        */
-
         return redirect()->route('charity.beneficiaries2.createPart2', $beneficiary->code);
     }
 
     public function show($id)
     {
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -295,9 +276,9 @@ class BeneficiaryController extends Controller
 
     public function edit($id)
     {
-        $beneficiaryEdit = Beneficiary::where('id', $id)->orWhere('code', $id)->firstorFail();
+        $beneficiaryEdit = Beneficiary::where('code', $id)->firstorFail();
 
-        if (!$beneficiaryEdit->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiaryEdit->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -322,9 +303,9 @@ class BeneficiaryController extends Controller
     public function update(Request $request, $id)
     {
 
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstOrFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -351,7 +332,7 @@ class BeneficiaryController extends Controller
                     'religion' => ['nullable', 'string', 'min:1', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                     'educational_attainment' => ['nullable', 'string', 'min:1', 'max:64'],
                     'last_school_year_attended' => ['nullable', 'string', 'min:1', 'max:64'],
-                    'contact_no' => ['nullable', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9)
+                    'contact_no' => ['nullable', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/'],
 
                     # Permanent Address
                     'permanent_address_line_one' => ['required', 'string', 'min:5', 'max:128'],
@@ -369,7 +350,7 @@ class BeneficiaryController extends Controller
                     'last_name.regex' => 'The last name field must not include number/s.',
                     'middle_name.regex' => 'The middle name field must not include number/s.',
                     'birth_date.before' => 'The age must be realistic.',
-                    'contact_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
+                    'contact_no.regex' => 'The contact no format must be followed. Ex. +63 998 123 4567',
                     'permanent_postal_code.digits' => 'The postal code must have 4 numbers.',
                 ]
             );
@@ -542,11 +523,11 @@ class BeneficiaryController extends Controller
     public function delete($id)
     {
         # Retrieve the beneficiary record using Id
-        $beneficiaryDelete = Beneficiary::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $beneficiaryDelete = Beneficiary::where('code', $id)->firstOrFail();
         $firstname = $beneficiaryDelete->first_name;
         $lastname = $beneficiaryDelete->last_name;
 
-        if (!$beneficiaryDelete->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiaryDelete->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only delete their own charity records.',
@@ -610,9 +591,9 @@ class BeneficiaryController extends Controller
     public function editPart(Request $request, $id)
     {
         # Retrieve the beneficiary record using Id
-        $beneficiary = Beneficiary::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $beneficiary = Beneficiary::where('code', $id)->firstOrFail();
 
-        if (!$beneficiary->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($beneficiary->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',

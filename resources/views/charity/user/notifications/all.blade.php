@@ -83,7 +83,7 @@
                                                 <div class="flex-1">
                                                     <h6 class="mb-1">{{$item->subject}} @if($item->read_status == 'unread')<span class="badge bg-danger">NEW</span>@endif</h6>
                                                     <div class="font-size-12 text-muted">
-                                                        <p class="mb-1">{{$item->message}}
+                                                        <p class="mb-1">{{Str::limit($item->message, 95)}}
                                                         </p>
                                                     </div>
                                                 </div>

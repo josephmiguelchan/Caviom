@@ -123,9 +123,13 @@
                                 <!-- Cellphone -->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                        <input class="form-control" name="cel_no" id="cel_no" type="tel" value="{{ old('cel_no') }}" required
-                                               placeholder="Ex. 09191234567">
+                                        <label for="cel_no" class="form-label">Cellphone No.</label>
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes" title="Ex. +63 998 123 4567">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                        <input class="form-control input-mask" name="cel_no" id="cel_no" type="tel"
+                                            placeholder="Ex. +63 998 123 4567" required
+                                            value="{{ old('cel_no') }}" data-inputmask="'mask': '+63 \\999 999 9999'">
                                         @error('cel_no')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -138,8 +142,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="tel_no" class="form-label">Telephone No.</label>
-                                        <input class="form-control" name="tel_no" id="tel_no" type="tel" value="{{ old('tel_no') }}"
-                                               placeholder="Ex. 82531234">
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes"
+                                            title="Ex. +632 8123 6789">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                        <input class="form-control input-mask" name="tel_no" id="tel_no" type="tel"
+                                            placeholder="Ex. +632 8123 6789" value="{{ old('tel_no') }}"
+                                            data-inputmask="'mask': '+632 8999 9999'">
                                         @error('tel_no')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -237,7 +246,7 @@
                                 <!-- City -->
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="city" class="form-label">City</label>
+                                        <label for="city" class="form-label">*City</label>
                                         <input class="form-control" name="city" id="city" type="text" value="{{ old('city') }}">
                                         @error('city')
                                         <div class="text-danger">
@@ -250,7 +259,7 @@
                                 <!-- Barangay -->
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="barangay" class="form-label">Barangay</label>
+                                        <label for="barangay" class="form-label">*Barangay</label>
                                         <input class="form-control" name="barangay" id="barangay" type="text" value="{{ old('barangay') }}">
                                         @error('barangay')
                                             <div class="text-danger">
@@ -264,7 +273,8 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="postal_code" class="form-label">*Postal Code</label>
-                                        <input class="form-control" name="postal_code" id="postal_code" type="text" value="{{ old('postal_code') }}" required>
+                                        <input class="form-control input-mask" name="postal_code" id="postal_code" type="text"
+                                            value="{{ old('postal_code') }}" data-inputmask="'mask': '9999'" required>
                                         @error('postal_code')
                                             <div class="text-danger">
                                                 {{ $message }}

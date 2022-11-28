@@ -12,15 +12,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Gift Givings are eme eme</p>
-                <p>Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Vivamus sagittis lacus vel
-                    augue laoreet rutrum faucibus dolor auctor.</p>
-                <p class="mb-0">Aenean lacinia bibendum nulla sed consectetur.
-                    Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Donec sed odio dui. Donec
-                    ullamcorper nulla non metus auctor
-                    fringilla.</p>
+                <p>
+                    <strong>Gift Giving</strong> is a featured added to Caviom because gift giving is known to be the most common
+                    way of conducting charitable activities.
+                </p>
+                <p>
+                    Having a ticketing system would help charitable organization have an organized distribution of
+                    gifts.
+                </p>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

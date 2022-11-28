@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('benefactors', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('charitable_organization_id')->references('id')->on('charitable_organizations')->constrained();
             $table->uuid('code');
             $table->string('profile_photo', 255)->nullable();
             $table->text('first_name');
@@ -23,14 +24,10 @@ return new class extends Migration
             $table->text('email_address');
             $table->text('cel_no');
             $table->text('tel_no')->nullable();
+            $table->foreignId('address_id')->references('id')->on('addresses')->constrained();
             $table->text('category')->nullable();
             $table->text('label')->nullable();
-
-
-            $table->foreignId('charitable_organization_id')->references('id')->on('charitable_organizations')->constrained();
-            $table->foreignId('address_id')->references('id')->on('addresses')->constrained();
-            $table->foreignId('last_modified_by_id')->references('id')->on('users')->constrained();
-
+            $table->foreignId('last_modified_by_id')->nullable()->references('id')->on('users')->constrained();
             $table->timestamps();
         });
     }

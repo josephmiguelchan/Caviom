@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Str;
 
@@ -41,7 +42,8 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         # Validate Form Before Creating Records
-        $request->validate(
+        $validator = Validator::make(
+            $request->all(),
             [
                 /*
                 |--------------------------------------------------------------------------
@@ -60,10 +62,10 @@ class RegisteredUserController extends Controller
                 'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
 
                 # Contact and Occupation
-                'cel_no' => ['required', 'regex:/(09)[0-9]{9}/', 'unique:user_infos'], // 09 + (Any 9-digit number from 1-9)
-                'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'], // 8 + (Any 7-digit number from 1-9)
+                'cel_no' => ['required', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/', 'unique:user_infos'], // Unique won't work since it is encrypted
+                'tel_no' => ['nullable', 'regex:/(632)\s(8)[0-9]{3}\s[0-9]{4}/'],
                 'work_position' => ['required', 'string', 'min:4', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
-                'organizational_id_no' => ['nullable', 'integer', 'numeric', 'min:100', 'max:9999999999', 'unique:user_infos'], // !! Must be unique only to their charitable organization only.
+                'organizational_id_no' => ['nullable', 'regex:/[0-9]{10}/'],
 
                 # Current address
                 'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
@@ -88,12 +90,23 @@ class RegisteredUserController extends Controller
                 'first_name.regex' => 'The first name field must not include number/s.',
                 'middle_name.regex' => 'The middle name field must not include number/s.',
                 'work_position.regex' => 'Work position must not include number(s) or must be a valid format.',
+                'organizational_id_no.regex' => 'Organizational ID No. should be exactly 10 digits and must include numbers only. Ex. 0011812456',
                 'last_name.regex' => 'The last name field must not include number/s.',
-                'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
-                'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+                'cel_no.regex' => 'The cel no format must be followed. Ex. +63 998 123 4567',
+                'tel_no.regex' => 'The tel no format must be followed. Ex. +632 8123 6789',
                 'is_agreed.required' => 'You must first agree before submitting.',
             ]
         );
+
+        # Return error toastr if validate request failed
+        if ($validator->fails()) {
+            $toastr = array(
+                'message' => $validator->errors()->first() . ' Please try again.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with($toastr);
+        }
 
 
         // BEGIN CREATING RECORDS TO THE DATABASE
@@ -145,7 +158,7 @@ class RegisteredUserController extends Controller
 
         # Auto-generate an organizational_id_no if it was not provided in the form
         if (!$request->organizational_id_no) {
-            $user_info->organizational_id_no = $this->generateIdNo();
+            $user_info->organizational_id_no = Carbon::now()->format('Y') . substr(hexdec(uniqid()), 0, 6);
         } else {
             $user_info->organizational_id_no = $request->organizational_id_no;
         }
@@ -190,6 +203,7 @@ class RegisteredUserController extends Controller
             if (!$user_found) {
                 return $id_no;
                 $id_no_exist = false; // Ends the loop if the Generated ID No. is already unique.
+                break;
             }
         }
     }

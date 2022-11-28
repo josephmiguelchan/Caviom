@@ -63,8 +63,8 @@
                                         </button>
                                         <select class="form-control select2-search-disable" name="role" id="role">
                                             <option selected disabled>Select an Account Type</option>
-                                            <option value="Charity Admin">Charity Admin ( 2000 Star Tokens )</option>
-                                            <option value="Charity Associate">Charity Associate ( 1500 Star Tokens )</option>
+                                            <option value="Charity Admin" {{ old('role') == 'Charity Admin' ? 'selected' : ''}}>Charity Admin ( 2000 Star Tokens )</option>
+                                            <option value="Charity Associate" {{ old('role') == 'Charity Associate' ? 'selected' : ''}}>Charity Associate ( 1500 Star Tokens )</option>
                                         </select>
                                         @error('role')
                                             <div class="text-danger">
@@ -88,15 +88,14 @@
                                     <div class="form-group">
                                         <label for="organizational_id_no" class="form-label">
                                             Organizational ID Number (Permanent)
-                                            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Leave blank if you wish to autogenerate a 10-digit ID No.
-                                                It must consist of numbers only (No character / Special Symbols).
-                                                Maximum length of ID must be up to 10 digits only. Each ID no. must be unique in the Charitable Organization." data-bs-original-title="yes">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="It must consist of numbers only and should
+                                                be exactly 10 digits. Ex. 0000123456." data-bs-original-title="yes">
                                                 <i class="mdi mdi-information-outline"></i>
                                             </span>
                                         </label>
-                                        <input class="form-control" name="organizational_id_no" id="organizational_id_no" type="text"
-                                            placeholder="@unless($errors->any())(Leave blank if you wish to auto-generate your ID no.) @endunless"
-                                            value="{{ old('organizational_id_no') }}">
+                                        <input class="form-control input-mask" name="organizational_id_no" id="organizational_id_no" type="tel"
+                                            placeholder="(Leave blank if you wish to auto-generate your ID no.)"
+                                            value="{{ old('organizational_id_no') }}" data-inputmask="'mask': '9999999999'">
                                         @error('organizational_id_no')
                                             <div class="text-danger">
                                                 <small>
@@ -109,8 +108,16 @@
                             </div>
 
                             <div class="form-group mb-3 row">
+                                <!-- Profile Photo Preview -->
+                                <div class="col-md-1">
+                                    <label for="showImage" class="form-label text-center">Preview</label>
+                                    <div class="col-sm-10">
+                                        <img id="showImage" class="rounded-circle avatar-lg" src="{{ asset('upload/avatar_img/no_avatar.png') }}" alt="Profile picture preview">
+                                    </div>
+                                </div>
+
                                 <!-- Profile Photo -->
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="profile_image" class="form-label">
                                             Profile Photo (Optional)
@@ -121,28 +128,20 @@
                                         </label>
                                         <input class="form-control" name="profile_image" id="profile_image" type="file">
                                         @error('profile_image')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
                                     </div>
                                 </div>
 
-                                <!-- Profile Photo Preview -->
-                                <div class="col-md-2">
-                                    <label for="example-text-input" class="col-sm-2 col-form-label">  </label>
-                                   <div class="col-sm-10">
-                                       <img id="showImage" class="rounded avatar-lg" src="{{ asset('upload/avatar_img/no_avatar.png') }}" alt="Profile picture preview">
-                                   </div>
-                                </div>
-
                                 <!-- Email Address -->
                                 <div class="col-md-4">
                                     <label for="email" class="form-label">*Email Address (Permanent)</label>
                                     <input type="email" class="form-control" name="email" id="email"
-                                    value="{{old('email')}}" placeholder="@unless($errors->any())Enter the email address where the link will be sent to @endunless">
+                                        value="{{old('email')}}" placeholder="@unless($errors->any())Enter the email address where the link will be sent to @endunless">
                                     @error('email')
-                                        <div class="text-danger">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -154,7 +153,7 @@
                                     <input type="text" class="form-control" name="work_position" id="work_position"
                                     value="{{old('work_position')}}" placeholder="@unless($errors->any())Enter your work position @endunless">
                                     @error('work_position')
-                                        <div class="text-danger">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -162,8 +161,36 @@
                             </div>
 
                             <div class="form-group mb-3 row">
+                                <!-- Username -->
+                                <div class="col-md-4">
+                                    <label for="username" class="form-label">
+                                        *Username (Permanent)
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                            title="You cannot change their username once you create one. Make sure it is appropriate."
+                                            data-bs-original-title="yes">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="username">@</span>
+                                        </div>
+                                        <input type="text" class="form-control" name="username" id="username"
+                                            placeholder="@unless($errors->any())Enter permanent username @endunless"
+                                            aria-describedby="validationTooltipUsernamePrepend"
+                                            value="{{ old('username') }}">
+                                    </div>
+                                    @error('username')
+                                        <div class="text-danger">
+                                            <small>
+                                                {{ $message }}
+                                            </small>
+                                        </div>
+                                    @enderror
+                                </div>
+
                                 <!-- Password -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="password" class="form-label">
                                             *Temporary Password
@@ -174,10 +201,10 @@
                                             </span>
                                         </label>
                                         <input class="form-control" name="password" id="password" type="password"
-                                            placeholder="Enter password" value="{{old('password')}}">
+                                            placeholder="Enter temporary password" value="{{old('password')}}">
 
                                         @error('password')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -185,12 +212,12 @@
                                 </div>
 
                                 <!-- Confirm Password -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="confirm_password" class="form-label">*Confirm Password</label>
                                         <input class="form-control" name="confirm_password" id="confirm_password" type="password" placeholder="Retype password">
                                         @error('confirm_password')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -220,7 +247,7 @@
                                         <input type="text" class="form-control" name="first_name" id="first_name"
                                             value="{{old('first_name')}}" placeholder="@unless($errors->any())Enter first name @endunless">
                                         @error('first_name')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -234,7 +261,7 @@
                                         <input type="text" class="form-control" name="middle_name" id="middle_name"
                                             value="{{old('middle_name')}}" placeholder="@unless($errors->any())Enter middle name @endunless">
                                         @error('middle_name')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -247,7 +274,7 @@
                                     <input type="text" class="form-control" name="last_name" id="last_name"
                                         value="{{old('last_name')}}" placeholder="@unless($errors->any())Enter last name @endunless">
                                     @error('last_name')
-                                        <div class="text-danger">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -259,10 +286,14 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                        <input class="form-control" name="cel_no" id="cel_no" type="tel"
-                                            value="{{old('cel_no')}}" placeholder="@unless($errors->any())Enter mobile number @endunless">
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes" title="Ex. +63 998 123 4567">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                        <input class="form-control input-mask" name="cel_no" id="cel_no" type="tel"
+                                            placeholder="Ex. +63 998 123 4567" required
+                                            value="{{ old('cel_no') }}" data-inputmask="'mask': '+63 \\999 999 9999'">
                                         @error('cel_no')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -273,10 +304,15 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="tel_no" class="form-label">Telephone No.</label>
-                                        <input class="form-control" name="tel_no" id="tel_no" type="tel"
-                                            value="{{old('tel_no')}}" placeholder="@unless($errors->any())Enter telephone number @endunless">
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes"
+                                            title="Ex. +632 8123 6789">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                        <input class="form-control input-mask" name="tel_no" id="tel_no" type="tel"
+                                            placeholder="Ex. +632 8123 6789" value="{{ old('tel_no') }}"
+                                            data-inputmask="'mask': '+632 8999 9999'">
                                         @error('tel_no')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -293,7 +329,7 @@
                                     <input class="form-control" name="address_line_one" id="address_line_one" type="text"
                                         value="{{ old('address_line_one') }}" placeholder="@unless($errors->any())Enter street no, street address, building name, etc.  @endunless">
                                     @error('address_line_one')
-                                        <div class="text-danger">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -307,7 +343,7 @@
                                     <input class="form-control" name="address_line_two" id="address_line_two" type="text"
                                         value="{{old('address_line_two')}}" placeholder="@unless($errors->any())Enter apartment, unit, building, floor no, etc. @endunless">
                                     @error('address_line_two')
-                                        <div class="text-danger">
+                                        <div class="text-danger small">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -315,14 +351,28 @@
                             </div>
 
                             <div class="form-group mb-3 row">
+                                <!-- Region -->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="region" class="form-label">*Region</label>
+                                        <input class="form-control" name="region" id="region" type="text"
+                                            value="{{old('region')}}" placeholder="@unless($errors->any())Enter region @endunless">
+                                        @error('region')
+                                            <div class="text-danger small">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <!-- Province -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="province" class="form-label">*Province</label>
                                         <input class="form-control" name="province" id="province" type="text"
                                             value="{{old('province')}}" placeholder="@unless($errors->any())Enter province @endunless">
                                         @error('province')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -330,13 +380,13 @@
                                 </div>
 
                                 <!-- City -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="city" class="form-label">*City / Municipality</label>
                                         <input class="form-control" name="city" id="city" type="text"
                                             value="{{old('city')}}" placeholder="@unless($errors->any())Enter city @endunless">
                                         @error('city')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -352,7 +402,7 @@
                                         <input class="form-control" name="barangay" id="barangay" type="text"
                                             value="{{old('barangay')}}" placeholder="@unless($errors->any())Enter barangay @endunless">
                                         @error('barangay')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -363,10 +413,11 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="postal_code" class="form-label">*Postal Code</label>
-                                        <input class="form-control" name="postal_code" id="postal_code" type="text"
-                                            value="{{old('postal_code')}}" placeholder="@unless($errors->any())Enter postal code @endunless">
+                                        <input class="form-control input-mask" name="postal_code" id="postal_code" type="tel"
+                                            value="{{old('postal_code')}}" placeholder="@unless($errors->any())Enter postal code @endunless"
+                                            data-inputmask="'mask': '9999'">
                                         @error('postal_code')
-                                            <div class="text-danger">
+                                            <div class="text-danger small">
                                                 {{ $message }}
                                             </div>
                                         @enderror

@@ -21,7 +21,6 @@
                     Charity Admin has the <b>highest level of access on CAVIOM</b> compared to the latter. Hence,
                     <b>capable of using all the features</b> available in the platform.
                 </p>
-                <a href="#" class="text-link float-end">READ MORE HERE <i class="mb-5 ri-arrow-right-line"></i></a>
             </div>
         </div>
         <div class="col-sm-7">
@@ -33,8 +32,28 @@
                             @include('charity.modals.toc.terms-of-service')
                             @include('charity.modals.toc.privacy-policy')
 
+                            <!-- Confirm Modal of Register -->
+                            <div id="registerModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Please double check the provided information as you cannot change
+                                                some information in the future. Continue?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                                            <button type="submit" form="registrationForm" class="btn btn-dark waves-effect waves-light w-sm">Yes</button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div>
+
                             <div class="p-2">
-                                <form class="form-horizontal"
+                                <form class="form-horizontal" id="registrationForm"
                                     action="{{ route('register') }}" method="POST" novalidate enctype='multipart/form-data'>
                                     @csrf
 
@@ -98,9 +117,12 @@
                                             <div class="form-group mb-3 row">
                                                 <div class="col-12">
                                                     <label for="cel_no" class="form-label">*Cellphone No.</label>
-                                                    <input class="form-control" name="cel_no" id="cel_no" type="tel"
-                                                        placeholder="@unless($errors->any())Ex. 09981234567 @endunless" required
-                                                        value="{{ old('cel_no') }}">
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes" title="Ex. +63 998 123 4567">
+                                                        <i class="mdi mdi-information-outline"></i>
+                                                    </span>
+                                                    <input class="form-control input-mask" name="cel_no" id="cel_no" type="tel"
+                                                        placeholder="Ex. +63 998 123 4567" required
+                                                        value="{{ old('cel_no') }}" data-inputmask="'mask': '+63 \\999 999 9999'">
                                                     @error('cel_no')
                                                         <div class="text-danger">
                                                             <small>
@@ -117,8 +139,13 @@
                                             <div class="form-group mb-3 row">
                                                 <div class="col-12">
                                                     <label for="tel_no" class="form-label">Telephone No.</label>
-                                                    <input class="form-control" name="tel_no" id="tel_no" type="tel" required
-                                                        placeholder="@unless($errors->any())Ex. 82531234 @endunless" value="{{ old('tel_no') }}">
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes"
+                                                        title="Ex. +632 8123 6789">
+                                                        <i class="mdi mdi-information-outline"></i>
+                                                    </span>
+                                                    <input class="form-control input-mask" name="tel_no" id="tel_no" type="tel"
+                                                        placeholder="Ex. +632 8123 6789" value="{{ old('tel_no') }}"
+                                                        data-inputmask="'mask': '+632 8999 9999'">
                                                     @error('tel_no')
                                                         <div class="text-danger">
                                                             <small>
@@ -152,16 +179,15 @@
                                     <div class="form-group mb-3 row">
                                         <div class="col-12">
                                             <label for="organizational_id_no" class="form-label">
-                                                Your Organizational ID Number (Permanent)
-                                                <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Leave blank if you wish to autogenerate a 10-digit ID No.
-                                                    It must consist of numbers only (No character / Special Symbols).
-                                                    Maximum length of ID must be up to 10 digits only. Each ID no. must be unique in the Charitable Organization." data-bs-original-title="yes">
+                                                Your 10-Digit Organizational ID No. (Permanent)
+                                                <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="It must consist of numbers only and should
+                                                    be exactly 10 digits. Ex. 0000123456." data-bs-original-title="yes">
                                                     <i class="mdi mdi-information-outline"></i>
                                                 </span>
                                             </label>
-                                            <input class="form-control" name="organizational_id_no" id="organizational_id_no" type="text"
-                                                placeholder="@unless($errors->any())(Leave blank if you wish to auto-generate your ID no.) @endunless"
-                                                value="{{ old('organizational_id_no') }}">
+                                            <input class="form-control input-mask" name="organizational_id_no" id="organizational_id_no" type="tel"
+                                                placeholder="(Leave blank if you wish to auto-generate your ID no.)"
+                                                value="{{ old('organizational_id_no') }}" data-inputmask="'mask': '9999999999'">
                                             @error('organizational_id_no')
                                                 <div class="text-danger">
                                                     <small>
@@ -246,7 +272,7 @@
                                         <!-- City -->
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="city" class="form-label">City / Municipality</label>
+                                                <label for="city" class="form-label">*City / Municipality</label>
                                                 <input class="form-control" name="city" id="city" type="text"
                                                     placeholder="@unless($errors->any())Ex. Manila City @endunless"
                                                     value="{{ old('city') }}">
@@ -265,7 +291,7 @@
                                         <!-- Barangay -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="barangay" class="form-label">Barangay</label>
+                                                <label for="barangay" class="form-label">*Barangay</label>
                                                 <input class="form-control" name="barangay" id="barangay" type="text"
                                                     placeholder="@unless($errors->any())Ex. Brgy. 204 @endunless"
                                                     value="{{ old('barangay') }}">
@@ -283,9 +309,12 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="postal_code" class="form-label">*Postal Code</label>
-                                                <input class="form-control" name="postal_code" id="postal_code" type="text" required
+                                                <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ex. 1013" data-bs-original-title="yes">
+                                                    <i class="mdi mdi-information-outline"></i>
+                                                </span>
+                                                <input class="form-control input-mask" name="postal_code" id="postal_code" type="tel" required
                                                     placeholder="@unless($errors->any())Ex. 1013 @endunless"
-                                                    value="{{ old('postal_code') }}">
+                                                    value="{{ old('postal_code') }}" data-inputmask="'mask': '9999'">
                                                 @error('postal_code')
                                                     <div class="text-danger">
                                                         <small>
@@ -459,7 +488,8 @@
 
                                     <div class="form-group text-center row mt-3 pt-1">
                                         <div class="col-12">
-                                            <button class="btn btn-dark btn-rounded w-100 waves-effect waves-light" type="submit" style="background-color: #62896d">
+                                            <button class="btn btn-dark btn-rounded w-100 waves-effect waves-light" type="button" style="background-color: #62896d"
+                                                data-bs-toggle="modal" data-bs-target="#registerModal">
                                                 Create Account
                                             </button>
                                         </div>

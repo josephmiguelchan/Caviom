@@ -6,25 +6,33 @@ use App\Http\Controllers\Controller;
 use App\Models\Benefactor;
 use App\Models\UserInfo;
 use App\Models\Address;
+use App\Models\AuditLog;
+use App\Models\Notification;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+
+
+use App\Exports\Benefactors;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BenefactorController extends Controller
 {
     public function index()
     {
+
         $benefactors = Benefactor::where('charitable_organization_id', Auth::user()->charitable_organization_id)->latest()->get();
         return view('charity.main.benefactors.all', compact('benefactors'));
     }
 
     public function show($id)
     {
-        $benefactor = Benefactor::where('id', $id)->orWhere('code', $id)->firstOrFail();
-        $userInfo = UserInfo::where('id', $benefactor->last_modified_by_id)->firstOrFail();
+        $benefactor = Benefactor::where('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
-        if (!$benefactor->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($benefactor->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -32,11 +40,9 @@ class BenefactorController extends Controller
             );
 
             return redirect()->back()->with($notification);
-
         } else {
 
-            return view('charity.main.benefactors.view', compact('benefactor','userInfo'));
-
+            return view('charity.main.benefactors.view', compact('benefactor'));
         }
     }
 
@@ -58,8 +64,8 @@ class BenefactorController extends Controller
                 'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'middle_name' => ['nullable', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
-                'cel_no' => ['nullable', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9),
-                'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'], // 8 + (Any 7-digit number from 1-9)
+                'cel_no' => ['required', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/'],
+                'tel_no' => ['nullable', 'regex:/(632)\s(8)[0-9]{3}\s[0-9]{4}/'],
 
                 'category' => ['nullable', 'string', 'min:1', 'max:64'],
                 'label' => ['nullable', 'string', 'min:1', 'max:64'],
@@ -67,7 +73,7 @@ class BenefactorController extends Controller
                 # Address
                 'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
                 'address_line_two' => ['nullable', 'string', 'min:5', 'max:128'],
-                'region' => ['required', 'string', 'min:5', 'max:64'],
+                'region' => ['required', 'string', 'min:3', 'max:64'],
                 'province' => ['required', 'string', 'min:3', 'max:64'],
                 'city' => ['required', 'string', 'min:3', 'max:64'],
                 'barangay' => ['required', 'string', 'min:3', 'max:64'],
@@ -76,11 +82,11 @@ class BenefactorController extends Controller
             [
                 # Custom Error Messages
                 'profile_photo.max' => 'Your profile picture must not exceed the file size of 2mb.',
-                'contact_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
-                'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+                'cel_no.regex' => 'The cel no format must be followed. Ex. +63 998 123 4567',
+                'tel_no.regex' => 'The tel no format must be followed. Ex. +632 8123 6789',
                 'postal_code.digits' => 'The postal code must have 4 numbers.',
-
-            ]);
+            ]
+        );
 
         # Creating New Benefactor Address
         $benefactorAddress = new Address;
@@ -118,7 +124,6 @@ class BenefactorController extends Controller
 
         $benefactor->charitable_organization_id = Auth::user()->charitable_organization_id;
         $benefactor->address_id = $benefactorAddress->id;
-        $benefactor->last_modified_by_id = Auth::user()->id;
         $benefactor->save();
 
         # Success toastr message
@@ -128,18 +133,25 @@ class BenefactorController extends Controller
         );
 
         # Audit Log
-        //TO DO -- Audit log stating that a new benefactor record has been ADDED.
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action_type' => 'INSERT',
+            'charitable_organization_id' => Auth::user()->charitable_organization_id,
+            'table_name' => 'Benefactors',
+            'record_id' => $benefactor->code,
+            'action' => Auth::user()->role . ' added Benefactor named [ ' . $benefactor->first_name . ' ' . $benefactor->last_name . ' ].',
+            'performed_at' => Carbon::now(),
+        ]);
 
         return redirect()->route('charity.benefactors.all')->with($notification);
     }
 
     public function edit($id)
     {
-        $benefactor = Benefactor::where('id', $id)->orWhere('code', $id)->firstOrFail();
-        $userInfo = UserInfo::where('id', $benefactor->last_modified_by_id)->firstOrFail();
+        $benefactor = Benefactor::where('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
-        if (!$benefactor->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($benefactor->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -147,20 +159,18 @@ class BenefactorController extends Controller
             );
 
             return redirect()->back()->with($notification);
-
         } else {
 
-            return view('charity.main.benefactors.edit', compact('benefactor', 'userInfo'));
-
+            return view('charity.main.benefactors.edit', compact('benefactor'));
         }
     }
 
     public function update(Request $request, $id)
     {
-        $benefactor = Benefactor::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $benefactor = Benefactor::where('code', $id)->firstOrFail();
 
         # Users can only access their own charity's records
-        if (!$benefactor->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($benefactor->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only access their own charity records.',
@@ -168,7 +178,6 @@ class BenefactorController extends Controller
             );
 
             return redirect()->back()->with($notification);
-
         } else {
 
             # Validation of Edit Benefactor
@@ -182,8 +191,8 @@ class BenefactorController extends Controller
                     'first_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                     'middle_name' => ['nullable', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                     'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
-                    'cel_no' => ['nullable', 'regex:/(09)[0-9]{9}/'], // 09 + (Any 9-digit number from 1-9),
-                    'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'], // 8 + (Any 7-digit number from 1-9)
+                    'cel_no' => ['required', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/'],
+                    'tel_no' => ['nullable', 'regex:/(632)\s(8)[0-9]{3}\s[0-9]{4}/'],
 
                     'category' => ['nullable', 'string', 'min:1', 'max:64'],
                     'label' => ['nullable', 'string', 'min:1', 'max:64'],
@@ -191,7 +200,7 @@ class BenefactorController extends Controller
                     # Address
                     'address_line_one' => ['required', 'string', 'min:5', 'max:128'],
                     'address_line_two' => ['nullable', 'string', 'min:5', 'max:128'],
-                    'region' => ['required', 'string', 'min:5', 'max:64'],
+                    'region' => ['required', 'string', 'min:3', 'max:64'],
                     'province' => ['required', 'string', 'min:3', 'max:64'],
                     'city' => ['required', 'string', 'min:3', 'max:64'],
                     'barangay' => ['required', 'string', 'min:3', 'max:64'],
@@ -200,11 +209,11 @@ class BenefactorController extends Controller
                 [
                     # Custom Error Messages
                     'profile_photo.max' => 'Your profile picture must not exceed the file size of 2mb.',
-                    'contact_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
-                    'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+                    'cel_no.regex' => 'The cel no format must be followed. Ex. +63 998 123 4567',
+                    'tel_no.regex' => 'The tel no format must be followed. Ex. +632 8123 6789',
                     'postal_code.digits' => 'The postal code must have 4 numbers.',
-
-                ]);
+                ]
+            );
 
             # Update Benefactor Profile Picture
             if ($request->file('profile_photo')) {
@@ -248,26 +257,36 @@ class BenefactorController extends Controller
                 'postal_code' => $request->postal_code,
             ]);
 
-            #Toaster success message
+            # Toaster success message
             $notification = array(
                 'message' => 'Benefactor record has been updated successfully!',
                 'alert-type' => 'success',
             );
 
             # Audit Log
-            //TO DO -- Audit log stating that a new benefactor record has been UPDATED.
+            AuditLog::create([
+                'user_id' => Auth::id(),
+                'action_type' => 'UPDATE',
+                'charitable_organization_id' => Auth::user()->charitable_organization_id,
+                'table_name' => 'Benefactors',
+                'record_id' => $benefactor->code,
+                'action' => Auth::user()->role . ' updated Benefactor [ ' . $benefactor->first_name . ' ' . $benefactor->last_name . ' ].',
+                'performed_at' => Carbon::now(),
+            ]);
 
             return redirect()->route('charity.benefactors.view', $benefactor->code)->with($notification);
-
         }
     }
 
     public function delete($id)
     {
         # Retrieve the benefactor record using Id
-        $benefactor = Benefactor::where('id', $id)->orWhere('code', $id)->firstOrFail();
+        $benefactor = Benefactor::where('code', $id)->firstOrFail();
+        $last_name = $benefactor->last_name;
+        $first_name = $benefactor->first_name;
+        $code = $benefactor->code;
 
-        if (!$benefactor->charitable_organization_id == Auth::user()->charitable_organization_id) {
+        if ($benefactor->charitable_organization_id != Auth::user()->charitable_organization_id) {
 
             $notification = array(
                 'message' => 'Users can only delete their own charity records.',
@@ -275,11 +294,10 @@ class BenefactorController extends Controller
             );
 
             return redirect()->back()->with($notification);
-
         } else {
             # Delete the Profile Photo from the path
             $deletePhoto = $benefactor->profile_photo;
-            if($deletePhoto)unlink(public_path('upload/charitable_org/benefactor_photos/').$deletePhoto);
+            if ($deletePhoto) unlink(public_path('upload/charitable_org/benefactor_photos/') . $deletePhoto);
 
             # Delete the beneficiary
             $benefactor->delete();
@@ -293,14 +311,77 @@ class BenefactorController extends Controller
             );
 
             # Audit Log
-            //TO DO -- Audit log stating that a new benefactor record has been DELETED.
+            AuditLog::create([
+                'user_id' => Auth::id(),
+                'action_type' => 'DELETE',
+                'charitable_organization_id' => Auth::user()->charitable_organization_id,
+                'table_name' => 'Benefactors',
+                'record_id' => $code,
+                'action' => Auth::user()->role . ' deleted Benefactor [ ' . $first_name . ' ' . $last_name . ' ] permanently.',
+                'performed_at' => Carbon::now(),
+            ]);
 
             # Notification
-            //TO DO -- Send notification to the organization about the action.
-
+            $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+            foreach ($users as $user) {
+                Notification::create([
+                    'code' => Str::uuid()->toString(),
+                    'user_id' => $user->id,
+                    'category' => 'Benefactor',
+                    'Subject' => 'Deleted Benefactor',
+                    'message' => 'The Benefactor Record of [ ' . $first_name . ' ' . $last_name . ' ] has been deleted by [ ' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name . ' ].',
+                    'icon' => 'mdi mdi-account-remove',
+                    'color' => 'danger',
+                    'created_at' => Carbon::now(),
+                ]);
+            }
             return redirect()->route('charity.benefactors.all')->with($notification);
         }
-
     }
 
+    public function BackupBenefactor()
+    {
+        $benefactors = Benefactor::where('charitable_organization_id', Auth::user()->charitable_organization_id)->get();
+
+        # Check if atleast one benefactor exists before attempting to generate.
+        if ($benefactors->count() < 1) {
+
+            $notification = array(
+                'message' => 'Sorry, cannot generate a backup unless one (1) or more benefactors exist.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($notification);
+        }
+
+        # Create Audit Logs
+        $log = new AuditLog;
+        $log->user_id = Auth::user()->id;
+        $log->action_type = 'GENERATE EXCEL';
+        $log->charitable_organization_id = Auth::user()->charitable_organization_id;
+        $log->table_name = 'Benefactor';
+        $log->record_id = null;
+        $log->action = Auth::user()->role . ' generated Excel to backup all Benefactors in ' . Auth::user()->charity->name;
+        $log->performed_at = Carbon::now();
+        $log->save();
+
+
+        # Send Notification
+        $users = User::where('charitable_organization_id', Auth::user()->charitable_organization_id)->where('status', 'Active')->get();
+        foreach ($users as $user) {
+            $notif = new Notification;
+            $notif->code = Str::uuid()->toString();
+            $notif->user_id = $user->id;
+            $notif->category = 'Benefactor';
+            $notif->subject = 'Backup Benefactors';
+            $notif->message = Auth::user()->role . ' [' . Auth::user()->info->first_name . ' ' . Auth::user()->info->last_name .
+                '] has attempted to back up a copy of Benefactors from [' . Auth::user()->charity->name . '] into an Excel File.';
+            $notif->icon = 'mdi mdi-file-download';
+            $notif->color = 'warning';
+            $notif->created_at = Carbon::now();
+            $notif->save();
+        }
+
+        return Excel::download(new Benefactors(), Auth::user()->charity->name . ' - Benefactors (' . Carbon::now()->isoFormat('lll') . ').xlsx');
+    }
 }

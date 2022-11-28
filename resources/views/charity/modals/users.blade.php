@@ -13,15 +13,29 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Charity Users are eme eme</p>
-                <p>Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Vivamus sagittis lacus vel
-                    augue laoreet rutrum faucibus dolor auctor.</p>
-                <p class="mb-0">Aenean lacinia bibendum nulla sed consectetur.
-                    Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Donec sed odio dui. Donec
-                    ullamcorper nulla non metus auctor
-                    fringilla.</p>
+                <p>
+                    Users is a feature added to Caviom to manage the user accounts that have access to the records
+                    of the charitable organization.
+                </p>
+                <p>
+                    <strong>Charity Admin:</strong>
+                    <ul>
+                        <li>Have all the access to the features</li>
+                    </ul>
+                    <strong>Charity Associates:</strong>
+                    <ul>
+                        <li>Can access records except from:</li>
+                        <ul>
+                            <li>Managing Public Profile</li>
+                            <li>Creating Featured Projects</li>
+                            <li>Editing, Deleting, and Adding a Project</li>
+                            <li>Unlocking and Deleting Pending Users</li>
+                            <li>Creating and Feature Gift Giving Projects</li>
+                            <li>Accessing Charity Audit Logs</li>
+                            <li>Star Tokens</li>
+                        </ul>
+                    </ul>
+                </p>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

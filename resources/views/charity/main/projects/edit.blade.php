@@ -13,7 +13,7 @@
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">Our Charitable Organization</li>
                         <li class="breadcrumb-item">
-                            <a href="{{ route('charity.projects') }}">Projects</a>
+                            <a href="{{ route('charity.projects.all') }}">Projects</a>
                         </li>
                         <li class="breadcrumb-item active">Edit</li>
                     </ol>
@@ -40,7 +40,7 @@
 
                         <hr class="my-3">
 
-                        <form action="" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('charity.projects.update',$project->code)}}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group mb-3 row">
@@ -48,7 +48,7 @@
                                 <div class="col-md-9">
                                     <label for="name" class="form-label">*Project Name</label>
                                     <input type="text" class="form-control" name="name" id="name"
-                                        value="Lugaw for a Cause" placeholder="@unless($errors->any())Enter name of the project @endunless">
+                                        value="{{$project->name}}" placeholder="@unless($errors->any())Enter name of the project @endunless">
                                     @error('name')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -79,36 +79,15 @@
                                     <!-- Project Objective / Description -->
                                     <label for="objective" class="form-label">*Objective</label>
                                     <textarea id="elm1" rows="15" name="objective" placeholder="Enter your project's objective/s..."
-                                        maxlength="500">
-                                        <p class="mt-4">
-                                            Bottom-up, volunteer-led movement feeding program with a cause. The organization had
-                                            the opportunity to make a partnership with Public Employment Service Office of the
-                                            local government of Pasay. Hence this partnership allowed the organization to train 30
-                                            single partents. The aim is to teach the beneficiaries how to do dressmaking and other
-                                            marketable sewing crafts.
-                                        </p>
-                                        <p>
-                                            <strong>Ace company and J&K Co.</strong> are both garments company that reached out to
-                                            the organization. They need 15 workers for their factory and they see the trainees as good
-                                            fit for the vacancies. Thus, the organization want to take this opportunity to provice
-                                            employment for their beneficiaries.
-                                        </p>
-                                        <p>
-                                            The unchosen trainees for the factory vacancies will have to undergo paid weekly seminar
-                                            for 1 month entitle <strong>Kumit at Home</strong> by Tytan Student Entrepreneurs group of
-                                            Manila Tytana Colleges.
-                                        </p>
-                                    </textarea>
-                                    @error('name')
+                                        maxlength="500">{{$project->objective}}</textarea>
+                                    @error('objective')
                                         <div class="text-danger">
                                             {{ $message }}
                                         </div>
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
-                                    <a class="image-popup-no-margins" title="Cover Photo Preview" href="{{ asset('upload/test_files/lugaw-for-a-cause.webp') }}">
-                                        <img class="img-fluid rounded" alt="Cover Photo Preview" src="{{ asset('upload/test_files/lugaw-for-a-cause.webp') }}">
-                                    </a>
+                                        <img class="img-fluid rounded" id="show_cover_photo" alt="Cover Photo Preview" src="{{($project->cover_photo)?url('upload/charitable_org/project_photo/'.$project->cover_photo):url('upload/charitable_org/placeholder.png')}}">
                                 </div>
                             </div>
 
@@ -150,5 +129,19 @@
         }
     });
 </script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#cover_photo').change(function(e){
+            var reader = new FileReader();
+            reader.onload = function(e){
+                $('#show_cover_photo').attr('src',e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+
+</script>
+
 
 @endsection

@@ -22,6 +22,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \ProtoneMedia\LaravelXssProtection\Middleware\XssCleanInput::class,
     ];
 
     /**
@@ -67,5 +68,10 @@ class Kernel extends HttpKernel
         'charity.admin' => \App\Http\Middleware\IsCharityAdmin::class,
         'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
         'admin.only' => \App\Http\Middleware\IsRootAdmin::class,
+        'profile.set' => \App\Http\Middleware\IsProfileSet::class,
+        'charity.user' => \App\Http\Middleware\IsCharityUser::class,
+        'max.beneficiaries' => \App\Http\Middleware\LimitBeneficiaries::class,
+        'max.benefactors' => \App\Http\Middleware\LimitBenefactors::class,
+        'max.volunteers' => \App\Http\Middleware\LimitVolunteers::class,
     ];
 }

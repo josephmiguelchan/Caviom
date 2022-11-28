@@ -6,6 +6,7 @@
     <meta charset="utf-8" />
     <title>Caviom — @yield('title') | Charity Management System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('backend/assets/images/Caviom Logo.png') }}">
@@ -58,6 +59,8 @@
     <!-- App Css-->
     <link href="{{ asset('backend/assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
 
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 </head>
 
@@ -146,8 +149,8 @@
     <script src="{{ asset('backend/assets/js/pages/datatables.init.js') }}"></script>
 
     <!-- Dashboard init js -->
-    <script src="{{ asset('backend/assets/js/pages/dashboard.init.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/pages/caviom-dashboard.init.js') }}"></script>
+    {{-- <script src="{{ asset('backend/assets/js/pages/dashboard.init.js') }}"></script> --}}
+    {{-- <script src="{{ asset('backend/assets/js/pages/caviom-dashboard.init.js') }}"></script> --}}
 
     <!-- App js -->
     <script src="{{ asset('backend/assets/js/app.js') }}"></script>
@@ -165,7 +168,8 @@
     <script src="{{ asset('backend/assets/js/pages/lightbox.init.js') }}"></script>
 
     <!--tinymce js-->
-    <script src="{{ asset('backend/assets/libs/tinymce/tinymce.min.js') }}"></script>
+    {{-- <script src="{{ asset('backend/assets/libs/tinymce/tinymce.min.js') }}"></script> --}}
+    <script src="https://cdn.tiny.cloud/1/r5uesfryot7t5zxkqxmyahyhtqtns0la592j3cpvd4u7kl47/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
     <!-- init js -->
     <script src="{{ asset('backend/assets/js/pages/form-editor.init.js') }}"></script>
@@ -190,6 +194,13 @@
 
     <!-- Dropzone js-->
     <script src="{{ asset('backend/assets/libs/dropzone/min/dropzone.min.js') }}"></script>
+    <script>
+        var delete_url = "{{ route('charity.profile.cover_photos.get') }}"; // For deleting Cover Photos
+        var gallery = "{{ route('charity.profile.cover_photo.delete') }}"; // For getting Cover Photos
+    </script>
+
+    <!-- Dropzone init js -->
+    <script src="{{ asset('backend/assets/js/dropzone-script.js') }}"></script>
 
     <!-- twitter-bootstrap-wizard js -->
     <script src="{{ asset('backend/assets/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js') }}"></script>
@@ -212,6 +223,8 @@
 
     <!-- form mask -->
     <script src="{{ asset('backend/assets/libs/inputmask/jquery.inputmask.min.js') }}"></script>
+
+    <!-- form mask init -->
     <script src="{{ asset('backend/assets/js/pages/form-mask.init.js') }}"></script>
 
     <script src="{{ asset('backend/assets/js/pages/form-advanced.init.js') }}"></script>

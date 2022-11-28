@@ -58,8 +58,11 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="contact_no" class="form-label">Contact No.</label>
-                <input class="form-control" name="contact_no" id="contact_no" type="number"
-                    value="{{ old('contact_no') }}" placeholder="Ex. 09191234567">
+                <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="yes" title="Ex. +63 998 123 4567">
+                    <i class="mdi mdi-information-outline"></i>
+                </span>
+                <input class="form-control input-mask" name="contact_no" id="contact_no" type="tel"
+                    placeholder="Ex. +63 998 123 4567" value="{{ old('contact_no') }}" data-inputmask="'mask': '+63 \\999 999 9999'">
                 @error('contact_no')
                     <div class="text-danger"><small>
                         {{ $message }}

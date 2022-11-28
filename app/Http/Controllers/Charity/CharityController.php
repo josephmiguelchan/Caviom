@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Charity;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\Admin\FeaturedProject;
 use App\Models\AuditLog;
-use App\Models\CharitableOrganization;
+use App\Models\Benefactor;
+use App\Models\Beneficiary;
 use App\Models\Notification;
+use App\Models\ProjectTask;
 use App\Models\User;
 use App\Models\UserInfo;
+use App\Models\Volunteer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,30 +29,48 @@ class CharityController extends Controller
             return to_route('admin.panel');
         }
 
-        return view('charity.index');
+        $admin_count = User::where('charitable_organization_id', Auth::user()->charity->id)->where('status', 'Active')->where('role', 'Charity Admin')->count();
+        $assoc_count = User::where('charitable_organization_id', Auth::user()->charity->id)->where('status', 'Active')->where('role', 'Charity Associate')->count();
+        $benefic_count = Beneficiary::where('charitable_organization_id', Auth::user()->charity->id)->count();
+        $users_count = User::where('charitable_organization_id', Auth::user()->charity->id)->where('status', 'Active')->count();
+        $feat_count = FeaturedProject::where('charitable_organization_id', Auth::user()->charity->id)->where('approval_status', 'Approved')->count();
+
+        $pending_tasks = ProjectTask::whereRelation('project', 'charitable_organization_id', Auth::user()->charity->id)->where('status', 'Pending')->count();
+        $in_progress_tasks = ProjectTask::whereRelation('project', 'charitable_organization_id', Auth::user()->charity->id)->where('status', 'In-Progress')->count();
+        $completed_tasks = ProjectTask::whereRelation('project', 'charitable_organization_id', Auth::user()->charity->id)->where('status', 'Completed')->count();
+
+        $opportunities = (Volunteer::where('charitable_organization_id', Auth::user()->charity->id)->count()) + (Benefactor::where('charitable_organization_id', Auth::user()->charity->id)->count());
+
+        return view('charity.index', compact([
+            'admin_count', 'assoc_count', 'benefic_count', 'users_count', 'feat_count',
+            'pending_tasks', 'in_progress_tasks', 'completed_tasks',
+            'opportunities'
+        ]));
     }
 
     // Logout User
     public function destroy(Request $request)
     {
         $user = Auth::user();
-
         Auth::guard('web')->logout();
-
-        # Create Audit Log for Logout
-        $log = new AuditLog;
-        $log->user_id = $user->id;
-        $log->action_type = 'LOGOUT';
-        $log->charitable_organization_id = $user->charitable_organization_id;
-        $log->table_name = null;
-        $log->record_id = null;
-        $log->action = $user->role . ' has successfully logged out on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
-            $request->ip();
-        $log->performed_at = Carbon::now();
-        $log->save();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        if ($user and $user->status == 'Active') {
+
+            # Create Audit Log for Logout
+            $log = new AuditLog;
+            $log->user_id = $user->id;
+            $log->action_type = 'LOGOUT';
+            $log->charitable_organization_id = $user->charitable_organization_id;
+            $log->table_name = null;
+            $log->record_id = null;
+            $log->action = $user->role . ' has successfully logged out on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
+                $request->ip();
+            $log->performed_at = Carbon::now();
+            $log->save();
+        }
 
         return redirect('/login');
     }
@@ -80,8 +102,8 @@ class CharityController extends Controller
                 'last_name' => ['required', 'string', 'min:2', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
 
                 # Contact and Occupation
-                'cel_no' => ['required', 'regex:/(09)[0-9]{9}/', 'unique:user_infos'], // 09 + (Any 9-digit number from 1-9)
-                'tel_no' => ['nullable', 'regex:/(8)[0-9]{7}/'], // 8 + (Any 7-digit number from 1-9)
+                'cel_no' => ['required', 'regex:/(63)\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}/', 'unique:user_infos'], // Unique won't work since it is encrypted
+                'tel_no' => ['nullable', 'regex:/(632)\s(8)[0-9]{3}\s[0-9]{4}/'],
                 'work_position' => ['required', 'string', 'min:4', 'max:64', 'regex:/^[a-zA-Z ñ,-.\']*$/'],
                 'organizational_id_no' => ['nullable', 'integer', 'numeric', 'min:100', 'max:9999999999', 'unique:user_infos'], // !! Must be unique only to their charitable organization only.
 
@@ -101,8 +123,8 @@ class CharityController extends Controller
                 'middle_name.regex' => 'The middle name field must not include number/s.',
                 'work_position.regex' => 'Work position must not include number(s) or must be a valid format.',
                 'last_name.regex' => 'The last name field must not include number/s.',
-                'cel_no.regex' => 'The cel no format must be followed. Ex. 09981234567',
-                'tel_no.regex' => 'The tel no format must be followed. Ex. 82531234',
+                'cel_no.regex' => 'The cel no format must be followed. Ex. +63 998 123 4567',
+                'tel_no.regex' => 'The tel no format must be followed. Ex. +632 8123 6789',
                 'is_agreed.required' => 'You must first agree before submitting.',
             ]
         );
