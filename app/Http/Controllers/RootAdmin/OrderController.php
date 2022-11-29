@@ -24,9 +24,9 @@ class OrderController extends Controller
     {
         # Retrieve All Featured Project
 
-        $orders = order::orderBy('status','ASC')->get();
+        $orders = order::orderBy('status', 'ASC')->get();
 
-        return view('admin.main.orders.all',compact('orders'));
+        return view('admin.main.orders.all', compact('orders'));
     }
 
     public function ViewOrder($code)
@@ -39,16 +39,14 @@ class OrderController extends Controller
         $orderitems = order_items::where('order_id', $order->id)->get();
 
         $total_price = DB::table('order_items')
-        ->where('order_id', $order->id)
-        ->sum('subtotal');
+            ->where('order_id', $order->id)
+            ->sum('subtotal');
 
-        return view('admin.main.orders.view', compact('order','stRemarks','orderitems','total_price'));
-
-   
+        return view('admin.main.orders.view', compact('order', 'stRemarks', 'orderitems', 'total_price'));
     }
 
 
-    public function RejectOrder(Request $request ,$code)
+    public function RejectOrder(Request $request, $code)
     {
 
         # Retrieve Selcted Order Record
@@ -58,7 +56,7 @@ class OrderController extends Controller
         $order->status = 'Rejected';
 
         # Set the remarks MESSAGE based on the value of star token  from Notifiers dropdown table.
-         if ($request->remarks_subject == null) {
+        if ($request->remarks_subject == null) {
             $order->remarks_subject = null;
             $order->remarks_message = null;
         } else {
@@ -73,7 +71,7 @@ class OrderController extends Controller
             }
         }
 
-        $order->status_updated_at =Carbon::now();
+        $order->status_updated_at = Carbon::now();
         $order->save();
 
 
@@ -84,26 +82,26 @@ class OrderController extends Controller
         $log_in->charitable_organization_id = $order->charitable_organization_id;
         $log_in->table_name = 'Order';
         $log_in->record_id = $order->code;
-        $log_in->action = Auth::user()->role . ' has set the status as Rejected for Order:  
-                                [ '.Str::upper(Str::limit($order->code,6, '')).' ] with Remarks [ '.$order->remarks_subject .' ]. ';
+        $log_in->action = Auth::user()->role . ' has set the status as Rejected for Order:
+                                [ ' . Str::upper(Str::limit($order->code, 6, '')) . ' ] with Remarks [ ' . $order->remarks_subject . ' ]. ';
         $log_in->performed_at = Carbon::now();
         $log_in->save();
 
         # Send Notification to user
 
         $users = User::where('charitable_organization_id', $order->charitable_organization_id)
-                        ->where('status', 'Active')
-                        ->where('role','Charity Admin')
-                        ->get();
+            ->where('status', 'Active')
+            ->where('role', 'Charity Admin')
+            ->get();
 
-        foreach ($users as $user) {    
+        foreach ($users as $user) {
             $notif = new Notification;
             $notif->code = Str::uuid()->toString();
             $notif->user_id = $user->id;
             $notif->category = 'Order';
             $notif->subject = 'Order Rejected';
-            $notif->message = 'Sorry, your Order: '.Str::upper(Str::limit($order->code,6,'')).' has been decline by Caviom due to [
-                ' .$order->remarks_subject. ' ]. '. $order->remarks_message .' If you wish to reorder, please try again or email us at support@caviom.org if you think there was a mistake';
+            $notif->message = 'Sorry, your Order: ' . Str::upper(Str::limit($order->code, 6, '')) . ' has been decline by Caviom due to [
+                ' . $order->remarks_subject . ' ]. ' . $order->remarks_message . ' If you wish to reorder, please try again or email us at support@caviom.org if you think there was a mistake';
             $notif->icon = 'mdi mdi-cart-off';
             $notif->color = 'danger';
             $notif->created_at = Carbon::now();
@@ -117,8 +115,6 @@ class OrderController extends Controller
         );
 
         return redirect()->back()->with($toastr);
-
-
     }
     public function ApprovedOrder($code)
     {
@@ -137,43 +133,42 @@ class OrderController extends Controller
         $featured_project_credits = 0;
         $subscription_expires_at = null;
 
-        foreach($order->order_items as $item)
-        {
+        foreach ($order->order_items as $item) {
             switch ($item->name) {
                 case '600 Star Tokens':
                     $star_tokens += (600 * $item->quantity);
                     break;
-                
+
                 case '1,500 Star Tokens':
                     $star_tokens += (1500 * $item->quantity);
                     break;
-                
+
                 case '3,000 Star Tokens':
                     $star_tokens += (3000 * $item->quantity);
                     break;
-                
+
                 case 'Caviom Pro':
                     $subscription = 'Caviom Pro';
                     $featured_project_credits += 5;
                     $subscription_expires_at = Carbon::now()->addMonth();
                     break;
-                
+
                 case 'Caviom Premium':
                     $subscription = 'Caviom Premium';
                     $featured_project_credits += 50;
                     $subscription_expires_at = Carbon::now()->addMonths(12);
                     break;
-                
+
                 default:
                     # Send Error toastr
                     $toastr = array(
-                        'message' => 'The Order has one or more item/s [ '. $item->name .'] that are invalid.',
+                        'message' => 'The Order has one or more item/s [ ' . $item->name . '] that are invalid.',
                         'alert-type' => 'error'
                     );
 
                     return redirect()->back()->with($toastr);
                     break;
-                }
+            }
         }
 
         # Update Charity Organization Subscription
@@ -200,10 +195,10 @@ class OrderController extends Controller
         # Update Charity Organization Star Token Balance
         $charity->star_tokens = $current_bal + $star_tokens;
         $charity->save();
-        
+
 
         # Update order status
-        $order->status ='Confirmed';
+        $order->status = 'Confirmed';
         $order->status_updated_at = Carbon::now();
         $order->save();
 
@@ -215,34 +210,34 @@ class OrderController extends Controller
         $log_in->charitable_organization_id = $order->charitable_organization_id;
         $log_in->table_name = 'Order';
         $log_in->record_id = $order->code;
-        $log_in->action = Auth::user()->role . ' has set the status as CONFIRMED for Order:  
-                                [ '.Str::upper(Str::limit($order->code,6, '')).' ] . ';
+        $log_in->action = Auth::user()->role . ' has set the status as CONFIRMED for Order:
+                                [ ' . Str::upper(Str::limit($order->code, 6, '')) . ' ] . ';
         $log_in->performed_at = Carbon::now();
         $log_in->save();
 
-        
-        
-        # Send Notification to user        
+
+
+        # Send Notification to user
         $users = User::where('charitable_organization_id', $order->charitable_organization_id)
             ->where('status', 'Active')
             ->where('role', 'Charity Admin')
             ->get();
-        
+
         foreach ($users as $user) {
             $notif = new Notification;
             $notif->code = Str::uuid()->toString();
             $notif->user_id = $user->id;
             $notif->category = 'Order';
             $notif->subject = 'Confirmed Order';
-            $notif->message = 'Sucess! We have confirmed acknowledgement on your Order: '.
-                Str::upper(Str::limit($order->code,6, '')).'. Your Star Tokens balance and/or subscription has 
+            $notif->message = 'Sucess! We have confirmed acknowledgement on your Order: ' .
+                Str::upper(Str::limit($order->code, 6, '')) . '. Your Star Tokens balance and/or subscription has
                 now been updated. Thank you for supporting Caviom!';
             $notif->icon = 'mdi mdi-cart-check';
             $notif->color = 'success';
             $notif->created_at = Carbon::now();
             $notif->save();
         }
-        
+
         # Send Success toastr
         $toastr = array(
             'message' => 'The selected Order has been succesfully confirmed.',
@@ -250,7 +245,6 @@ class OrderController extends Controller
         );
 
         return redirect()->back()->with($toastr);
-    
     }
 
 
@@ -258,13 +252,23 @@ class OrderController extends Controller
     {
         # Retrieve first the seleted Order
         $order = order::where('code', $code)->firstOrFail();
-        
+
         # Order status must not be pending in order to delete it.
-        if ($order->status == "Pending")
-        {
+        if ($order->status == "Pending") {
 
             $toastr = array(
                 'message' => 'Sorry, only confirm or rejected order can be deleted.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($toastr);
+        }
+
+        # Order's updated_at must be at least 1 year old before it can be deleted
+        if ($order->status_updated_at > Carbon::now()->subYear()->toDateTimeString()) {
+
+            $toastr = array(
+                'message' => 'Orders processed less than a year ago cannot be deleted yet.',
                 'alert-type' => 'error'
             );
 
@@ -284,7 +288,7 @@ class OrderController extends Controller
         $log->charitable_organization_id = $order->charitable_organization_id;
         $log->table_name = 'Order';
         $log->record_id = $order->code;
-        $log->action = Auth::user()->role.' deleted the processed Order ID: '.Str::upper(Str::limit($order->code,6, '')).' permanently.';
+        $log->action = Auth::user()->role . ' deleted the processed Order ID: ' . Str::upper(Str::limit($order->code, 6, '')) . ' permanently.';
         $log->performed_at = Carbon::now();
         $log->save();
 
@@ -296,6 +300,5 @@ class OrderController extends Controller
         );
 
         return redirect()->back()->with($toastr);
-    
     }
 }

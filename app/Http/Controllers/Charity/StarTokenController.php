@@ -67,6 +67,7 @@ class StarTokenController extends Controller
     {
         # Retrieve All Transaction Records
         $orders = order::where('charitable_organization_id', Auth::user()->charitable_organization_id)
+            ->where('status_updated_at', '>', Carbon::now()->subYear()->toDateTimeString())
             ->orderBy('created_at', 'DESC')
             ->get();
 

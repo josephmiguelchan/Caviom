@@ -76,6 +76,9 @@
                         </tbody>
                     </table>
 
+                    <p class="fst-italic small">
+                        Caviom only shows up to 1 year of order history.
+                    </p>
                 </div>
             </div>
         </div> <!-- end col -->
