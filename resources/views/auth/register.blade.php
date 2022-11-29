@@ -122,7 +122,7 @@
                                                     </span>
                                                     <input class="form-control input-mask" name="cel_no" id="cel_no" type="tel"
                                                         placeholder="Ex. +63 998 123 4567" required
-                                                        value="{{ old('cel_no') }}" data-inputmask="'mask': '+63 \\999 999 9999'">
+                                                        value="{{ old('cel_no') }}">
                                                     @error('cel_no')
                                                         <div class="text-danger">
                                                             <small>
@@ -144,8 +144,7 @@
                                                         <i class="mdi mdi-information-outline"></i>
                                                     </span>
                                                     <input class="form-control input-mask" name="tel_no" id="tel_no" type="tel"
-                                                        placeholder="Ex. +632 8123 6789" value="{{ old('tel_no') }}"
-                                                        data-inputmask="'mask': '+632 8999 9999'">
+                                                        placeholder="Ex. +632 8123 6789" value="{{ old('tel_no') }}">
                                                     @error('tel_no')
                                                         <div class="text-danger">
                                                             <small>
@@ -187,7 +186,7 @@
                                             </label>
                                             <input class="form-control input-mask" name="organizational_id_no" id="organizational_id_no" type="tel"
                                                 placeholder="(Leave blank if you wish to auto-generate your ID no.)"
-                                                value="{{ old('organizational_id_no') }}" data-inputmask="'mask': '9999999999'">
+                                                value="{{ old('organizational_id_no') }}">
                                             @error('organizational_id_no')
                                                 <div class="text-danger">
                                                     <small>
@@ -239,9 +238,10 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="region" class="form-label">*Region</label>
-                                                <input class="form-control" name="region" id="region" type="text" required
-                                                    placeholder="@unless($errors->any())Ex. NCR @endunless"
-                                                    value="{{ old('region') }}">
+                                                <input type="hidden" name="region"/>
+                                                <select class="form-control select2" id="region" value="{{ old('region') }}" required>
+                                                    <option value="" disabled selected>Select Region</option>
+                                                </select>
                                                 @error('region')
                                                     <div class="text-danger">
                                                         <small>
@@ -256,9 +256,10 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="province" class="form-label">*Province</label>
-                                                <input class="form-control" name="province" id="province" type="text" required
-                                                    placeholder="@unless($errors->any())Ex. Metro Manila @endunless"
-                                                    value="{{ old('province') }}">
+                                                <input type="hidden" name="province"/>
+                                                <select class="form-control select2" id="province" value="{{ old('province') }}" required>
+                                                    <option value="" disabled selected>Select Province</option>
+                                                </select>
                                                 @error('province')
                                                     <div class="text-danger">
                                                         <small>
@@ -272,10 +273,11 @@
                                         <!-- City -->
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="city" class="form-label">*City / Municipality</label>
-                                                <input class="form-control" name="city" id="city" type="text"
-                                                    placeholder="@unless($errors->any())Ex. Manila City @endunless"
-                                                    value="{{ old('city') }}">
+                                                <label for="city" class="form-label">*City</label>
+                                                <input type="hidden" name="city"/>
+                                                <select class="form-control select2" id="city" value="{{ old('city') }}" required>
+                                                    <option value="" disabled selected>Select City</option>
+                                                </select>
                                                 @error('city')
                                                     <div class="text-danger">
                                                         <small>
@@ -292,9 +294,10 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="barangay" class="form-label">*Barangay</label>
-                                                <input class="form-control" name="barangay" id="barangay" type="text"
-                                                    placeholder="@unless($errors->any())Ex. Brgy. 204 @endunless"
-                                                    value="{{ old('barangay') }}">
+                                                <input type="hidden" name="barangay"/>
+                                                <select class="form-control select2" id="barangay" value="{{ old('barangay') }}" required>
+                                                    <option value="" disabled selected>Select Barangay</option>
+                                                </select>
                                                 @error('barangay')
                                                     <div class="text-danger">
                                                         <small>
@@ -302,7 +305,7 @@
                                                         </small>
                                                     </div>
                                                 @enderror
-                                                </div>
+                                            </div>
                                         </div>
 
                                         <!-- Postal Code -->
@@ -314,7 +317,7 @@
                                                 </span>
                                                 <input class="form-control input-mask" name="postal_code" id="postal_code" type="tel" required
                                                     placeholder="@unless($errors->any())Ex. 1013 @endunless"
-                                                    value="{{ old('postal_code') }}" data-inputmask="'mask': '9999'">
+                                                    value="{{ old('postal_code') }}">
                                                 @error('postal_code')
                                                     <div class="text-danger">
                                                         <small>
@@ -517,5 +520,14 @@
 <!-- Form Validation JS -->
 {{-- <script src="{{ asset('backend/assets/libs/parsleyjs/parsley.min.js') }}"></script> --}}
 {{-- <script src="{{ asset('backend/assets/js/pages/form-validation.init.js') }}"></script> --}}
+
+<!-- jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- input mask -->
+<script src="{{ asset('backend/assets/js/pages/input-mask.js')}}"></script>
+
+<!-- address dropdown --> select2
+<script src="{{ asset('backend/assets/js/pages/places_api.js')}}"></script>
 
 @endsection

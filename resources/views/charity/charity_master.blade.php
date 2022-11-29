@@ -59,9 +59,6 @@
     <!-- App Css-->
     <link href="{{ asset('backend/assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
 
-    <!-- JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
 </head>
 
 <body data-topbar="dark">
@@ -107,6 +104,10 @@
 
     <!-- Right bar overlay-->
     <div class="rightbar-overlay"></div>
+
+    <!-- JQuery Address Dropdown -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{ asset('backend/assets/js/pages/places_api.js')}}"></script>
 
     <!-- JAVASCRIPT -->
     <script src="{{ asset('backend/assets/libs/jquery/jquery.min.js') }}"></script>
@@ -226,7 +227,6 @@
 
     <!-- form mask init -->
     <script src="{{ asset('backend/assets/js/pages/form-mask.init.js') }}"></script>
-
     <script src="{{ asset('backend/assets/js/pages/form-advanced.init.js') }}"></script>
 
     <script>

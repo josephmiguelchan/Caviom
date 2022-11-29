@@ -15,8 +15,11 @@
     <link href="{{ asset('backend/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- Toastr Css-->
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/assets/libs/toastr/build/toastr.min.css') }}">
+    <!-- Select Css-->
+    <link href="{{ asset('backend/assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
     <!-- App Css-->
     <link href="{{ asset('backend/assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+
 
 </head>
 
@@ -89,7 +92,6 @@
     </div>
     <!-- end Main Content -->
 
-
     <!-- JAVASCRIPT -->
     <script src="{{ asset('backend/assets/libs/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -110,6 +112,10 @@
 
     <!-- form mask init -->
     <script src="{{ asset('backend/assets/js/pages/form-mask.init.js') }}"></script>
+
+    <!-- Select form js -->
+    <script src="{{ asset('backend/assets/libs/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/pages/form-advanced.init.js') }}"></script>
 
     <script>
         @if (Session::has('message'))
