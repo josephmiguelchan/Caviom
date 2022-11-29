@@ -27,7 +27,7 @@
                         <a target="_blank" href="{{ asset('frontend/assets/img/CAVIOM_User Manual.pdf') }}">User Manual</a>
                     </li>
                     <li><i class="bx bx-chevron-right"></i>
-                        <a target="_blank" href="{{ asset('frontend/assets/img/Caviom - User Access Control List.pdf') }}">
+                        <a target="_blank" href="{{ asset('frontend/assets/img/Access_List.pdf') }}">
                             User Access Control List
                         </a>
                     </li>
