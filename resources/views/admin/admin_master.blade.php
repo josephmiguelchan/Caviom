@@ -105,6 +105,10 @@
     <!-- Right bar overlay-->
     <div class="rightbar-overlay"></div>
 
+    <!-- JQuery Address Dropdown -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{ asset('backend/assets/js/pages/places_api.js')}}"></script>
+
     <!-- JAVASCRIPT -->
     <script src="{{ asset('backend/assets/libs/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
