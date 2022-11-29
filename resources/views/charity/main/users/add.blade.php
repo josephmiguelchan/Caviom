@@ -63,7 +63,6 @@
                                         </button>
                                         <select class="form-control select2-search-disable" name="role" id="role">
                                             <option selected disabled>Select an Account Type</option>
-                                            <option value="Charity Admin" {{ old('role') == 'Charity Admin' ? 'selected' : ''}}>Charity Admin ( 2000 Star Tokens )</option>
                                             <option value="Charity Associate" {{ old('role') == 'Charity Associate' ? 'selected' : ''}}>Charity Associate ( 1500 Star Tokens )</option>
                                         </select>
                                         @error('role')
@@ -355,8 +354,10 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="region" class="form-label">*Region</label>
-                                        <input class="form-control" name="region" id="region" type="text"
-                                            value="{{old('region')}}" placeholder="@unless($errors->any())Enter region @endunless">
+                                        <input type="hidden" name="region" value=""/>
+                                        <select class="form-control select2" id="region" required>
+                                            <option disabled selected>Select Region</option>
+                                        </select>
                                         @error('region')
                                             <div class="text-danger small">
                                                 {{ $message }}
@@ -369,8 +370,10 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="province" class="form-label">*Province</label>
-                                        <input class="form-control" name="province" id="province" type="text"
-                                            value="{{old('province')}}" placeholder="@unless($errors->any())Enter province @endunless">
+                                        <input type="hidden" name="province" value=""/>
+                                        <select class="form-control select2" id="province" required>
+                                            <option value="" disabled selected>Select Province</option>
+                                        </select>
                                         @error('province')
                                             <div class="text-danger small">
                                                 {{ $message }}
@@ -383,8 +386,10 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="city" class="form-label">*City / Municipality</label>
-                                        <input class="form-control" name="city" id="city" type="text"
-                                            value="{{old('city')}}" placeholder="@unless($errors->any())Enter city @endunless">
+                                        <input type="hidden" name="city" value=""/>
+                                        <select class="form-control select2" id="city" required>
+                                            <option value="" disabled selected>Select City</option>
+                                        </select>
                                         @error('city')
                                             <div class="text-danger small">
                                                 {{ $message }}
@@ -399,8 +404,10 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="barangay" class="form-label">*Barangay</label>
-                                        <input class="form-control" name="barangay" id="barangay" type="text"
-                                            value="{{old('barangay')}}" placeholder="@unless($errors->any())Enter barangay @endunless">
+                                        <input type="hidden" name="barangay" value=""/>
+                                        <select class="form-control select2" id="barangay" required>
+                                            <option value="" disabled selected>Select Barangay</option>
+                                        </select>
                                         @error('barangay')
                                             <div class="text-danger small">
                                                 {{ $message }}

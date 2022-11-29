@@ -51,7 +51,7 @@ class UserController extends Controller
     public function StoreUser(Request $request)
     {
         $request->validate([
-            'role' => ['required', Rule::in(['Charity Admin', 'Charity Associate'])],
+            'role' => ['required', Rule::in(['Charity Associate'])],
         ], [
             // 'role.regex' => 'The role must only be either Charity Admin or Charity Associate',
         ]);
@@ -59,13 +59,11 @@ class UserController extends Controller
 
         # Retrieve role then set the cost for validation of Star Tokens
         $cost = 0;
-        if ($request->role == 'Charity Admin') {
-            $cost = 2000;
-        } elseif ($request->role == 'Charity Associate') {
+        if ($request->role == 'Charity Associate') {
             $cost = 1500;
         } else {
             $toastr = array(
-                'message' => 'The User Role must only be either Charity Admin or Charity Associate.',
+                'message' => 'The User Role must only be Charity Associate.',
                 'alert-type' => 'error'
             );
             return redirect()->back()->with($toastr);
