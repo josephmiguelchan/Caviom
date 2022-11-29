@@ -219,7 +219,10 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="region" class="form-label">*Region</label>
-                                        <input class="form-control" name="region" id="region" type="text" value="{{ old('region') }}" required>
+                                        <input type="hidden" name="region" value=""/>
+                                        <select class="form-control select2" id="region" required>
+                                            <option disabled selected>Select Region</option>
+                                        </select>
                                         @error('region')
                                             <div class="text-danger">
                                                 {{ $message }}
@@ -232,7 +235,10 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="province" class="form-label">*Province</label>
-                                        <input class="form-control" name="province" id="province" type="text" value="{{ old('province') }}" required>
+                                        <input type="hidden" name="province" value=""/>
+                                        <select class="form-control select2" id="province" required>
+                                            <option value="" disabled selected>Select Province</option>
+                                        </select>
                                         @error('province')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -247,7 +253,10 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label for="city" class="form-label">*City</label>
-                                        <input class="form-control" name="city" id="city" type="text" value="{{ old('city') }}">
+                                        <input type="hidden" name="city" value=""/>
+                                        <select class="form-control select2" id="city" required>
+                                            <option value="" disabled selected>Select City</option>
+                                        </select>
                                         @error('city')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -260,7 +269,10 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label for="barangay" class="form-label">*Barangay</label>
-                                        <input class="form-control" name="barangay" id="barangay" type="text" value="{{ old('barangay') }}">
+                                        <input type="hidden" name="barangay" value=""/>
+                                        <select class="form-control select2" id="barangay" required>
+                                            <option value="" disabled selected>Select Barangay</option>
+                                        </select>
                                         @error('barangay')
                                             <div class="text-danger">
                                                 {{ $message }}
