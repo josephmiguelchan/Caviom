@@ -30,6 +30,9 @@ $(function () {
         // SAVE it to the HIDDEN input
         $('input[name=region]').val(selected_region).text();
 
+        //SET it to the LOCALSTORAGE
+        // localStorage.setItem('old_region', selected_region)
+
         // SEND [Region] CODE as parameter
         var region_code = $(this).val();
 
@@ -81,6 +84,12 @@ $(function () {
 
                 //SORT data
                 data.sort(function (a, b) { return a.name.localeCompare(b.name); });
+
+                // var old_region_value = localStorage.getItem('old_region');
+
+                // if (old_region_value != null) {
+                //     $('#region').append('<option value="' + old_region_value + '" Selected Disabled>' + old_region_value + '</option>');
+                // }
 
                 //LOOP to display in dropdown
                 data.forEach(element => {

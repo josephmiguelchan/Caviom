@@ -238,8 +238,8 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="region" class="form-label">*Region</label>
-                                                <input type="hidden" name="region"/>
-                                                <select class="form-control select2" id="region" value="{{ old('region') }}" required>
+                                                <input type="hidden" name="region" value="{{ old('region') }}"/>
+                                                <select class="form-control select2" id="region" required>
                                                     <option value="" disabled selected>Select Region</option>
                                                 </select>
                                                 @error('region')
