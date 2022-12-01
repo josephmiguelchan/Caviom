@@ -30,6 +30,28 @@
         </div>
         <!-- end page title -->
 
+        {{-- @if($User->role != "Charity Admin")
+        <!-- Delete User Modal -->
+        <div id="deleteModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>You are about to delete this Charity User's account. This action
+                            will not refund your Star Tokens and will notify all other users in your Charitable Organization. Continue?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                        <a href="{{route('charity.users.delete', $User->code)}}" class="btn btn-danger waves-effect waves-light w-sm">Yes</a>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+        @endif --}}
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -118,7 +140,7 @@
                                 <div class="col-md-12">
                                     <div class="btn-group" role="group" aria-label="Actions">
 
-                                        @if($User->status == "Pending Unlock")
+                                        {{-- @if($User->status == "Pending Unlock")
 
                                             <form method="POST" action="{{ route('charity.users.resend', $User->code) }}" class="form-horizontal">
                                                 @csrf
@@ -138,11 +160,17 @@
                                                 </button>
                                             </form>
 
-                                        @endif
+                                        @endif --}}
 
-                                        <a href="{{route('admin.charities.users.edit', $User->code)}}" class="btn w-lg btn-outline-dark waves-effect waves-light mx-1" title="Resend Verification Link to Email">
+                                        <a href="{{route('admin.charities.users.edit', $User->code)}}" class="btn w-lg btn-dark waves-effect waves-light mx-1" title="Resend Verification Link to Email">
                                             <i class="mdi mdi-pencil"></i> Edit
                                         </a>
+
+                                        {{-- @if($User->role != "Charity Admin")
+                                            <a type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn w-lg btn-outline-danger waves-effect waves-light">
+                                                <i class="mdi mdi-trash-can-outline"></i> Delete Account
+                                            </a>
+                                        @endif --}}
 
                                     </div>
                                 </div>

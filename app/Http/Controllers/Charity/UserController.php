@@ -291,7 +291,7 @@ class UserController extends Controller
         $lname = $User->info->last_name;
         $email = $User->email;
         $User->delete();
-        Address::findOrFail($address_id)->delete();
+        // Address::findOrFail($address_id)->delete();
 
 
         # Send Notification
@@ -302,7 +302,7 @@ class UserController extends Controller
             $notif->user_id = $user->id;
             $notif->category = 'User';
             $notif->subject = 'Removed Pending Account';
-            $notif->message = 'The pending ' . Auth::user()->role . ' account [' . $email . '] has been deleted permanently.';
+            $notif->message = 'The ' . Auth::user()->role . ' account of [' . $email . '] has been deleted.';
             $notif->icon = 'mdi mdi-account-minus';
             $notif->color = 'danger';
             $notif->created_at = Carbon::now();

@@ -27,8 +27,8 @@
         </div>
         <!-- end page title -->
 
-        @if(Auth::user()->role == "Charity Admin" and $User->status == "Pending Unlock")
 
+        @if(Auth::user()->role == "Charity Admin" and $User->role != "Charity Admin")
         <!-- Delete User Modal -->
         <div id="deleteModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
             <div class="modal-dialog modal-dialog-centered">
@@ -38,7 +38,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>You are about to permanently delete this Pending User's account. This action
+                        <p>You are about to delete this Charity User's account. This action
                             will not refund your Star Tokens and will notify all other users in your Charitable Organization. Continue?</p>
                     </div>
                     <div class="modal-footer">
@@ -135,11 +135,10 @@
                                 <div class="col-md-12">
                                     <div class="btn-group" role="group" aria-label="Actions">
 
-                                        @if(Auth::user()->role == "Charity Admin" and $User->status == "Pending Unlock")
+                                        @if(Auth::user()->role == "Charity Admin" and $User->role != "Charity Admin")
                                             <a type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn w-lg btn-outline-danger waves-effect waves-light">
                                                 <i class="mdi mdi-trash-can-outline"></i> Delete Account
                                             </a>
-
                                         @endif
 
                                     </div>
