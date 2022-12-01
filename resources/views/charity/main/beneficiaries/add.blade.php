@@ -46,7 +46,7 @@
 
                         <hr class="my-3">
 
-                        <form method="POST" action="{{ route('charity.beneficiaries.store') }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('charity.beneficiaries.store') }}" enctype="multipart/form-data" novalidate>
                             @csrf
                             <h2 class="my-3 mt-5" style="color: #62896d" ><strong>I. Indentifying Information</strong></h2>
                             <!--Basic Info -->

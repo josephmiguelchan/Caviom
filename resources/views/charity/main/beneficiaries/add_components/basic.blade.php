@@ -7,9 +7,9 @@
             <label for="nick_name" class="form-label">*Nickname</label>
             <input type="text" class="form-control" name="nick_name" id="nick_name" value="{{ old('nick_name') }}" required>
             @error('nick_name')
-                <div class="text-danger"><small>
-                    <small>{{ $message }}</small>
-                </small></div>
+                <div class="text-danger">
+                    {{ $message }}
+                </div>
             @enderror
         </div>
     </div>
@@ -26,9 +26,9 @@
             </label>
             <input class="form-control" name="profile_photo" id="profile_photo" type="file" value="{{ old('profile_photo') }}">
             @error('profile_photo')
-                <div class="text-danger"><small>
+                <div class="text-danger">
                     {{ $message }}
-                </small></div>
+                </div>
             @enderror
         </div>
     </div>
@@ -42,9 +42,9 @@
             <label for="first_name" class="form-label">*First Name</label>
             <input type="text" class="form-control" name="first_name" id="first_name" value="{{ old('first_name') }}" required>
             @error('first_name')
-                <div class="text-danger"><small>
+                <div class="text-danger">
                     {{ $message }}
-                </small></div>
+                </div>
             @enderror
         </div>
     </div>
@@ -55,9 +55,9 @@
             <label for="middle_name" class="form-label">Middle Name</label>
             <input type="text" class="form-control" name="middle_name" id="middle_name" value="{{ old('middle_name') }}">
             @error('middle_name')
-                <div class="text-danger"><small>
+                <div class="text-danger">
                     {{ $message }}
-                </small></div>
+                </div>
             @enderror
         </div>
     </div>
@@ -68,9 +68,9 @@
             <label for="last_name" class="form-label">*Last Name</label>
             <input type="text" class="form-control" name="last_name" id="last_name" value="{{ old('last_name') }}" required>
             @error('last_name')
-                <div class="text-danger"><small>
+                <div class="text-danger">
                     {{ $message }}
-                </small></div>
+                </div>
             @enderror
         </div>
     </div>
@@ -85,9 +85,9 @@
             <label for="birth_date" class="form-label">*Date of Birth</label>
             <input type="date" class="form-control" name="birth_date" id="birth_date" value="{{ old('birth_date') }}" min="{{ Carbon\Carbon::now()->subYears(110)->toDateString() }}" required>
             @error('birth_date')
-                <div class="text-danger"><small>
+                <div class="text-danger">
                     {{ $message }}
-                </small></div>
+                </div>
             @enderror
         </div>
     </div>
@@ -98,9 +98,9 @@
             <label for="birth_place" class="form-label">Place of Birth</label>
             <input type="text" class="form-control" name="birth_place" id="birth_place" value="{{ old('birth_place') }}">
             @error('birth_place')
-                <div class="text-danger"><small>
+                <div class="text-danger">
                     {{ $message }}
-                </small></div>
+                </div>
             @enderror
         </div>
     </div>
@@ -111,9 +111,9 @@
             <label for="religion" class="form-label">Religion</label>
             <input type="text" class="form-control" name="religion" id="religion" value="{{ old('religion') }}">
             @error('religion')
-                <div class="text-danger"><small>
+                <div class="text-danger">
                     {{ $message }}
-                </small></div>
+                </div>
             @enderror
         </div>
     </div>
