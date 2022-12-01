@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class CharityController extends Controller
 {
@@ -269,5 +270,66 @@ class CharityController extends Controller
         }
 
         return redirect()->back()->with($toastr);
+    }
+
+    public function updateUsername(Request $request)
+    {
+        # Prevent from updating username if user has already changed it within 6 months.
+        $allowed_date = Carbon::parse(Auth::user()->username_changed_at)->addMonths(6)->toDateTimeString();
+
+        if (Auth::user()->username_changed_at and Carbon::now() < $allowed_date) {
+            $toastr = array(
+                'message' => 'Sorry, you may only change your username again after ' . Carbon::parse($allowed_date)->toDayDateTimeString() . ' .',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->back()->with($toastr);
+        }
+
+        $request->validate([
+            'username' => [
+                'alpha_dash', 'string', 'min:6', 'max:20',
+                Rule::notIn([Auth::user()->username]),
+                Rule::unique('users')->ignore(Auth::user())
+            ],
+        ], [
+            'username.not_in' => 'Your new username should be different from your old username.',
+        ]);
+
+        $user = User::find(Auth::id());
+        $user->username = $request->username;
+        $user->username_changed_at = now();
+        $user->touch();
+        $user->save();
+
+        # Create a Notification in-app
+        $notif = new Notification;
+        $notif->code = Str::uuid()->toString();
+        $notif->user_id = $user->id;
+        $notif->category = 'User';
+        $notif->subject = 'Change Username';
+        $notif->message = 'You have successfully updated your own username on ' . Carbon::now()->toDayDateTimeString() . '.';
+        $notif->icon = 'mdi mdi-account-edit-outline';
+        $notif->color = 'warning';
+        $notif->created_at = Carbon::now();
+        $notif->save();
+
+        # Create Audit Logs Record but with the Password being redacted
+        $log = new AuditLog;
+        $log->user_id = $user->id;
+        $log->action_type = 'UPDATE';
+        $log->charitable_organization_id = null;
+        $log->table_name = 'User';
+        $log->record_id = $user->code;
+        $log->action = $user->role . ' [' . $user->info->first_name . ' ' . $user->info->last_name . '] updated their own username.';
+        $log->performed_at = Carbon::now();
+        $log->save();
+
+        $toastr = array(
+            'message' => 'Username updated successfully. You may now login using your new username.',
+            'alert-type' => 'success',
+        );
+
+        return to_route('user.profile')->with($toastr);
     }
 }

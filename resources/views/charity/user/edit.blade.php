@@ -30,6 +30,34 @@
         </div>
         <!-- end page title -->
 
+        @php
+            $isNotQualified = (Auth::user()->username_changed_at and Carbon\Carbon::now() < Carbon\Carbon::parse(Auth::user()->username_changed_at)->addMonths(6)->toDateTimeString())
+        @endphp
+
+        @unless ($isNotQualified)
+        <!-- Confirm Modal -->
+        <div id="confirm_modal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel"><i class="mdi mdi-alert-outline me-2"></i> Warning</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            You are about to change your username, which will be your new login credential. You must wait for 6 months before
+                            you can change this again. Continue?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light waves-effect w-sm" data-bs-dismiss="modal">No</button>
+                        <button type="submit" form="changeUsername" class="btn btn-warning waves-effect waves-light w-sm">Yes</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+        @endunless
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -88,11 +116,56 @@
                             </dl>
                             <hr class="my-3">
 
-                            <form method="POST" action="{{ route('user.profile.store') }}" enctype="multipart/form-data"
-                                class="form-horizontal">
+                            <div class="row my-3">
+                                <form id="changeUsername" method="POST" action="{{ route('user.username.store') }}" class="form-horizontal">
+                                    @csrf
+
+                                    <h2 class="fw-bold">
+                                        Change Username
+                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Tip" title="You can change your username again starting
+                                            {{ Carbon\Carbon::parse(Auth::user()->username_changed_at)->addMonths(6)->toDayDateTimeString() }}.">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
+                                    </h2>
+                                    <p class="fst-italic small">*You can only change your username once every 6 months.</p>
+
+                                    <!-- Username -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="username">@</span>
+                                                </div>
+                                                <input type="username" class="form-control" name="username" id="username" required
+                                                    value="{{ Auth::user()->username }}" aria-describedby="username" {{ $isNotQualified ? 'disabled' : '' }}>
+                                            </div>
+
+                                            @error('username')
+                                                <div class="text-danger small">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <ul class="mb-0 float-end">
+                                            <button type="button" class="btn btn-dark w-xl btn-rounded waves-effect waves-light float-end"
+                                                {{ $isNotQualified ? 'disabled' : '' }} data-bs-toggle="modal" data-bs-target="#confirm_modal"> Save
+                                            </button>
+                                        </ul>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <hr class="mt-3">
+
+                            <form method="POST" action="{{ route('user.profile.store') }}" enctype="multipart/form-data" class="form-horizontal">
                                 @csrf
 
-                                <h4 class="mt-4" style="color: #62896d">Personal Information</h4>
+                                <h2 class="fw-bold mt-4">Edit Profile</h2>
+
+                                <h4 class="mt-3" style="color: #62896d">Personal Information</h4>
 
                                 <!-- Profile Photo -->
                                 <div class="form-group mb-3 row">

@@ -87,7 +87,8 @@
                             </dl>
                             <hr class="my-3">
                         </div>
-                        <div class="row p-4">
+
+                        <div class="row px-5 mt-3">
                             <div>
                                 <div class="alert alert-primary alert-dismissible fade show p-4" role="alert">
                                     <p class="font-size-15 mb-1"><strong>Your password must contain at least:</strong></p>
@@ -100,7 +101,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             </div>
-                            <form method="POST" action="{{ route('user.password.store') }}" class="form-horizontal">
+                            <form method="POST" action="{{ route('user.password.store') }}" class="form-horizontal p-3">
                                 @csrf
                                 <!-- Current Password -->
                                 <div class="form-group mb-3 row">

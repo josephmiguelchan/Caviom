@@ -74,6 +74,8 @@ Route::controller(CharityController::class)->middleware(['auth', 'verified', 'pr
         Route::get('/change', 'editPassword')->name('user.password.change');
         Route::post('/store', 'storePassword')->name('user.password.store');
     });
+    # Change Username
+    Route::post('/username/store', 'updateUsername')->name('user.username.store');
 });
 
 # Logout

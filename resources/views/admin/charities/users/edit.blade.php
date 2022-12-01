@@ -145,9 +145,8 @@
                                     <!-- Username -->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="text" class="form-label">*Username</label>
-                                            <input type="username" class="form-control" name="username" id="username"
-                                                value="{{ empty($errors->has('username'))?old('username',$User->username):$User->username}}">
+                                            <label for="username" class="form-label">*Username</label>
+                                            <input type="text" class="form-control" id="username" disabled readonly value="{{ $User->username }}">
                                             @error('username')
                                                 <div class="text-danger">
                                                     {{ $message }}

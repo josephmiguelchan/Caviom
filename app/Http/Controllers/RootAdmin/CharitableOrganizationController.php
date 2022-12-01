@@ -233,7 +233,7 @@ class CharitableOrganizationController extends Controller
 
         # Update Record
         $User->email = $request->email;
-        $User->username = $request->username;
+        // $User->username = $request->username;
 
         # If New Password field has value
         if ($request->password) {
@@ -244,13 +244,13 @@ class CharitableOrganizationController extends Controller
             $User->password = Hash::make($request->password);
         }
 
-        # Make the username field as nullable as long as the account status is Pending Unlock.
+        /*# Make the username field as nullable as long as the account status is Pending Unlock.
         if ($request->username) {
             $request->validate([
                 'username' => ['alpha_dash', 'string', 'min:6', 'max:20',  Rule::unique('users')->ignore($User)],
             ]);
             $User->username = $request->username;
-        }
+        }*/
 
         # Set the remarks MESSAGE based on the value of user's remarks from Notifiers table.
         if ($request->remarks == null) {
@@ -325,10 +325,5 @@ class CharitableOrganizationController extends Controller
         );
 
         return to_route('admin.charities.users.view', $code)->with($toastr);
-    }
-
-
-    public function CharityFeaturedProject()
-    {
     }
 }

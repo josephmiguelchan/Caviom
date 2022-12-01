@@ -357,7 +357,7 @@
                                             <label for="username" class="form-label">
                                                 *Username (Permanent)
                                                 <span data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="You cannot change your username once you create one. Make sure it is appropriate."
+                                                    title="You can change your username again only once after 6 months. Make sure it is appropriate."
                                                     data-bs-original-title="yes">
                                                     <i class="mdi mdi-information-outline"></i>
                                                 </span>
