@@ -457,7 +457,7 @@ class ProjectController extends Controller
         $task->delete();
 
         # Send notification to task assigned to if the task is not yet finished
-        if ($task->status != 'Completed') {
+        if ($task->status != 'Completed' and $task->AssignedTo != null) {
             $notif = new Notification;
             $notif->code = Str::uuid()->toString();
             $notif->user_id = $task->assigned_to;

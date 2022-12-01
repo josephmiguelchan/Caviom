@@ -24,21 +24,33 @@
             @foreach ($tasks as $key => $item)
             <tr>
                 <td>{{$key+1}}</td>
-            
+
                 <td>
                     @if ($item->status == 'Pending')
                     <span class="badge badge-soft-warning">Pending</span> {{ Str::limit($item->title,20)}}
-                    @elseif($item->status == 'Completed')         
+                    @elseif($item->status == 'Completed')
                     <span class="badge badge-soft-success">Completed</span> {{Str::limit($item->title,20)}}
-                    @elseif($item->status == 'In-Progress')         
+                    @elseif($item->status == 'In-Progress')
                     <span class="badge badge-soft-primary">In-Progress</span> {{Str::limit($item->title,20)}}
                     @endif
-            
+
                 </td>
-                <td>{{(!empty($item->note))? Str::limit($item->note, 10):'---'}}    
+                <td>{{(!empty($item->note))? Str::limit($item->note, 10):'---'}}
                 </td>
-                <td><a target="_blank" href="{{route('charity.users.view',$item->AssignedBy->code)}}">{{$item->AssignedBy->username}}</a></td>
-                <td><a target="_blank" href="{{route('charity.users.view',$item->AssignedTo->code)}}">{{$item->AssignedTo->username}}</a></td>
+                <td>
+                    @unless ($item->AssignedBy == null)
+                    <a target="_blank" href="{{route('charity.users.view',$item->AssignedBy->code)}}">{{$item->AssignedBy->username}}</a>
+                    @else
+                    <span class="text-muted">[ Deleted User ]</span>
+                    @endunless
+                </td>
+                <td>
+                    @unless ($item->AssignedTo == null)
+                    <a target="_blank" href="{{route('charity.users.view',$item->AssignedTo->code)}}">{{$item->AssignedTo->username}}</a>
+                    @else
+                    <span class="text-muted">[ Deleted User ]</span>
+                    @endunless
+                </td>
                 <td>{{$item->deadline}}</td>
                 <td>{{(!empty($item->updated_at))? Carbon\Carbon::parse($item->updated_at)->isoFormat('LL (h:mm A)'):'---'}}</td>
                 <td>

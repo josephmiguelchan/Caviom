@@ -62,9 +62,13 @@
                                     <dt class="col-md-6">{{ Carbon\Carbon::parse($volunteer->updated_at)->diffForHumans() }}</dt>
                                     <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated by:</strong></h4></dt>
                                     <dt class="col-md-6">
+                                        @unless ($volunteer->lastModifiedBy == null)
                                         <a href="{{ ($volunteer->last_modified_by_id)?route('charity.users.view', $volunteer->lastModifiedBy->code):'#' }}">
                                             {{ ($volunteer->lastModifiedBy)? $volunteer->lastModifiedBy->username:'---' }}
                                         </a>
+                                        @else()
+                                        <span class="text-muted">[ Deleted User ]</span>
+                                        @endunless
                                     </dt>
                                 </dl>
                                 <hr class="my-3">

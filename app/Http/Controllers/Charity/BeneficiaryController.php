@@ -260,7 +260,7 @@ class BeneficiaryController extends Controller
             $presentAddress = Address::where('id', $beneficiary->present_address_id)->firstOrFail();
             $permanentAddress = Address::where('id', $beneficiary->permanent_address_id)->firstOrFail();
             $provincialAddress = Address::where('id', $beneficiary->provincial_address_id)->firstOrFail();
-            $lastModifiedBy = User::with('info')->where('id', $beneficiary->last_modified_by_id)->firstOrFail();
+            // $lastModifiedBy = User::with('info')->where('id', $beneficiary->last_modified_by_id)->firstOrFail();
             $bgInfo = BeneficiaryBgInfo::where('beneficiary_id', $beneficiary->id)->firstOrFail();
 
             return view('charity.main.beneficiaries.view', compact(
@@ -268,7 +268,7 @@ class BeneficiaryController extends Controller
                 'presentAddress',
                 'permanentAddress',
                 'provincialAddress',
-                'lastModifiedBy',
+                // 'lastModifiedBy',
                 'bgInfo'
             ));
         };

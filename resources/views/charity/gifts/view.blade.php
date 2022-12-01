@@ -79,9 +79,13 @@
                             <dl class="row mb-0 col-lg-6 my-5">
                                 <dt class="col-md-6"><h4 class="font-size-15 float-end"><strong>Last Downloaded by</strong></h4></dt>
                                 <dt class="col-md-6">
+                                    @unless ($GiftGivings->downloadedBy == null)
                                     <a href="{{ (!empty($GiftGivings->last_downloaded_by))?route('charity.users.view', $GiftGivings->downloadedBy->code):'#' }}">
                                         {{ (!empty($GiftGivings->downloadedBy->username))? $GiftGivings->downloadedBy->username:'---' }}
                                     </a>
+                                    @else
+                                    <span class="text-muted">[ Deleted User ]</span>
+                                    @endunless
                                 </dt>
                             </dl>
                             <dl class="row mb-0 col-lg-6 mt-5">

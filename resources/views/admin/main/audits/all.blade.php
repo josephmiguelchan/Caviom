@@ -39,15 +39,19 @@
 
                             <dt class="col-sm-3">User</dt>
                             <dd class="col-sm-9">
-                                @if ($item->getuser->role != 'Root Admin')
-                                <a href="{{route('admin.charities.users.view', $item->getuser->code)}}">
-                                    {{$item->getuser->info->first_name . ' ' . $item->getuser->info->last_name}}
-                                </a>
+                                @unless ($item->getuser == null)
+                                    @if ($item->getuser->role != 'Root Admin')
+                                    <a href="{{route('admin.charities.users.view', $item->getuser->code)}}">
+                                        {{$item->getuser->info->first_name . ' ' . $item->getuser->info->last_name}}
+                                    </a>
+                                    @else
+                                    <a href="{{route('admin.users.view', $item->getuser->code)}}">
+                                        {{$item->getuser->info->first_name . ' ' . $item->getuser->info->last_name}}
+                                    </a>
+                                    @endif
                                 @else
-                                <a href="{{route('admin.users.view', $item->getuser->code)}}">
-                                    {{$item->getuser->info->first_name . ' ' . $item->getuser->info->last_name}}
-                                </a>
-                                @endif
+                                <span class="text-muted">[ Deleted User ]</span>
+                                @endunless
                             </dd>
 
                             <dt class="col-sm-3">Resource</dt>
@@ -98,11 +102,11 @@
                             <tr>
                                 <td>{{$key+1}}</td>
                                 <td>{{$item->action_type}}</td>
-                                <td>{{empty(!$item->charitable_organization_id)?$item->charity->name:'---'}}</td>
-                                <td>{{ Carbon\Carbon::parse($item->performed_at)->toDateTimeString() }}</td>
-                                <td>{{'@'.$item->getuser->username}}</td>
-                                <td>{{empty(!$item->table_name)?$item->table_name:'---'}}</td>
-                                <td>{{empty(!$item->record_id)?$item->record_id:'---'}}</td>
+                                <td>{{($item->charitable_organization_id)?$item->charity->name:'---'}}</td>
+                                <td>{{Carbon\Carbon::parse($item->performed_at)->toDateTimeString()}}</td>
+                                <td>{{($item->getuser != null) ? '@'.$item->getuser->username : '---'}}</td>
+                                <td>{{($item->table_name) ? $item->table_name:'---'}}</td>
+                                <td>{{($item->record_id) ? $item->record_id:'---'}}</td>
                                 <td>
                                     <button class="btn btn-sm btn-outline-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_view_{{$key}}">
                                         <i class="mdi mdi-open-in-new"></i> View

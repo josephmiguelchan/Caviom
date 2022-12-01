@@ -122,7 +122,15 @@
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Updated at:</strong></h4></dt>
                                 <dt class="col-md-6">{{ Carbon\Carbon::parse($beneficiary->updated_at)->diffForHumans() }}</dt>
                                 <dt class="col-md-6"><h4 class="font-size-15"><strong>Last Modified by: </strong></h4></dt>
-                                <dt class="col-md-6">{{ $lastModifiedBy->info->last_name.', '.$lastModifiedBy->info->first_name.' '.$lastModifiedBy->info->middle_name}}</dt>
+                                <dt class="col-md-6">
+                                    @unless ($beneficiary->lastModifiedBy == null)
+                                    <a href="{{ ($beneficiary->last_modified_by_id) ? route('charity.users.view', $beneficiary->lastModifiedBy->code) : '#' }}">
+                                        {{ ($beneficiary->lastModifiedBy) ? $beneficiary->lastModifiedBy->username:'---' }}
+                                    </a>
+                                    @else
+                                    <span class="text-muted">[ Deleted User ]</span>
+                                    @endunless
+                                </dt>
                             </dl>
                             <!--End Dates -->
 

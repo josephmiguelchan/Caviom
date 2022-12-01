@@ -55,32 +55,32 @@ class Beneficiary extends Model
         'last_school_year_attended' => 'encrypted',
         'contact_no' => 'encrypted',
         'prepared_by' => 'encrypted',
-        'noted_by' =>'encrypted',
+        'noted_by' => 'encrypted',
 
         #Not Encrypted
-       /*
+        /*
           'category' =>
           'label' =>     */
     ];
 
     public function presentAddress()
     {
-        return $this->belongsTo(Address::class,'present_address_id');
+        return $this->belongsTo(Address::class, 'present_address_id');
     }
 
     public function permanentAddress()
     {
-        return $this->belongsTo(Address::class,'permanent_address_id','id');
+        return $this->belongsTo(Address::class, 'permanent_address_id', 'id');
     }
 
     public function provincialAddress()
     {
-        return $this->belongsTo(Address::class,'provincial_address_id','id');
+        return $this->belongsTo(Address::class, 'provincial_address_id', 'id');
     }
 
     public function charitableOrganization()
     {
-        return $this->belongsTo(CharitableOrganization::class,'charitable_organization_id', 'id');
+        return $this->belongsTo(CharitableOrganization::class, 'charitable_organization_id', 'id');
     }
 
     public function families()
@@ -90,7 +90,7 @@ class Beneficiary extends Model
 
     public function lastModifiedBy()
     {
-        return $this->hasOne(UserInfo::class, 'last_modified_by_id', 'id');
+        return $this->belongsTo(User::class, 'last_modified_by_id', 'id');
     }
 
     public function bg_info()

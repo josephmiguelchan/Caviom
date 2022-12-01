@@ -39,7 +39,15 @@
                             <dd class="col-sm-9">{{Carbon\Carbon::parse($item->performed_at)->isoFormat('MMM D, YYYY (h:mm A)') }}</dd>
 
                             <dt class="col-sm-3">User</dt>
-                            <dd class="col-sm-9"><a href="{{route('charity.users.view',$item->getuser->code)}}">{{$item->getuser->info->first_name . ' ' . $item->getuser->info->last_name}}</a></dd>
+                            <dd class="col-sm-9">
+                                @unless ($item->getuser == null)
+                                <a href="{{route('charity.users.view',$item->getuser->code)}}">
+                                    {{$item->getuser->info->first_name . ' ' . $item->getuser->info->last_name}}
+                                </a>
+                                @else
+                                <span class="text-muted">[ Deleted User ]</span>
+                                @endunless
+                            </dd>
 
                             <dt class="col-sm-3">Resource</dt>
                             <dd class="col-sm-9">{{empty(!$item->table_name)?$item->table_name:'---'}}</dd>
@@ -88,7 +96,7 @@
                         @foreach ($logs as $key => $item)
                             <tr>
                                 <td>{{$key + 1}}</td>
-                                <td>{{$item->getuser->username}}</td>
+                                <td>{{($item->getuser != null) ? '@'.$item->getuser->username : '---'}}</td>
                                 <td>{{$item->action_type}}</td>
                                 <td>{{ Carbon\Carbon::parse($item->performed_at)->toDateTimeString() }}</td>
 

@@ -53,14 +53,14 @@
 
                                             <!-- Edit note textarea should only be visible to whom the task is assigned to; otherwise, read only. -->
                                             <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Note:</strong></h4></dt>
-                                           
+
                                             <dt class="col-md-10 py-2">
                                                 <textarea class="form-control" placeholder="Enter notes for this task (optional)..."
                                                     maxlength="280" name="note" id="textarea" rows="5" {{ (Auth::user()->id != $task->assigned_to ) ? 'readonly' : '' }}>{{$task->note}}</textarea>
                                             </dt>
-                                     
 
-                                         
+
+
                                             <!-- Edit status dropdown should only be visible to whom the task is assigned to; otherwise, read only. -->
                                             <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Status:</strong></h4></dt>
                                             <dt class="col-md-10 py-2">
@@ -75,11 +75,19 @@
 
                                             <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Assigned by:</strong></h4></dt>
                                             <dt class="col-md-10 py-2">
+                                                @unless ($task->AssignedBy == null)
                                                 <a target="_blank" href="{{route('charity.users.view',$task->AssignedBy->code)}}">{{$task->AssignedBy->username}}</a>
+                                                @else()
+                                                <span class="text-muted">[ Deleted User ]</span>
+                                                @endunless
                                             </dt>
                                             <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Assigned To:</strong></h4></dt>
                                             <dt class="col-md-10 py-2">
+                                                @unless ($task->AssignedTo == null)
                                                 <a target="_blank" href="{{route('charity.users.view',$task->AssignedTo->code)}}">{{$task->AssignedTo->username}}</a>
+                                                @else()
+                                                <span class="text-muted">[ Deleted User ]</span>
+                                                @endunless
                                             </dt>
                                             <dt class="col-md-2 py-2"><h4 class="font-size-15"><strong>Deadline Set:</strong></h4></dt>
                                             <dt class="col-md-10 py-2">
@@ -115,7 +123,7 @@
                                         <i class="ri-delete-bin-line"></i> Delete
                                     </button>
                                     @endif
-                                  
+
                                     @if (  Auth::user()->id == $task->assigned_to )
                                     <!-- Edit/Save action should only be accessible to whom the task is assigned to -->
                                     <button type="submit" form="edit_form" class="btn btn-dark waves-effect waves-light w-xl mb-2">
