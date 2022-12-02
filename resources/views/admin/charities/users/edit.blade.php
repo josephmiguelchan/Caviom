@@ -125,7 +125,7 @@
                             <form method="POST" action="#" enctype="multipart/form-data" class="form-horizontal" id="edit_user">
                                 @csrf
 
-                                <h4 class="mt-4" style="color: #62896d">Account</h4>
+                                <h4 class="mt-4" style="color: #62896d">Account Credentials</h4>
 
                                 <div class="form-group mb-3 row">
                                     <!-- Email Add -->
@@ -178,44 +178,6 @@
                                             <input type="password" class="form-control" name="confirm_password" id="confirm_password"
                                                 value="">
                                             @error('confirm_password')
-                                                <div class="text-danger">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group mb-3 row">
-                                    <!-- Account Status -->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="account_status" class="form-label">*Account Status</label>
-                                            <select class="form-select" name="account_status" id="account_status" aria-label="Select status">
-                                                <option value="Pending Unlock" {{ ($User->status == 'Pending Unlock')? 'selected' : ''}} hidden>Pending Unlock</option>
-                                                <option value="Active" {{ ($User->status == 'Active')? 'selected' : ''}}>Active</option>
-                                                <option value="Inactive" {{ ($User->status == 'Inactive')? 'selected' : ''}}>Inactive</option>
-                                            </select>
-                                            @error('account_status')
-                                                <div class="text-danger">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <!-- Remarks -->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="remarks" class="form-label">*Remarks</label>
-                                            <select class="form-select select2-search-disable" name="remarks" id="remarks" aria-label="Select status">
-                                                <!-- Foreach notifiers remarks with category of Charity User -->
-                                                <option value="" {{($User->remarks == null)?'selected':''}}>None</option>
-                                                @foreach ($userremarks as $item)
-                                                <option value="{{$item->subject}}" {{ ($User->remarks == $item->subject )?'selected':''}}>{{ $item->subject }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('remarks')
                                                 <div class="text-danger">
                                                     {{ $message }}
                                                 </div>
@@ -436,6 +398,55 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="card border border-danger mt-4 p-3">
+                                    <div class="card-header bg-transparent border-danger">
+                                        <h5 class="my-0 text-danger"><i class="mdi mdi-account-alert me-3"></i>Account Active Status</h5>
+                                        <p class="mt-3 fst-italic"><i class="mdi mdi-information-outline"></i> Only Charity Associates can be deactivated.</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group row">
+                                            <!-- Account Status -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="account_status" class="form-label">*Account Status</label>
+                                                    <select class="form-select" name="account_status" id="account_status" aria-label="Select status"
+                                                        {{ $User->role == 'Charity Admin' ? 'disabled' : '' }}>
+                                                        <option value="Pending Unlock" {{ ($User->status == 'Pending Unlock')? 'selected' : ''}} hidden>Pending Unlock</option>
+                                                        <option value="Active" {{ ($User->status == 'Active')? 'selected' : ''}}>Active</option>
+                                                        <option value="Inactive" {{ ($User->status == 'Inactive')? 'selected' : ''}}>Inactive</option>
+                                                    </select>
+                                                    @error('account_status')
+                                                        <div class="text-danger">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <!-- Remarks -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="remarks" class="form-label">*Remarks</label>
+                                                    <select class="form-select select2-search-disable" name="remarks" id="remarks" aria-label="Select status"
+                                                        {{ $User->role == 'Charity Admin' ? 'disabled' : '' }}>
+                                                        <!-- Foreach notifiers remarks with category of Charity User -->
+                                                        <option value="" {{($User->remarks == null)?'selected':''}}>None</option>
+                                                        @foreach ($userremarks as $item)
+                                                        <option value="{{$item->subject}}" {{ ($User->remarks == $item->subject )?'selected':''}}>{{ $item->subject }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('remarks')
+                                                        <div class="text-danger">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="row p-5">
                                     <ul class="list-inline mb-0 mt-4 float-end">
                                         <input type="submit" class="btn btn-dark btn-rounded w-lg waves-effect waves-light float-end" style="background-color: #62896d;" value="Save">

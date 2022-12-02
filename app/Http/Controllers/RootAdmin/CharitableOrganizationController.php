@@ -252,25 +252,30 @@ class CharitableOrganizationController extends Controller
             $User->username = $request->username;
         }*/
 
-        # Set the remarks MESSAGE based on the value of user's remarks from Notifiers table.
-        if ($request->remarks == null) {
-            $User->remarks = null;
-            $User->remarks_message = null;
-        } else {
-            $User->remarks = $request->remarks;
-            $account_remarks_from_notifiers = Notifier::where('category', 'Charity User')->get();
-            foreach ($account_remarks_from_notifiers as $value) {
-                switch ($request->remarks) {
-                    case $value->subject:
-                        $User->remarks_message = $value->message;
-                        break;
+        # Root Admin can only deactivate / activate Charity Associate accounts (not Charity Admin)
+        if ($User->role != 'Charity Admin') {
+
+            # Set the remarks MESSAGE based on the value of user's remarks from Notifiers table.
+            if ($request->remarks == null) {
+                $User->remarks = null;
+                $User->remarks_message = null;
+            } else {
+                $User->remarks = $request->remarks;
+                $account_remarks_from_notifiers = Notifier::where('category', 'Charity User')->get();
+                foreach ($account_remarks_from_notifiers as $value) {
+                    switch ($request->remarks) {
+                        case $value->subject:
+                            $User->remarks_message = $value->message;
+                            break;
+                    }
                 }
             }
+
+            $User->status = $request->account_status;
         }
 
         # Continue Updating User
         $User->updated_at =  Carbon::now();
-        $User->status = $request->account_status;
         $User->update();
 
         $UserInfo = UserInfo::findOrFail($User->info->id);
