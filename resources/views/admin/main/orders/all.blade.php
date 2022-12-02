@@ -67,14 +67,16 @@
                                     <a href="{{ route('admin.orders.view',$item->code) }}" class="btn btn-sm btn-outline-primary waves-effect waves-light">
                                         <i class="mdi mdi-open-in-new"></i> View
                                     </a>
-                                    @if ($item->status != 'Pending')
 
-                                    <a class="btn btn-sm btn-outline-danger waves-effect waves-light" data-bs-target="#deleteModal_{{$key+1}}" data-bs-toggle="modal">
+                                    {{-- @if ($item->status != 'Pending') --}}
+
+                                    {{-- <a class="btn btn-sm btn-outline-danger waves-effect waves-light" data-bs-target="#deleteModal_{{$key+1}}" data-bs-toggle="modal">
                                         <i class="mdi mdi-trash-can"></i> Delete
-                                    </a>
+                                    </a> --}}
                                 </td>
-                                 <!-- Delete Order Modal -->
-                                 <div id="deleteModal_{{$key+1}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+
+                                {{-- <!-- Delete Order Modal -->
+                                <div id="deleteModal_{{$key+1}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -93,9 +95,9 @@
                                             </div>
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
-                                </div>
+                                </div> --}}
 
-                            @endif
+                            {{-- @endif --}}
                             </tr>
 
                             @endforeach
