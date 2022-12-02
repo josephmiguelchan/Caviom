@@ -527,7 +527,7 @@
 <!-- input mask -->
 <script src="{{ asset('backend/assets/js/pages/input-mask.js')}}"></script>
 
-<!-- address dropdown --> select2
+<!-- address dropdown -->
 <script src="{{ asset('backend/assets/js/pages/places_api.js')}}"></script>
 
 @endsection

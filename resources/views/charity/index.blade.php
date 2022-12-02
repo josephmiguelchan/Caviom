@@ -271,6 +271,7 @@
         </div>
         <!-- end row -->
 
+        @push('scripts_v2')
         <script type="text/javascript">
             $(document).ready(function() {
                 var options = {
@@ -341,6 +342,7 @@
                 (chart = new ApexCharts(document.querySelector("#column_chart_opportunities"), options)).render();
             });
         </script>
+        @endpush
     </div>
 </div>
 

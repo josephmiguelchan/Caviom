@@ -271,6 +271,7 @@
         @endif
     </script>
     @stack('scripts')
+    @stack('scripts_v2')
 </body>
 
 </html>
