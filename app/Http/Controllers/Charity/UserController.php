@@ -260,7 +260,7 @@ class UserController extends Controller
         # Retrieve first the selected Pending User
         $User = User::where('code', $code)->firstOrFail();
 
-        # User status must be pending or inactive to delete
+        /*# User status must be pending or inactive to delete
         if (!($User->status == "Pending Unlock" || $User->status == "Inactive")) {
 
             $toastr = array(
@@ -269,9 +269,9 @@ class UserController extends Controller
             );
 
             return redirect()->back()->with($toastr);
-        }
+        }*/
 
-        # Retrieved User must be in the same charitable org; Else, return back with error message
+        # Retrieved User must be in the same charitable org;
         if (!$User->charitable_organization_id == Auth::user()->charitable_organization_id) {
             $toastr = array(
                 'message' => 'Sorry, Users can only access their own charity records..',

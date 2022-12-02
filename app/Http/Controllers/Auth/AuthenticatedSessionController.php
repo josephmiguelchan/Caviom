@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\AuditLog;
+use App\Models\CharitableOrganization;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Carbon\Carbon;
@@ -35,14 +36,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        # Create Audit Log only if the user's status is active
-        if (Auth::user()->status == 'Active') {
+        if (Auth::user()->role == 'Root Admin') {
 
-            # Create Audit Logs record for User Login
+            # Create Audit Logs record for Root Admin User Login
             $log_in = new AuditLog();
             $log_in->user_id = Auth::user()->id;
             $log_in->action_type = 'LOGIN';
-            $log_in->charitable_organization_id = Auth::user()->charitable_organization_id;
+            $log_in->charitable_organization_id = null;
             $log_in->table_name = null;
             $log_in->record_id = null;
             $log_in->action = Auth::user()->role . ' has successfully logged in on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
@@ -51,7 +51,11 @@ class AuthenticatedSessionController extends Controller
             $log_in->save();
 
             User::find(Auth::id())->touch();
-        } elseif (Auth::user()->status == 'Inactive') {
+
+            return to_route('admin.panel');
+        }
+
+        if (Auth::user()->status == 'Inactive') {
 
             # Log out the user
             Auth::guard('web')->logout();
@@ -66,8 +70,39 @@ class AuthenticatedSessionController extends Controller
             return redirect()->back()->with($notification);
         }
 
-        if (Auth::user()->role == "Root Admin") {
-            return to_route('admin.panel');
+        if (Auth::user()->charity == null) {
+
+            # Log out the user
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            $notification = array(
+                'message' => 'Your Charitable Organization may have been deactivated or removed due to inactivity.',
+                'alert-type' => 'error',
+            );
+
+            return redirect()->back()->with($notification);
+        }
+
+        # Create Audit Log only if the user's status is active
+        if (Auth::user()->status == 'Active' and Auth::user()->role != 'Root Admin') {
+
+            # Create Audit Logs record for User Login
+            $log_in = new AuditLog();
+            $log_in->user_id = Auth::user()->id;
+            $log_in->action_type = 'LOGIN';
+            $log_in->charitable_organization_id = Auth::user()->charitable_organization_id;
+            $log_in->table_name = null;
+            $log_in->record_id = null;
+            $log_in->action = Auth::user()->role . ' has successfully logged in on ' . Carbon::now()->toDayDateTimeString() . ' using Client IP Address: ' .
+                $request->ip();
+            $log_in->performed_at = Carbon::now();
+            $log_in->save();
+
+            # Touch these table's updated_at fields so it will not be inactive..
+            User::find(Auth::id())->touch();
+            CharitableOrganization::find(Auth::user()->charitable_organization_id)->touch();
         }
 
         return redirect()->intended(RouteServiceProvider::HOME);

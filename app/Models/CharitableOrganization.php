@@ -15,10 +15,11 @@ use App\Models\Charity\Profile\ProfileProgram;
 use App\Models\Charity\Profile\ProfileSecondaryInfo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CharitableOrganization extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $guarded = [
         'code',
         'star_tokens',

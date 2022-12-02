@@ -66,7 +66,7 @@
                                     <div class="@unless($errors->has('username'))mt-5 @endunless">
                                         @if ($errors->has('username'))
                                             <div class="text-danger text-center my-2">
-                                                    {{$errors->first()}}
+                                                {{$errors->first()}}
                                             </div>
                                         @endif
                                     </div>

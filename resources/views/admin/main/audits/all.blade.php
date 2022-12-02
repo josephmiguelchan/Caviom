@@ -102,7 +102,7 @@
                             <tr>
                                 <td>{{$key+1}}</td>
                                 <td>{{$item->action_type}}</td>
-                                <td>{{($item->charitable_organization_id)?$item->charity->name:'---'}}</td>
+                                <td>{{($item->charity != null) ? (($item->charitable_organization_id)?$item->charity->name:'---') : '[ Deleted Org ]'}}</td>
                                 <td>{{Carbon\Carbon::parse($item->performed_at)->toDateTimeString()}}</td>
                                 <td>{{($item->getuser != null) ? '@'.$item->getuser->username : '---'}}</td>
                                 <td>{{($item->table_name) ? $item->table_name:'---'}}</td>
