@@ -177,10 +177,11 @@
 
     <h6><li class="fw-bold">Retention of Data</h6></li>
     <p>
-        We will retain your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy.
-        We will retain and use your Personal Data to the extent necessary to comply with our legal obligations (for example,
-        if we are required to retain your data to comply with applicable laws), resolve disputes, and enforce our legal
-        agreements and policies.
+        We will retain Charitable Organization Data only for up to 5 years from the date of last activity recorded within an organization.
+        If a charitable organization no longer holds an account and/or has become inactive for 5 years or more, it will be automatically
+        considered as closed or deceased account of charitable organization. Therefore, we have the right to permanently delete all the
+        data of your charitable organization, including all of its users. We are not required to provide data relating to any transaction
+        stored of the Charitable Organization prior to the date of account and/or charitable organization deletion.
     </p>
     <p>
         We will also retain Usage Data for internal analysis purposes. Usage Data is generally retained for a shorter period,

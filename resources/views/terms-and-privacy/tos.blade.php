@@ -30,6 +30,11 @@
         parties subject to our Privacy Policy.
     </p>
     <p>
+        The administrator of the charitable organization is granted access to the order transaction history that is only
+        available for a year. Any order payment transaction that occurred more than a year will not necessitate the provision
+        of order transaction history since we will dispose of it after the retention period has expired.
+    </p>
+    <p>
         We reserve the right to refuse or cancel your order at any time for reasons including but not limited to product or
         service availability, errors in the description or price of the product or service, error in your order, or other
         reasons.
@@ -180,6 +185,10 @@
         You may not use as a username any name that is offensive, vulgar, or obscene.
     </p>
     <p>
+        Username can only be changed once every six months. It is the duty of the users of charitable organization to remember
+        their username as we, Caviom, will not be liable if users fail to remember his/her username.
+    </p>
+    <p>
         We reserve the right to refuse service, terminate accounts, remove or edit content, or cancel orders in our sole
         discretion.
     </p>
@@ -322,7 +331,10 @@
         Terms.
     </p>
     <p>
-        If you wish to terminate your account, you may simply discontinue using the Service.
+        If you wish to terminate your account, you may simply discontinue using the Service. User accounts that have not logged
+        in for 5 years or more are considered inactive. Records of inactive user accounts are subject to termination where they
+        can neither access their data nor log in any longer. Therefore, we have the right to delete all the records of the user
+        accounts that are considered inactive for 5 years.
     </p>
     <p>
         All provisions of Terms which by their nature should survive termination shall survive termination, including, without
