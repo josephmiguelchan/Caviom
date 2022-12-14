@@ -36,6 +36,9 @@ Route::controller(PublicController::class)->group(function () {
     Route::post('/Donate/{code}', 'Donate')->name('store.donate');
     Route::get('/terms-of-service', 'showTermsOfService')->name('terms');
     Route::get('/privacy-policy', 'showPrivacyPolicy')->name('privacy');
+    Route::get('/user-access-control-list', function () {
+        return view('public.v2.pages.uac');
+    })->name('uac');
 
     # Charity Public Profile Pages
     Route::name('charities')->prefix('/charitable-organizations')->middleware(['prevent-back-history'])->group(function () {
