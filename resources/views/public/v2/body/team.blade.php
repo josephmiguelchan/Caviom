@@ -11,7 +11,7 @@
         <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
             <div class="member" data-aos="fade-up">
                 <div class="member-img">
-                    <img src="{{ asset('backend/assets/images/users/caviom/joseph.jpg') }}" class="img-fluid" alt="">
+                    <img src="{{ asset('backend/assets/images/users/caviom/joseph.png') }}" class="img-fluid" alt="">
                     <div class="social">
                         <a target="_blank" href="https://www.facebook.com/JoseMiguelLumbao"><i class="icofont-facebook"></i></a>
                         <a target="_blank" href="https://www.linkedin.com/in/jseph-miguel/"><i class="icofont-linkedin"></i></a>
@@ -19,7 +19,7 @@
                 </div>
                 <div class="member-info">
                     <h4>Joseph Miguel Chan</h4>
-                    <span>Full Stack Developer</span>
+                    <span>Lead Developer</span>
                 </div>
             </div>
         </div>
