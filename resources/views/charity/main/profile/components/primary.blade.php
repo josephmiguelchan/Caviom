@@ -316,8 +316,8 @@
                             <!-- Region -->
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="region" class="form-label">*Region</label>
-                                    <input class="form-control" name="region" id="region" type="text"
+                                    <label for="_region" class="form-label">*Region</label>
+                                    <input class="form-control" name="region" id="_region" type="text"
                                         placeholder="@unless($errors->any())Ex. NCR @endunless"
                                         value="{{ $primaryInfo->address->region ?? old('region') }}">
                                     @error('region')
@@ -333,8 +333,8 @@
                             <!-- Province -->
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="province" class="form-label">*Province</label>
-                                    <input class="form-control" name="province" id="province" type="text"
+                                    <label for="_province" class="form-label">*Province</label>
+                                    <input class="form-control" name="province" id="_province" type="text"
                                         placeholder="@unless($errors->any())Ex. Metro Manila @endunless"
                                         value="{{ $primaryInfo->address->province ?? old('province') }}">
                                     @error('province')
@@ -350,8 +350,8 @@
                             <!-- City -->
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="city" class="form-label">*City / Municipality</label>
-                                    <input class="form-control" name="city" id="city" type="text"
+                                    <label for="_city" class="form-label">*City / Municipality</label>
+                                    <input class="form-control" name="city" id="_city" type="text"
                                         placeholder="@unless($errors->any())Ex. Manila City @endunless"
                                         value="{{ $primaryInfo->address->city ?? old('city') }}">
                                     @error('city')
@@ -369,8 +369,8 @@
                             <!-- Barangay -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="barangay" class="form-label">*Barangay</label>
-                                    <input class="form-control" name="barangay" id="barangay" type="text"
+                                    <label for="_barangay" class="form-label">*Barangay</label>
+                                    <input class="form-control" name="barangay" id="_barangay" type="text"
                                         placeholder="@unless($errors->any())Ex. Brgy. 204 @endunless"
                                         value="{{ $primaryInfo->address->barangay ?? old('barangay') }}">
                                     @error('barangay')

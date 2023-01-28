@@ -253,8 +253,8 @@
                                     <!-- Region -->
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="region" class="form-label">*Region</label>
-                                            <input class="form-control" name="region" id="region" type="text" required
+                                            <label for="_region" class="form-label">*Region</label>
+                                            <input class="form-control" name="region" id="_region" type="text" required
                                                 value="{{ (empty($errors->has('region')))?old('region',Auth::user()->info->address->region):Auth::user()->info->address->region}}">
                                             @error('region')
                                                 <div class="text-danger">
@@ -267,8 +267,8 @@
                                     <!-- Province -->
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="province" class="form-label">*Province</label>
-                                            <input class="form-control" name="province" id="province" type="text" required
+                                            <label for="_province" class="form-label">*Province</label>
+                                            <input class="form-control" name="province" id="_province" type="text" required
                                                 value="{{ (empty($errors->has('province')))?old('province',Auth::user()->info->address->province):Auth::user()->info->address->province}}">
                                             @error('province')
                                                 <div class="text-danger">
@@ -281,8 +281,8 @@
                                     <!-- City -->
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="city" class="form-label">*City / Municipality</label>
-                                            <input class="form-control" name="city" id="city" type="text" required
+                                            <label for="_city" class="form-label">*City / Municipality</label>
+                                            <input class="form-control" name="city" id="_city" type="text" required
                                                 value="{{ (empty($errors->has('city')))?old('city',Auth::user()->info->address->city):Auth::user()->info->address->city}}">
                                             @error('city')
                                                 <div class="text-danger">
@@ -297,8 +297,8 @@
                                     <!-- Barangay -->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="barangay" class="form-label">*Barangay</label>
-                                            <input class="form-control" name="barangay" id="barangay" type="text" required
+                                            <label for="_barangay" class="form-label">*Barangay</label>
+                                            <input class="form-control" name="barangay" id="_barangay" type="text" required
                                                 value="{{ (empty($errors->has('barangay')))?old('barangay',Auth::user()->info->address->barangay):Auth::user()->info->address->barangay}}">
                                             @error('barangay')
                                                 <div class="text-danger">
