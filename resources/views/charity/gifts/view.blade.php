@@ -83,6 +83,8 @@
                                     <a href="{{ (!empty($GiftGivings->last_downloaded_by))?route('charity.users.view', $GiftGivings->downloadedBy->code):'#' }}">
                                         {{ (!empty($GiftGivings->downloadedBy->username))? $GiftGivings->downloadedBy->username:'---' }}
                                     </a>
+                                    @elseif($GiftGivings->last_downloaded_by == null)
+                                    <span class="text-muted">---</span>
                                     @else
                                     <span class="text-muted">[ Deleted User ]</span>
                                     @endunless
